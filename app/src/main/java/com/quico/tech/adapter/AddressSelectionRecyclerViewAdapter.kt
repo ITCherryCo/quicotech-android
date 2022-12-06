@@ -7,25 +7,23 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
-import com.quico.tech.databinding.AddressListBinding
+import com.quico.tech.databinding.AddressItemSelectionBinding
 import com.quico.tech.model.Address
 
-class AddressRecyclerViewAdapter :
-    RecyclerView.Adapter<AddressRecyclerViewAdapter.ItemViewHolder>() {
+class AddressSelectionRecyclerViewAdapter :
+    RecyclerView.Adapter<AddressSelectionRecyclerViewAdapter.ItemViewHolder>() {
     private var lastSelectedPosition = -1
     private var defaultSelectedPosition = -1
 
-    inner class ItemViewHolder(private var binding: AddressListBinding) :
+    inner class ItemViewHolder(private var binding: AddressItemSelectionBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(address: Address) {
             binding.apply {
 
                 itemView.setOnClickListener {
-
                     lastSelectedPosition = absoluteAdapterPosition
                     notifyDataSetChanged()
-
                 }
 
                 if (lastSelectedPosition == absoluteAdapterPosition) {
@@ -54,7 +52,7 @@ class AddressRecyclerViewAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
-            AddressListBinding.inflate(
+            AddressItemSelectionBinding.inflate(
                 LayoutInflater.from(
                     parent.context
                 )

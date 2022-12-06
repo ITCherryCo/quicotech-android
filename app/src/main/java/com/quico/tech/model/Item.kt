@@ -1,4 +1,4 @@
 package com.quico.tech.model
 
-class Item {
+data class Item (val id:Int, val name:String){
 }

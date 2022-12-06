@@ -1,16 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: com.facebook.shimmer:shimmer:0.3.0@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2485353aab98e862f00e05cfb4af948b/transformed/shimmer-0.3.0/annotations.zip!/" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2eb205056f13540aada6a09c96439d0a/transformed/shimmer-0.3.0/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/8a98a82f67d149aff2d237738d00b672/transformed/shimmer-0.3.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2485353aab98e862f00e05cfb4af948b/transformed/shimmer-0.3.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2485353aab98e862f00e05cfb4af948b/transformed/shimmer-0.3.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2485353aab98e862f00e05cfb4af948b/transformed/shimmer-0.3.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2eb205056f13540aada6a09c96439d0a/transformed/shimmer-0.3.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2eb205056f13540aada6a09c96439d0a/transformed/shimmer-0.3.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2eb205056f13540aada6a09c96439d0a/transformed/shimmer-0.3.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/8a98a82f67d149aff2d237738d00b672/transformed/shimmer-0.3.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8a98a82f67d149aff2d237738d00b672/transformed/shimmer-0.3.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8a98a82f67d149aff2d237738d00b672/transformed/shimmer-0.3.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.shimmer/shimmer/0.3.0/aa4f816070dfa5502c4504248199e4f2d6aaca94/shimmer-0.3.0-javadoc.jar!/" />

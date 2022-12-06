@@ -24,10 +24,21 @@ class PrefManager(var context: Context) {
         // Shared  preferences file name
         private const val PREF_NAME = "my-intro-slider"
         private const val IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch"
+        private const val LANGUAGE = "language"
     }
 
     init {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
         editor = sharedPreferences.edit()
     }
+
+
+    var language: String?
+        get() = sharedPreferences.getString(LANGUAGE, "en")
+        set(new_language) {
+            editor.putString(LANGUAGE, new_language)
+            editor.apply()
+        }
+
+
 }

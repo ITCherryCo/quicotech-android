@@ -1,3 +1,3 @@
 package com.quico.tech.model
 
-data class Card()
+data class Card(val id:Int)

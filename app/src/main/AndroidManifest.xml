@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.quico.tech">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -15,30 +16,69 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuicoTech"
         tools:targetApi="31">
-
         <activity
-            android:name=".activity.SignUpActivity"
-            android:theme="@style/Theme.QuicoTech.NoActionBar"
+            android:name=".activity.GeneralWebInfoActivity"
             android:exported="false" />
-
         <activity
-            android:name=".activity.LoginActivity"
-            android:theme="@style/Theme.QuicoTech.NoActionBar"
+            android:name=".activity.AddressActivity"
             android:exported="false" />
-
-        <activity android:name=".activity.MainActivity" />
-
         <activity
-            android:name=".activity.IntroActivity"
-            android:exported="true"
-            android:theme="@style/Theme.QuicoTech.NoActionBar">
+            android:name=".activity.ShippingAddressListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.NewCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.CardListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.CheckoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AddressListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.PaymentMethodActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.HomeTestActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SignUpActivity"
+            android:exported="false"
+            android:theme="@style/Theme.QuicoTech.NoActionBar" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.QuicoTech.NoActionBar" />
+        <activity android:name=".activity.MainActivity" />
+        <activity
+            android:name=".activity.IntroActivity"
+            android:exported="true"
+            android:theme="@style/Theme.QuicoTech.NoActionBar">
 
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
     </application>
 
 </manifest>

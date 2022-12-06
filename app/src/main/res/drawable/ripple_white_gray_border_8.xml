@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="@color/gray_dark"
+    tools:ignore="NewApi">
 
-</selector>
+    <item android:id="@android:id/background">
+
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/white" />
+
+            <corners
+                android:radius="8dp">
+            </corners>
+
+        </shape>
+    </item>
+</ripple>

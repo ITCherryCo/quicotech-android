@@ -5,4 +5,77 @@
     <string name="intro_first_slide_title">Shop What \nYou Desire</string>
     <string name="intro_second_slide_title"><![CDATA[Maintenance \n & Recovery]]></string>
     <string name="intro_second_slide_desc"><![CDATA[Fill out our Maintenance & Recovery forms \nand get your products repaired at instant \nwith our professional team]]></string>
+
+
+    <string name="checkout">Checkout</string>
+    <string name="cart">Cart</string>
+    <string name="no_items_in_list">No items in the list</string>
+    <string name="dont_have_shop_item">You don\'t have any shop item</string>
+    <string name="start_shopping">Start Shopping</string>
+    <string name="total_tax_includes">Total(Tax Included)</string>
+    <string name="out_of_stock">Out Of Stock</string>
+    <string name="total_cart_item">Total: %1$s</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="select_payment_method">Select your preferred payment method</string>
+    <string name="cash_with_delivery">Cash with delivery</string>
+    <string name="add_new_card">Add new card</string>
+    <string name="next">Next</string>
+    <string name="add_card"><u>Add Card</u></string>
+    <string name="address">Address</string>
+    <string name="select_your_address">Select your address</string>
+    <string name="email_verification_example">Enter the confirmation code that we sent to your
+Email at example@gmail.com.</string>
+    <string name="verify">Verify</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="total">Total</string>
+    <string name="confirm_and_pay">Confirm and pay</string>
+    <string name="thank_you">Thank You</string>
+    <string name="payment_successful">Your Payment was successful</string>
+    <string name="go_home">Go Home</string>
+    <string name="add_new_address">Add new address</string>
+    <string name="edit_address">Edit address</string>
+    <string name="profile">Profile</string>
+    <string name="card">Card</string>
+    <string name="shipping_addresses">Shipping Addresses</string>
+    <string name="done_orders">Done Orders</string>
+    <string name="ongoing_orders">Ongoing Orders</string>
+    <string name="faq">FAQ</string>
+    <string name="terms_and_conditions">Terms &amp; Conditions</string>
+    <string name="settings">Settings</string>
+    <string name="full_name">Full Name</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="email">Email</string>
+    <string name="save">Save</string>
+    <string name="my_cards">My Cards</string>
+    <string name="safe_information">Your information is safe with us</string>
+    <string name="try_again">Try again</string>
+    <string name="visa">Visa</string>
+    <string name="new_card">New Card</string>
+    <string name="card_number">Card number</string>
+    <string name="name_on_card">Name on card</string>
+    <string name="card_expiration">Expiration MM/YY</string>
+    <string name="cvv">CVV</string>
+    <string name="contact_name">Contact Name</string>
+    <string name="mobile">Mobile</string>
+    <string name="street_example">Street address, P.O.  box, etc.</string>
+    <string name="apartment_example">Apt, Suite, Unit, etc.</string>
+    <!--    <string name="apartment_example">Apt, Suite, Unit, etc. (optional)</string>-->
+    <string name="state_province">State / Province / County</string>
+    <string name="city">City</string>
+    <string name="postal_code">Zip / Postal Code</string>
+    <string name="set_default_shipping_address">Set as default shipping address</string>
+    <string name="lebanon">Lebanon</string>
+    <string name="default_address">Default</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="set_as_default">Set as default</string>
+    <string name="no_addresses">No addresses are found</string>
+    <string name="error_msg">Something went wrong please try again</string>
+    <string name="check_connection">Please check your connection</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

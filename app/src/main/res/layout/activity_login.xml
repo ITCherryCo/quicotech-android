@@ -64,8 +64,7 @@
             android:padding="14dp"
             app:cornerRadius="12dp"
             android:textColor="#fff"
-            android:backgroundTint="#4B40D7"
-            />
+            android:backgroundTint="#4B40D7"/>
 
     </LinearLayout>
 

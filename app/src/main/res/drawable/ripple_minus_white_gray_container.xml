@@ -11,12 +11,12 @@
             <solid android:color="@color/white" />
 
             <stroke
-                android:color="@color/black"
+                android:color="@color/gray_dark"
                 android:width="0.4dp">
             </stroke>
 
             <corners
-                android:bottomLeftRadius="20dp">
+                android:bottomLeftRadius="8dp">
             </corners>
 
         </shape>
