@@ -15,9 +15,7 @@
         android:elevation="1dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layoutDirection="locale">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,6 +28,7 @@
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
+                android:layoutDirection="locale"
                 android:padding="8dp"
                 android:src="@drawable/back_arrow" />
 
@@ -42,9 +41,11 @@
                 android:layout_marginEnd="45dp"
                 android:layout_toEndOf="@+id/back_arrow"
                 android:gravity="center"
+                android:layoutDirection="locale"
                 android:text="@string/cart"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
+                android:textDirection="locale"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

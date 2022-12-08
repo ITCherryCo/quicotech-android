@@ -13,6 +13,7 @@
         android:layout_marginBottom="30dp"
         android:background="@drawable/container_white_corner_20"
         android:gravity="center"
+        android:layoutDirection="locale"
         android:orientation="vertical"
         android:padding="20dp">
 
@@ -20,6 +21,7 @@
             android:id="@+id/successImage"
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:layoutDirection="locale"
             android:src="@drawable/success_check" />
 
         <TextView
@@ -30,6 +32,8 @@
             android:gravity="center"
             android:text="@string/thank_you"
             android:textAllCaps="true"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
             android:textColor="@color/black"
             android:textSize="13sp"
             android:textStyle="bold" />
@@ -41,6 +45,9 @@
             android:layout_below="@+id/titleText"
             android:layout_marginTop="10dp"
             android:gravity="center"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
+
             android:text="@string/payment_successful"
             android:textColor="@color/black" />
 
@@ -50,10 +57,12 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="35dp"
             android:layout_marginTop="20dp"
+            android:backgroundTint="@color/green"
             android:padding="12dp"
             android:text="@string/go_home"
             android:textAllCaps="false"
-            android:backgroundTint="@color/green"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
             android:textColor="@color/white"
             android:textSize="13sp"
             android:textStyle="bold"

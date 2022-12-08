@@ -14,9 +14,7 @@
         android:elevation="1dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layoutDirection="locale">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,6 +28,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:padding="8dp"
+                android:layoutDirection="locale"
                 android:src="@drawable/back_arrow" />
 
             <TextView
@@ -41,9 +40,11 @@
                 android:layout_marginEnd="45dp"
                 android:layout_toEndOf="@+id/back_arrow"
                 android:gravity="center"
+                android:layoutDirection="locale"
                 android:text="@string/shipping_addresses"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
+                android:textDirection="locale"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -99,7 +100,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:textDirection="locale"
+                    android:layoutDirection="locale"/>
 
                 <RelativeLayout
                     android:id="@+id/addAddressContainer"
@@ -110,6 +113,7 @@
                     android:background="@drawable/ripple_white_gray_border_8"
                     android:elevation="4dp"
                     android:clickable="true"
+                    android:layoutDirection="locale"
                     android:gravity="center">
 
                     <ImageView
@@ -118,6 +122,7 @@
                         android:layout_height="15dp"
                         android:layout_centerVertical="true"
                         android:scaleType="fitXY"
+                        android:layoutDirection="locale"
                         android:src="@drawable/add_circle" />
 
                     <TextView
@@ -127,8 +132,10 @@
                         android:layout_centerVertical="true"
                         android:layout_marginHorizontal="10dp"
                         android:layout_toEndOf="@+id/addImage"
+                        android:layoutDirection="locale"
                         android:text="@string/add_new_address"
                         android:textColor="@color/gray_dark"
+                        android:textDirection="locale"
                         android:textSize="15sp" />
                 </RelativeLayout>
 

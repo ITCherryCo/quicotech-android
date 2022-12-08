@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.OrderListActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:elevation="1dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:layoutDirection="locale">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/back_arrow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:padding="8dp"
+                android:layoutDirection="locale"
+                android:src="@drawable/back_arrow" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="45dp"
+                android:layout_toEndOf="@+id/back_arrow"
+                android:gravity="center"
+                android:text="@string/ongoing_orders"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textDirection="locale"
+                android:layoutDirection="locale"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/mainContainer"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/errorContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/errorImage"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="100dp"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:id="@+id/errorText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginEnd="40dp"
+                        android:layout_marginBottom="40dp"
+                        android:gravity="center"
+                        android:textDirection="locale"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layoutDirection="locale"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/allBtn"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="7dp"
+                        android:background="@drawable/container_white_gray_stroke_12"
+                        android:text="@string/all"
+                        android:textAllCaps="true"
+                        android:clickable="true"
+                        android:textSize="12sp"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textColor="@color/gray_dark"
+                        android:gravity="center" />
+
+
+                    <TextView
+                        android:id="@+id/ordersBtn"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingHorizontal="12dp"
+                        android:layout_marginStart="20sp"
+                        android:paddingVertical="7dp"
+                        android:background="@drawable/container_white_gray_stroke_12"
+                        android:text="@string/orders"
+                        android:textAllCaps="true"
+                        android:textSize="12sp"
+                        android:clickable="true"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textColor="@color/gray_dark"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/servicesBtn"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="7dp"
+                        android:background="@drawable/container_white_gray_stroke_12"
+                        android:text="@string/services"
+                        android:textAllCaps="true"
+                        android:layout_marginStart="20dp"
+                        android:textSize="12sp"
+                        android:clickable="true"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textColor="@color/gray"
+                        android:gravity="center" />
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/allText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="20dp" />
+
+            </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>

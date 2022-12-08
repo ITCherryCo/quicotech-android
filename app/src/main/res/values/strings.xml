@@ -71,8 +71,45 @@ Email at example@gmail.com.</string>
     <string name="delete">Delete</string>
     <string name="set_as_default">Set as default</string>
     <string name="no_addresses">No addresses are found</string>
+    <string name="no_orders">No orders are found</string>
     <string name="error_msg">Something went wrong please try again</string>
     <string name="check_connection">Please check your connection</string>
+    <string name="verification">Verification</string>
+    <string name="enter_verification_code">Enter Verification Code</string>
+    <string name="phone_confirmation_code">Enter the confirmation code that we sent to your Phone number.</string>
+    <string name="email_confirmation_code">Enter the confirmation code that we sent to your Email at example@gmail.com.</string>
+    <string name="resend_code"><u>Resend Code</u></string>
+    <string name="or">OR</string>
+    <string name="call"><u>Call</u></string>
+    <string name="order_history">Order History </string>
+    <string name="orders">Orders</string>
+    <string name="order_number">Order #: %1$s</string>
+    <string name="delivered_to">Delivered To: %1$s</string>
+    <string name="track_order">Track Order</string>
+    <string name="canceled">Canceled</string>
+    <string name="delivered">Delivered</string>
+    <string name="all">All</string>
+    <string name="services">Services</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="logout">Logout</string>
+    <string name="sure_logout">Are you Sure you want to logout?</string>
+    <string name="yes">Yes</string>
+    <string name="birthday_example">Jan/01/2023</string>
+    <string name="frequently_asked_questions">Frequently Asked Questions</string>
+    <string name="available_shipping_method">What Shipping Methods Are Available?</string>
+    <string name="available_shipping_method_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
+efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.</string>
+    <string name="delivery_estimation_time">How Long Will it Take To Get My Package?</string>
+    <string name="delivery_estimation_time_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
+efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.</string>
+    <string name="how_to_track_order">How Do I Track My Order?</string>
+    <string name="how_to_track_order_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
+efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.</string>
+    <string name="need_account_to_place_order">Do I Need A Account To Place Order?</string>
+    <string name="need_account_to_place_order_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
+efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

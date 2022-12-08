@@ -6,6 +6,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layoutDirection="locale"
         android:layout_marginTop="20dp">
 
         <TextView
@@ -14,8 +15,10 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
-            android:text="1 x Acer djkhdfksdjhf"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
             android:layout_toStartOf="@+id/totalPrice"
+            android:text="1 x Acer djkhdfksdjhf"
             android:textColor="@color/gray_dark"
             android:textSize="16sp" />
 
@@ -25,6 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
             android:text="$45.2"
             android:textColor="@color/black"
             android:textSize="16sp" />

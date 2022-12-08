@@ -16,10 +16,7 @@
         android:background="@color/white"
         android:elevation="1dp"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:theme="?attr/actionBarTheme">
 
         <TextView
             android:id="@+id/title"
@@ -30,6 +27,8 @@
             android:layout_marginEnd="15dp"
             android:gravity="center"
             android:text="@string/profile"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -42,7 +41,8 @@
         android:id="@+id/userInfo"
         android:layout_width="match_parent"
         android:layout_height="62dp"
-        android:layout_margin="20dp">
+        android:layout_margin="20dp"
+        android:layoutDirection="locale">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
@@ -50,7 +50,8 @@
             android:layout_height="62dp"
             android:src="@drawable/laptop"
             app:civ_border_color="@color/black"
-            app:civ_border_width="1dp" />
+            app:civ_border_width="1dp"
+            android:layoutDirection="locale"/>
 
         <ImageView
             android:id="@+id/vipImage"
@@ -58,6 +59,7 @@
             android:layout_height="17dp"
             android:layout_alignEnd="@+id/profileImage"
             android:elevation="1dp"
+            android:layoutDirection="locale"
             android:src="@drawable/vip" />
 
         <TextView
@@ -70,8 +72,10 @@
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/editImage"
             android:layout_toEndOf="@+id/profileImage"
+            android:layoutDirection="locale"
             android:text="Danielle Dh"
             android:textColor="@color/black"
+            android:textDirection="locale"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -88,6 +92,8 @@
             android:layout_toEndOf="@+id/profileImage"
             android:text="+961 70707070"
             android:textColor="@color/gray"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
             android:textSize="14dp" />
 
         <ImageView
@@ -99,6 +105,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:elevation="1dp"
+            android:layoutDirection="locale"
             android:src="@drawable/edit_profile" />
 
     </RelativeLayout>
@@ -111,6 +118,8 @@
         android:background="@drawable/container_white_corner_15"
         android:elevation="5dp"
         android:orientation="vertical"
+        android:textDirection="locale"
+        android:layoutDirection="locale"
         android:padding="20dp">
 
         <LinearLayout
@@ -124,12 +133,14 @@
                 android:layout_marginEnd="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:layoutDirection="locale"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/cardImage"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
+                    android:layoutDirection="locale"
                     android:src="@drawable/card_circle" />
 
                 <TextView
@@ -139,7 +150,8 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="@string/card"
-                    android:textColor="@color/black"
+                    android:textDirection="locale"
+                    android:layoutDirection="locale"                    android:textColor="@color/black"
                     android:textSize="11sp" />
 
 
@@ -157,7 +169,8 @@
                     android:id="@+id/shippingImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/shipping_address" />
+                    android:src="@drawable/shipping_address"
+                    android:layoutDirection="locale"/>
 
                 <TextView
                     android:id="@+id/shippingAddressesText"
@@ -167,6 +180,8 @@
                     android:gravity="center"
                     android:text="@string/shipping_addresses"
                     android:textColor="@color/black"
+                    android:textDirection="locale"
+                    android:layoutDirection="locale"
                     android:textSize="11sp" />
 
 
@@ -184,6 +199,7 @@
                     android:id="@+id/doneOrderImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layoutDirection="locale"
                     android:src="@drawable/done_orders" />
 
                 <TextView
@@ -193,6 +209,8 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="@string/done_orders"
+                    android:textDirection="locale"
+                    android:layoutDirection="locale"
                     android:textColor="@color/black"
                     android:textSize="11sp" />
 
@@ -211,6 +229,7 @@
                     android:id="@+id/ongoingOrderImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layoutDirection="locale"
                     android:src="@drawable/ongoing_orders" />
 
                 <TextView
@@ -221,6 +240,8 @@
                     android:gravity="center"
                     android:text="@string/ongoing_orders"
                     android:textColor="@color/black"
+                    android:textDirection="locale"
+                    android:layoutDirection="locale"
                     android:textSize="11sp" />
 
 
@@ -245,6 +266,7 @@
                     android:id="@+id/faqImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layoutDirection="locale"
                     android:src="@drawable/faq" />
 
                 <TextView
@@ -255,6 +277,8 @@
                     android:gravity="center"
                     android:text="@string/faq"
                     android:textColor="@color/black"
+                    android:textDirection="locale"
+                    android:layoutDirection="locale"
                     android:textSize="11sp" />
 
 
@@ -272,6 +296,7 @@
                     android:id="@+id/termsImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layoutDirection="locale"
                     android:src="@drawable/terms" />
 
                 <TextView
@@ -282,6 +307,8 @@
                     android:gravity="center"
                     android:text="@string/terms_and_conditions"
                     android:textColor="@color/black"
+                    android:textDirection="locale"
+                    android:layoutDirection="locale"
                     android:textSize="11sp" />
 
 
@@ -299,6 +326,7 @@
                     android:id="@+id/settingsImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layoutDirection="locale"
                     android:src="@drawable/settings" />
 
                 <TextView
@@ -309,6 +337,8 @@
                     android:gravity="center"
                     android:text="@string/settings"
                     android:textColor="@color/black"
+                    android:textDirection="locale"
+                    android:layoutDirection="locale"
                     android:textSize="11sp" />
 
             </LinearLayout>

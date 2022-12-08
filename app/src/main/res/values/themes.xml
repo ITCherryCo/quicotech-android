@@ -15,10 +15,10 @@
     <style name="Theme.QuicoTech.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
     </style>
 
     <style name="Theme.QuicoTech.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="Theme.QuicoTech.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

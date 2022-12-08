@@ -13,9 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
 import com.quico.tech.adapter.AddressSelectionRecyclerViewAdapter
+import com.quico.tech.data.Constant
 import com.quico.tech.data.Constant.CONNECTION
+import com.quico.tech.data.Constant.EMAIL
 import com.quico.tech.data.Constant.ERROR
 import com.quico.tech.data.Constant.NO_ADDRESSES
+import com.quico.tech.data.Constant.OPERATION_TYPE
 import com.quico.tech.databinding.ActivityAddressListBinding
 import com.quico.tech.model.Address
 import com.quico.tech.utils.Resource
@@ -36,18 +39,32 @@ class AddressListActivity : AppCompatActivity() {
 
         binding.apply {
           nextBtn.setOnClickListener {
-                startActivity(Intent(this@AddressListActivity, CheckoutActivity::class.java))
+
+                startActivity(Intent(this@AddressListActivity, VerificationCodeActivity::class.java)
+                    .putExtra(OPERATION_TYPE, EMAIL))
             }
             backArrow.setOnClickListener {
                 onBackPressed()
             }
         }
-
+        setUpText()
         setUpCartAdapter()
 //        onRefresh()
 //        viewModel.getAddresses(1)
 //        subscribeAddresses()
 
+    }
+
+    private fun setUpText(){
+        binding.apply {
+            title.text = viewModel.getLangResources().getString(R.string.address)
+            selectPaymentText.text = viewModel.getLangResources().getString(R.string.select_payment_method)
+            addNewAddressText.text = viewModel.getLangResources().getString(R.string.add_new_address)
+            nextBtn.text = viewModel.getLangResources().getString(R.string.next)
+
+            if (viewModel.getLanguage().equals(Constant.AR))
+                backArrow.scaleX = -1f
+        }
     }
 
     fun subscribeAddresses(){
@@ -140,12 +157,10 @@ class AddressListActivity : AppCompatActivity() {
             selectPaymentText.visibility = View.GONE
             recyclerView.visibility = View.GONE
 
-            if (error_type.equals(CONNECTION)) {
-                errorText.setText(viewModel.getLangResources().getString(R.string.check_connection))
-            } else if (error_type.equals(NO_ADDRESSES)) {
-                errorText.setText(viewModel.getLangResources().getString(R.string.no_addresses))
-            } else if (error_type.equals(ERROR)) {
-                errorText.setText(viewModel.getLangResources().getString(R.string.error_msg))
+            when(error_type){
+                CONNECTION->errorText.setText(viewModel.getLangResources().getString(R.string.check_connection))
+                NO_ADDRESSES->errorText.setText(viewModel.getLangResources().getString(R.string.no_addresses))
+                ERROR->errorText.setText(viewModel.getLangResources().getString(R.string.error_msg))
             }
         }
     }

@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textSize="14sp"
+        android:textDirection="locale"
+        android:layoutDirection="locale"
         android:textColorHint="@color/gray_dark"
         android:hint="@string/contact_name" />
 
@@ -22,12 +24,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:textColorHint="@color/gray_dark"
+        android:layoutDirection="locale"
         android:layout_marginTop="20dp">
 
         <EditText
             android:id="@+id/countryPicker"
             android:layout_width="0dp"
             android:layout_weight="0.3"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
             android:layout_height="wrap_content"/>
 
         <EditText
@@ -37,6 +42,8 @@
             android:layout_weight="0.7"
             android:textColor="@color/black"
             android:textSize="14sp"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
             android:textColorHint="@color/gray_dark"
             android:layout_marginStart="10dp"
             android:hint="@string/mobile" />
@@ -51,6 +58,8 @@
         android:textColor="@color/black"
         android:textColorHint="@color/gray_dark"
         android:textSize="14sp"
+        android:textDirection="locale"
+        android:layoutDirection="locale"
         android:layout_marginTop="20dp"/>
 
     <EditText
@@ -60,6 +69,8 @@
         android:hint="@string/apartment_example"
         android:textColor="@color/black"
         android:textSize="14sp"
+        android:textDirection="locale"
+        android:layoutDirection="locale"
         android:textColorHint="@color/gray_dark"
         android:layout_marginTop="20dp"/>
 
@@ -70,6 +81,8 @@
         android:text="@string/lebanon"
         android:textColor="@color/black"
         android:textSize="14sp"
+        android:textDirection="locale"
+        android:layoutDirection="locale"
         android:enabled="false"
         android:layout_marginTop="20dp"/>
 
@@ -80,6 +93,8 @@
         android:hint="@string/start_shopping"
         android:textColor="@color/black"
         android:textSize="14sp"
+        android:textDirection="locale"
+        android:layoutDirection="locale"
         android:textColorHint="@color/gray_dark"
         android:layout_marginTop="20dp"/>
 
@@ -90,6 +105,8 @@
         android:hint="@string/city"
         android:textColor="@color/black"
         android:textSize="14sp"
+        android:textDirection="locale"
+        android:layoutDirection="locale"
         android:textColorHint="@color/gray_dark"
         android:layout_marginTop="20dp"/>
 
@@ -100,26 +117,32 @@
         android:hint="@string/postal_code"
         android:textColor="@color/black"
         android:textSize="14sp"
+        android:textDirection="locale"
+        android:layoutDirection="locale"
         android:textColorHint="@color/gray_dark"
         android:layout_marginTop="20dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:layoutDirection="locale">
 
 
         <TextView
             android:id="@+id/setDefaultText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/set_default_shipping_address"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="@string/set_default_shipping_address"/>
+            android:textDirection="locale"
+            android:layoutDirection="locale"
+            android:textSize="14sp" />
 
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layoutDirection="locale"/>
     </RelativeLayout>
 </LinearLayout>

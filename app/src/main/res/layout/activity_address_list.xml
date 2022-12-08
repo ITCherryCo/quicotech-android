@@ -16,9 +16,7 @@
         android:elevation="1dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layoutDirection="locale">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -31,6 +29,7 @@
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
+                android:layoutDirection="locale"
                 android:padding="8dp"
                 android:src="@drawable/back_arrow" />
 
@@ -43,9 +42,11 @@
                 android:layout_marginEnd="45dp"
                 android:layout_toEndOf="@+id/back_arrow"
                 android:gravity="center"
+                android:layoutDirection="locale"
                 android:text="@string/address"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
+                android:textDirection="locale"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -104,6 +105,8 @@
             android:id="@+id/selectPaymentText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
             android:text="@string/select_your_address"
             android:textSize="15sp" />
 
@@ -112,6 +115,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layoutDirection="locale"
             android:layout_marginTop="10dp" />
 
         <ProgressBar
@@ -129,6 +133,7 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/container_gray_stroke_1"
             android:clickable="true"
+            android:layoutDirection="locale"
             android:gravity="center"
             android:padding="12dp">
 
@@ -138,6 +143,7 @@
                 android:layout_height="15dp"
                 android:layout_centerVertical="true"
                 android:scaleType="fitXY"
+                android:layoutDirection="locale"
                 android:src="@drawable/add_circle" />
 
             <TextView
@@ -147,9 +153,11 @@
                 android:layout_centerVertical="true"
                 android:layout_marginHorizontal="10dp"
                 android:layout_toEndOf="@+id/addImage"
+                android:layoutDirection="locale"
                 android:text="@string/add_new_address"
                 android:textAllCaps="true"
                 android:textColor="@color/gray_dark"
+                android:textDirection="locale"
                 android:textSize="15sp" />
 
         </RelativeLayout>
@@ -168,9 +176,11 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+        android:layoutDirection="locale"
         android:padding="12dp"
         android:text="@string/next"
         android:textColor="@color/white"
+        android:textDirection="locale"
         android:textSize="13sp"
         android:textStyle="bold"
         app:cornerRadius="12dp" />

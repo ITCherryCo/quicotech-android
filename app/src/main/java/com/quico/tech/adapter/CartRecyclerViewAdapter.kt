@@ -4,21 +4,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
+import com.quico.tech.data.Constant
 import com.quico.tech.databinding.CartItemListBinding
 import com.quico.tech.model.Item
+import com.quico.tech.viewmodel.SharedViewModel
+import kotlin.math.min
 
-class CartRecyclerViewAdapter : RecyclerView.Adapter<CartRecyclerViewAdapter.ItemViewHolder>() {
+class CartRecyclerViewAdapter (val viewModel: SharedViewModel): RecyclerView.Adapter<CartRecyclerViewAdapter.ItemViewHolder>() {
 
-    class ItemViewHolder(private var binding: CartItemListBinding) :
+  inner  class ItemViewHolder(private var binding: CartItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Item) {
             binding.apply {
+
+                if (viewModel.getLanguage().equals(Constant.AR)){
+                    plus.scaleX = -1f
+                    minus.scaleX = -1f
+                }
 
                 if (absoluteAdapterPosition == 2) {
                     price.visibility = View.GONE

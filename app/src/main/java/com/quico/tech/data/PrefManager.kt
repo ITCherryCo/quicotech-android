@@ -2,6 +2,7 @@ package com.quico.tech.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.quico.tech.data.Constant.EN
 import com.quico.tech.data.PrefManager
 
 /**
@@ -34,7 +35,7 @@ class PrefManager(var context: Context) {
 
 
     var language: String?
-        get() = sharedPreferences.getString(LANGUAGE, "en")
+        get() = sharedPreferences.getString(LANGUAGE, EN)
         set(new_language) {
             editor.putString(LANGUAGE, new_language)
             editor.apply()

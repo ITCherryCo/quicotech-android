@@ -15,9 +15,8 @@
         android:elevation="1dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:textDirection="locale"
+        android:layoutDirection="locale">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,6 +29,7 @@
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
+                android:layoutDirection="locale"
                 android:padding="8dp"
                 android:src="@drawable/back_arrow" />
 
@@ -42,9 +42,11 @@
                 android:layout_marginEnd="45dp"
                 android:layout_toEndOf="@+id/back_arrow"
                 android:gravity="center"
+                android:layoutDirection="locale"
                 android:text="@string/payment_method"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
+                android:textDirection="locale"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -69,7 +71,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/select_payment_method"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textDirection="locale"
+            android:layoutDirection="locale"/>
 
         <LinearLayout
             android:id="@+id/ErrorContainer"
@@ -104,7 +108,9 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp" />
+            android:layout_marginTop="15dp"
+            android:textDirection="locale"
+            android:layoutDirection="locale"/>
 
 
 
@@ -154,17 +160,21 @@
             android:layout_height="55dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/container_gray_stroke_1"
-            android:padding="15dp">
+            android:padding="15dp"
+            android:layoutDirection="locale">
 
             <TextView
+                android:id="@+id/cashOnDeliveryText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="5dp"
                 android:layout_toStartOf="@+id/checkImage2"
+                android:layoutDirection="locale"
                 android:text="@string/cash_with_delivery"
                 android:textAllCaps="true"
                 android:textColor="@color/gray_dark"
+                android:textDirection="locale"
                 android:textSize="15sp" />
 
             <ImageView
@@ -175,6 +185,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
                 android:scaleType="fitXY"
+                android:layoutDirection="locale"
                 android:src="@drawable/check" />
 
         </RelativeLayout>
@@ -187,6 +198,7 @@
             android:background="@drawable/container_gray_stroke_1"
             android:clickable="true"
             android:gravity="center"
+            android:layoutDirection="locale"
             android:padding="12dp">
 
             <ImageView
@@ -195,6 +207,7 @@
                 android:layout_height="15dp"
                 android:layout_centerVertical="true"
                 android:scaleType="fitXY"
+                android:layoutDirection="locale"
                 android:src="@drawable/add_circle" />
 
             <TextView
@@ -204,9 +217,11 @@
                 android:layout_centerVertical="true"
                 android:layout_marginHorizontal="10dp"
                 android:layout_toEndOf="@+id/addImage"
+                android:layoutDirection="locale"
                 android:text="@string/add_new_card"
                 android:textAllCaps="true"
                 android:textColor="@color/gray_dark"
+                android:textDirection="locale"
                 android:textSize="15sp" />
 
 
@@ -224,9 +239,11 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+        android:layoutDirection="locale"
         android:padding="12dp"
         android:text="@string/next"
         android:textColor="@color/white"
+        android:textDirection="locale"
         android:textSize="13sp"
         android:textStyle="bold"
         app:cornerRadius="12dp" />
