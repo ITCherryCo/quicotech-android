@@ -7,10 +7,8 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quico.tech.R
-import com.quico.tech.adapter.CardRecyclerViewAdapter
 import com.quico.tech.adapter.CardSelectionRecyclerViewAdapter
 import com.quico.tech.data.Constant
-import com.quico.tech.databinding.ActivityCartBinding
 import com.quico.tech.databinding.ActivityPaymentMethodBinding
 import com.quico.tech.model.Card
 import com.quico.tech.viewmodel.SharedViewModel

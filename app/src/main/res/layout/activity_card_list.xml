@@ -34,20 +34,14 @@
 
             <TextView
                 android:id="@+id/title"
+                style="@style/titleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="45dp"
                 android:layout_toEndOf="@+id/back_arrow"
-                android:gravity="center"
-                android:layoutDirection="locale"
-                android:text="@string/my_cards"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textDirection="locale"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:text="@string/my_cards" />
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -92,11 +86,9 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:layout_toEndOf="@+id/securityImage"
-                        android:layoutDirection="locale"
                         android:text="@string/safe_information"
-                        android:textColor="@color/black"
-                        android:textDirection="locale"
-                        android:textSize="12sp" />
+                       style="@style/titleStyleMedium12"
+                        android:textAllCaps="false"/>
 
                 </RelativeLayout>
 
@@ -163,11 +155,9 @@
                             android:layout_centerVertical="true"
                             android:layout_marginHorizontal="10dp"
                             android:layout_toEndOf="@+id/addImage"
-                            android:layoutDirection="locale"
                             android:text="@string/add_new_card"
-                            android:textColor="@color/gray_dark"
-                            android:textDirection="locale"
-                            android:textSize="15sp" />
+                            style="@style/titleStyleMedium12"
+                            android:textAllCaps="false"/>
                     </RelativeLayout>
 
             </LinearLayout>

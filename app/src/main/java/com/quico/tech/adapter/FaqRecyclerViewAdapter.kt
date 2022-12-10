@@ -3,15 +3,16 @@ package com.quico.tech.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.TranslateAnimation
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.quico.tech.data.Constant.AR
 import com.quico.tech.databinding.FaqItemListBinding
 import com.quico.tech.model.FAQ
+import com.quico.tech.viewmodel.SharedViewModel
 
 
-class FaqRecyclerViewAdapter : RecyclerView.Adapter<FaqRecyclerViewAdapter.ItemViewHolder>() {
+class FaqRecyclerViewAdapter (val viewModel:SharedViewModel): RecyclerView.Adapter<FaqRecyclerViewAdapter.ItemViewHolder>() {
 
    inner class ItemViewHolder(private var binding: FaqItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -33,6 +34,8 @@ class FaqRecyclerViewAdapter : RecyclerView.Adapter<FaqRecyclerViewAdapter.ItemV
                 else {
                     description.visibility = View.GONE
                     arrow.rotation=0f
+                    if (viewModel.getLanguage().equals(AR))
+                        arrow.scaleX = -1f
                 }
             }
         }

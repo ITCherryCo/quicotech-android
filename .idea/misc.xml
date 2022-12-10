@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/drawable/container_white_corner_12.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/container_white_corner_15.xml" value="0.1855" />
         <entry key="app/src/main/res/drawable/container_white_corner_20.xml" value="0.1855" />
+        <entry key="app/src/main/res/drawable/container_white_gray_dotted_stroke_12.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/container_white_gray_stroke_12.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/edit_text_border.xml" value="0.1995" />
         <entry key="app/src/main/res/drawable/ripple_minus_white_gray_container.xml" value="0.1955" />
@@ -24,40 +25,51 @@
         <entry key="app/src/main/res/drawable/ripple_white_gray_border_8.xml" value="0.188" />
         <entry key="app/src/main/res/font/font.xml" value="0.3452502553626149" />
         <entry key="app/src/main/res/layout/activity_address.xml" value="0.3151041666666667" />
-        <entry key="app/src/main/res/layout/activity_address_list.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/activity_address_list.xml" value="0.45" />
         <entry key="app/src/main/res/layout/activity_card_list.xml" value="0.3151041666666667" />
-        <entry key="app/src/main/res/layout/activity_cart.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_cart.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_change_email_phone.xml" value="0.31354166666666666" />
         <entry key="app/src/main/res/layout/activity_chcekout.xml" value="0.2994791666666667" />
-        <entry key="app/src/main/res/layout/activity_checkout.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_checkout.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_delivery.xml" value="0.31354166666666666" />
         <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_faq.xml" value="0.31354166666666666" />
         <entry key="app/src/main/res/layout/activity_general_web_info.xml" value="0.31354166666666666" />
         <entry key="app/src/main/res/layout/activity_home_test.xml" value="0.31666666666666665" />
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.31666666666666665" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.31666666666666665" />
-        <entry key="app/src/main/res/layout/activity_new_card.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/activity_maintenance_list.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_new_card.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_order_list.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/activity_payment_method.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_payment_method.xml" value="0.45" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.29791666666666666" />
+        <entry key="app/src/main/res/layout/activity_request.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_request_delivery.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_request_details.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_service_list.xml" value="0.29791666666666666" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_shipping_address.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/activity_shipping_address_list.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/activity_verfication_code.xml" value="0.31354166666666666" />
-        <entry key="app/src/main/res/layout/activity_verification_code.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_verification_code.xml" value="0.335" />
         <entry key="app/src/main/res/layout/address_item_list.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/address_item_selection.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/address_item_selection.xml" value="0.45" />
         <entry key="app/src/main/res/layout/address_list.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/alert_success.xml" value="0.3151041666666667" />
-        <entry key="app/src/main/res/layout/alert_success_dialog.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/alert_success_dialog.xml" value="0.335" />
         <entry key="app/src/main/res/layout/cart_item_list.xml" value="0.335" />
         <entry key="app/src/main/res/layout/faq_item_list.xml" value="0.45" />
-        <entry key="app/src/main/res/layout/fragment_address.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/fragment_address.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_shipping_address_list.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/maintenace_item_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/order_item_list.xml" value="0.31354166666666666" />
         <entry key="app/src/main/res/layout/order_summary_list.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/order_type_item_list.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/service_item_list.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/service_photo_item_list.xml" value="0.45" />
         <entry key="app/src/main/res/layout/visa_card_item.xml" value="0.3151041666666667" />
-        <entry key="app/src/main/res/layout/visa_card_item_selection.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/visa_card_item_selection.xml" value="0.335" />
         <entry key="app/src/main/res/layout/visa_card_large_item.xml" value="0.3151041666666667" />
       </map>
     </option>

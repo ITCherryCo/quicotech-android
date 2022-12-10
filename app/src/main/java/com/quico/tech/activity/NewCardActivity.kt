@@ -1,13 +1,10 @@
 package com.quico.tech.activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.quico.tech.R
 import com.quico.tech.data.Constant
-import com.quico.tech.databinding.ActivityCardListBinding
-import com.quico.tech.databinding.ActivityEditProfileBinding
 import com.quico.tech.databinding.ActivityNewCardBinding
 import com.quico.tech.viewmodel.SharedViewModel
 

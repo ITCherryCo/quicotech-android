@@ -72,6 +72,8 @@
             android:layout_height="wrap_content"
             android:text="@string/select_payment_method"
             android:textSize="15sp"
+            android:textColor="@color/gray_dark"
+            android:fontFamily="@font/regular"
             android:textDirection="locale"
             android:layoutDirection="locale"/>
 
@@ -170,6 +172,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="5dp"
                 android:layout_toStartOf="@+id/checkImage2"
+                android:fontFamily="@font/medium"
                 android:layoutDirection="locale"
                 android:text="@string/cash_with_delivery"
                 android:textAllCaps="true"
@@ -222,6 +225,7 @@
                 android:textAllCaps="true"
                 android:textColor="@color/gray_dark"
                 android:textDirection="locale"
+                android:fontFamily="@font/medium"
                 android:textSize="15sp" />
 
 
@@ -239,12 +243,8 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:layoutDirection="locale"
         android:padding="12dp"
+        style="@style/buttonStyle"
         android:text="@string/next"
-        android:textColor="@color/white"
-        android:textDirection="locale"
-        android:textSize="13sp"
-        android:textStyle="bold"
         app:cornerRadius="12dp" />
 </RelativeLayout>

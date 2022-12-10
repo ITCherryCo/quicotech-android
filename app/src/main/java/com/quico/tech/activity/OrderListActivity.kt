@@ -9,7 +9,6 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
@@ -244,23 +243,24 @@ class OrderListActivity : AppCompatActivity() {
     }
 
     fun setUpErrorForm(error_type: String) {
-
         binding.apply {
             swipeRefreshLayout.setRefreshing(false)
             recyclerView.setVisibility(View.GONE)
             errorContainer.setVisibility(View.VISIBLE)
             errorImage.setImageResource(android.R.color.transparent)
-            if (error_type.equals(CONNECTION)) {
-                errorText.setText(viewModel.getLangResources().getString(R.string.check_connection))
-                //errorImage.setImageResource(R.drawable.no_connection)
-            } else if (error_type.equals(NO_ORDERS)) {
-                errorText.setText(viewModel.getLangResources().getString(R.string.no_orders))
-                //errorImage.setImageResource(R.drawable.no_order)
-            } else if (error_type.equals(ERROR)) {
-                errorText.setText(viewModel.getLangResources().getString(R.string.error_msg))
-                //errorImage.setImageResource(R.drawable.error)
+
+            when(error_type){
+                CONNECTION-> {
+                    errorText.setText(
+                        viewModel.getLangResources().getString(R.string.check_connection)
+                         //       errorImage.setImageResource(R.drawable.no_connection)
+                    )
+                }
+                Constant.NO_ORDERS ->{errorText.setText(viewModel.getLangResources().getString(R.string.no_orders))}
+                ERROR-> {
+                    errorText.setText(viewModel.getLangResources().getString(R.string.error_msg))
+                }
             }
-            swipeRefreshLayout.setEnabled(true)
         }
     }
 }

@@ -3,18 +3,17 @@ package com.quico.tech.viewmodel
 import android.app.Application
 import android.content.Context
 import android.content.res.Resources
-import android.net.ConnectivityManager
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.quico.tech.data.Constant.ALL
+import com.quico.tech.data.Constant.CONNECTION
 import com.quico.tech.data.Constant.EN
 import com.quico.tech.data.Constant.ERROR
 import com.quico.tech.data.Constant.ONGOING_ORDERS
+import com.quico.tech.data.Constant.SUCCESS
 import com.quico.tech.data.PrefManager
-import com.quico.tech.model.AddressResponse
-import com.quico.tech.model.OrderResponse
-import com.quico.tech.model.WebInfoResponse
+import com.quico.tech.model.*
 import com.quico.tech.repository.Repository
 import com.quico.tech.utils.Common.checkInternet
 import com.quico.tech.utils.LocalHelper
@@ -43,6 +42,19 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         MutableStateFlow(Resource.Nothing())
     val orders: StateFlow<Resource<OrderResponse>> get() = _orders
 
+    private val _cards: MutableStateFlow<Resource<OrderResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val cards: StateFlow<Resource<OrderResponse>> get() = _cards
+
+    // for cart items
+    private val _cart_items: MutableStateFlow<Resource<CartResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val cart_items: StateFlow<Resource<CartResponse>> get() = _cart_items
+
+    private val _services: MutableStateFlow<Resource<ServiceResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val services: StateFlow<Resource<ServiceResponse>> get() = _services
+
     // I called general web info because it could load multiple page as About us, terms , privacy policy...
     private val _general_web_info: MutableStateFlow<Resource<WebInfoResponse>> =
         MutableStateFlow(Resource.Nothing())
@@ -52,7 +64,6 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         context = getApplication<Application>().applicationContext
         prefManager = PrefManager(context)
     }
-
 
     // store id is the language id that we want to display from database if store_id = 1-> language is english
     // if store_id = 2-> language is arabic
@@ -84,7 +95,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 //            editor.apply()
 //        }
 
-    fun updateOrderFilterType(order_filter:String){
+    fun updateOrderFilterType(order_filter: String) {
         viewModelScope.launch {
             _orders_filter_type.emit(order_filter)
         }
@@ -122,7 +133,9 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             if (checkInternet(context)) {
                 try {
                     var response: Response<OrderResponse>? = null
-                    response =  if (orders_type.equals(ONGOING_ORDERS)) repository.getOngoingOrders(customer_id) else
+                    response = if (orders_type.equals(ONGOING_ORDERS)) repository.getOngoingOrders(
+                        customer_id
+                    ) else
                         repository.getOngoingOrders(customer_id)
 
                     if (response.isSuccessful) {
@@ -141,6 +154,64 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
     }
+
+    fun getServices(
+        maintenance_id: Int
+    ) {
+        viewModelScope.launch {
+            _services.emit(Resource.Loading())
+            if (checkInternet(context)) {
+                try {
+                    val response =
+                        repository.services(getStoreId(), maintenance_id) //_subcategories
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            _services.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        _services.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    _services.emit(Resource.Error(ERROR))
+                }
+            } else {
+                _services.emit(Resource.Connection())
+            }
+        }
+    }
+
+    fun loadCart(reloadWithoutSwipe: Boolean, order_id: Int) {
+        viewModelScope.launch {
+
+            if (!reloadWithoutSwipe)
+                _cart_items.emit(Resource.Loading())
+            if (checkInternet(context)) {
+                try {
+                    var response = repository.loadCart(getStoreId(), order_id)
+                    if (response!!.isSuccessful) {
+                        response?.body()?.let { resultResponse ->
+                            if (resultResponse.result.equals(SUCCESS)) {
+                                _cart_items.emit(Resource.Success(resultResponse))
+                            } else {
+                                _cart_items.emit(Resource.Error(resultResponse.message))
+                                Log.d("CART_RESPONSE", "no")
+                            }
+                        }
+                    } else {
+                        _cart_items.emit(Resource.Error(response.message()))
+                        Log.d("CART_RESPONSE", "not success")
+                    }
+                } catch (e: Exception) {
+                    Log.d("CART_RESPONSE", "EXCEPTION  " + e.message.toString())
+                    _cart_items.emit(Resource.Error(ERROR))
+                }
+            } else {
+                _cart_items.emit(Resource.Error(CONNECTION))
+            }
+        }
+    }
+
 
     fun generalWebInfo(
     ) {

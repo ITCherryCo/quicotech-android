@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="145dp"
+        android:layout_margin="10dp"
+        android:layoutDirection="locale"
+        app:cardCornerRadius="8dp"
+        android:elevation="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="locale">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layoutDirection="locale"
+                android:rotation="35"
+                android:src="@drawable/repair2"/>
+
+            <View
+                android:id="@+id/verticalLine"
+                android:layout_width="3.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/green"
+                android:layoutDirection="locale"
+                android:layout_marginStart="9dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/verticalLine"
+                android:layoutDirection="locale"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bold"
+                    android:layoutDirection="locale"
+                    android:text="@string/repair"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textDirection="locale"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/medium"
+                    android:layoutDirection="locale"
+                    android:lineSpacingExtra="3sp"
+                    android:lines="4"
+                    android:text="@string/repair_description"
+                    android:textColor="@color/gray_dark_description"
+                    android:textDirection="locale"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

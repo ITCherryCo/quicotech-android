@@ -4,7 +4,7 @@
     <solid android:color="@color/white" />
 
     <stroke
-        android:color="#DEDEDE"
+        android:color="@color/input_field_hint"
         android:width="1dp">
     </stroke>
 

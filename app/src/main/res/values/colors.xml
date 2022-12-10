@@ -30,9 +30,12 @@
     <color name="red">#E11900</color>
     <color name="gray_light">#FAFAFA</color>
     <color name="gray_dark">#5F5F5F</color>
+    <color name="gray_dark_description">#999999</color>
     <color name="gray_line">#707070</color>
+    <color name="gray_step">#BDBDBD</color>
+    <color name="gray_line_corner_12">#EAEBEC</color>
     <color name="blue_light">#E8F0F3</color>
     <color name="red_dark">#9A3622</color>
-
+    <color name="orange">#FBB73E</color>
 
 </resources>

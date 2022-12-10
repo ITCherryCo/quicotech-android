@@ -1,44 +1,77 @@
 package com.quico.tech.activity
 
+import android.Manifest
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
+import android.provider.MediaStore
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.quico.tech.R
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.EMAIL
+import com.quico.tech.data.Constant.PHONE_NUMBER
 import com.quico.tech.databinding.ActivityEditProfileBinding
+import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 import java.util.*
-
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditProfileBinding
     private val viewModel: SharedViewModel by viewModels()
+    private var imageUri: Uri? = null
+    private var filePath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_profile)
-
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setUpText()
         binding.apply {
+
+            imageChoose.setOnClickListener {
+                checkGalleryPermissions()
+                //selectImage()
+            }
             birthdayField.setOnClickListener {
                 chooseDate()
             }
             backArrow.setOnClickListener {
                 onBackPressed()
             }
+
+            changeMobileBtn.setOnClickListener {
+                startActivity(
+                    Intent(this@EditProfileActivity, EditEmailPhoneActivity::class.java)
+                        .putExtra(Constant.PROFILE_EDIT_TYPE, PHONE_NUMBER)
+                )
+            }
+
+            changeEmailBtn.setOnClickListener {
+                startActivity(
+                    Intent(this@EditProfileActivity, EditEmailPhoneActivity::class.java)
+                        .putExtra(Constant.PROFILE_EDIT_TYPE, EMAIL)
+                )
+            }
         }
     }
 
-    fun chooseDate() {
+    private fun checkField() {
 
+    }
+
+    fun chooseDate() {
         val cal = Calendar.getInstance()
         val year = cal[Calendar.YEAR]
         val month = cal[Calendar.MONTH]
@@ -67,16 +100,65 @@ class EditProfileActivity : AppCompatActivity() {
             title.text = viewModel.getLangResources().getString(R.string.profile)
             fullNameText.text = viewModel.getLangResources().getString(R.string.full_name)
             nameField.hint = viewModel.getLangResources().getString(R.string.full_name)
-            mobileNumberText.text = viewModel.getLangResources().getString(R.string.mobile_number)
-            phoneField.hint = viewModel.getLangResources().getString(R.string.mobile_number)
             birthdateText.text = viewModel.getLangResources().getString(R.string.date_of_birth)
             birthdayField.hint = viewModel.getLangResources().getString(R.string.birthday_example)
-            emailText.text = viewModel.getLangResources().getString(R.string.email)
-            emailField.hint = viewModel.getLangResources().getString(R.string.email)
             saveBtn.text = viewModel.getLangResources().getString(R.string.save)
 
             if (viewModel.getLanguage().equals(Constant.AR))
                 backArrow.scaleX = -1f
         }
     }
+
+    var launcher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+        }
+    }
+
+    private fun checkGalleryPermissions() {
+        if (Common.checkGalleryPermissions(this)) {
+            // open gallery
+            openGallery()
+        } else
+           // requestPermissions()
+            Common.requestPermissions(this)
+    }
+
+    private fun requestPermissions() {
+
+        val PERMISSIONS = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+
+        ActivityCompat.requestPermissions(
+            this,
+            PERMISSIONS,
+            PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    private fun openGallery() {
+        val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        imageLauncher.launch(gallery)
+
+        //  val intent = Intent()
+        // intent.type = "image/*"
+        // intent.action = Intent.ACTION_GET_CONTENT
+    }
+
+    var imageLauncher =
+        registerForActivityResult<Intent, ActivityResult>(
+            ActivityResultContracts.StartActivityForResult(),
+            ActivityResultCallback<ActivityResult> { result ->
+                if (result.resultCode == RESULT_OK) {
+                    if (result.data != null && result.data!!.data != null) {
+                        imageUri = result.data!!.data
+                        binding.profileImage.setImageURI(imageUri)
+                    }
+                }
+            }
+        )
+
 }

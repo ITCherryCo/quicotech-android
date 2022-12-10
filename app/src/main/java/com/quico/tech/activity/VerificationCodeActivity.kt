@@ -9,9 +9,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.quico.tech.R
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.CHECKOUT_TYPE
 import com.quico.tech.data.Constant.EMAIL
 import com.quico.tech.data.Constant.OPERATION_TYPE
+import com.quico.tech.data.Constant.ORDERS
 import com.quico.tech.data.Constant.PHONE_NUMBER
+import com.quico.tech.data.Constant.TRACKING_ON
 import com.quico.tech.databinding.ActivityVerificationCodeBinding
 import com.quico.tech.viewmodel.SharedViewModel
 
@@ -56,7 +59,9 @@ class VerificationCodeActivity : AppCompatActivity() {
             }
 
             verifyBtn.setOnClickListener {
-                startActivity(Intent(this@VerificationCodeActivity, CheckoutActivity::class.java))
+                startActivity(Intent(this@VerificationCodeActivity, CheckoutActivity::class.java)
+                    .putExtra(TRACKING_ON,false)
+                    .putExtra(CHECKOUT_TYPE, ORDERS))
             }
         }
     }

@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
-import com.quico.tech.databinding.VisaCardItemBinding
 import com.quico.tech.databinding.VisaCardItemSelectionBinding
 import com.quico.tech.model.Card
 

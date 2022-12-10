@@ -40,14 +40,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="45dp"
                 android:layout_toEndOf="@+id/back_arrow"
-                android:gravity="center"
                 android:text="@string/terms_and_conditions"
-                android:textAllCaps="true"
-                android:textDirection="locale"
-                android:layoutDirection="locale"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                style="@style/titleStyle"/>
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 

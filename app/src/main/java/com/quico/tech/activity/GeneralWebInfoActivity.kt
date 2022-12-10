@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
 import com.quico.tech.data.Constant
-import com.quico.tech.databinding.ActivityAddressListBinding
 import com.quico.tech.databinding.ActivityGeneralWebInfoBinding
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel

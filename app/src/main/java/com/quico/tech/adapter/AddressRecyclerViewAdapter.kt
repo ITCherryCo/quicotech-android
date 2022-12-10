@@ -6,9 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.quico.tech.R
 import com.quico.tech.databinding.AddressItemListBinding
-import com.quico.tech.databinding.AddressItemSelectionBinding
 import com.quico.tech.model.Address
 
 class AddressRecyclerViewAdapter : RecyclerView.Adapter<AddressRecyclerViewAdapter.ItemViewHolder>() {

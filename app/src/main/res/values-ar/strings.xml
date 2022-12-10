@@ -42,7 +42,7 @@ Email at example@gmail.com.</string>
     <string name="ongoing_orders">Ongoing Orders</string>
     <string name="faq">FAQ</string>
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
-    <string name="settings">Settings</string>
+    <string name="settings">إعدادات</string>
     <string name="full_name">Full Name</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="date_of_birth">Date of birth</string>
@@ -91,7 +91,7 @@ Email at example@gmail.com.</string>
     <string name="delivered">Delivered</string>
     <string name="all">All</string>
     <string name="services">Services</string>
-    <string name="language">Language</string>
+    <string name="language">اللغة</string>
     <string name="english">English</string>
     <string name="arabic">Arabic</string>
     <string name="logout">Logout</string>
@@ -111,8 +111,44 @@ efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifen
     <string name="need_account_to_place_order">Do I Need A Account To Place Order?</string>
     <string name="need_account_to_place_order_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
 efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="maintenance_and_recovery"><![CDATA[Maintenance & Recovery]]></string>
+    <string name="repair">Repair</string>
+    <string name="repair_description">QQuico Tech provide a wide range of repairing
+services, Our Certified Techs will fix any
+computer problems. Bring it to us for a FREE
+Diagnostic !! Submit a request now!!!</string>
+
+    <string name="data_recovery">Data Recovery</string>
+    <string name="data_recovery_description">Quico Tech offers a capable set of professional DATA RECOVERY services for Individuals, Small-Businesses, and Enterprise-Level Systems.</string>
+
+    <string name="it_services">It Services</string>
+    <string name="it_services_description">Quico Tech proposes some IT SERVICES for Individuals, Small-Businesses, Mid-Sized and Large Enterprises.</string>
+    <string name="maintenance_services">Maintenance Services</string>
+    <string name="maintenance_services_description">Quico Tech provide a wide range of repairing
+services, Our Certified Techs will fix any
+computer problems. Bring it to us for a FREE
+Diagnostic !! Submit a request now!!!</string>
+
+    <string name="door_to_door">Door-To-Door</string>
+    <string name="delivery_type">Delivery Type</string>
+    <string name="drop_repair_center">Drop it at our repairing center</string>
+    <string name="problem_description">Brief description of the problem</string>
+    <string name="upload_images">Upload Images or Files</string>
+    <string name="submit_request">Submit Request</string>
+    <string name="continue_shopping">Continue Shopping</string>
+    <string name="request_submitted">Your Request Has Been Submitted.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
+    <string name="no_services">No Services are found.</string>
+    <string name="choose_delivery_type">Please choose the delivery type.</string>
+    <string name="ok">OK</string>
+    <string name="service_name_id"><![CDATA[Service Name & ID]]></string>
+    <string name="request_received">Request Received</string>
+    <string name="waiting_response">Waiting Response</string>
+    <string name="in_progress">In Progress</string>
+    <string name="completed">completed</string>
+    <string name="change_mobile_number">Change Mobile Number</string>
+    <string name="change_email_address">Change Email Address</string>
+    <string name="email_address">Email Address</string>
+    <string name="email_example">Example@gmail.com</string>
 </resources>

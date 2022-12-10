@@ -41,29 +41,21 @@
                 android:layout_marginEnd="45dp"
                 android:layout_toEndOf="@+id/back_arrow"
                 android:gravity="center"
-                android:layoutDirection="locale"
                 android:text="@string/profile"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textDirection="locale"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                style="@style/titleStyle"/>
 
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/saveBtn"
-        android:layout_below="@+id/toolbar"
-        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_above="@+id/saveBtn"
+            android:layout_below="@+id/toolbar"
+            android:background="@color/white"
             android:padding="20dp">
 
             <RelativeLayout
@@ -81,6 +73,7 @@
                     app:civ_border_width="1dp" />
 
                 <ImageView
+                    android:id="@+id/imageChoose"
                     android:layout_width="22dp"
                     android:layout_height="20dp"
                     android:layout_alignEnd="@+id/profileImage"
@@ -97,14 +90,10 @@
             <TextView
                 android:id="@+id/fullNameText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:layoutDirection="locale"
                 android:text="@string/full_name"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textDirection="locale"
-                android:textSize="12sp" />
+                style="@style/titleStyleMedium12"/>
 
             <EditText
                 android:id="@+id/nameField"
@@ -113,73 +102,17 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/container_gray_stroke_1"
                 android:hint="@string/full_name"
-                android:layoutDirection="locale"
                 android:paddingStart="14dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray_dark"
-                android:textDirection="locale"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/mobileNumberText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:text="@string/mobile_number"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textDirection="locale"
-                android:layoutDirection="locale"
-                android:textSize="12sp" />
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layoutDirection="locale">
-
-                <EditText
-                    android:id="@+id/phoneField"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_toStartOf="@+id/editImage"
-                    android:background="@drawable/container_gray_stroke_1"
-                    android:enabled="false"
-                    android:hint="+961 70707070"
-                    android:inputType="number"
-                    android:layoutDirection="locale"
-                    android:paddingVertical="2dp"
-                    android:paddingStart="14dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray_dark"
-                    android:textDirection="locale"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:id="@+id/editImage"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignTop="@+id/name"
-                    android:layout_alignParentEnd="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    android:layoutDirection="locale"
-                    android:src="@drawable/edit_profile" />
-
-            </RelativeLayout>
+                android:fontFamily="@font/regular"
+                style="@style/addressTextStyle" />
 
             <TextView
                 android:id="@+id/birthdateText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/date_of_birth"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textDirection="locale"
-                android:layoutDirection="locale"
-                android:textSize="12sp" />
+                style="@style/titleStyleMedium12"/>
 
             <EditText
                 android:id="@+id/birthdayField"
@@ -192,61 +125,45 @@
                 android:hint="Jan/01/1990"
                 android:paddingVertical="2dp"
                 android:paddingStart="14dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray_dark"
-                android:textDirection="locale"
-                android:layoutDirection="locale"
-                android:textSize="14sp" />
+                android:fontFamily="@font/regular"
+                style="@style/addressTextStyle"/>
 
-            <TextView
-                android:id="@+id/emailText"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/changeMobileBtn"
+                style="@style/buttonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:text="@string/email"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textDirection="locale"
-                android:layoutDirection="locale"
-                android:textSize="12sp" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:padding="12dp"
+                android:text="@string/change_mobile_number"
+                android:backgroundTint="@color/green"
+                app:cornerRadius="12dp" />
 
-            <EditText
-                android:id="@+id/emailField"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/changeEmailBtn"
+                style="@style/buttonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/container_gray_stroke_1"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:paddingVertical="2dp"
-                android:paddingStart="14dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray_dark"
-                android:textDirection="locale"
-                android:layoutDirection="locale"
-                android:textSize="14sp" />
-
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="20dp"
+                android:padding="12dp"
+                android:text="@string/change_email_address"
+                android:backgroundTint="@color/orange"
+                app:cornerRadius="12dp" />
         </LinearLayout>
 
 
-    </androidx.core.widget.NestedScrollView>
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/saveBtn"
+        style="@style/buttonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:layoutDirection="locale"
         android:padding="12dp"
         android:text="@string/save"
-        android:textColor="@color/white"
-        android:textDirection="locale"
-        android:textStyle="bold"
         app:cornerRadius="12dp" />
 
 </RelativeLayout>

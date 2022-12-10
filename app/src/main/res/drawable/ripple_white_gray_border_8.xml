@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="@color/gray_dark"
+    tools:ignore="NewApi">
 
-    <solid android:color="@color/white" />
+    <item android:id="@android:id/background">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/white" />
+            <corners android:radius="12dp"></corners>
 
-    <corners
-        android:radius="12dp">
-    </corners>
-
-</shape>
+        </shape>
+    </item>
+</ripple>

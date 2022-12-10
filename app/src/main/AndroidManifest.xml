@@ -5,6 +5,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +18,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuicoTech"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.EditEmailPhoneActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ShippingAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.RequestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.RequestDeliveryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ServiceListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MaintenanceListActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.FaqActivity"
             android:exported="false" />
@@ -33,9 +53,6 @@
             android:exported="false" />
         <activity
             android:name=".activity.AddressActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.ShippingAddressListActivity"
             android:exported="false" />
         <activity
             android:name=".activity.NewCardActivity"

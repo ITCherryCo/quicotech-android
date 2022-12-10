@@ -1,14 +1,17 @@
 package com.quico.tech.utils
 
+import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.app.ActivityCompat
 import com.quico.tech.R
 import com.quico.tech.databinding.AlertSuccessDialogBinding
 
@@ -49,6 +52,34 @@ object Common {
         }
     }
 
+     fun checkGalleryPermissions(context: Context) :Boolean{
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED /*&&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED */
+        ) {
+            return true
+        }
+        return false
+    }
+
+     fun requestPermissions(activity: Activity) {
+
+        val PERMISSIONS = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+
+        ActivityCompat.requestPermissions(
+            activity,
+            PERMISSIONS,
+            PackageManager.PERMISSION_GRANTED
+        )
+    }
 
     fun setUpAlert(
         context: Context,
