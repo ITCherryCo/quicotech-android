@@ -35,32 +35,73 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/white"
-        android:elevation="10dp"
-        tools:targetApi="lollipop">
 
-<!--            <me.ibrahimsn.lib.SmoothBottomBar-->
-<!--                android:id="@+id/bottomBar"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="70dp"-->
-<!--                app:indicatorColor="@color/color_primary_purple"-->
-<!--                app:backgroundColor="@color/white"-->
-<!--                android:layout_marginBottom="16dp"-->
-<!--                android:layout_marginStart="4dp"-->
-<!--                android:layout_marginEnd="4dp"-->
-<!--                app:indicatorRadius="11dp"-->
-<!--                app:sideMargins="0dp"-->
-<!--                app:itemPadding="8dp"-->
-<!--                app:iconTint="#C8E1DDDD"-->
-<!--                app:iconTintActive="#FFFFFF"-->
-<!--                app:cornerRadius="16dp"-->
-<!--                app:textSize="11sp"-->
-<!--                app:iconSize="22dp"-->
-<!--                app:corners="top_left|bottom_right"-->
-<!--                app:menu="@menu/home_navigation_menu"/>-->
-    </androidx.cardview.widget.CardView>
+    <com.gauravk.bubblenavigation.BubbleNavigationLinearView
+            android:id="@+id/bubbleNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:elevation="8dp"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            tools:targetApi="lollipop">
+
+            <com.gauravk.bubblenavigation.BubbleToggleView
+                android:id="@+id/home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bt_colorActive="@color/white"
+                app:bt_colorInactive="#202020"
+                app:bt_icon="@drawable/home_icon"
+                app:bt_title="Home"
+                android:backgroundTint="@color/color_primary_purple"
+                android:layout_weight="1"/>
+
+            <com.gauravk.bubblenavigation.BubbleToggleView
+                android:id="@+id/searchIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bt_colorActive="@color/white"
+                app:bt_colorInactive="#202020"
+                app:bt_icon="@drawable/search_icon"
+                app:bt_title="Search"
+                android:backgroundTint="@color/color_primary_purple"
+                android:layout_weight="1"/>
+
+            <com.gauravk.bubblenavigation.BubbleToggleView
+                android:id="@+id/servicesIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:bt_colorActive="@color/white"
+                app:bt_colorInactive="#202020"
+                app:bt_icon="@drawable/services_icon"
+                android:backgroundTint="@color/color_primary_purple"
+                app:bt_title="Services" />
+
+            <com.gauravk.bubblenavigation.BubbleToggleView
+                android:id="@+id/favoriteIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:bt_colorActive="@color/white"
+                app:bt_colorInactive="#202020"
+                app:bt_icon="@drawable/heart_icon"
+                android:backgroundTint="@color/color_primary_purple"
+                app:bt_title="Favorite" />
+
+            <com.gauravk.bubblenavigation.BubbleToggleView
+                android:id="@+id/profileIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:bt_colorActive="@color/white"
+                app:bt_colorInactive="#202020"
+                app:bt_icon="@drawable/profile_icon"
+                android:backgroundTint="@color/color_primary_purple"
+                app:bt_title="Profile" />
+
+        </com.gauravk.bubblenavigation.BubbleNavigationLinearView>
+
 
 </LinearLayout>
