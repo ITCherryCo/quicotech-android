@@ -51,12 +51,16 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.7.10'
 
     //UI design
     implementation("com.tbuonomo:dotsindicator:4.3")
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.facebook.shimmer:shimmer:0.3.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+
+    //ChipNavigationBar
+//    implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.9'
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'

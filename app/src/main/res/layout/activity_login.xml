@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/input_field_title"
+            android:textColor="@color/color_secondary_black"
             android:text="EMAIL" />
 
         <EditText
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/input_field_title"
+            android:textColor="@color/color_secondary_black"
             android:text="PASSWORD" />
 
         <EditText

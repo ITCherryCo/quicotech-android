@@ -9,9 +9,9 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="2dp"
-        android:layoutDirection="locale"
         android:background="@drawable/ripple_white_gray_border_8"
-        android:elevation="3dp">
+        android:elevation="3dp"
+        android:layoutDirection="locale">
 
         <TextView
             android:id="@+id/defaultAddress"
@@ -39,8 +39,8 @@
                 android:id="@+id/locationImage"
                 android:layout_width="18dp"
                 android:layout_height="21dp"
-                android:layoutDirection="locale"
                 android:layout_below="@+id/defaultAddress"
+                android:layoutDirection="locale"
                 android:src="@drawable/location" />
 
             <TextView
@@ -49,10 +49,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@+id/locationImage"
+                android:layoutDirection="locale"
                 android:text="Danielle, Dh, +961 70707070"
                 android:textColor="@color/black"
                 android:textDirection="locale"
-                android:layoutDirection="locale"
                 android:textSize="14sp" />
 
             <TextView
@@ -61,12 +61,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/username"
                 android:layout_alignStart="@+id/username"
-                android:textDirection="locale"
-                android:layoutDirection="locale"
                 android:layout_marginTop="10dp"
+                android:layoutDirection="locale"
                 android:text="Lebanon, City , state - province, street, building, apartment
 , office..."
                 android:textColor="@color/black"
+                android:textDirection="locale"
                 android:textSize="14sp" />
 
             <LinearLayout
@@ -85,10 +85,10 @@
                     android:layout_toEndOf="@+id/locationImage"
                     android:layout_weight="0.7"
                     android:clickable="true"
-                    android:textDirection="locale"
                     android:layoutDirection="locale"
                     android:text="@string/edit"
                     android:textColor="@drawable/ripple_text_purple_gray"
+                    android:textDirection="locale"
                     android:textSize="14sp" />
 
                 <TextView
@@ -99,10 +99,10 @@
                     android:layout_toEndOf="@+id/locationImage"
                     android:layout_weight="0.7"
                     android:clickable="true"
-                    android:text="@string/delete"
-                    android:textDirection="locale"
                     android:layoutDirection="locale"
+                    android:text="@string/delete"
                     android:textColor="@drawable/ripple_text_purple_gray"
+                    android:textDirection="locale"
                     android:textSize="14sp" />
 
                 <TextView
@@ -113,10 +113,10 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:gravity="end"
-                    android:text="@string/set_as_default"
-                    android:textDirection="locale"
                     android:layoutDirection="locale"
+                    android:text="@string/set_as_default"
                     android:textColor="@drawable/ripple_text_purple_gray"
+                    android:textDirection="locale"
                     android:textSize="14sp" />
             </LinearLayout>
         </RelativeLayout>

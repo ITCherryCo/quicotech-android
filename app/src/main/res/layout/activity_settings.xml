@@ -87,7 +87,7 @@
                 android:text="@string/english"
                 android:textDirection="locale"
                 android:layoutDirection="locale"
-                android:buttonTint="@color/purple_quico"
+                android:buttonTint="@color/color_primary_purple"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -99,7 +99,7 @@
                 android:text="@string/arabic"
                 android:textDirection="locale"
                 android:layoutDirection="locale"
-                android:buttonTint="@color/purple_quico"
+                android:buttonTint="@color/color_primary_purple"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 

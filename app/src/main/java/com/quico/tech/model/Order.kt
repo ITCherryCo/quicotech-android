@@ -21,9 +21,9 @@ enum class OrderStatus(val orderStatus: String) {
         fun getOrderStatusColor(resource: Resources, orderStatus: String): Int {
             return when (orderStatus) {
                 DELIVERED.orderStatus -> R.color.green
-                TRACK_ORDER.orderStatus -> R.color.purple_quico
+                TRACK_ORDER.orderStatus -> R.color.color_primary_purple
                 CANCELED.orderStatus -> R.color.red_dark
-                else -> R.color.purple_quico
+                else -> R.color.color_primary_purple
             }
         }
     }

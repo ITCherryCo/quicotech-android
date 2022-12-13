@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/dots"
-            app:dotsColor="@color/purple_quico"
+            app:dotsColor="@color/color_primary_purple"
             app:selectedDotColor="#4B40D7"
             app:dotsSize="15dp"
             app:dotsSpacing="2dp"/>
@@ -42,6 +42,6 @@
         android:text="@string/skip_btn_txt"
         android:textSize="18sp"
         android:visibility="gone"
-        android:textColor="@color/purple_quico" />
+        android:textColor="@color/color_primary_purple" />
 
 </RelativeLayout>

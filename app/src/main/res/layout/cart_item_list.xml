@@ -176,7 +176,7 @@
                 android:text="Total: $80"
                 android:textDirection="locale"
                 android:layoutDirection="locale"
-                android:textColor="@color/purple_quico"
+                android:textColor="@color/color_primary_purple"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

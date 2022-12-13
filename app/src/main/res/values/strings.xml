@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Quico Tech</string>
+    <string name="app_name_first_part">Quico</string>
+    <string name="app_name_second_part">Quico</string>
     <string name="skip_btn_txt">skip</string>
     <string name="intro_first_slide_desc">Shop from a large amount \nof speacial electronic products \nand get them right to your door</string>
     <string name="intro_first_slide_title">Shop What \nYou Desire</string>

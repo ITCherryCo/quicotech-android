@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_background_grey"
+    android:orientation="vertical">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:elevation="0dp">
+
+            <include
+                android:id="@+id/toolbarInclude"
+                layout="@layout/toolbar" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/frame_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        android:elevation="10dp"
+        tools:targetApi="lollipop">
+
+<!--            <me.ibrahimsn.lib.SmoothBottomBar-->
+<!--                android:id="@+id/bottomBar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="70dp"-->
+<!--                app:indicatorColor="@color/color_primary_purple"-->
+<!--                app:backgroundColor="@color/white"-->
+<!--                android:layout_marginBottom="16dp"-->
+<!--                android:layout_marginStart="4dp"-->
+<!--                android:layout_marginEnd="4dp"-->
+<!--                app:indicatorRadius="11dp"-->
+<!--                app:sideMargins="0dp"-->
+<!--                app:itemPadding="8dp"-->
+<!--                app:iconTint="#C8E1DDDD"-->
+<!--                app:iconTintActive="#FFFFFF"-->
+<!--                app:cornerRadius="16dp"-->
+<!--                app:textSize="11sp"-->
+<!--                app:iconSize="22dp"-->
+<!--                app:corners="top_left|bottom_right"-->
+<!--                app:menu="@menu/home_navigation_menu"/>-->
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

@@ -29,6 +29,16 @@
             android:name=".activity.VerificationCodeActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.HomeActivity"
+            android:theme="@style/Theme.QuicoTech.NoActionBar"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activity.GeneralWebInfoActivity"
             android:exported="false" />
         <activity
@@ -61,11 +71,7 @@
         <activity
             android:name=".activity.HomeTestActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.CartActivity"
@@ -78,18 +84,10 @@
             android:name=".activity.LoginActivity"
             android:exported="false"
             android:theme="@style/Theme.QuicoTech.NoActionBar" />
-        <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.IntroActivity"
             android:exported="true"
             android:theme="@style/Theme.QuicoTech.NoActionBar">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
     </application>
 
