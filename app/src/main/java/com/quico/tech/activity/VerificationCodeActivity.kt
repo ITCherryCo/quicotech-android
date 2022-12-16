@@ -41,7 +41,7 @@ class VerificationCodeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityVerificationCodeBinding
     private val viewModel: SharedViewModel by viewModels()
     private lateinit var verification_type: String
-    private lateinit var operation_type: String
+    private var operation_type: String? = null
     private var phone_number: String? = null
     private var code_by_system: String? = ""
     private var sms_code: String? = ""
@@ -57,8 +57,8 @@ class VerificationCodeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         verification_type = intent.extras?.getString(VERIFICATION_TYPE)!!
-        operation_type = intent.extras?.getString(OPERATION_TYPE)!!
-        phone_number = intent.extras?.getString(PHONE_NUMBER)!!
+        operation_type = intent.extras?.getString(OPERATION_TYPE)
+        phone_number = intent.extras?.getString(PHONE_NUMBER)
         firebaseAuth = FirebaseAuth.getInstance()
         checkOperationType()
         setUpText()
@@ -92,6 +92,9 @@ class VerificationCodeActivity : AppCompatActivity() {
                                 .putExtra(TRACKING_ON, false)
                                 .putExtra(CHECKOUT_TYPE, ORDERS)
                         )
+                    }
+                    resendText.setOnClickListener {
+                        // MUST RESEND AN EMAIL
                     }
                 }
                 PHONE_NUMBER -> {
@@ -292,16 +295,20 @@ class VerificationCodeActivity : AppCompatActivity() {
                         Log.d(SMS_TAG, "signInWithCredential:success")
                         val user = task.result.user
 
-                        when (operation_type) {
-                            REGISTER -> {
-                                viewModel.canRegister = true
-                                Constant.can_register = true
-                                onBackPressed()
+                        operation_type?.let { operation_type ->
+
+                            when (operation_type) {
+                                REGISTER -> {
+                                    viewModel.canRegister = true
+                                    Constant.can_register = true
+                                    onBackPressed()
+                                }
+                                CHANGE_PHONE_NUMBER -> Log.d(
+                                    SMS_TAG,
+                                    "call change number api"
+                                )
+                                else -> {}
                             }
-                            CHANGE_PHONE_NUMBER -> Log.d(
-                                SMS_TAG,
-                                "call change number api"
-                            )
                         }
                     } else {
                         cancelProgressDialog()

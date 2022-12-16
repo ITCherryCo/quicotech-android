@@ -37,5 +37,5 @@
     <color name="blue_light">#E8F0F3</color>
     <color name="red_dark">#9A3622</color>
     <color name="orange">#FBB73E</color>
-
+    <color name="shimmer_placeholder">#dddddd</color>
 </resources>

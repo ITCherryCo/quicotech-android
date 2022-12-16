@@ -57,12 +57,12 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/container_white_corner_12"
                 android:backgroundTint="@color/red_dark"
+                android:fontFamily="@font/medium"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="5dp"
                 android:text="@string/track_order"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:fontFamily="@font/medium"/>
+                android:textSize="10sp" />
 
         </RelativeLayout>
 

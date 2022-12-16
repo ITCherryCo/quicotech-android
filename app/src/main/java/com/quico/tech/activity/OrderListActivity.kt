@@ -27,6 +27,7 @@ import com.quico.tech.databinding.ActivityOrderListBinding
 import com.quico.tech.model.Order
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -49,12 +50,11 @@ class OrderListActivity : AppCompatActivity() {
         }
 
         orders_type = intent.extras?.getString(ORDERS_TYPE)!!
-        setUpOrdersAdapter()
         controlBtnsClicks()
         subscribeOrderFilterType()
         setUpText()
         viewModel.updateOrderFilterType(ALL)
-//        onRefresh()
+        setLoading()
 //        viewModel.getOrders(1,orders_type)
 //        subscribeOrders()
     }
@@ -62,21 +62,21 @@ class OrderListActivity : AppCompatActivity() {
 
     private fun subscribeOrderFilterType() {
         lifecycleScope.launch {
-            viewModel.orders_filter_type.collect { order_filter_type->
-                when(order_filter_type){
-                    ALL->{
+            viewModel.orders_filter_type.collect { order_filter_type ->
+                when (order_filter_type) {
+                    ALL -> {
                         controlAllBtn(true)
                         controlOrdersBtn(false)
                         controlServicesBtn(false)
                         //viewModel.getOrders(1, ALL)
                     }
-                    ORDERS->{
+                    ORDERS -> {
                         controlAllBtn(false)
                         controlOrdersBtn(true)
                         controlServicesBtn(false)
                         //viewModel.getOrders(1, ORDERS)
                     }
-                    SERVICES->{
+                    SERVICES -> {
                         controlAllBtn(false)
                         controlOrdersBtn(false)
                         controlServicesBtn(true)
@@ -161,7 +161,8 @@ class OrderListActivity : AppCompatActivity() {
     private fun controlAllBtn(active: Boolean) {
         binding.apply {
             if (active) {
-                allBtn.background = this@OrderListActivity.resources.getDrawable(R.drawable.container_purple_corner_12)
+                allBtn.background =
+                    this@OrderListActivity.resources.getDrawable(R.drawable.container_purple_corner_12)
                 allBtn.setTextColor(this@OrderListActivity.resources.getColor(R.color.white))
             } else {
                 allBtn.background = resources.getDrawable(R.drawable.container_white_gray_stroke_12)
@@ -174,7 +175,8 @@ class OrderListActivity : AppCompatActivity() {
         binding.apply {
 
             if (active) {
-                ordersBtn.background = this@OrderListActivity.resources.getDrawable(R.drawable.container_purple_corner_12)
+                ordersBtn.background =
+                    this@OrderListActivity.resources.getDrawable(R.drawable.container_purple_corner_12)
                 ordersBtn.setTextColor(this@OrderListActivity.resources.getColor(R.color.white))
             } else {
                 ordersBtn.background =
@@ -191,21 +193,34 @@ class OrderListActivity : AppCompatActivity() {
                     this@OrderListActivity.resources.getDrawable(R.drawable.container_purple_corner_12)
                 servicesBtn.setTextColor(this@OrderListActivity.resources.getColor(R.color.white))
             } else {
-                servicesBtn.background = this@OrderListActivity.resources.getDrawable(R.drawable.container_white_gray_stroke_12)
+                servicesBtn.background =
+                    this@OrderListActivity.resources.getDrawable(R.drawable.container_white_gray_stroke_12)
                 servicesBtn.setTextColor(this@OrderListActivity.resources.getColor(R.color.gray_dark))
             }
+        }
+    }
+
+    private fun stopShimmer() {
+        binding.apply {
+            shimmer.visibility = View.GONE
+            shimmer.stopShimmer()
         }
     }
 
     fun setUpOrdersAdapter() {
         orderRecyclerViewAdapter = OrderRecyclerViewAdapter()
         var orders = ArrayList<Order>()
-        orders.add(Order(1))
-        orders.add(Order(2))
-        orders.add(Order(3))
-        orders.add(Order(4))
-
         binding.apply {
+
+            stopShimmer()
+            recyclerView.visibility = View.VISIBLE
+            swipeRefreshLayout.setRefreshing(false)
+
+            orders.add(Order(1))
+            orders.add(Order(2))
+            orders.add(Order(3))
+            orders.add(Order(4))
+
             recyclerView.setLayoutManager(
                 LinearLayoutManager(
                     this@OrderListActivity,
@@ -219,25 +234,33 @@ class OrderListActivity : AppCompatActivity() {
         orderRecyclerViewAdapter.differ.submitList(orders)
 
         orderRecyclerViewAdapter.setOnItemClickListener {
-            startActivity(Intent(this, CheckoutActivity::class.java)
-                .putExtra(TRACK_ORDER,true))
+            startActivity(
+                Intent(this, CheckoutActivity::class.java)
+                    .putExtra(TRACK_ORDER, true)
+            )
         }
     }
 
     fun setLoading() {
         binding.apply {
-            recyclerView.setVisibility(View.GONE)
-            errorContainer.setVisibility(View.GONE)
+            recyclerView.visibility = View.GONE
+            errorContainer.visibility = View.GONE
+            shimmer.visibility = View.VISIBLE
+            shimmer.startShimmer()
             swipeRefreshLayout.setRefreshing(true)
+
+            lifecycleScope.launch {
+                delay(3000)
+                setUpOrdersAdapter()
+            }
         }
     }
 
     fun onRefresh() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
-                recyclerView.setVisibility(View.GONE)
-                errorContainer.setVisibility(View.GONE)
-                viewModel.getOrders(1, orders_type) // get User id
+                setLoading() // later we will remove it because the observable will call it
+                // viewModel.getOrders(1, orders_type) // get User id
             })
         }
     }
@@ -245,20 +268,26 @@ class OrderListActivity : AppCompatActivity() {
     fun setUpErrorForm(error_type: String) {
         binding.apply {
             swipeRefreshLayout.setRefreshing(false)
-            recyclerView.setVisibility(View.GONE)
-            errorContainer.setVisibility(View.VISIBLE)
+            recyclerView.visibility = View.GONE
+            errorContainer.visibility = View.VISIBLE
             errorImage.setImageResource(android.R.color.transparent)
+            stopShimmer()
+            errorMsg1.visibility = View.GONE
+            swipeRefreshLayout.setEnabled(true)
 
-            when(error_type){
-                CONNECTION-> {
-                    errorText.setText(
+            when (error_type) {
+                Constant.CONNECTION -> {
+                    errorMsg2.setText(
                         viewModel.getLangResources().getString(R.string.check_connection)
-                         //       errorImage.setImageResource(R.drawable.no_connection)
                     )
                 }
-                Constant.NO_ORDERS ->{errorText.setText(viewModel.getLangResources().getString(R.string.no_orders))}
-                ERROR-> {
-                    errorText.setText(viewModel.getLangResources().getString(R.string.error_msg))
+                Constant.NO_ORDERS -> {
+                    errorMsg2.text = viewModel.getLangResources().getString(R.string.no_orders)
+                    errorImage.setImageResource(R.drawable.empty_item)
+                }
+
+                Constant.ERROR -> {
+                    errorMsg2.setText(viewModel.getLangResources().getString(R.string.error_msg))
                 }
             }
         }

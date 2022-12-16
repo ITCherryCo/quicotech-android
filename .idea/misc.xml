@@ -26,12 +26,12 @@
         <entry key="app/src/main/res/drawable/splash_screen.xml" value="0.1915" />
         <entry key="app/src/main/res/font/font.xml" value="0.3452502553626149" />
         <entry key="app/src/main/res/layout/activity_address.xml" value="0.3151041666666667" />
-        <entry key="app/src/main/res/layout/activity_address_list.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_address_list.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_card_list.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/activity_cart.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_change_email_phone.xml" value="0.31354166666666666" />
         <entry key="app/src/main/res/layout/activity_chcekout.xml" value="0.2994791666666667" />
-        <entry key="app/src/main/res/layout/activity_checkout.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_checkout.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_delivery.xml" value="0.31354166666666666" />
         <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_faq.xml" value="0.31354166666666666" />
@@ -42,7 +42,7 @@
         <entry key="app/src/main/res/layout/activity_maintenance_list.xml" value="0.31354166666666666" />
         <entry key="app/src/main/res/layout/activity_new_card.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_order_list.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/activity_payment_method.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_payment_method.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_request.xml" value="0.31354166666666666" />
@@ -56,7 +56,7 @@
         <entry key="app/src/main/res/layout/activity_verfication_code.xml" value="0.31354166666666666" />
         <entry key="app/src/main/res/layout/activity_verification_code.xml" value="0.335" />
         <entry key="app/src/main/res/layout/address_item_list.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/address_item_selection.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/address_item_selection.xml" value="0.375" />
         <entry key="app/src/main/res/layout/address_list.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/alert_success.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/alert_success_dialog.xml" value="0.335" />
@@ -71,6 +71,13 @@
         <entry key="app/src/main/res/layout/order_type_item_list.xml" value="0.31354166666666666" />
         <entry key="app/src/main/res/layout/service_item_list.xml" value="0.31354166666666666" />
         <entry key="app/src/main/res/layout/service_photo_item_list.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/shimmer_loading_address_selection.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_cart.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_order_list.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_service.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_shipping_address.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_visa_card.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_visa_card_selection.xml" value="0.3177083333333333" />
         <entry key="app/src/main/res/layout/visa_card_item.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/visa_card_item_selection.xml" value="0.335" />
         <entry key="app/src/main/res/layout/visa_card_large_item.xml" value="0.3151041666666667" />

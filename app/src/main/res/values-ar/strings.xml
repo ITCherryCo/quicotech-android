@@ -172,5 +172,6 @@ Diagnostic !! Submit a request now!!!</string>
     <string name="connection">Connection</string>
     <string name="invalid_otp">Invalid code</string>
     <string name="logged_out">Loggoud out successfully!</string>
+    <string name="no_cards">No orders are found</string>
 
 </resources>

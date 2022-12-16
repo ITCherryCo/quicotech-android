@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
 import com.quico.tech.adapter.ServiceRecyclerViewAdapter
 import com.quico.tech.data.Constant
@@ -15,6 +16,7 @@ import com.quico.tech.databinding.ActivityServiceListBinding
 import com.quico.tech.model.Service
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ServiceListActivity : AppCompatActivity() {
@@ -38,7 +40,7 @@ class ServiceListActivity : AppCompatActivity() {
         }
 
         setUpText()
-        setUpServicesAdapter()
+        setLoading()
 //        onRefresh()
 //        viewModel.getServices(1)
 //        subscribeServices()
@@ -101,6 +103,9 @@ class ServiceListActivity : AppCompatActivity() {
         binding.apply {
             serviceRecyclerViewAdapter = ServiceRecyclerViewAdapter()
             var services = ArrayList<Service>()
+            stopShimmer()
+            recyclerView.visibility = View.VISIBLE
+            swipeRefreshLayout.setRefreshing(false)
 
             services.add(Service(1))
             services.add(Service(1))
@@ -118,31 +123,61 @@ class ServiceListActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun stopShimmer() {
+        binding.apply {
+            shimmer.visibility = View.GONE
+            shimmer.stopShimmer()
+        }
+    }
+
     fun setLoading() {
         binding.apply {
-            recyclerView.setVisibility(View.GONE)
-            errorContainer.setVisibility(View.GONE)
+            recyclerView.visibility = View.GONE
+            errorContainer.visibility = View.GONE
+            shimmer.visibility = View.VISIBLE
+            shimmer.startShimmer()
             swipeRefreshLayout.setRefreshing(true)
+
+            lifecycleScope.launch {
+                delay(3000)
+                setUpServicesAdapter()
+            }
+        }
+    }
+
+    fun onRefresh() {
+        binding.apply {
+            swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+                setLoading() // later we will remove it because the observable will call it
+                // viewModel.getOrders(1, orders_type) // get User id
+            })
         }
     }
 
     fun setUpErrorForm(error_type: String) {
         binding.apply {
             swipeRefreshLayout.setRefreshing(false)
-            recyclerView.setVisibility(View.GONE)
-            errorContainer.setVisibility(View.VISIBLE)
-            //errorImage.setImageResource(android.R.color.transparent)
+            recyclerView.visibility = View.GONE
+            errorContainer.visibility = View.VISIBLE
+            errorImage.setImageResource(android.R.color.transparent)
+            stopShimmer()
+            errorMsg1.visibility = View.GONE
+            swipeRefreshLayout.setEnabled(true)
 
-            when(error_type){
+            when (error_type) {
                 Constant.CONNECTION -> {
-                    errorText.setText(
+                    errorMsg2.setText(
                         viewModel.getLangResources().getString(R.string.check_connection)
-                        //       errorImage.setImageResource(R.drawable.no_connection)
                     )
                 }
-                Constant.NO_SERVICES ->{errorText.setText(viewModel.getLangResources().getString(R.string.no_services))}
+                Constant.NO_SERVICES -> {
+                    errorMsg2.text = viewModel.getLangResources().getString(R.string.no_services)
+                    errorImage.setImageResource(R.drawable.empty_item)
+                }
+
                 Constant.ERROR -> {
-                    errorText.setText(viewModel.getLangResources().getString(R.string.error_msg))
+                    errorMsg2.setText(viewModel.getLangResources().getString(R.string.error_msg))
                 }
             }
         }

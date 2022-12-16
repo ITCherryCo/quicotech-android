@@ -42,5 +42,7 @@ object Constant {
     var CONTENT_TYPE= "Content-Type"
     var APPLICATION_JSON= "application/json"
     var can_register= false
+    var EMPTY_CART= "empty_cart"
+    var NO_CARDS= "no_cards"
 
 }

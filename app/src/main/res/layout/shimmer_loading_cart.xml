@@ -1,6 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:id="@+id/grayLine"
+        android:layout_width="match_parent"
+        android:layout_height="0.4dp"
+        android:layout_alignBottom="@+id/mainContainer"
+        android:layout_marginHorizontal="15dp"
+        android:background="@color/gray_dark"
+        android:alpha="0.3"
+        android:elevation="0.1dp" />
+
+
+    <RelativeLayout
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_marginBottom="5dp"
+        android:paddingHorizontal="22dp"
+        android:layoutDirection="locale"
+        android:paddingVertical="15dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="92dp"
+            android:layout_height="95dp"
+            android:elevation="0dp"
+            android:backgroundTint="@color/shimmer_placeholder"
+            app:cardCornerRadius="8dp">
+
+        </androidx.cardview.widget.CardView>
+
+        <RelativeLayout
+            android:id="@+id/infoRel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+
+            android:layout_toEndOf="@+id/cardView">
+
+            <RelativeLayout
+                android:id="@+id/nameContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@+id/deleteImage"
+                    android:background="@color/shimmer_placeholder"
+                    android:layoutDirection="locale" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_below="@+id/name"
+                    android:layout_marginTop="7dp"
+                    android:background="@color/shimmer_placeholder"
+                    android:layoutDirection="locale" />
+
+                <ImageView
+                    android:id="@+id/deleteImage"
+                    android:layout_width="15dp"
+                    android:layout_height="17dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@color/shimmer_placeholder"
+                    android:layoutDirection="locale" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="40dp"
+                android:layout_height="10dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="10dp"
+                android:background="@color/shimmer_placeholder"
+                android:layoutDirection="locale"
+                android:paddingEnd="10dp" />
+
+
+            <TextView
+                android:id="@+id/totalPrice"
+                android:layout_width="70dp"
+                android:layout_height="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:background="@color/shimmer_placeholder"
+                android:layoutDirection="locale"
+                android:paddingEnd="10dp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

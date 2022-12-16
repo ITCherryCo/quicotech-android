@@ -21,6 +21,7 @@ import com.quico.tech.databinding.ActivityAddressListBinding
 import com.quico.tech.model.Address
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AddressListActivity : AppCompatActivity() {
@@ -38,15 +39,18 @@ class AddressListActivity : AppCompatActivity() {
         binding.apply {
           nextBtn.setOnClickListener {
                 startActivity(Intent(this@AddressListActivity, VerificationCodeActivity::class.java)
-                    .putExtra(VERIFICATION_TYPE, EMAIL))
+                    .putExtra(VERIFICATION_TYPE, EMAIL)
+                    .putExtra(VERIFICATION_TYPE, EMAIL)
+                )
             }
             backArrow.setOnClickListener {
                 onBackPressed()
             }
         }
         setUpText()
-        setUpCartAdapter()
-//        onRefresh()
+       // setUpCartAdapter()
+
+        onRefresh()
 //        viewModel.getAddresses(1)
 //        subscribeAddresses()
 
@@ -64,14 +68,14 @@ class AddressListActivity : AppCompatActivity() {
         }
     }
 
-    fun subscribeAddresses(){
+    private fun subscribeAddresses(){
         lifecycleScope.launch {
             viewModel.addresses.collect { response ->
                 when (response) {
                     is Resource.Success -> {
                         binding.apply {
-                            progressBar.visibility = View.GONE
-                                recyclerView.visibility = View.VISIBLE
+                            stopShimmer()
+                            recyclerView.visibility = View.VISIBLE
                         }
 
                         response.data?.let { addressesResponse ->
@@ -107,17 +111,21 @@ class AddressListActivity : AppCompatActivity() {
     }
 
 
-    fun setUpCartAdapter() {
+    private  fun setUpCartAdapter() {
         // call the adapter for item list
         binding.apply {
-
+            stopShimmer()
             addressSelectionRecyclerViewAdapter = AddressSelectionRecyclerViewAdapter()
+            recyclerView.visibility = View.VISIBLE
+
             var addresses = ArrayList<Address>()
             addresses.add(Address(1))
             addresses.add(Address(1))
             addresses.add(Address(1))
             addresses.add(Address(1))
             addresses.add(Address(1))
+
+            nextBtn.setEnabled(true)
 
             recyclerView.layoutManager =
                 LinearLayoutManager(this@AddressListActivity, LinearLayoutManager.VERTICAL, false)
@@ -128,28 +136,37 @@ class AddressListActivity : AppCompatActivity() {
         }
     }
 
-    fun setLoading() {
+    private fun stopShimmer(){
         binding.apply {
-            ErrorContainer.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            recyclerView.visibility = View.GONE
-            nextBtn.setEnabled(false)
+            shimmer.visibility = View.GONE
+            shimmer.stopShimmer()
         }
     }
 
-    fun onRefresh() {
+    private fun setLoading() {
         binding.apply {
             ErrorContainer.visibility = View.GONE
-            progressBar.visibility = View.VISIBLE
+            shimmer.visibility = View.VISIBLE
+            shimmer.startShimmer()
             recyclerView.visibility = View.GONE
             nextBtn.setEnabled(false)
+
+            lifecycleScope.launch {
+                delay(3000)
+                setUpCartAdapter()
+            }
         }
-        viewModel.getAddresses(1)
     }
 
-    fun setUpErrorForm(error_type: String) {
+    private fun onRefresh() {
+        setLoading()
+        //viewModel.getAddresses(1)
+    }
+
+    private fun setUpErrorForm(error_type: String) {
         binding.apply {
-            progressBar.visibility = View.GONE
+
+            stopShimmer()
             ErrorContainer.visibility = View.VISIBLE
             selectPaymentText.visibility = View.GONE
             recyclerView.visibility = View.GONE

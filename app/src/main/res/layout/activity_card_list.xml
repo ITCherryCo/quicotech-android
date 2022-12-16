@@ -102,6 +102,7 @@
                     android:visibility="gone">
 
                     <TextView
+                        android:id="@+id/errorText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -126,6 +127,29 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:shimmer_auto_start="false"
+                    android:visibility="gone"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:layoutDirection="locale"
+                    app:shimmer_duration="1000">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <include layout="@layout/shimmer_loading_visa_card" />
+                        <include layout="@layout/shimmer_loading_visa_card" />
+                        <include layout="@layout/shimmer_loading_visa_card" />
+                        <include layout="@layout/shimmer_loading_visa_card" />
+
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
                     <RelativeLayout
                         android:id="@+id/addCardContainer"
