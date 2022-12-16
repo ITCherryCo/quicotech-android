@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "220062952727",
+    "project_id": "quico-tech",
+    "storage_bucket": "quico-tech.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220062952727:android:cf11ba75dda3ce68b81b52",
+        "android_client_info": {
+          "package_name": "com.quico.tech"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "220062952727-d9o9qckt6nmthein3cro000vsmaologj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOGzvqcFfvWjCZwByydPygy1UhtugmqS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "220062952727-d9o9qckt6nmthein3cro000vsmaologj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

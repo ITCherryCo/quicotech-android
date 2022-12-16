@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- for security purpose
+   its not allowing to hit an HTTP it
+    -->
+<!--<network-security-config>-->
+<!--    <domain-config cleartextTrafficPermitted="true">-->
+<!--        <domain includeSubdomains="true">http://13.39.86.18:8069/api</domain>-->
+<!--    </domain-config>-->
+<!--</network-security-config>-->
+
+<network-security-config>
+<base-config cleartextTrafficPermitted="true">
+    <trust-anchors>
+        <certificates src="system" />
+    </trust-anchors>
+</base-config>
+</network-security-config>

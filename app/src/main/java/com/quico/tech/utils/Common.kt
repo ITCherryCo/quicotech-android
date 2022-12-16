@@ -9,14 +9,19 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.os.Build
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.app.ActivityCompat
 import com.quico.tech.R
 import com.quico.tech.databinding.AlertSuccessDialogBinding
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import java.util.regex.Pattern
 
 object Common {
 
+    private var progressDialog: Dialog? = null
 
     interface ResponseConfirm {
         fun onConfirm()
@@ -87,7 +92,7 @@ object Common {
         title: String,
         msg: String,
         buttonText: String?,
-        responseConfirm: ResponseConfirm
+        responseConfirm: ResponseConfirm?
     ) {
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.alert_success_dialog)
@@ -119,8 +124,51 @@ object Common {
             dialog.show()
             confirmBtn.setOnClickListener {
                 dialog.dismiss()
-                responseConfirm.onConfirm()
+                responseConfirm?.onConfirm()
             }
         }
+    }
+
+    fun setUpProgressDialog(context: Context) {
+        progressDialog = Dialog(context)
+        progressDialog?.setContentView(R.layout.loading_progress_dialog)
+        progressDialog?.setCancelable(false)
+        progressDialog?.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        progressDialog?.show()
+    }
+
+    fun cancelProgressDialog() {
+        if (progressDialog != null) progressDialog!!.dismiss()
+    }
+
+    fun isProgressIsLoading()=  (progressDialog !=null && progressDialog?.isShowing == true)
+
+    fun isPasswordValid(password: String): Boolean {
+        val PASSWORD_PATTERN: Pattern = Pattern.compile(
+            "[a-zA-Z0-9\\!\\@\\#\\$]{8,24}"
+        )
+        return !TextUtils.isEmpty(password) && PASSWORD_PATTERN.matcher(password).matches()
+    }
+
+    fun encryptPassword(s: String): String {
+        try {
+            // Create MD5 Hash
+            val digest: MessageDigest = MessageDigest.getInstance("MD5")
+            digest.update(s.toByteArray())
+            val messageDigest: ByteArray = digest.digest()
+
+            // Create Hex String
+            val hexString = StringBuffer()
+            for (i in messageDigest.indices) hexString.append(
+                Integer.toHexString(
+                    0xFF and messageDigest[i]
+                        .toInt()
+                )
+            )
+            return hexString.toString()
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace()
+        }
+        return ""
     }
 }

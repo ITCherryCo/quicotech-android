@@ -16,7 +16,7 @@ import com.quico.tech.data.Constant.CONNECTION
 import com.quico.tech.data.Constant.EMAIL
 import com.quico.tech.data.Constant.ERROR
 import com.quico.tech.data.Constant.NO_ADDRESSES
-import com.quico.tech.data.Constant.OPERATION_TYPE
+import com.quico.tech.data.Constant.VERIFICATION_TYPE
 import com.quico.tech.databinding.ActivityAddressListBinding
 import com.quico.tech.model.Address
 import com.quico.tech.utils.Resource
@@ -37,9 +37,8 @@ class AddressListActivity : AppCompatActivity() {
 
         binding.apply {
           nextBtn.setOnClickListener {
-
                 startActivity(Intent(this@AddressListActivity, VerificationCodeActivity::class.java)
-                    .putExtra(OPERATION_TYPE, EMAIL))
+                    .putExtra(VERIFICATION_TYPE, EMAIL))
             }
             backArrow.setOnClickListener {
                 onBackPressed()

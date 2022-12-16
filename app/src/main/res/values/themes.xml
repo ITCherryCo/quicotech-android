@@ -40,6 +40,22 @@
         <item name="android:textColorHint">@color/gray_dark</item>
     </style>
 
+    <style name="loginTitleTextStyle">
+        <item name="android:fontFamily">@font/regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layoutDirection">locale</item>
+        <item name="android:textDirection">locale</item>
+        <item name="android:textColor">@color/input_field_title</item>
+    </style>
+
+    <style name="loginInputFieldStyle">
+        <item name="android:fontFamily">@font/regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layoutDirection">locale</item>
+        <item name="android:textDirection">locale</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="buttonStyle">
         <item name="android:fontFamily">@font/bold</item>
         <item name="android:textSize">13sp</item>
@@ -56,5 +72,9 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textAllCaps">true</item>
 
+    </style>
+
+    <style name="progressBarPurple" parent="@style/Theme.AppCompat">
+        <item name="colorAccent">@color/purple_quico</item> <!-- Whatever color you want-->
     </style>
 </resources>

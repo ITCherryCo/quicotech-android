@@ -72,11 +72,45 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun logoutAlert() {
         Common.setUpAlert(
-            this, false, "", viewModel.getLangResources().getString(R.string.sure_logout),
+            this, false, viewModel.getLangResources().getString(R.string.logout), viewModel.getLangResources().getString(R.string.sure_logout),
             viewModel.getLangResources().getString(R.string.yes),
             object : Common.ResponseConfirm{
                 override fun onConfirm() {
+                    viewModel.current_session_id?.let { session_id->
 
+                        Common.setUpProgressDialog(this@SettingsActivity)
+                        viewModel.logout(
+                            session_id,
+                            object : SharedViewModel.ResponseStandard {
+                                override fun onSuccess(
+                                    success: Boolean,
+                                    resultTitle: String,
+                                    message: String
+                                ) {
+                                    Common.cancelProgressDialog()
+                                    viewModel.getLangResources().getString(R.string.logged_out)
+                                    startActivity(
+                                        Intent(this@SettingsActivity, LoginActivity::class.java)
+                                    )
+                                }
+
+                                override fun onFailure(
+                                    success: Boolean,
+                                    resultTitle: String,
+                                    message: String
+                                ) {
+                                    Common.cancelProgressDialog()
+
+                                    Common.setUpAlert(
+                                        this@SettingsActivity, false,
+                                        viewModel.getLangResources().getString(R.string.error),
+                                        viewModel.getLangResources().getString(R.string.error_msg),
+                                        viewModel.getLangResources().getString(R.string.ok),
+                                        null
+                                    )
+                                }
+                            })
+                    }
                 }
             }
         )
