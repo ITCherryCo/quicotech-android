@@ -3,6 +3,7 @@ package com.quico.tech.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import com.quico.tech.R
 import com.quico.tech.data.Constant.AR
@@ -25,9 +26,16 @@ class SettingsActivity : AppCompatActivity() {
             backArrow.setOnClickListener {
                 onBackPressed()
             }
-            logoutBtn.setOnClickListener {
-                logoutAlert()
+            if (viewModel.current_session_id.isNullOrEmpty())
+                logoutContainer.visibility = View.GONE
+
+            viewModel.current_session_id?.let {
+                logoutContainer.visibility = View.VISIBLE
+                logoutBtn.setOnClickListener {
+                    logoutAlert()
+                }
             }
+
 
             setUpText()
             checkLanguage()

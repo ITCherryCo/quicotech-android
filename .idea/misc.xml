@@ -23,6 +23,7 @@
         <entry key="app/src/main/res/drawable/ripple_text_purple_gray.xml" value="0.1855" />
         <entry key="app/src/main/res/drawable/ripple_white_gray_border_12.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/ripple_white_gray_border_8.xml" value="0.188" />
+        <entry key="app/src/main/res/drawable/splash_screen.xml" value="0.1915" />
         <entry key="app/src/main/res/font/font.xml" value="0.3452502553626149" />
         <entry key="app/src/main/res/layout/activity_address.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/activity_address_list.xml" value="0.45" />

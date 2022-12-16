@@ -35,10 +35,10 @@ class IntroActivity : AppCompatActivity() {
 
         // Checking for first time launch
         prefManager = PrefManager(this);
-        if (!prefManager!!.isFirstTimeLaunch) {
-            launchHomeScreen();
-            finish();
-         }
+//        if (!prefManager!!.isFirstTimeLaunch) {
+//            launchHomeScreen();
+//            finish();
+//         }
 
         //Remove Statusbar
         Common.removeStatusBarColor(this);

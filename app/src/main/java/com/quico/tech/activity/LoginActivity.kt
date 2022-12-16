@@ -31,11 +31,6 @@ class LoginActivity : AppCompatActivity() {
 
     fun init() {
         //Remove Statusbar
-        viewModel.current_session_id?.let {
-            startActivity(
-                Intent(this@LoginActivity, HomeTestActivity::class.java)
-            )
-        }
         Common.removeStatusBarColor(this)
       //  Common.hideSystemUIBeloR(this)
     }
@@ -59,6 +54,12 @@ class LoginActivity : AppCompatActivity() {
             registerText.setOnClickListener {
                 startActivity(
                     Intent(this@LoginActivity, RegisterActivity::class.java)
+                )
+            }
+
+            guestText.setOnClickListener {
+                startActivity(
+                    Intent(this@LoginActivity, HomeTestActivity::class.java)
                 )
             }
 
@@ -133,4 +134,5 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
 }
