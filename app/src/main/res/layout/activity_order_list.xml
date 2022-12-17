@@ -53,11 +53,6 @@
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
             <LinearLayout
                 android:id="@+id/mainContainer"
                 android:orientation="vertical"
@@ -236,8 +231,6 @@
 
                     </LinearLayout>
                 </com.facebook.shimmer.ShimmerFrameLayout>
-
             </LinearLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>

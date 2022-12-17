@@ -93,8 +93,7 @@ class OrderListActivity : AppCompatActivity() {
                 when (response) {
 
                     is Resource.Success -> {
-                        binding.swipeRefreshLayout.setRefreshing(false)
-                        binding.swipeRefreshLayout.setEnabled(false)
+                        stopShimmer()
                         binding.errorContainer.setVisibility(View.GONE)
 
                         response.data?.let { ordersResponse ->
@@ -214,7 +213,6 @@ class OrderListActivity : AppCompatActivity() {
 
             stopShimmer()
             recyclerView.visibility = View.VISIBLE
-            swipeRefreshLayout.setRefreshing(false)
 
             orders.add(Order(1))
             orders.add(Order(2))
@@ -247,7 +245,6 @@ class OrderListActivity : AppCompatActivity() {
             errorContainer.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
-            swipeRefreshLayout.setRefreshing(true)
 
             lifecycleScope.launch {
                 delay(3000)
@@ -257,23 +254,19 @@ class OrderListActivity : AppCompatActivity() {
     }
 
     fun onRefresh() {
-        binding.apply {
-            swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
-                setLoading() // later we will remove it because the observable will call it
-                // viewModel.getOrders(1, orders_type) // get User id
-            })
-        }
+        setLoading() // later we will remove it because the observable will call it
+        // viewModel.getOrders(1, orders_type) // get User id
+
+
     }
 
     fun setUpErrorForm(error_type: String) {
         binding.apply {
-            swipeRefreshLayout.setRefreshing(false)
             recyclerView.visibility = View.GONE
             errorContainer.visibility = View.VISIBLE
             errorImage.setImageResource(android.R.color.transparent)
             stopShimmer()
             errorMsg1.visibility = View.GONE
-            swipeRefreshLayout.setEnabled(true)
 
             when (error_type) {
                 Constant.CONNECTION -> {

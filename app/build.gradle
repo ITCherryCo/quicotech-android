@@ -90,6 +90,9 @@ dependencies {
     implementation 'com.shuhart.stepview:stepview:1.5.1'
     implementation 'com.kofigyan.stateprogressbar:stateprogressbar:1.0.0'
 
-//implementation 'com.params.stepview:stepview:1.0.2'
+    // voice player
+    implementation 'com.github.JagarYousef:ChatVoicePlayer:1.1.0'
+    // voice recorder
+    implementation 'com.github.3llomi:RecordView:3.1.0beta7' // this is for recording
 
 }

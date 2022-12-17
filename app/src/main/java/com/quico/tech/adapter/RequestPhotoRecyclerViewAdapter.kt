@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.quico.tech.activity.RequestActivity
 import com.quico.tech.databinding.ServicePhotoItemListBinding
 
 class RequestPhotoRecyclerViewAdapter(onDeletePhoto:OnDeletePhoto) : RecyclerView.Adapter<RequestPhotoRecyclerViewAdapter.ItemViewHolder>() {
@@ -19,10 +20,10 @@ class RequestPhotoRecyclerViewAdapter(onDeletePhoto:OnDeletePhoto) : RecyclerVie
     inner class ItemViewHolder(private var binding: ServicePhotoItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(photo: Uri) {
+        fun bind(photo: RequestActivity.PhotoService) {
             binding.apply {
                 deleteImage.visibility = View.VISIBLE
-                image.setImageURI(photo)
+                image.setImageURI(photo.img)
                 deleteImage.setOnClickListener {
                     onDeletePhoto.onDeletePhoto(absoluteAdapterPosition)
                     notifyDataSetChanged()
@@ -46,9 +47,9 @@ class RequestPhotoRecyclerViewAdapter(onDeletePhoto:OnDeletePhoto) : RecyclerVie
         holder.bind(photo)
     }
 
-    private var onItemClickListener: ((Uri) -> Unit)? = null
+    private var onItemClickListener: ((RequestActivity.PhotoService) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (Uri) -> Unit) {
+    fun setOnItemClickListener(listener: (RequestActivity.PhotoService) -> Unit) {
         onItemClickListener = listener
     }
 
@@ -56,13 +57,12 @@ class RequestPhotoRecyclerViewAdapter(onDeletePhoto:OnDeletePhoto) : RecyclerVie
         return differ.currentList.size
     }
 
-
-    private val differCallback = object : DiffUtil.ItemCallback<Uri>() {
-        override fun areItemsTheSame(oldItem: Uri, newItem: Uri): Boolean {
-            return oldItem == newItem
+    private val differCallback = object : DiffUtil.ItemCallback<RequestActivity.PhotoService>() {
+        override fun areItemsTheSame(oldItem: RequestActivity.PhotoService, newItem: RequestActivity.PhotoService): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Uri, newItem: Uri): Boolean {
+        override fun areContentsTheSame(oldItem: RequestActivity.PhotoService, newItem: RequestActivity.PhotoService): Boolean {
             return oldItem == newItem
         }
     }

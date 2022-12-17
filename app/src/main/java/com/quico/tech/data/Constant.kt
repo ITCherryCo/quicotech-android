@@ -44,5 +44,7 @@ object Constant {
     var can_register= false
     var EMPTY_CART= "empty_cart"
     var NO_CARDS= "no_cards"
+    var APP_MEDIA_PATH= "/QuicoTech/Media/Recording"
+
 
 }

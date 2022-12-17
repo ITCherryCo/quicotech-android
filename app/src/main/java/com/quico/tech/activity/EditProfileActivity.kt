@@ -103,6 +103,9 @@ class EditProfileActivity : AppCompatActivity() {
             birthdateText.text = viewModel.getLangResources().getString(R.string.date_of_birth)
             birthdayField.hint = viewModel.getLangResources().getString(R.string.birthday_example)
             saveBtn.text = viewModel.getLangResources().getString(R.string.save)
+            changePasswordBtn.text = viewModel.getLangResources().getString(R.string.change_mobile_number)
+            changeMobileBtn.text = viewModel.getLangResources().getString(R.string.change_mobile_number)
+            changeEmailBtn.text = viewModel.getLangResources().getString(R.string.change_email_address)
 
             if (viewModel.getLanguage().equals(Constant.AR))
                 backArrow.scaleX = -1f

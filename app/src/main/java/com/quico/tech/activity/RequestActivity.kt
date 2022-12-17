@@ -1,48 +1,79 @@
 package com.quico.tech.activity
 
+import android.Manifest
 import android.content.Intent
+import android.media.MediaPlayer
+import android.media.MediaRecorder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker
+import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
+import com.devlomi.record_view.OnRecordListener
+import com.devlomi.record_view.RecordPermissionHandler
 import com.quico.tech.R
 import com.quico.tech.adapter.RequestPhotoRecyclerViewAdapter
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.APP_MEDIA_PATH
 import com.quico.tech.data.Constant.SERVICE_ID
 import com.quico.tech.databinding.ActivityRequestBinding
+import com.quico.tech.utils.AudioRecorder
 import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
-
+import java.io.File
+import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 class RequestActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRequestBinding
     private val viewModel: SharedViewModel by viewModels()
-    private val max_pics = 7
+    private val max_pics = 4
     private var pics_count = 0
+    private var total_pics_count = 0
     private lateinit var requestPhotoRecyclerViewAdapter: RequestPhotoRecyclerViewAdapter
-    private var photos = ArrayList<Uri>()
+    private var photos = ArrayList<PhotoService>()
+    var iteration_nb = max_pics
+    var pics_left = 0
+    private var audioRecorder: AudioRecorder? = null
+    private var recordFile: File? = null
+    var audioPath = ""
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var mediaRecorder: MediaRecorder
+    class PhotoService(val id:Int,val img:Uri)
+    private var id_generator=1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        mediaRecorder = MediaRecorder()
         binding = ActivityRequestBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpText()
-        setUpServiceAdapter()
+        setUpPhotosAdapter()
+
     }
 
     private fun setUpText() {
         binding.apply {
 
             //title.text = viewModel.getLangResources().getString(R.string.all)
-            problemDescription.text = viewModel.getLangResources().getString(R.string.problem_description)
+            problemDescription.text =
+                viewModel.getLangResources().getString(R.string.problem_description)
             uploadImagesText.text = viewModel.getLangResources().getString(R.string.upload_images)
             nextBtn.text = viewModel.getLangResources().getString(R.string.next)
 
@@ -50,14 +81,24 @@ class RequestActivity : AppCompatActivity() {
                 backArrow.scaleX = -1f
 
             nextBtn.setOnClickListener {
-                startActivity(Intent(this@RequestActivity, RequestDeliveryActivity::class.java).putExtra(
-                    SERVICE_ID,
-                1))
+                startActivity(
+                    Intent(this@RequestActivity, RequestDeliveryActivity::class.java).putExtra(
+                        SERVICE_ID,
+                        1
+                    )
+                )
             }
 
             imageContainer.setOnClickListener {
-                checkGalleryPermissions()
+                if (total_pics_count < 4)
+                    checkGalleryPermissions()
             }
+
+            addImage.setOnClickListener {
+                if (total_pics_count < 4)
+                    checkGalleryPermissions()
+            }
+            setUpVoiceRecorder()
         }
     }
 
@@ -82,40 +123,258 @@ class RequestActivity : AppCompatActivity() {
     }
 
     var imageLauncher =
-        registerForActivityResult<Intent, ActivityResult>(
+        registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(),
             ActivityResultCallback<ActivityResult> { result ->
                 if (result.resultCode == RESULT_OK) {
                     if (result.data != null && result.data!!.clipData != null) {
                         pics_count = result.data!!.clipData!!.itemCount
-                        if (pics_count>0) {
-                            for (i in 0 until pics_count) {
-                                photos.add(result.data!!.clipData!!.getItemAt(i).uri)
+
+
+                        total_pics_count = photos.size
+                        pics_left = max_pics - total_pics_count
+
+
+                        if (pics_count > 0) {
+                            if (pics_count >= max_pics)
+                                iteration_nb = max_pics
+                            else if (pics_count < max_pics) {
+                                if (pics_count < pics_left)
+                                    iteration_nb = pics_count
+                                else if (pics_count >= pics_left)
+                                    iteration_nb = pics_left
+                            }
+
+
+                            for (i in 0 until iteration_nb) {
+                                photos.add(PhotoService(id_generator,result.data!!.clipData!!.getItemAt(i).uri))
+                                id_generator++
                             }
                             binding.uploadImage.visibility = View.GONE
                             binding.recyclerView.visibility = View.VISIBLE
                             requestPhotoRecyclerViewAdapter.differ.submitList(photos)
+
+                        } else {
+                            binding.uploadImage.visibility = View.VISIBLE
+                            binding.recyclerView.visibility = View.GONE
                         }
+                    }
+                    else{
+                        Toast.makeText(
+                            this,
+                            null,
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             }
         )
 
-    fun setUpServiceAdapter() {
+    fun setUpPhotosAdapter() {
         binding.apply {
 
-            requestPhotoRecyclerViewAdapter = RequestPhotoRecyclerViewAdapter(object :RequestPhotoRecyclerViewAdapter.OnDeletePhoto{
+            requestPhotoRecyclerViewAdapter = RequestPhotoRecyclerViewAdapter(object :
+                RequestPhotoRecyclerViewAdapter.OnDeletePhoto {
                 override fun onDeletePhoto(position: Int) {
                     photos.removeAt(position)
                     requestPhotoRecyclerViewAdapter.differ.submitList(photos)
+                    total_pics_count = photos.size
+                    pics_left = max_pics - total_pics_count
+
                     if (photos.isEmpty())
-                        binding.uploadImage.visibility = View.VISIBLE
+                        uploadImage.visibility = View.VISIBLE
                 }
             })
-            recyclerView.layoutManager = GridLayoutManager(this@RequestActivity, 3)
+            recyclerView.layoutManager = GridLayoutManager(this@RequestActivity, 2)
             recyclerView.setItemAnimator(DefaultItemAnimator())
             recyclerView.setAdapter(requestPhotoRecyclerViewAdapter)
             requestPhotoRecyclerViewAdapter.differ.submitList(photos)
         }
     }
+
+
+    private fun setUpVoiceRecorder() {
+        binding.apply {
+
+            recordBtn.setRecordView(recordView)
+            recordView.setCancelBounds(8f)
+            recordView.setLessThanSecondAllowed(false)
+            recordView.setSlideToCancelText("Slide To Cancel")
+            recordView.setCustomSounds(0, 0, 0)
+            Log.d("RecordView", "setup")
+
+            recordView.setOnRecordListener(object : OnRecordListener {
+                var date: String = ""
+                override fun onStart() {
+                   // deleteAllFiles()
+                    audioRecorder = AudioRecorder()
+                    mediaRecorder = MediaRecorder()
+                    recordFile = File(
+                        Environment.getExternalStorageDirectory(),
+                        APP_MEDIA_PATH
+                    )
+                    try {
+                        if (!recordFile!!.mkdirs()) recordFile!!.mkdirs()
+                        date = System.currentTimeMillis().toString()
+                        audioPath = recordFile?.getAbsolutePath() + File.separator + date + ".3gp"
+                        audioRecorder!!.start(audioPath,mediaRecorder)
+                        Log.d("RecordView", audioPath)
+                    } catch (e: IOException) {
+                        // recordView.setBackgroundColor(resources.getColor(android.R.color.transparent))
+                        e.printStackTrace()
+                        Log.d("RecordView", "EXCEPTION ${e.message}")
+                    }
+                   // Toast.makeText(this@RequestActivity,"start",Toast.LENGTH_LONG).show()
+                    Log.d("RecordView", "onStart")
+                }
+
+                override fun onCancel() {
+                    stopRecording(true)
+                    //Toast.makeText(this@RequestActivity,"cancel",Toast.LENGTH_LONG).show()
+
+                    Log.d("RecordView", "onCancel")
+                }
+
+                override fun onFinish(recordTime: Long, limitReached: Boolean) {
+                    Log.d("RECORD_TIME", recordTime.toString())
+                    try {
+
+                        stopRecording(false)
+                        val time: String = getHumanTimeText(recordTime)!!
+                        Log.d("RecordView", "onFinish Limit Reached? $limitReached")
+                        Log.d("RecordTime", time)
+
+                        val file: File = File(audioPath)
+                        val file_size = (file.length() / 1024).toString().toInt()
+                        if (file_size > 0) {
+                            setVoice(audioPath)
+                            // Toast.makeText(this@RequestActivity,"set voice",Toast.LENGTH_LONG).show()
+                            //Toast.makeText(this@RequestActivity,"finish",Toast.LENGTH_LONG).show()
+                        } else {
+                            Log.d("RecordView", "failed")
+                            //Toast.makeText(this@RequestActivity,"failed",Toast.LENGTH_LONG).show()
+                            stopRecording(true)
+                        }
+                    }catch (e:java.lang.Exception){
+
+                    }
+                    Log.d("RecordView", "FINISH RECORD")
+                }
+
+                override fun onLessThanSecond() {
+                    try {
+                        stopRecording(true)
+                    }catch (e:java.lang.Exception){
+
+                    }
+                    Log.d("RecordView", "onLessThanSecond")
+                   // Toast.makeText(this@RequestActivity,"less than 1",Toast.LENGTH_LONG).show()
+                }
+            })
+
+            recordView.setRecordPermissionHandler(RecordPermissionHandler {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    return@RecordPermissionHandler true
+                }
+                val recordPermissionAvailable = ContextCompat.checkSelfPermission(
+                    this@RequestActivity, Manifest.permission.RECORD_AUDIO
+                ) == PermissionChecker.PERMISSION_GRANTED
+                if (recordPermissionAvailable) {
+                    return@RecordPermissionHandler true
+                }
+                ActivityCompat.requestPermissions(
+                    this@RequestActivity, arrayOf(Manifest.permission.RECORD_AUDIO),
+                    0
+                )
+                false
+            })
+
+            recordView.setOnBasketAnimationEndListener {
+                Log.d(
+                    "RecordView",
+                    "Basket Animation Finished"
+                )
+            }
+        }
+    }
+
+    private fun setVoice(audioPath: String) {
+        //if (recordFile.exists() && file.canRead() && audioPath.toUri() != null) {
+
+        binding.apply {
+            audioPath?.toUri().let { uri ->
+                mediaPlayer = MediaPlayer.create(this@RequestActivity, audioPath?.toUri())
+                val seconds = (mediaPlayer.duration / 1000) as Int % 60
+                val minutes = (mediaPlayer.duration / (1000 * 60) % 60)
+                /* duration.visibility = View.VISIBLE
+                 duration.text = String.format(Locale.ENGLISH, "%2d:%02d", minutes, seconds)*/
+
+                voiceContainer.visibility = View.VISIBLE
+                voicePlayerView.setAudio(audioPath)
+                deleteImage.setOnClickListener {
+                    hideCurrentVoice()
+                   // recordView.setEnabled(true)
+                }
+            }
+        }
+    }
+
+    private fun hideCurrentVoice() {
+        binding.voiceContainer.visibility = View.GONE
+        deleteAllFiles()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // here  must stop playing audio
+        try {
+            stopRecording(false)
+         //   binding.recordView.cancelRecord()
+        } catch (e: Exception) {
+        }
+    }
+
+    private fun stopRecording(deleteFile: Boolean) {
+        try {
+            audioRecorder?.stop(mediaRecorder)
+            if (recordFile != null && deleteFile) {
+                deleteAllFiles()
+                Log.d(
+                    "RecordView",
+                    " DELETE "
+                )
+            } else
+                Log.d(
+                    "RecordView",
+                    "CANT DELETE FILE"
+                )
+        }catch (e:java.lang.Exception){
+
+        }
+    }
+
+    private fun deleteAllFiles(){
+        try {
+            recordFile?.let {
+                if (recordFile!!.isDirectory) {
+                    val children: Array<String> = recordFile!!.list()
+                    for (i in children.indices) {
+                        File(recordFile, children[i]).delete()
+                    }
+                }
+            }
+        }catch (e:java.lang.Exception){
+        }
+    }
+
+    private fun getHumanTimeText(milliseconds: Long): String? {
+        return String.format(
+            "%02d:%02d",
+            TimeUnit.MILLISECONDS.toMinutes(milliseconds),
+            TimeUnit.MILLISECONDS.toSeconds(milliseconds) -
+                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliseconds))
+        )
+    }
+
+
 }
