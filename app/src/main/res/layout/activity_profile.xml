@@ -76,8 +76,8 @@
             android:text="Danielle Dh"
             android:textColor="@color/black"
             android:textDirection="locale"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/medium"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/phoneNumber"
@@ -90,10 +90,11 @@
             android:layout_marginBottom="5dp"
             android:layout_toStartOf="@+id/editImage"
             android:layout_toEndOf="@+id/profileImage"
-            android:text="+961 70707070"
-            android:textColor="@color/gray"
-            android:textDirection="locale"
             android:layoutDirection="locale"
+            android:text="+961 70707070"
+            android:textColor="@color/gray_dark"
+            android:fontFamily="@font/medium"
+            android:textDirection="locale"
             android:textSize="14dp" />
 
         <ImageView
@@ -150,8 +151,8 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="@string/card"
-                    android:textDirection="locale"
-                    android:layoutDirection="locale"                    android:textColor="@color/black"
+                    style="@style/titleStyleMedium12"
+                    android:textAllCaps="false"
                     android:textSize="11sp" />
 
 
@@ -179,10 +180,9 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="@string/shipping_addresses"
-                    android:textColor="@color/black"
-                    android:textDirection="locale"
-                    android:layoutDirection="locale"
-                    android:textSize="11sp" />
+                    style="@style/titleStyleMedium12"
+                    android:textAllCaps="false"
+                    android:textSize="11sp"/>
 
 
             </LinearLayout>
@@ -209,10 +209,9 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="@string/done_orders"
-                    android:textDirection="locale"
-                    android:layoutDirection="locale"
-                    android:textColor="@color/black"
-                    android:textSize="11sp" />
+                    style="@style/titleStyleMedium12"
+                    android:textAllCaps="false"
+                    android:textSize="11sp"/>
 
 
             </LinearLayout>
@@ -239,9 +238,8 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="@string/ongoing_orders"
-                    android:textColor="@color/black"
-                    android:textDirection="locale"
-                    android:layoutDirection="locale"
+                    style="@style/titleStyleMedium12"
+                    android:textAllCaps="false"
                     android:textSize="11sp" />
 
 
@@ -276,9 +274,8 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="@string/faq"
-                    android:textColor="@color/black"
-                    android:textDirection="locale"
-                    android:layoutDirection="locale"
+                    style="@style/titleStyleMedium12"
+                    android:textAllCaps="false"
                     android:textSize="11sp" />
 
 
@@ -306,10 +303,9 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="@string/terms_and_conditions"
-                    android:textColor="@color/black"
-                    android:textDirection="locale"
-                    android:layoutDirection="locale"
-                    android:textSize="11sp" />
+                    style="@style/titleStyleMedium12"
+                    android:textAllCaps="false"
+                    android:textSize="11sp"/>
 
 
             </LinearLayout>
@@ -336,10 +332,9 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="@string/settings"
-                    android:textColor="@color/black"
-                    android:textDirection="locale"
-                    android:layoutDirection="locale"
-                    android:textSize="11sp" />
+                    style="@style/titleStyleMedium12"
+                    android:textAllCaps="false"
+                    android:textSize="11sp"/>
 
             </LinearLayout>
 

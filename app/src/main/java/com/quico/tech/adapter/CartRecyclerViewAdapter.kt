@@ -3,10 +3,6 @@ package com.quico.tech.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +11,6 @@ import com.quico.tech.data.Constant
 import com.quico.tech.databinding.CartItemListBinding
 import com.quico.tech.model.Item
 import com.quico.tech.viewmodel.SharedViewModel
-import kotlin.math.min
 
 class CartRecyclerViewAdapter (val viewModel: SharedViewModel): RecyclerView.Adapter<CartRecyclerViewAdapter.ItemViewHolder>() {
 

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="20dp"
     tools:context=".fragment.AddressFragment">
@@ -11,11 +12,8 @@
         android:id="@+id/nameField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         android:textSize="14sp"
-        android:textDirection="locale"
-        android:layoutDirection="locale"
-        android:textColorHint="@color/gray_dark"
+        style="@style/addressTextStyle"
         android:hint="@string/contact_name" />
 
     <LinearLayout
@@ -27,24 +25,24 @@
         android:layoutDirection="locale"
         android:layout_marginTop="20dp">
 
-        <EditText
+        <com.hbb20.CountryCodePicker
             android:id="@+id/countryPicker"
             android:layout_width="0dp"
             android:layout_weight="0.3"
             android:textDirection="locale"
             android:layoutDirection="locale"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            app:ccp_autoDetectCountry="true"
+            app:ccp_contentColor="@color/black"
+            app:ccp_textSize="10sp"/>
 
         <EditText
             android:id="@+id/phoneField"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textDirection="locale"
-            android:layoutDirection="locale"
-            android:textColorHint="@color/gray_dark"
+            style="@style/addressTextStyle"
             android:layout_marginStart="10dp"
             android:hint="@string/mobile" />
 
@@ -55,11 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/street_example"
-        android:textColor="@color/black"
-        android:textColorHint="@color/gray_dark"
-        android:textSize="14sp"
-        android:textDirection="locale"
-        android:layoutDirection="locale"
+        style="@style/addressTextStyle"
         android:layout_marginTop="20dp"/>
 
     <EditText
@@ -67,11 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/apartment_example"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:textDirection="locale"
-        android:layoutDirection="locale"
-        android:textColorHint="@color/gray_dark"
+        style="@style/addressTextStyle"
         android:layout_marginTop="20dp"/>
 
     <EditText
@@ -79,10 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/lebanon"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:textDirection="locale"
-        android:layoutDirection="locale"
+        style="@style/addressTextStyle"
         android:enabled="false"
         android:layout_marginTop="20dp"/>
 
@@ -91,11 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/start_shopping"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:textDirection="locale"
-        android:layoutDirection="locale"
-        android:textColorHint="@color/gray_dark"
+        style="@style/addressTextStyle"
         android:layout_marginTop="20dp"/>
 
     <EditText
@@ -103,11 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/city"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:textDirection="locale"
-        android:layoutDirection="locale"
-        android:textColorHint="@color/gray_dark"
+        style="@style/addressTextStyle"
         android:layout_marginTop="20dp"/>
 
     <EditText
@@ -115,11 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/postal_code"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:textDirection="locale"
-        android:layoutDirection="locale"
-        android:textColorHint="@color/gray_dark"
+        style="@style/addressTextStyle"
         android:layout_marginTop="20dp"/>
 
     <RelativeLayout
@@ -134,10 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/set_default_shipping_address"
-            android:textColor="@color/black"
-            android:textDirection="locale"
-            android:layoutDirection="locale"
-            android:textSize="14sp" />
+            style="@style/addressTextStyle"/>
 
         <Switch
             android:layout_width="wrap_content"

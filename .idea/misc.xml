@@ -3,73 +3,89 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AndroidStudioProjects/QuicoTech/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1395" />
-        <entry key="..\:/AndroidStudioProjects/QuicoTech/app/src/main/res/drawable/edit_text_border.xml" value="0.1925" />
-        <entry key="..\:/AndroidStudioProjects/QuicoTech/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1395" />
-        <entry key="..\:/AndroidStudioProjects/QuicoTech/app/src/main/res/layout-v28/intro_first_slide.xml" value="0.253125" />
-        <entry key="..\:/AndroidStudioProjects/QuicoTech/app/src/main/res/layout/activity_intro.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/QuicoTech/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/QuicoTech/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/AndroidStudioProjects/QuicoTech/app/src/main/res/layout/activity_sign_up.xml" value="0.24010416666666667" />
-        <entry key="..\:/AndroidStudioProjects/QuicoTech/app/src/main/res/layout/intro_first_slide.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/QuicoTech/app/src/main/res/layout/intro_second_slide.xml" value="0.22826086956521738" />
-        <entry key="..\:/AndroidStudioProjects/QuicoTech/app/src/main/res/layout/welcome_slide1.xml" value="0.22826086956521738" />
-        <entry key="..\:/AndroidStudioProjects/QuicoTech/app/src/main/res/menu/menu_main.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable-xhdpi/ic_search.xml" value="0.175" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/container_black_stroke_1.xml" value="0.1965" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/container_cart_qty_black.xml" value="0.1965" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/container_purple_corner_12.xml" value="0.124" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/container_white_corner_15.xml" value="0.176" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/ripple_plus_white_to_gray_container.xml" value="0.1965" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/ripple_text_purple_gray.xml" value="0.1965" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/ripple_white_gray_border_8.xml" value="0.176" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/shadow_background.xml" value="0.176" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_address.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_address_list.xml" value="0.18854166666666666" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_card_list.xml" value="0.18854166666666666" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_cart.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_checkout.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_edit_profile.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_general_web_info.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_home.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_home_test.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_intro.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_payment_method.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_profile.xml" value="0.18854166666666666" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_settings.xml" value="0.11302083333333333" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_shipping_address_list.xml" value="0.18854166666666666" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_sign_up.xml" value="0.18854166666666666" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_verification_code.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/address_item_list.xml" value="0.18854166666666666" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/address_item_selection.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/alert_success_dialog.xml" value="0.18854166666666666" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/cart_item_list.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/category_item_list.xml" value="0.253125" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/fragment_address.xml" value="0.18854166666666666" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/fragment_home.xml" value="0.24010416666666667" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/fragment_home_content.xml" value="0.253125" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/fragment_search.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/intro_first_slide.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/intro_second_slide.xml" value="0.18854166666666666" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/order_item_list.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/order_summary_list.xml" value="0.18854166666666666" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/product_item_list.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/shimmer_loading_fragment_home.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/toolbar.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/visa_card_item.xml" value="0.18854166666666666" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/menu/home_navigation_menu.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/menu/menu_main.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/menu/toolbar.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/menu/toolbar_menu.xml" value="0.25416666666666665" />
+        <entry key="app/src/main/res/drawable/container_black_stroke.xml" value="0.1995" />
+        <entry key="app/src/main/res/drawable/container_black_stroke_05.xml" value="0.1955" />
+        <entry key="app/src/main/res/drawable/container_black_stroke_1.xml" value="0.1995" />
+        <entry key="app/src/main/res/drawable/container_cart_qty_black.xml" value="0.1855" />
+        <entry key="app/src/main/res/drawable/container_gray_stroke_1.xml" value="0.1955" />
+        <entry key="app/src/main/res/drawable/container_purple_corner_12.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/container_right_bottom_corner_8.xml" value="0.1935" />
+        <entry key="app/src/main/res/drawable/container_white_corner_12.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/container_white_corner_15.xml" value="0.1855" />
+        <entry key="app/src/main/res/drawable/container_white_corner_20.xml" value="0.1855" />
+        <entry key="app/src/main/res/drawable/container_white_gray_dotted_stroke_12.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/container_white_gray_stroke_12.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/edit_text_border.xml" value="0.1995" />
+        <entry key="app/src/main/res/drawable/ripple_minus_white_gray_container.xml" value="0.1955" />
+        <entry key="app/src/main/res/drawable/ripple_minus_white_to_gray.xml" value="0.1995" />
+        <entry key="app/src/main/res/drawable/ripple_plus_white_to_gray.xml" value="0.1995" />
+        <entry key="app/src/main/res/drawable/ripple_plus_white_to_gray_container.xml" value="0.1955" />
+        <entry key="app/src/main/res/drawable/ripple_text_purple_gray.xml" value="0.1855" />
+        <entry key="app/src/main/res/drawable/ripple_white_gray_border_12.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/ripple_white_gray_border_8.xml" value="0.188" />
+        <entry key="app/src/main/res/drawable/splash_screen.xml" value="0.1915" />
+        <entry key="app/src/main/res/font/font.xml" value="0.3452502553626149" />
+        <entry key="app/src/main/res/layout/activity_address.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/activity_address_list.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_card_list.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/activity_cart.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_change_email_phone.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_chcekout.xml" value="0.2994791666666667" />
+        <entry key="app/src/main/res/layout/activity_checkout.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_delivery.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_faq.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_general_web_info.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_home_test.xml" value="0.31666666666666665" />
+        <entry key="app/src/main/res/layout/activity_intro.xml" value="0.31666666666666665" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_maintenance_list.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_new_card.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_order_list.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_payment_method.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_request.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_request_delivery.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_request_details.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_service_list.xml" value="0.29791666666666666" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_shipping_address.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/activity_shipping_address_list.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/activity_verfication_code.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_verification_code.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/address_item_list.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/address_item_selection.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/address_list.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/alert_success.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/alert_success_dialog.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/cart_item_list.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/faq_item_list.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/fragment_address.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_shipping_address_list.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/loading_progress_dialog.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/maintenace_item_list.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/order_item_list.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/order_summary_list.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/order_type_item_list.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/service_item_list.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/service_photo_item_list.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/shimmer_loading_address_selection.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_cart.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_order_list.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_service.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_shipping_address.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_visa_card.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_visa_card_selection.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/visa_card_item.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/visa_card_item_selection.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/visa_card_large_item.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/xml/network_security_config.xml" value="0.3177083333333333" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
-  <component name="ProjectType">
-    <option name="id" value="Android" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

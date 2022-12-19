@@ -113,8 +113,67 @@ efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifen
     <string name="need_account_to_place_order_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
 efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.</string>
 
+    <string name="maintenance_and_recovery"><![CDATA[Maintenance & Recovery]]></string>
+    <string name="repair">Repair</string>
+    <string name="repair_description">QQuico Tech provide a wide range of repairing
+services, Our Certified Techs will fix any
+computer problems. Bring it to us for a FREE
+Diagnostic !! Submit a request now!!!</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="data_recovery">Data Recovery</string>
+    <string name="data_recovery_description">Quico Tech offers a capable set of professional DATA RECOVERY services for Individuals, Small-Businesses, and Enterprise-Level Systems.</string>
+
+    <string name="it_services">It Services</string>
+    <string name="it_services_description">Quico Tech proposes some IT SERVICES for Individuals, Small-Businesses, Mid-Sized and Large Enterprises.</string>
+    <string name="maintenance_services">Maintenance Services</string>
+    <string name="maintenance_services_description">Quico Tech provide a wide range of repairing
+services, Our Certified Techs will fix any
+computer problems. Bring it to us for a FREE
+Diagnostic !! Submit a request now!!!</string>
+    <string name="door_to_door">Door-To-Door</string>
+    <string name="delivery_type">Delivery Type</string>
+    <string name="drop_repair_center">Drop it at our repairing center</string>
+    <string name="problem_description">Brief description of the problem</string>
+    <string name="upload_images">Upload Images</string>
+    <string name="submit_request">Submit Request</string>
+    <string name="continue_shopping">Continue Shopping</string>
+    <string name="request_submitted">Your Request Has Been Submitted.</string>
+    <string name="no_services">No Services are found.</string>
+    <string name="choose_delivery_type">Please choose the delivery type.</string>
+    <string name="ok">OK</string>
+    <string name="service_name_id"><![CDATA[Service Name & ID]]></string>
+    <string name="request_received">Request Received</string>
+    <string name="waiting_response">Waiting Response</string>
+    <string name="in_progress">In Progress</string>
+    <string name="completed">completed</string>
+    <string name="change_mobile_number">Change Mobile Number</string>
+    <string name="change_email_address">Change Email Address</string>
+    <string name="email_address">EMAIL ADDRESS</string>
+    <string name="email_example">Example@gmail.com</string>
+    <string name="login">Login</string>
+    <string name="singup">Signup</string>
+    <string name="password">PASSWORD</string>
+    <string name="confirm_password">CONFIRM PASSWORD</string>
+    <string name="dont_have_account">Do have an account?</string>
+    <string name="continue_as_guest"><u>Continue As a guest</u></string>
+    <string name="register">Register</string>
+    <string name="your_full_name">YOUR FULL NAME</string>
+    <string name="phone_number_example">00 000 000</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="have_account">Already have an account?</string>
+    <string name="required_field">Required Field</string>
+    <string name="invalid_phone_number">Please enter 8 digit number</string>
+    <string name="wrong_otp">Please enter 8 digit number</string>
+    <string name="wrong_password">Invalid password format. Use minimum 8 digits with capital letter and numbers</string>
+    <string name="wrong_email">Please enter a valid email example@gmail.com</string>
+    <string name="mismatch_password">Mismatch Passwords</string>
+    <string name="error">Error</string>
+    <string name="connection">Connection</string>
+    <string name="invalid_otp">Invalid code</string>
+    <string name="logged_out">Loggoud out successfully!</string>
+    <string name="no_cards">No orders are found</string>
+    <string name="change_password">Change Password</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

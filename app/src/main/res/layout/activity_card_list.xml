@@ -34,20 +34,14 @@
 
             <TextView
                 android:id="@+id/title"
+                style="@style/titleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="45dp"
                 android:layout_toEndOf="@+id/back_arrow"
-                android:gravity="center"
-                android:layoutDirection="locale"
-                android:text="@string/my_cards"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textDirection="locale"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:text="@string/my_cards" />
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -92,11 +86,9 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:layout_toEndOf="@+id/securityImage"
-                        android:layoutDirection="locale"
                         android:text="@string/safe_information"
-                        android:textColor="@color/black"
-                        android:textDirection="locale"
-                        android:textSize="12sp" />
+                       style="@style/titleStyleMedium12"
+                        android:textAllCaps="false"/>
 
                 </RelativeLayout>
 
@@ -110,6 +102,7 @@
                     android:visibility="gone">
 
                     <TextView
+                        android:id="@+id/errorText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -134,6 +127,29 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:shimmer_auto_start="false"
+                    android:visibility="gone"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:layoutDirection="locale"
+                    app:shimmer_duration="1000">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <include layout="@layout/shimmer_loading_visa_card" />
+                        <include layout="@layout/shimmer_loading_visa_card" />
+                        <include layout="@layout/shimmer_loading_visa_card" />
+                        <include layout="@layout/shimmer_loading_visa_card" />
+
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
                     <RelativeLayout
                         android:id="@+id/addCardContainer"
@@ -163,11 +179,9 @@
                             android:layout_centerVertical="true"
                             android:layout_marginHorizontal="10dp"
                             android:layout_toEndOf="@+id/addImage"
-                            android:layoutDirection="locale"
                             android:text="@string/add_new_card"
-                            android:textColor="@color/gray_dark"
-                            android:textDirection="locale"
-                            android:textSize="15sp" />
+                            style="@style/titleStyleMedium12"
+                            android:textAllCaps="false"/>
                     </RelativeLayout>
 
             </LinearLayout>

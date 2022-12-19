@@ -41,14 +41,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="45dp"
                 android:layout_toEndOf="@+id/back_arrow"
-                android:gravity="center"
-                android:layoutDirection="locale"
                 android:text="@string/faq"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textDirection="locale"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                style="@style/titleStyle"/>
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -70,7 +64,7 @@
                 android:layout_height="match_parent"
                 android:textSize="24sp"
                 android:textColor="@color/black"
-                android:textStyle="bold"
+                android:fontFamily="@font/bold"
                 android:textDirection="locale"
                 android:layoutDirection="locale"
                 android:text="@string/frequently_asked_questions"/>

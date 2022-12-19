@@ -9,9 +9,9 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="2dp"
+        android:layoutDirection="locale"
         android:background="@drawable/ripple_white_gray_border_8"
-        android:elevation="3dp"
-        android:layoutDirection="locale">
+        android:elevation="3dp">
 
         <TextView
             android:id="@+id/defaultAddress"
@@ -22,8 +22,11 @@
             android:paddingHorizontal="6dp"
             android:paddingVertical="3dp"
             android:text="@string/default_address"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
             android:textColor="@color/white"
             android:textSize="10sp"
+            android:fontFamily="@font/medium"
             android:visibility="gone" />
 
 
@@ -39,8 +42,8 @@
                 android:id="@+id/locationImage"
                 android:layout_width="18dp"
                 android:layout_height="21dp"
-                android:layout_below="@+id/defaultAddress"
                 android:layoutDirection="locale"
+                android:layout_below="@+id/defaultAddress"
                 android:src="@drawable/location" />
 
             <TextView
@@ -53,6 +56,7 @@
                 android:text="Danielle, Dh, +961 70707070"
                 android:textColor="@color/black"
                 android:textDirection="locale"
+                android:fontFamily="@font/medium"
                 android:textSize="14sp" />
 
             <TextView
@@ -67,6 +71,7 @@
 , office..."
                 android:textColor="@color/black"
                 android:textDirection="locale"
+                android:fontFamily="@font/bold"
                 android:textSize="14sp" />
 
             <LinearLayout
@@ -85,10 +90,11 @@
                     android:layout_toEndOf="@+id/locationImage"
                     android:layout_weight="0.7"
                     android:clickable="true"
+                    android:textDirection="locale"
                     android:layoutDirection="locale"
                     android:text="@string/edit"
+                    android:fontFamily="@font/regular"
                     android:textColor="@drawable/ripple_text_purple_gray"
-                    android:textDirection="locale"
                     android:textSize="14sp" />
 
                 <TextView
@@ -99,10 +105,11 @@
                     android:layout_toEndOf="@+id/locationImage"
                     android:layout_weight="0.7"
                     android:clickable="true"
-                    android:layoutDirection="locale"
                     android:text="@string/delete"
-                    android:textColor="@drawable/ripple_text_purple_gray"
                     android:textDirection="locale"
+                    android:layoutDirection="locale"
+                    android:fontFamily="@font/regular"
+                    android:textColor="@drawable/ripple_text_purple_gray"
                     android:textSize="14sp" />
 
                 <TextView
@@ -113,10 +120,11 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:gravity="end"
-                    android:layoutDirection="locale"
                     android:text="@string/set_as_default"
-                    android:textColor="@drawable/ripple_text_purple_gray"
                     android:textDirection="locale"
+                    android:layoutDirection="locale"
+                    android:fontFamily="@font/regular"
+                    android:textColor="@drawable/ripple_text_purple_gray"
                     android:textSize="14sp" />
             </LinearLayout>
         </RelativeLayout>

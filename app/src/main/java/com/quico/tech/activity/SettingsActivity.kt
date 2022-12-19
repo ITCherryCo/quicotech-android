@@ -3,6 +3,7 @@ package com.quico.tech.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import com.quico.tech.R
 import com.quico.tech.data.Constant.AR
@@ -25,9 +26,16 @@ class SettingsActivity : AppCompatActivity() {
             backArrow.setOnClickListener {
                 onBackPressed()
             }
-            logoutBtn.setOnClickListener {
-                logoutAlert()
+            if (viewModel.current_session_id.isNullOrEmpty())
+                logoutContainer.visibility = View.GONE
+
+            viewModel.current_session_id?.let {
+                logoutContainer.visibility = View.VISIBLE
+                logoutBtn.setOnClickListener {
+                    logoutAlert()
+                }
             }
+
 
             setUpText()
             checkLanguage()
@@ -72,11 +80,45 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun logoutAlert() {
         Common.setUpAlert(
-            this, false, "", viewModel.getLangResources().getString(R.string.sure_logout),
+            this, false, viewModel.getLangResources().getString(R.string.logout), viewModel.getLangResources().getString(R.string.sure_logout),
             viewModel.getLangResources().getString(R.string.yes),
             object : Common.ResponseConfirm{
                 override fun onConfirm() {
+                    viewModel.current_session_id?.let { session_id->
 
+                        Common.setUpProgressDialog(this@SettingsActivity)
+                        viewModel.logout(
+                            session_id,
+                            object : SharedViewModel.ResponseStandard {
+                                override fun onSuccess(
+                                    success: Boolean,
+                                    resultTitle: String,
+                                    message: String
+                                ) {
+                                    Common.cancelProgressDialog()
+                                    viewModel.getLangResources().getString(R.string.logged_out)
+                                    startActivity(
+                                        Intent(this@SettingsActivity, LoginActivity::class.java)
+                                    )
+                                }
+
+                                override fun onFailure(
+                                    success: Boolean,
+                                    resultTitle: String,
+                                    message: String
+                                ) {
+                                    Common.cancelProgressDialog()
+
+                                    Common.setUpAlert(
+                                        this@SettingsActivity, false,
+                                        viewModel.getLangResources().getString(R.string.error),
+                                        viewModel.getLangResources().getString(R.string.error_msg),
+                                        viewModel.getLangResources().getString(R.string.ok),
+                                        null
+                                    )
+                                }
+                            })
+                    }
                 }
             }
         )

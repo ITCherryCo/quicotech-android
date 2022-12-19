@@ -1,11 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.QuicoTech" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/color_primary_purple</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_quico</item>
+        <!-- Secondary brand color. -->
         <item name="colorSecondary">#000</item>
+        <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:textColorHint">@color/input_field_hint</item>
+
     </style>
 
     <style name="Theme.QuicoTech.NoActionBar">
@@ -14,19 +18,68 @@
 
     </style>
 
-    <style name="RippleStyleWhite">
-        <item name="mrl_rippleOverlay">true</item>
-        <item name="mrl_rippleColor">#80FFFFFF</item>
-        <item name="mrl_rippleHover">true</item>
-        <item name="mrl_rippleAlpha">0.2</item>
-    </style>
-
     <style name="Theme.QuicoTech.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.QuicoTech.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Toolbar.Light" parent="@style/Theme.QuicoTech">
-        <item name="colorControlNormal">@color/color_primary_purple</item>
-        <item name="android:textColorPrimary">@color/color_primary_purple</item>
+    <style name="titleStyle">
+        <item name="android:fontFamily">@font/bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layoutDirection">locale</item>
+        <item name="android:textDirection">locale</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:gravity">center</item>
     </style>
 
+    <style name="addressTextStyle">
+        <item name="android:fontFamily">@font/medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layoutDirection">locale</item>
+        <item name="android:textDirection">locale</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/gray_dark</item>
+    </style>
+
+    <style name="loginTitleTextStyle">
+        <item name="android:fontFamily">@font/regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layoutDirection">locale</item>
+        <item name="android:textDirection">locale</item>
+        <item name="android:textColor">@color/input_field_title</item>
+    </style>
+
+    <style name="loginInputFieldStyle">
+        <item name="android:fontFamily">@font/regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layoutDirection">locale</item>
+        <item name="android:textDirection">locale</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="buttonStyle">
+        <item name="android:fontFamily">@font/bold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:layoutDirection">locale</item>
+        <item name="android:textDirection">locale</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="titleStyleMedium12">
+        <item name="android:fontFamily">@font/medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layoutDirection">locale</item>
+        <item name="android:textDirection">locale</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAllCaps">true</item>
+
+    </style>
+
+    <style name="progressBarPurple" parent="@style/Theme.AppCompat">
+        <item name="colorAccent">@color/purple_quico</item> <!-- Whatever color you want-->
+    </style>
+
+    <style name="SplashScreenTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_image</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
+    </style>
 </resources>

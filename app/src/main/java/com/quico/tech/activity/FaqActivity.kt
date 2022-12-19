@@ -1,18 +1,14 @@
 package com.quico.tech.activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quico.tech.R
-import com.quico.tech.adapter.AddressSelectionRecyclerViewAdapter
 import com.quico.tech.adapter.FaqRecyclerViewAdapter
 import com.quico.tech.data.Constant
-import com.quico.tech.databinding.ActivityAddressListBinding
 import com.quico.tech.databinding.ActivityFaqBinding
-import com.quico.tech.model.Address
 import com.quico.tech.model.FAQ
 import com.quico.tech.viewmodel.SharedViewModel
 
@@ -51,7 +47,7 @@ class FaqActivity : AppCompatActivity() {
         // call the adapter for item list
         binding.apply {
 
-            faqRecyclerViewAdapter = FaqRecyclerViewAdapter()
+            faqRecyclerViewAdapter = FaqRecyclerViewAdapter(viewModel)
             var faqList = ArrayList<FAQ>()
             faqList.add(
                 FAQ(

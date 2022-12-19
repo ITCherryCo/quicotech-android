@@ -7,7 +7,6 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import com.quico.tech.R
-import com.quico.tech.data.Constant
 import com.quico.tech.data.Constant.DONE_ORDERS
 import com.quico.tech.data.Constant.ONGOING_ORDERS
 import com.quico.tech.data.Constant.ORDERS_TYPE
@@ -36,7 +35,8 @@ class ProfileActivity : AppCompatActivity() {
             }
 
             shippingImage.setOnClickListener {
-                startActivity(Intent(this@ProfileActivity, ShippingAddressListActivity::class.java))
+                startActivity(Intent(this@ProfileActivity, ShippingAddressActivity::class.java))
+               // startActivity(Intent(this@ProfileActivity, ShippingAddressListActivity::class.java))
             }
 
             ongoingOrderImage.setOnClickListener {

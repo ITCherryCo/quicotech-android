@@ -113,26 +113,26 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_toStartOf="@+id/deleteImage"
-                    android:lines="2"
-                    android:textDirection="locale"
                     android:layoutDirection="locale"
+                    android:lines="2"
                     android:text="Acer 14 2021 iCore 7 High End"
                     android:textColor="@color/black"
+                    android:textDirection="locale"
+                    android:fontFamily="@font/regular"
                     android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/deleteImage"
-                    android:layout_width="16dp"
-                    android:layout_height="18dp"
+                    android:layout_width="15dp"
+                    android:layout_height="17dp"
                     android:layout_alignParentEnd="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
-                    android:textDirection="locale"
                     android:layoutDirection="locale"
-                    android:src="@drawable/delete" />
+                    android:src="@drawable/delete"
+                    android:textDirection="locale" />
 
             </RelativeLayout>
-
 
             <TextView
                 android:id="@+id/price"
@@ -141,14 +141,14 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="10dp"
                 android:layout_toStartOf="@+id/totalPrice"
+                android:fontFamily="@font/bold"
+                android:layoutDirection="locale"
                 android:maxLines="1"
                 android:paddingEnd="10dp"
                 android:text="$40"
-                android:textDirection="locale"
-                android:layoutDirection="locale"
                 android:textColor="@color/green"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textDirection="locale"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/outOfStock"
@@ -171,14 +171,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
+                android:layoutDirection="locale"
                 android:maxLines="1"
                 android:paddingEnd="10dp"
                 android:text="Total: $80"
+                android:textColor="@color/purple_quico"
                 android:textDirection="locale"
-                android:layoutDirection="locale"
-                android:textColor="@color/color_primary_purple"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/bold"/>
 
         </RelativeLayout>
 

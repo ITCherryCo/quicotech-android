@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    tools:context=".activity.RequestActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:elevation="1dp"
+        android:layoutDirection="locale"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/back_arrow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:layoutDirection="locale"
+                android:padding="8dp"
+                android:src="@drawable/back_arrow"
+                android:textDirection="locale" />
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/titleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="45dp"
+                android:layout_toEndOf="@+id/back_arrow"
+                android:text="repair request" />
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/nextBtn"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/white"
+        android:layoutDirection="locale">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="20dp">
+
+            <TextView
+                android:id="@+id/problemDescription"
+                style="@style/titleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:text="@string/problem_description"
+                android:textAllCaps="false" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/container_white_gray_stroke_12"
+                android:fontFamily="@font/medium"
+                android:gravity="top|start"
+                android:layoutDirection="locale"
+                android:maxHeight="200dp"
+                android:minHeight="150dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:textDirection="locale" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/uploadImagesText"
+                    style="@style/titleStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@+id/addImage"
+                    android:gravity="start"
+                    android:text="@string/upload_images"
+                    android:textAllCaps="false" />
+
+                <ImageView
+                    android:id="@+id/addImage"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:src="@drawable/add_circle" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/imageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/container_white_gray_dotted_stroke_12"
+                android:clickable="true"
+                android:minHeight="100dp"
+                android:textDirection="locale">
+
+                <ImageView
+                    android:id="@+id/uploadImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/upload_image" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/voiceContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/container_white_gray_stroke_12"
+                android:elevation="2dp"
+                android:layoutDirection="locale"
+                android:paddingHorizontal="20dp"
+                android:visibility="gone"
+                android:paddingVertical="10dp">
+
+                <me.jagar.chatvoiceplayerlibrary.VoicePlayerView
+                    android:id="@+id/voicePlayerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@+id/volumeImage"
+                    android:layoutDirection="locale"
+                    android:textDirection="locale"
+                    app:enableVisualizer="true"
+                    app:playPauseBackgroundColor="@color/purple_quico"
+                    app:playPauseCornerRadius="100"
+                    app:playProgressbarColor="@color/black"
+                    app:progressTimeColor="#000"
+                    app:seekBarProgressColor="#000"
+                    app:showShareButton="false"
+                    app:showTiming="true"
+                    app:viewCornerRadius="50"
+                    app:visualizationNotPlayedColor="@color/gray_step"
+                    app:visualizationPlayedColor="@color/black" />
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/soundDuration"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="0:33"/>-->
+
+                <ImageView
+                    android:id="@+id/volumeImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    android:layout_toStartOf="@+id/deleteImage"
+                    android:src="@drawable/volume" />
+
+                <ImageView
+                    android:id="@+id/deleteImage"
+                    android:layout_width="18dp"
+                    android:layout_height="21dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:src="@drawable/delete" />
+            </RelativeLayout>
+
+
+            <com.devlomi.record_view.RecordButton
+                android:id="@+id/recordBtn"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/voice_background"
+                android:padding="25dp"
+                app:mic_icon="@drawable/voice" />
+
+            <com.devlomi.record_view.RecordView
+                android:id="@+id/recordView"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                app:counter_time_color="#ff0000"
+                android:layout_marginTop="10dp"
+                app:slide_to_cancel_arrow="@drawable/recv_ic_arrow"
+                app:slide_to_cancel_arrow_color="#000000"
+                app:slide_to_cancel_bounds="8dp"
+                app:slide_to_cancel_margin_right="10dp"
+                android:layout_marginEnd="10dp"
+                app:slide_to_cancel_text="Slide To Cancel" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nextBtn"
+        style="@style/buttonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="15dp"
+        android:padding="12dp"
+        android:text="@string/submit_request"
+        android:textDirection="locale"
+        app:cornerRadius="12dp" />
+
+</RelativeLayout>

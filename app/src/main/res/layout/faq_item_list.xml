@@ -27,7 +27,7 @@
                 android:textColor="@color/black"
                 android:textDirection="locale"
                 android:textSize="15sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/medium"/>
 
             <ImageView
                 android:id="@+id/arrow"
@@ -49,6 +49,7 @@
             android:textColor="@color/black"
             android:textDirection="locale"
             android:textSize="12sp"
+            android:fontFamily="@font/regular"
             android:visibility="gone"/>
 
         <View

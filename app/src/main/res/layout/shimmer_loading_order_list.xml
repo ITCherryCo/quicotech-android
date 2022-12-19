@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="15dp"
+        android:clickable="true"
+        android:layoutDirection="locale"
+        android:background="?attr/selectableItemBackground">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/orderNumber"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="60dp"
+                android:layout_toStartOf="@+id/total"
+                android:background="@color/shimmer_placeholder"
+                android:fontFamily="@font/regular"
+                android:layoutDirection="locale"
+                android:paddingVertical="3dp" />
+
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="50dp"
+                android:layout_height="10dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:layout_toStartOf="@+id/orderStatus"
+                android:fontFamily="@font/medium"
+                android:layoutDirection="locale"
+                android:padding="3dp"
+                android:background="@color/shimmer_placeholder" />
+
+            <TextView
+                android:id="@+id/orderStatus"
+                android:layout_width="80dp"
+                android:layout_height="23dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/container_white_corner_12"
+                android:backgroundTint="@color/shimmer_placeholder"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp"
+            android:background="@color/gray_line"
+            android:layout_marginTop="15dp"/>
+    </LinearLayout>
+
+</RelativeLayout>

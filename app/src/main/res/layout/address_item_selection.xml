@@ -37,8 +37,10 @@
             android:layoutDirection="locale"
             android:text="Lebanon, City , state - province, street, building, apartment
 , office..."
-            android:textColor="@color/gray_dark"
-            android:textDirection="locale" />
+            android:textColor="@color/black"
+            android:textDirection="locale"
+            android:fontFamily="@font/regular"
+            android:textSize="15sp"/>
 
         <ImageView
             android:id="@+id/checkImage"

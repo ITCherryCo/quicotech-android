@@ -41,14 +41,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="45dp"
                 android:layout_toEndOf="@+id/back_arrow"
-                android:gravity="center"
-                android:text="@string/verification"
-                android:textAllCaps="true"
-                android:textDirection="locale"
-                android:layoutDirection="locale"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                style="@style/titleStyle"
+                android:text="@string/verification"/>
 
 
         </RelativeLayout>
@@ -69,10 +63,10 @@
             android:layout_height="wrap_content"
             android:text="@string/enter_verification_code"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="20sp"
+            android:fontFamily="@font/bold"
             android:textDirection="locale"
-            android:layoutDirection="locale"
-            android:textStyle="bold" />
+            android:layoutDirection="locale"/>
 
         <TextView
             android:id="@+id/sendMsgText"
@@ -81,10 +75,11 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
             android:text="@string/phone_confirmation_code"
-            android:textColor="@color/black"
+            android:textColor="@color/gray_dark"
             android:textDirection="locale"
             android:layoutDirection="locale"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:fontFamily="@font/regular"/>
 
         <com.chaos.view.PinView
             android:id="@+id/pinview"
@@ -124,7 +119,8 @@
                 android:textColor="@color/red_dark"
                 android:textDirection="locale"
                 android:layoutDirection="locale"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/regular"/>
 
         <TextView
             android:id="@+id/resendText"
@@ -137,6 +133,7 @@
             android:textSize="16sp"
             android:textDirection="locale"
             android:layoutDirection="locale"
+            android:fontFamily="@font/regular"
             android:textColor="@drawable/ripple_text_purple_gray" />
 
         <TextView
@@ -149,6 +146,8 @@
             android:layout_marginTop="15dp"
             android:textDirection="locale"
             android:layoutDirection="locale"
+
+            android:fontFamily="@font/regular"
             android:textSize="14sp" />
 
         <TextView
@@ -164,6 +163,7 @@
             android:textDirection="locale"
             android:layoutDirection="locale"
             android:textStyle="bold"
+            android:fontFamily="@font/regular"
             android:textColor="@drawable/ripple_text_purple_gray" />
 
 
@@ -173,12 +173,8 @@
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:text="@string/verify"
-            android:textColor="@color/white"
-            android:textSize="13sp"
             android:layout_marginTop="30dp"
-            android:textStyle="bold"
-            android:textDirection="locale"
-            android:layoutDirection="locale"
+            style="@style/buttonStyle"
             app:cornerRadius="12dp" />
 
     </LinearLayout>

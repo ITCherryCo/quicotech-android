@@ -3,17 +3,20 @@ package com.quico.tech.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
-import com.quico.tech.adapter.CardRecyclerViewAdapter
 import com.quico.tech.adapter.CardSelectionRecyclerViewAdapter
 import com.quico.tech.data.Constant
-import com.quico.tech.databinding.ActivityCartBinding
 import com.quico.tech.databinding.ActivityPaymentMethodBinding
 import com.quico.tech.model.Card
 import com.quico.tech.viewmodel.SharedViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PaymentMethodActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPaymentMethodBinding
@@ -26,7 +29,8 @@ class PaymentMethodActivity : AppCompatActivity() {
         binding = ActivityPaymentMethodBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setUpCardAdapter()
+        setLoading()
+
         setUpText()
         binding.apply {
             nextBtn.setOnClickListener {
@@ -56,6 +60,8 @@ class PaymentMethodActivity : AppCompatActivity() {
     fun setUpCardAdapter() {
 
         binding.apply {
+            stopShimmer()
+            recyclerView.visibility = View.VISIBLE
 
             cardSelectionRecyclerViewAdapter = CardSelectionRecyclerViewAdapter()
             var cards = ArrayList<Card>()
@@ -70,6 +76,61 @@ class PaymentMethodActivity : AppCompatActivity() {
             recyclerView.setAdapter(cardSelectionRecyclerViewAdapter)
 
             cardSelectionRecyclerViewAdapter.differ.submitList(cards)
+        }
+    }
+
+    private fun stopShimmer() {
+        binding.apply {
+            shimmer.visibility = View.GONE
+            shimmer.stopShimmer()
+        }
+    }
+
+    fun setLoading() {
+        binding.apply {
+            recyclerView.visibility = View.GONE
+            errorContainer.visibility = View.GONE
+            shimmer.visibility = View.VISIBLE
+            shimmer.startShimmer()
+
+            lifecycleScope.launch {
+                delay(3000)
+                setUpCardAdapter()
+            }
+        }
+    }
+
+    fun onRefresh() {
+        binding.apply {
+                setLoading() // later we will remove it because the observable will call it
+                // viewModel.Cards(1, orders_type) // get User id
+        }
+    }
+
+    fun setUpErrorForm(error_type: String) {
+        binding.apply {
+
+            recyclerView.visibility = View.GONE
+            errorContainer.visibility = View.VISIBLE
+            errorImage.setImageResource(android.R.color.transparent)
+            stopShimmer()
+            errorMsg1.visibility = View.GONE
+
+            when (error_type) {
+                Constant.CONNECTION -> {
+                    errorMsg2.setText(
+                        viewModel.getLangResources().getString(R.string.check_connection)
+                    )
+                }
+                Constant.NO_CARDS -> {
+                    errorMsg2.text = viewModel.getLangResources().getString(R.string.no_cards)
+                    errorImage.setImageResource(R.drawable.empty_item)
+                }
+
+                Constant.ERROR -> {
+                    errorMsg2.setText(viewModel.getLangResources().getString(R.string.error_msg))
+                }
+            }
         }
     }
 }

@@ -15,11 +15,12 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
-            android:textDirection="locale"
-            android:layoutDirection="locale"
             android:layout_toStartOf="@+id/totalPrice"
+            android:layoutDirection="locale"
             android:text="1 x Acer djkhdfksdjhf"
             android:textColor="@color/gray_dark"
+            android:fontFamily="@font/regular"
+            android:textDirection="locale"
             android:textSize="16sp" />
 
         <TextView
@@ -28,10 +29,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:textDirection="locale"
             android:layoutDirection="locale"
             android:text="$45.2"
             android:textColor="@color/black"
+            android:fontFamily="@font/regular"
+            android:textDirection="locale"
             android:textSize="16sp" />
     </RelativeLayout>
 </RelativeLayout>
