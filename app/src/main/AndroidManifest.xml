@@ -112,7 +112,7 @@
             android:noHistory="true"
             android:theme="@style/Theme.QuicoTech.NoActionBar" />
 
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.HomeActivity" />
         <activity
             android:name=".activity.IntroActivity"
             android:exported="true"

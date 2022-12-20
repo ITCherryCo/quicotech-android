@@ -160,7 +160,7 @@
                     android:layoutDirection="locale"
                     android:textDirection="locale"
                     app:enableVisualizer="true"
-                    app:playPauseBackgroundColor="@color/purple_quico"
+                    app:playPauseBackgroundColor="@color/color_primary_purple"
                     app:playPauseCornerRadius="100"
                     app:playProgressbarColor="@color/black"
                     app:progressTimeColor="#000"

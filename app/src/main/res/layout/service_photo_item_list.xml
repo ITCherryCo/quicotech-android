@@ -20,7 +20,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignEnd="@+id/image"
-            android:background="@color/purple_quico"
+            android:background="@color/color_primary_purple"
             android:clickable="true"
             android:elevation="1dp"
             android:padding="2dp"

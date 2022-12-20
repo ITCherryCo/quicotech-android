@@ -19,7 +19,8 @@ class SplashScreen : AppCompatActivity() {
             )
         } else
             startActivity(
-                Intent(this, HomeTestActivity::class.java)
+                //Intent(this, HomeTestActivity::class.java)
+                Intent(this, HomeActivity::class.java)
             )
     }
 }

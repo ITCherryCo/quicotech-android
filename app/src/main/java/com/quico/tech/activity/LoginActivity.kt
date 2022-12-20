@@ -59,7 +59,8 @@ class LoginActivity : AppCompatActivity() {
 
             guestText.setOnClickListener {
                 startActivity(
-                    Intent(this@LoginActivity, HomeTestActivity::class.java)
+                    //Intent(this@LoginActivity, HomeTestActivity::class.java)
+                    Intent(this@LoginActivity, HomeActivity::class.java)
                 )
             }
 

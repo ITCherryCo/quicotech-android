@@ -24,7 +24,7 @@ class MaintenanceRecyclerViewAdapter : RecyclerView.Adapter<MaintenanceRecyclerV
                 image.setImageResource(maintenance.image)
 
                 when(maintenance.id){
-                    1->verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.purple_quico))
+                    1->verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.color_primary_purple))
                     2->verticalLine.setBackgroundColor (itemView.resources.getColor(R.color.green))
                     3->verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.orange))
                     4->verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.red_dark))
