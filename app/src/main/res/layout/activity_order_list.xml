@@ -34,21 +34,14 @@
 
             <TextView
                 android:id="@+id/title"
+                style="@style/titleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="45dp"
                 android:layout_toEndOf="@+id/back_arrow"
-                android:gravity="center"
-                android:text="@string/ongoing_orders"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textDirection="locale"
-                android:layoutDirection="locale"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
+                android:text="@string/shipping_addresses" />
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -127,8 +120,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginBottom="150dp"
                     android:gravity="center"
-                    android:visibility="gone"
                     android:elevation="1dp"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <ImageView

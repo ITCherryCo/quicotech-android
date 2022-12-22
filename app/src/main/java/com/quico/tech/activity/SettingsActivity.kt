@@ -65,14 +65,14 @@ class SettingsActivity : AppCompatActivity() {
             englishRadioBtn.setOnClickListener {
                 if (!viewModel.getLanguage().equals(EN)) {
                     viewModel.updateLanguage(EN)
-                    startActivity(Intent(this@SettingsActivity, HomeTestActivity::class.java))
+                    startActivity(Intent(this@SettingsActivity, HomeActivity::class.java))
                 }
             }
 
             arabicRadioBtn.setOnClickListener {
                 if (!viewModel.getLanguage().equals(AR)) {
                     viewModel.updateLanguage(AR)
-                    startActivity(Intent(this@SettingsActivity, HomeTestActivity::class.java))
+                    startActivity(Intent(this@SettingsActivity, HomeActivity::class.java))
                 }
             }
         }

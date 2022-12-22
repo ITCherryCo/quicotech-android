@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
     fun getCategories(){
         binding.apply {
 
-            categoryRecyclerViewAdapter = CategoryRecyclerViewAdapter()
+            categoryRecyclerViewAdapter = CategoryRecyclerViewAdapter(false)
             val categories = ArrayList<Category>()
             categories.add(Category("Servers",resources.getDrawable(R.drawable.server)))
             categories.add(Category("Computers",resources.getDrawable(R.drawable.computer)))
@@ -63,7 +63,7 @@ class HomeFragment : Fragment() {
 
     fun getHotDeals(){
         binding.apply {
-            productRecyclerViewAdapter = ProductRecyclerViewAdapter()
+            productRecyclerViewAdapter = ProductRecyclerViewAdapter(true,false,null)
             val hotDealsProducts = ArrayList<Product>()
             hotDealsProducts.add(Product("P1",resources.getDrawable(R.drawable.product_image_test),9.9f))
             hotDealsProducts.add(Product("P2",resources.getDrawable(R.drawable.product_image_test),22.9f))
@@ -85,7 +85,7 @@ class HomeFragment : Fragment() {
 
     fun getBestSellingProducts(){
         binding.apply {
-            productRecyclerViewAdapter = ProductRecyclerViewAdapter()
+            productRecyclerViewAdapter = ProductRecyclerViewAdapter(true,false,null)
             val bestSellingProducts = ArrayList<Product>()
             bestSellingProducts.add(Product("P1",resources.getDrawable(R.drawable.product_image_test),9.9f))
             bestSellingProducts.add(Product("P2",resources.getDrawable(R.drawable.product_image_test),22.9f))
@@ -107,7 +107,7 @@ class HomeFragment : Fragment() {
 
     fun getOffersProducts(){
         binding.apply {
-            productRecyclerViewAdapter = ProductRecyclerViewAdapter()
+            productRecyclerViewAdapter = ProductRecyclerViewAdapter(true,false,null)
             val offersProducts = ArrayList<Product>()
             offersProducts.add(Product("P1",resources.getDrawable(R.drawable.product_image_test),9.9f))
             offersProducts.add(Product("P2",resources.getDrawable(R.drawable.product_image_test),22.9f))

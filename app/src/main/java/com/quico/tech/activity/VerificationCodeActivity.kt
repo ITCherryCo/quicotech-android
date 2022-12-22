@@ -1,5 +1,6 @@
 package com.quico.tech.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -83,8 +84,6 @@ class VerificationCodeActivity : AppCompatActivity() {
                 EMAIL -> {
                     sendMsgText.text =
                         viewModel.getLangResources().getString(R.string.email_confirmation_code)
-                    orText.visibility = View.GONE
-                    callText.visibility = View.GONE
 
                     verifyBtn.setOnClickListener {
                         startActivity(
@@ -100,7 +99,6 @@ class VerificationCodeActivity : AppCompatActivity() {
                 PHONE_NUMBER -> {
                     sendMsgText.text =
                         viewModel.getLangResources().getString(R.string.phone_confirmation_code)
-                    orText.text = viewModel.getLangResources().getString(R.string.or)
                     phone_number?.let {
                         setUpCode("+961", it)
                     }
@@ -125,8 +123,6 @@ class VerificationCodeActivity : AppCompatActivity() {
             enterVerificationCodeText.text =
                 viewModel.getLangResources().getString(R.string.enter_verification_code)
             resendText.text = viewModel.getLangResources().getString(R.string.resend_code)
-            orText.text = viewModel.getLangResources().getString(R.string.or)
-            callText.text = viewModel.getLangResources().getString(R.string.call)
             verifyBtn.text = viewModel.getLangResources().getString(R.string.verify)
 
             if (viewModel.getLanguage().equals(Constant.AR))
@@ -206,6 +202,7 @@ class VerificationCodeActivity : AppCompatActivity() {
         binding.apply {
             timer.setEnabled(false)
             resendText.setEnabled(false)
+            resendText.setTextColor(resources.getColor(R.color.gray_dark))
             countDownTimer = object : CountDownTimer(mTimeLeftInMillis, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     val timeLeftFormatted = String.format(
@@ -215,9 +212,11 @@ class VerificationCodeActivity : AppCompatActivity() {
                     timer.text = "0:$timeLeftFormatted"
                 }
 
+                @SuppressLint("ResourceType")
                 override fun onFinish() {
                     timer.text = "0:00"
                     resendText.setEnabled(true)
+                    resendText.setTextColor(resources.getColor(R.drawable.ripple_text_purple_gray))
                     countDownTimer!!.cancel()
                 }
             }.start()

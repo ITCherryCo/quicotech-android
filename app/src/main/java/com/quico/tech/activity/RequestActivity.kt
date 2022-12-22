@@ -130,10 +130,8 @@ class RequestActivity : AppCompatActivity() {
                     if (result.data != null && result.data!!.clipData != null) {
                         pics_count = result.data!!.clipData!!.itemCount
 
-
                         total_pics_count = photos.size
                         pics_left = max_pics - total_pics_count
-
 
                         if (pics_count > 0) {
                             if (pics_count >= max_pics)
@@ -144,7 +142,6 @@ class RequestActivity : AppCompatActivity() {
                                 else if (pics_count >= pics_left)
                                     iteration_nb = pics_left
                             }
-
 
                             for (i in 0 until iteration_nb) {
                                 photos.add(PhotoService(id_generator,result.data!!.clipData!!.getItemAt(i).uri))

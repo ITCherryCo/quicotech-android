@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/errorContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="1dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/errorMsg1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/emptyCartTextImage"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/bold"
+            android:gravity="center"
+            android:layoutDirection="locale"
+            android:text="@string/no_search_result"
+            android:textColor="@color/black"
+            android:textDirection="locale"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/errorMsg2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/noItemsText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:layoutDirection="locale"
+            android:text="@string/no_search_result_msg"
+            android:textColor="@color/gray_dark"
+            android:textDirection="locale"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tryAgain"
+            style="@style/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/try_again"
+            android:textColor="@drawable/ripple_text_purple_gray"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

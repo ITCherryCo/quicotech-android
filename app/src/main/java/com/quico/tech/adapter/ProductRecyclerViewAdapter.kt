@@ -1,33 +1,75 @@
 package com.quico.tech.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.getDrawable
+import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
 import com.quico.tech.databinding.ProductItemListBinding
-import com.quico.tech.model.Address
-import com.quico.tech.model.Card
-import com.quico.tech.model.Category
 import com.quico.tech.model.Product
-import java.security.AccessController.getContext
 
 
-class ProductRecyclerViewAdapter : RecyclerView.Adapter<ProductRecyclerViewAdapter.ItemViewHolder>() {
+class ProductRecyclerViewAdapter(val small:Boolean, val withSelection:Boolean, onProductSelect:OnProductSelect?) : RecyclerView.Adapter<ProductRecyclerViewAdapter.ItemViewHolder>() {
+    private var lastSelectedPosition = -1
+    private var defaultSelectedPosition = -1
+    private var onProductSelect = onProductSelect
 
-    class ItemViewHolder(private var binding: ProductItemListBinding) :
+    interface OnProductSelect{
+        fun onProductSelect(product: Product?)
+    }
+
+   inner class ItemViewHolder(private var binding: ProductItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product) {
             binding.apply {
-                productName.text = product.name
-                productImage.setImageDrawable(product.image)
-                productPrice.text = product.price.toString()
+                if (small) {
+                    largeContainer.visibility = View.GONE
+                    smallContainer.visibility = View.VISIBLE
+                    productName.text = product.name
+                    productImage.setImageDrawable(product.image)
+                    productPrice.text = product.price.toString()
+                } else {
+                    largeContainer.visibility = View.VISIBLE
+                    smallContainer.visibility = View.GONE
+                    largeProductName.text = product.name
+                    largeProductImage.setImageDrawable(product.image)
+                    largeProductPrice.text = product.price.toString()
+                }
+
+                if (withSelection) {
+                    cardView.setOnClickListener {
+                        lastSelectedPosition = absoluteAdapterPosition
+                        notifyDataSetChanged()
+                    }
+
+                    if (lastSelectedPosition == absoluteAdapterPosition) {
+                        setSelectedForm()
+                        onProductSelect!!.onProductSelect(product)
+                    }
+                    if (lastSelectedPosition != absoluteAdapterPosition) {
+                        setUnselectedForm()
+                    }
+                }
             }
         }
+
+            fun setSelectedForm() {
+                binding.apply {
+                    cardView.strokeColor = itemView.resources.getColor(R.color.color_primary_purple)
+                    cardView.strokeWidth = 5
+                }
+            }
+
+            fun setUnselectedForm() {
+                binding.apply {
+                    cardView.strokeColor = itemView.resources.getColor(R.color.input_field_hint)
+                    cardView.strokeWidth = 0
+                    //cardView.strokeWidth = 0
+                }
+            }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {

@@ -74,6 +74,14 @@
 
     </style>
 
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <style name="progressBarPurple" parent="@style/Theme.AppCompat">
         <item name="colorAccent">@color/color_primary_purple</item> <!-- Whatever color you want-->
     </style>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name_first_part">Quico</string>
+    <string name="app_name_second_part">Quico</string>
     <string name="app_name">Quico Tech</string>
     <string name="skip_btn_txt">skip</string>
     <string name="intro_first_slide_desc">Shop from a large amount \nof speacial electronic products \nand get them right to your door</string>
@@ -174,5 +176,24 @@ Diagnostic !! Submit a request now!!!</string>
     <string name="logged_out">Loggoud out successfully!</string>
     <string name="no_cards">No orders are found</string>
     <string name="change_password">Change Password</string>
+
+    <string name="filters">Filters</string>
+    <string name="no_search_result">No Search Result</string>
+    <string name="no_search_result_msg">There is no match product with your keywords</string>
+    <string name="search_hint">Search</string>
+    <string name="filter_by_categories">Filter By Categories</string>
+    <string name="categories">Categories</string>
+    <string name="filter">Filter</string>
+    <string name="brands">Brands</string>
+    <string name="price">Price</string>
+    <string name="colors">Colors</string>
+    <string name="memory_size">Memory size</string>
+    <string name="conditions">Conditions</string>
+    <string name="you_are_guest">You are Guest</string>
+    <string name="need_to_login">You need to login in order to start shopping </string>
+    <string name="enter_product_name">Please enter product name</string>
+    <string name="compare_with">Compare With</string>
+    <string name="compare_product">Compare product</string>
+    <string name="select_item_to_compare">Please select any item or search for item in order to compare</string>
 
 </resources>

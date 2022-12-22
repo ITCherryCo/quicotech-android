@@ -69,10 +69,49 @@
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/menu/menu_main.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/menu/toolbar.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/menu/toolbar_menu.xml" value="0.25416666666666665" />
+        <entry key="app/src/main/res/drawable/container_black_stroke_1.xml" value="0.1825" />
+        <entry key="app/src/main/res/layout/activity_address_list.xml" value="0.15388496468213925" />
+        <entry key="app/src/main/res/layout/activity_card_list.xml" value="0.15388496468213925" />
+        <entry key="app/src/main/res/layout/activity_cart.xml" value="0.15388496468213925" />
+        <entry key="app/src/main/res/layout/activity_checkout.xml" value="0.15388496468213925" />
+        <entry key="app/src/main/res/layout/activity_compare_product.xml" value="0.3020833333333333" />
+        <entry key="app/src/main/res/layout/activity_compare_search.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.3027252197265625" />
+        <entry key="app/src/main/res/layout/activity_intro.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/activity_maintenance_list.xml" value="0.15388496468213925" />
+        <entry key="app/src/main/res/layout/activity_order_list.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_request.xml" value="0.14631685166498487" />
+        <entry key="app/src/main/res/layout/activity_shipping_address.xml" value="0.15388496468213925" />
+        <entry key="app/src/main/res/layout/activity_verification_code.xml" value="0.15388496468213925" />
+        <entry key="app/src/main/res/layout/brand_item_selection.xml" value="0.3020833333333333" />
+        <entry key="app/src/main/res/layout/brand_search_item_selection.xml" value="0.4785932721712538" />
+        <entry key="app/src/main/res/layout/category_item_list.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/color_item_selection.xml" value="1.5" />
+        <entry key="app/src/main/res/layout/compare_product.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/error_container.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/filter_bottom_sheet.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/fragment_compare_product.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/fragment_home_content.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/fragment_service.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/fragment_shipping_address_list.xml" value="0.15388496468213925" />
+        <entry key="app/src/main/res/layout/loading_progress_dialog.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/product_item_list.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/search_item_list.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/service_item_list.xml" value="0.15388496468213925" />
+        <entry key="app/src/main/res/layout/shimmer_loading_brand_item.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_catory_item.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_product_item.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/shimmer_loading_service.xml" value="0.15388496468213925" />
+        <entry key="app/src/main/res/layout/shimmer_loding_filter_bottom_sheet.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/specification_item_list.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/toolbar.xml" value="0.3177083333333333" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

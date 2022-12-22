@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="17dp"
+        app:strokeColor="@color/input_field_hint"
+        android:layoutDirection="locale"
+        app:strokeWidth="0.5dp"
+        android:layout_margin="6dp">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:textAllCaps="true"
+            android:text="BRAND NAME"
+            android:textColor="@color/black"
+            android:layoutDirection="locale"
+            android:textDirection="locale"
+            android:fontFamily="@font/medium"
+            android:textSize="12sp" />
+    </com.google.android.material.card.MaterialCardView>
+
+</RelativeLayout>

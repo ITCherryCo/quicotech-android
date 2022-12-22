@@ -246,7 +246,8 @@ class RegisterActivity : AppCompatActivity() {
                             ) {
                                 Common.cancelProgressDialog()
                                 startActivity(
-                                    Intent(this@RegisterActivity, HomeTestActivity::class.java)
+                                   // Intent(this@RegisterActivity, HomeTestActivity::class.java)
+                                    Intent(this@RegisterActivity, HomeActivity::class.java)
                                 )
                                 viewModel.canRegister=false
                             }

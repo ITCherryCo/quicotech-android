@@ -40,6 +40,7 @@
     <color name="red_dark">#9A3622</color>
     <color name="orange">#FBB73E</color>
     <color name="shimmer_placeholder">#dddddd</color>
-
+    <color name="pink">#F9B3B3</color>
+    <color name="gray_compare">#F3F3F3</color>
 
 </resources>

@@ -1,56 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.balysv.materialripple.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/RippleStyleWhite"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.cardview.widget.CardView
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:id="@+id/smallContainer"
+        style="@style/RippleStyleWhite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardElevation="3dp"
-        android:layout_marginBottom="4dp"
-        app:cardCornerRadius="8dp"
-        android:layout_margin="8dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/productImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/product_image_test"
-                android:scaleType="centerCrop" />
-
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginBottom="4dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="3dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_margin="12dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/productName"
+                <ImageView
+                    android:id="@+id/productImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="fdfsdfds"
-                    android:textColor="@color/black" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/product_image_test" />
 
-                <TextView
-                    android:id="@+id/productPrice"
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="05 Jun 18, 10:22"
-                    android:textColor="@color/color_primary_purple"/>
+                    android:layout_margin="12dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/productName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="fdfsdfds"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/productPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="05 Jun 18, 10:22"
+                        android:textColor="@color/color_primary_purple" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </com.balysv.materialripple.MaterialRippleLayout>
 
-    </androidx.cardview.widget.CardView>
-</com.balysv.materialripple.MaterialRippleLayout>
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:id="@+id/largeContainer"
+        style="@style/RippleStyleWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layoutDirection="locale"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginBottom="4dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/largeProductImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/product_image_test" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginVertical="15dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/largeProductName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Drone 1.."
+                        android:textColor="@color/gray_dark"
+                        android:fontFamily="@font/regular"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:lines="1"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/largeProductPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="$60"
+                        android:lines="1"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/regular"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textColor="@color/color_primary_purple" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </com.balysv.materialripple.MaterialRippleLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

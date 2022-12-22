@@ -136,36 +136,6 @@
             android:fontFamily="@font/regular"
             android:textColor="@drawable/ripple_text_purple_gray" />
 
-        <TextView
-            android:id="@+id/orText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/or"
-            android:textColor="@color/gray_dark"
-            android:layout_marginTop="15dp"
-            android:textDirection="locale"
-            android:layoutDirection="locale"
-
-            android:fontFamily="@font/regular"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/callText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:layout_gravity="center"
-            android:text="@string/call"
-            android:layout_marginTop="15dp"
-            android:textAllCaps="true"
-            android:textSize="16sp"
-            android:textDirection="locale"
-            android:layoutDirection="locale"
-            android:textStyle="bold"
-            android:fontFamily="@font/regular"
-            android:textColor="@drawable/ripple_text_purple_gray" />
-
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/verifyBtn"

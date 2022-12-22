@@ -124,7 +124,7 @@ class LoginActivity : AppCompatActivity() {
                     override fun onSuccess(success: Boolean, resultTitle: String, message: String) {
                         Common.cancelProgressDialog()
                         startActivity(
-                            Intent(this@LoginActivity, HomeTestActivity::class.java)
+                            Intent(this@LoginActivity, HomeActivity::class.java)
                         )
                     }
 

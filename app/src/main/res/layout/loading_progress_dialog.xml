@@ -13,9 +13,9 @@
         android:id="@+id/progressBar"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:theme="@style/progressBarPurple"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"/>
+        android:layout_marginTop="25dp"
+        android:theme="@style/progressBarPurple" />
 
     <TextView
         android:id="@+id/loadingText"

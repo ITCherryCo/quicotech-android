@@ -7,28 +7,32 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import com.quico.tech.R
 import com.quico.tech.activity.*
 import com.quico.tech.data.Constant
-import com.quico.tech.databinding.FragmentHomeBinding
 import com.quico.tech.databinding.FragmentProfileBinding
 import com.quico.tech.viewmodel.SharedViewModel
 
 
 class ProfileFragment : Fragment() {
-    private lateinit var binding : FragmentProfileBinding
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: SharedViewModel by viewModels()
-
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setUpText()
         binding.apply {
@@ -68,8 +72,6 @@ class ProfileFragment : Fragment() {
                 startActivity(Intent(activity, SettingsActivity::class.java))
             }
         }
-
-        return binding.getRoot()
     }
 
 
