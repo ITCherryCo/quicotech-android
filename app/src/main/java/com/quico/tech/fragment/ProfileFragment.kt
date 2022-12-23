@@ -36,6 +36,20 @@ class ProfileFragment : Fragment() {
 
         setUpText()
         binding.apply {
+
+            if (viewModel.current_session_id==null){
+                loginInfo.visibility = View.GONE
+                errorContainer.visibility = View.VISIBLE
+            }
+            else{
+                loginInfo.visibility = View.VISIBLE
+                errorContainer.visibility = View.GONE
+            }
+
+            loginBtn.setOnClickListener {
+                startActivity(Intent(activity, LoginActivity::class.java))
+            }
+
             editImage.setOnClickListener {
                 startActivity(Intent(activity, EditProfileActivity::class.java))
             }
@@ -46,16 +60,15 @@ class ProfileFragment : Fragment() {
 
             shippingImage.setOnClickListener {
                 startActivity(Intent(activity, ShippingAddressActivity::class.java))
-                // startActivity(Intent(this@ProfileActivity, ShippingAddressListActivity::class.java))
             }
 
-            ongoingOrderImage.setOnClickListener {
+            deliveryOrderImage.setOnClickListener {
                 startActivity(
                     Intent(activity, OrderListActivity::class.java)
                     .putExtra(Constant.ORDERS_TYPE, Constant.ONGOING_ORDERS))
             }
 
-            doneOrderImage.setOnClickListener {
+            serviceOrderImage.setOnClickListener {
                 startActivity(
                     Intent(activity, OrderListActivity::class.java)
                     .putExtra(Constant.ORDERS_TYPE, Constant.DONE_ORDERS))
@@ -80,11 +93,14 @@ class ProfileFragment : Fragment() {
             title.text = viewModel.getLangResources().getString(R.string.profile)
             cardText.text = viewModel.getLangResources().getString(R.string.card)
             shippingAddressesText.text = viewModel.getLangResources().getString(R.string.shipping_addresses)
-            doneOrdersText.text = viewModel.getLangResources().getString(R.string.done_orders)
-            ongoingOrdersText.text = viewModel.getLangResources().getString(R.string.ongoing_orders)
+            deliveryOrdersText.text = viewModel.getLangResources().getString(R.string.delivery_orders)
+            serviceOrdersText.text = viewModel.getLangResources().getString(R.string.service_orders)
             faqText.text = viewModel.getLangResources().getString(R.string.faq)
             termsText.text = viewModel.getLangResources().getString(R.string.terms_and_conditions)
             settingsText.text = viewModel.getLangResources().getString(R.string.settings)
+            errorMsg1.text = viewModel.getLangResources().getString(R.string.you_are_guest)
+            errorMsg2.text = viewModel.getLangResources().getString(R.string.need_to_login)
+            loginBtn.text = viewModel.getLangResources().getString(R.string.login)
 
         }
     }

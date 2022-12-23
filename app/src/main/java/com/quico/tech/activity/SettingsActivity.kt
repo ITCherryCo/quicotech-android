@@ -112,7 +112,7 @@ class SettingsActivity : AppCompatActivity() {
                                     Common.setUpAlert(
                                         this@SettingsActivity, false,
                                         viewModel.getLangResources().getString(R.string.error),
-                                        viewModel.getLangResources().getString(R.string.error_msg),
+                                        message,
                                         viewModel.getLangResources().getString(R.string.ok),
                                         null
                                     )

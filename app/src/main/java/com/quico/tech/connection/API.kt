@@ -9,18 +9,27 @@ interface API {
 
     @POST("register")
     @Headers("Content-Type: application/json")
-    suspend fun register(@Body registerBody: RegisterBodyParameters): Response<StandardResponse>
+    suspend fun register(@Body registerBody: RegisterBodyParameters): Response<RegisterResponse>
 
     @POST("login")
    // @Headers("Content-Type: application/json")
-    suspend fun login(@Body registerBody: RegisterBodyParameters): Response<StandardResponse>
+    suspend fun login(@Body registerBody: RegisterBodyParameters): Response<RegisterResponse>
 
     @GET("getUser")
    // @Headers("Content-Type: application/json")
     suspend fun getUser(@Header("Cookie") session_id:String): Response<UserResponse>
 
     @GET("logout")
-    suspend fun logout(@Header("Cookie") session_id:String): Response<UserResponse>
+    suspend fun logout(@Header("Cookie") session_id:String): Response<RegisterResponse>
+
+    @GET("updateUserInfo")
+    suspend fun updateUserInfo(@Header("Cookie") session_id:String,@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
+
+    @GET("updateEmail")
+    suspend fun updateEmail(@Header("Cookie") session_id:String,@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
+
+    @GET("updateMobile")
+    suspend fun updateMobile(@Header("Cookie") session_id:String,@Body updateUserBody: RegisterBodyParameters): Response<RegisterResponse>
 
     @GET("getAddresses")
     suspend fun getAddresses(@Query("customer_id") customer_id: Int?): Response<AddressResponse>

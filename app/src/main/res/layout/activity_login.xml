@@ -171,8 +171,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:layout_marginBottom="60dp"
                     android:text="@string/continue_as_guest"
+                    android:clickable="true"
+                    android:textColor="@drawable/ripple_text_purple_gray" />
+
+                <TextView
+                    android:id="@+id/forgetPasswordText"
+                    style="@style/loginTitleTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:layout_marginBottom="60dp"
+                    android:text="@string/forget_password"
                     android:clickable="true"
                     android:textColor="@drawable/ripple_text_purple_gray" />
 

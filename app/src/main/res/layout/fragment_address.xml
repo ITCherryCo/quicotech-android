@@ -16,37 +16,7 @@
         style="@style/addressTextStyle"
         android:hint="@string/contact_name" />
 
-    <LinearLayout
-        android:id="@+id/phoneContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:textColorHint="@color/gray_dark"
-        android:layoutDirection="locale"
-        android:layout_marginTop="20dp">
 
-        <com.hbb20.CountryCodePicker
-            android:id="@+id/countryPicker"
-            android:layout_width="0dp"
-            android:layout_weight="0.3"
-            android:textDirection="locale"
-            android:layoutDirection="locale"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            app:ccp_autoDetectCountry="true"
-            app:ccp_contentColor="@color/black"
-            app:ccp_textSize="10sp"/>
-
-        <EditText
-            android:id="@+id/phoneField"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            style="@style/addressTextStyle"
-            android:layout_marginStart="10dp"
-            android:hint="@string/mobile" />
-
-    </LinearLayout>
 
     <EditText
         android:id="@+id/streetField"
@@ -64,22 +34,6 @@
         style="@style/addressTextStyle"
         android:layout_marginTop="20dp"/>
 
-    <EditText
-        android:id="@+id/countryField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/lebanon"
-        style="@style/addressTextStyle"
-        android:enabled="false"
-        android:layout_marginTop="20dp"/>
-
-    <EditText
-        android:id="@+id/stateField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/start_shopping"
-        style="@style/addressTextStyle"
-        android:layout_marginTop="20dp"/>
 
     <EditText
         android:id="@+id/cityField"

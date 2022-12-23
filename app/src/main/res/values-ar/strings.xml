@@ -195,5 +195,10 @@ Diagnostic !! Submit a request now!!!</string>
     <string name="compare_with">Compare With</string>
     <string name="compare_product">Compare product</string>
     <string name="select_item_to_compare">Please select any item or search for item in order to compare</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="delivery_orders">Delivery Orders</string>
+    <string name="service_orders">Service Orders</string>
+    <string name="login_successfully">Logged in successfully</string>
+    <string name="info_updates_successfully">Your info are updated successfully</string>
 
 </resources>

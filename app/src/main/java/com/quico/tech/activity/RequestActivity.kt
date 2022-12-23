@@ -54,8 +54,10 @@ class RequestActivity : AppCompatActivity() {
     var audioPath = ""
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var mediaRecorder: MediaRecorder
-    class PhotoService(val id:Int,val img:Uri)
-    private var id_generator=1
+
+    class PhotoService(val id: Int, val img: Uri)
+
+    private var id_generator = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,15 +91,25 @@ class RequestActivity : AppCompatActivity() {
                 )
             }
 
-            imageContainer.setOnClickListener {
-                if (total_pics_count < 4)
-                    checkGalleryPermissions()
+
+
+            add1.setOnClickListener {
+                // if (total_pics_count < 4)
+                checkGalleryPermissions()
             }
 
-            addImage.setOnClickListener {
-                if (total_pics_count < 4)
-                    checkGalleryPermissions()
+            add2.setOnClickListener {
+                checkGalleryPermissions()
             }
+
+            add3.setOnClickListener {
+                checkGalleryPermissions()
+            }
+
+            add4.setOnClickListener {
+                checkGalleryPermissions()
+            }
+
             setUpVoiceRecorder()
         }
     }
@@ -112,14 +124,17 @@ class RequestActivity : AppCompatActivity() {
     }
 
     private fun openGallery() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        intent.action = Intent.ACTION_GET_CONTENT
+        /*  val intent = Intent()
+          intent.type = "image/*"
+          intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+          intent.action = Intent.ACTION_GET_CONTENT
+          imageLauncher.launch(intent) */
+           this is for selecting multiple image
+         */
 
         val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            .putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        imageLauncher.launch(intent)
+        imageLauncher.launch(gallery)
+
     }
 
     var imageLauncher =
@@ -127,36 +142,50 @@ class RequestActivity : AppCompatActivity() {
             ActivityResultContracts.StartActivityForResult(),
             ActivityResultCallback<ActivityResult> { result ->
                 if (result.resultCode == RESULT_OK) {
-                    if (result.data != null && result.data!!.clipData != null) {
-                        pics_count = result.data!!.clipData!!.itemCount
+                    if (result.data != null && result.data!!.data != null) {
 
-                        total_pics_count = photos.size
-                        pics_left = max_pics - total_pics_count
-
-                        if (pics_count > 0) {
-                            if (pics_count >= max_pics)
-                                iteration_nb = max_pics
-                            else if (pics_count < max_pics) {
-                                if (pics_count < pics_left)
-                                    iteration_nb = pics_count
-                                else if (pics_count >= pics_left)
-                                    iteration_nb = pics_left
-                            }
-
-                            for (i in 0 until iteration_nb) {
-                                photos.add(PhotoService(id_generator,result.data!!.clipData!!.getItemAt(i).uri))
-                                id_generator++
-                            }
-                            binding.uploadImage.visibility = View.GONE
-                            binding.recyclerView.visibility = View.VISIBLE
+                        var imageUri = result.data!!.data
+                        if (photos.size < 4) {
+                            photos.add(PhotoService(id_generator, imageUri!!))
+                            id_generator++
                             requestPhotoRecyclerViewAdapter.differ.submitList(photos)
-
-                        } else {
-                            binding.uploadImage.visibility = View.VISIBLE
-                            binding.recyclerView.visibility = View.GONE
                         }
-                    }
-                    else{
+                        when (photos.size) {
+                            1 -> binding.add4.visibility = View.INVISIBLE
+                            2 -> binding.add3.visibility = View.INVISIBLE
+                            3 -> binding.add2.visibility = View.INVISIBLE
+                            4 -> binding.add1.visibility = View.INVISIBLE
+                        }
+                        // binding.profileImage.setImageURI(imageUri)
+
+//                        pics_count = result.data!!.clipData!!.itemCount
+//
+//                        total_pics_count = photos.size
+//                        pics_left = max_pics - total_pics_count
+//
+//                        if (pics_count > 0) {
+//                            if (pics_count >= max_pics)
+//                                iteration_nb = max_pics
+//                            else if (pics_count < max_pics) {
+//                                if (pics_count < pics_left)
+//                                    iteration_nb = pics_count
+//                                else if (pics_count >= pics_left)
+//                                    iteration_nb = pics_left
+//                            }
+//
+//                            for (i in 0 until iteration_nb) {
+//                                photos.add(PhotoService(id_generator,result.data!!.clipData!!.getItemAt(i).uri))
+//                                id_generator++
+//                            }
+//                            binding.uploadImage.visibility = View.GONE
+//                            binding.recyclerView.visibility = View.VISIBLE
+//                            requestPhotoRecyclerViewAdapter.differ.submitList(photos)
+//
+//                        } else {
+//                            binding.uploadImage.visibility = View.VISIBLE
+//                            binding.recyclerView.visibility = View.GONE
+//                        }
+                    } else {
                         Toast.makeText(
                             this,
                             null,
@@ -175,11 +204,44 @@ class RequestActivity : AppCompatActivity() {
                 override fun onDeletePhoto(position: Int) {
                     photos.removeAt(position)
                     requestPhotoRecyclerViewAdapter.differ.submitList(photos)
-                    total_pics_count = photos.size
-                    pics_left = max_pics - total_pics_count
+                    //  total_pics_count = photos.size
+                    //  pics_left = max_pics - total_pics_count
 
-                    if (photos.isEmpty())
-                        uploadImage.visibility = View.VISIBLE
+                    when (photos.size) {
+                        1 -> {
+                            binding.add1.visibility = View.VISIBLE
+                            binding.add2.visibility = View.VISIBLE
+                            binding.add3.visibility = View.VISIBLE
+                            binding.add4.visibility = View.INVISIBLE
+                        }
+                        2 -> {
+                            binding.add1.visibility = View.VISIBLE
+                            binding.add2.visibility = View.VISIBLE
+                            binding.add3.visibility = View.INVISIBLE
+                            binding.add4.visibility = View.INVISIBLE
+                        }
+
+                        3 -> {
+                            binding.add1.visibility = View.VISIBLE
+                            binding.add2.visibility = View.INVISIBLE
+                            binding.add3.visibility = View.INVISIBLE
+                            binding.add4.visibility = View.INVISIBLE
+                        }
+
+                        4 -> {
+                            binding.add1.visibility = View.INVISIBLE
+                            binding.add2.visibility = View.INVISIBLE
+                            binding.add3.visibility = View.INVISIBLE
+                            binding.add4.visibility = View.INVISIBLE
+                        }
+                    }
+
+                    if (photos.isEmpty()) {
+                        add1.visibility = View.VISIBLE
+                        add2.visibility = View.VISIBLE
+                        add3.visibility = View.VISIBLE
+                        add4.visibility = View.VISIBLE
+                    }
                 }
             })
             recyclerView.layoutManager = GridLayoutManager(this@RequestActivity, 2)
@@ -192,7 +254,7 @@ class RequestActivity : AppCompatActivity() {
 
     private fun setUpVoiceRecorder() {
         binding.apply {
-
+/*
             recordBtn.setRecordView(recordView)
             recordView.setCancelBounds(8f)
             recordView.setLessThanSecondAllowed(false)
@@ -291,7 +353,7 @@ class RequestActivity : AppCompatActivity() {
                     "RecordView",
                     "Basket Animation Finished"
                 )
-            }
+            }*/
         }
     }
 
@@ -310,7 +372,7 @@ class RequestActivity : AppCompatActivity() {
                 voicePlayerView.setAudio(audioPath)
                 deleteImage.setOnClickListener {
                     hideCurrentVoice()
-                   // recordView.setEnabled(true)
+                    // recordView.setEnabled(true)
                 }
             }
         }
@@ -326,7 +388,7 @@ class RequestActivity : AppCompatActivity() {
         // here  must stop playing audio
         try {
             stopRecording(false)
-         //   binding.recordView.cancelRecord()
+            //   binding.recordView.cancelRecord()
         } catch (e: Exception) {
         }
     }
@@ -345,12 +407,12 @@ class RequestActivity : AppCompatActivity() {
                     "RecordView",
                     "CANT DELETE FILE"
                 )
-        }catch (e:java.lang.Exception){
+        } catch (e: java.lang.Exception) {
 
         }
     }
 
-    private fun deleteAllFiles(){
+    private fun deleteAllFiles() {
         try {
             recordFile?.let {
                 if (recordFile!!.isDirectory) {
@@ -360,7 +422,7 @@ class RequestActivity : AppCompatActivity() {
                     }
                 }
             }
-        }catch (e:java.lang.Exception){
+        } catch (e: java.lang.Exception) {
         }
     }
 

@@ -1,5 +1,6 @@
 package com.quico.tech.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -71,6 +72,9 @@ class HomeActivity : AppCompatActivity() {
             Common.changeOverflowMenuIconColor(toolbarInclude.toolbar, resources.getColor(R.color.color_primary_purple))
             Common.setSystemBarColor(this@HomeActivity, R.color.white)
             Common.setSystemBarLight(this@HomeActivity)
+            toolbarInclude.bagIcon.setOnClickListener {
+                startActivity(Intent(this@HomeActivity, CartActivity::class.java))
+            }
         }
     }
 

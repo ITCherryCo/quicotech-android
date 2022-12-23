@@ -18,7 +18,7 @@ object RetrofitInstance {
         Retrofit.Builder()
             .baseUrl(WEB_BASE_URL)
             .client(createHttpClient())
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
             //.cookieJar(new JavaNetCookieJar(new CookieManager()))
             .build()
     }

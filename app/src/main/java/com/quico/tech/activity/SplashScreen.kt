@@ -13,13 +13,14 @@ class SplashScreen : AppCompatActivity() {
 
         val prefManager: PrefManager = PrefManager(applicationContext)
 
+       // prefManager.session_id= null
         if (prefManager!!.isFirstTimeLaunch || prefManager.session_id.isNullOrEmpty()) {
+            prefManager.isFirstTimeLaunch = false
             startActivity(
                 Intent(this, LoginActivity::class.java)
             )
         } else
             startActivity(
-                //Intent(this, HomeTestActivity::class.java)
                 Intent(this, HomeActivity::class.java)
             )
     }
