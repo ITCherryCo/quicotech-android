@@ -200,5 +200,8 @@ Diagnostic !! Submit a request now!!!</string>
     <string name="service_orders">Service Orders</string>
     <string name="login_successfully">Logged in successfully</string>
     <string name="info_updates_successfully">Your info are updated successfully</string>
+    <string name="new_password">New Password</string>
+    <string name="change_current_password">Change Current Password</string>
+    <string name="wishlist">Wishlist</string>
 
 </resources>

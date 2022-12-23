@@ -35,16 +35,29 @@ class EditEmailPhoneActivity : AppCompatActivity() {
             when (edit_profile_type) {
                 Constant.PHONE_NUMBER -> {
                     emailMobileText.text = viewModel.getLangResources().getString(R.string.mobile_number)
-                    phoneField.hint = "70707070"
+                    phoneField.hint = viewModel.getLangResources().getString(R.string.phone_number_example)
                     phoneContainer.visibility = View.VISIBLE
                     emailField.visibility = View.GONE
+                    passwordContainer.visibility = View.GONE
                 }
 
                 Constant.EMAIL -> {
                     emailMobileText.text = viewModel.getLangResources().getString(R.string.email_address)
                     emailField.hint = viewModel.getLangResources().getString(R.string.email_example)
                     phoneContainer.visibility = View.GONE
+                    passwordContainer.visibility = View.GONE
                     emailField.visibility = View.VISIBLE
+                }
+
+                Constant.PASSWORD -> {
+                    emailMobileText.text = viewModel.getLangResources().getString(R.string.change_current_password)
+                    phoneContainer.visibility = View.GONE
+                    emailField.visibility = View.GONE
+                    passwordContainer.visibility = View.VISIBLE
+                    passwordText.text = viewModel.getLangResources().getString(R.string.new_password)
+                    passwordField.hint = viewModel.getLangResources().getString(R.string.new_password)
+                    confirmPasswordText.text = viewModel.getLangResources().getString(R.string.confirm_password)
+                    confirmPasswordField.hint = viewModel.getLangResources().getString(R.string.confirm_password)
                 }
             }
         }

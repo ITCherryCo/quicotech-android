@@ -1,87 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.SearchFragment"
     android:background="@color/gray_light"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".fragment.SearchFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+
+    <include
+        android:id="@+id/searchToolbar"
+        layout="@layout/wish_toolbar" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:elevation="1dp"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:layoutDirection="locale">
+        android:layout_height="45dp"
+        android:background="@color/white"
+        android:layoutDirection="locale"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="5dp">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/filterText"
+            style="@style/addressTextStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layoutDirection="locale">
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/filterImage"
+            android:fontFamily="@font/regular"
+            android:gravity="start|center_vertical"
+            android:text="@string/filter"
+            android:textAllCaps="true"
+            android:textColor="@color/gray_dark" />
 
-            <TextView
-                android:id="@+id/title"
-                style="@style/titleStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:layout_toStartOf="@+id/cartImage"
-                android:layout_toEndOf="@+id/back_arrow"
-                android:text="@string/filters" />
+        <ImageView
+            android:id="@+id/filterImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:layoutDirection="locale"
+            android:src="@drawable/filter" />
 
-            <ImageView
-                android:id="@+id/cartImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:layout_alignParentEnd="true"
-                android:layoutDirection="locale"
-                android:layout_marginEnd="20dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/bag" />
-        </RelativeLayout>
-    </androidx.appcompat.widget.Toolbar>
+    </RelativeLayout>
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="5dp"
-                android:layoutDirection="locale"
-                android:background="@color/white">
-
-                <TextView
-                    android:id="@+id/filterText"
-                    style="@style/addressTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
-                    android:layout_toStartOf="@+id/filterImage"
-                    android:fontFamily="@font/regular"
-                    android:gravity="start|center_vertical"
-                    android:text="@string/filter"
-                    android:textAllCaps="true"
-                    android:textColor="@color/gray_dark" />
-
-                <ImageView
-                    android:id="@+id/filterImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    android:layoutDirection="locale"
-                    android:src="@drawable/filter" />
-
-            </RelativeLayout>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -97,44 +63,49 @@
                 layout="@layout/error_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                android:layout_marginTop="150dp" />
+                android:layout_marginTop="150dp"
+                android:visibility="gone" />
 
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/categoryShimmer"
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/categoryShimmer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/totalContainer"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginVertical="32dp"
+                android:layoutDirection="locale"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:visibility="gone"
+                app:shimmer_auto_start="false"
+                app:shimmer_duration="1000">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"
-                    android:layout_gravity="center"
-                    app:shimmer_auto_start="false"
-                    android:layout_marginVertical="32dp"
-                    android:layout_marginHorizontal="5dp"
-                    android:layout_above="@+id/totalContainer"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
-                    android:layoutDirection="locale"
-                    app:shimmer_duration="1000">
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                    <include layout="@layout/shimmer_loading_category_item" />
 
-                        <include layout="@layout/shimmer_loading_category_item" />
-                        <include layout="@layout/shimmer_loading_category_item" />
-                        <include layout="@layout/shimmer_loading_category_item" />
-                        <include layout="@layout/shimmer_loading_category_item" />
-                        <include layout="@layout/shimmer_loading_category_item" />
-                        <include layout="@layout/shimmer_loading_category_item" />
+                    <include layout="@layout/shimmer_loading_category_item" />
 
-                    </LinearLayout>
-                </com.facebook.shimmer.ShimmerFrameLayout>
+                    <include layout="@layout/shimmer_loading_category_item" />
+
+                    <include layout="@layout/shimmer_loading_category_item" />
+
+                    <include layout="@layout/shimmer_loading_category_item" />
+
+                    <include layout="@layout/shimmer_loading_category_item" />
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <LinearLayout
                 android:id="@+id/categoryContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layoutDirection="locale"
                 android:layout_marginTop="10dp"
+                android:layoutDirection="locale"
                 android:orientation="vertical">
 
                 <TextView
@@ -142,57 +113,61 @@
                     style="@style/titleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
                     android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
                     android:gravity="start"
                     android:layoutDirection="locale"
-                    android:textDirection="locale"
                     android:text="@string/categories"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:textDirection="locale" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/categoryRecyclerView"
-                    android:layoutDirection="locale"
-                    android:padding="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layoutDirection="locale"
+                    android:padding="10dp" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/productRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginVertical="20dp" />
+                android:id="@+id/productRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                android:layout_marginTop="10dp" />
 
             <include
                 android:id="@+id/items_error_container"
                 layout="@layout/error_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                android:layout_marginVertical="30dp"/>
+                android:layout_marginVertical="30dp"
+                android:visibility="gone" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/productShimmer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                app:shimmer_auto_start="false"
-                android:padding="5dp"
-                android:visibility="gone"
                 android:layout_above="@+id/totalContainer"
-                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:layout_gravity="center"
                 android:layoutDirection="locale"
+                android:padding="5dp"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:visibility="gone"
+                app:shimmer_auto_start="false"
                 app:shimmer_duration="1000">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
                     <include layout="@layout/shimmer_loading_product_item" />
+
                     <include layout="@layout/shimmer_loading_product_item" />
+
                     <include layout="@layout/shimmer_loading_product_item" />
+
                     <include layout="@layout/shimmer_loading_product_item" />
 
                 </LinearLayout>
@@ -202,8 +177,8 @@
                 android:id="@+id/progressBar"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:visibility="gone"
-                android:theme="@style/progressBarPurple"/>
+                android:theme="@style/progressBarPurple"
+                android:visibility="gone" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -11,10 +11,7 @@ import androidx.fragment.app.Fragment
 import com.gauravk.bubblenavigation.listener.BubbleNavigationChangeListener
 import com.quico.tech.R
 import com.quico.tech.databinding.ActivityHomeBinding
-import com.quico.tech.fragment.HomeFragment
-import com.quico.tech.fragment.ProfileFragment
-import com.quico.tech.fragment.SearchFragment
-import com.quico.tech.fragment.ServiceFragment
+import com.quico.tech.fragment.*
 import com.quico.tech.utils.Common
 
 class HomeActivity : AppCompatActivity() {
@@ -23,6 +20,7 @@ class HomeActivity : AppCompatActivity() {
     private var fragmentHome: HomeFragment? = null
     private var fragmentSearch: SearchFragment? = null
     private var fragmentService: ServiceFragment? = null
+    private var fragmentWishlist: WishlistFragment? = null
     private var fragmentProfile: ProfileFragment? = null
     var fragment: Fragment? = null
 
@@ -54,7 +52,8 @@ class HomeActivity : AppCompatActivity() {
                     if (fragmentService == null) fragmentService = ServiceFragment()
                     fragment = fragmentService
                 } else if (position == 3) { //search page selected
-
+                    if (fragmentWishlist == null) fragmentWishlist = WishlistFragment()
+                    fragment = fragmentWishlist
                 }
                 else if (position == 4) { //search page selected
                     if (fragmentProfile == null) fragmentProfile = ProfileFragment()

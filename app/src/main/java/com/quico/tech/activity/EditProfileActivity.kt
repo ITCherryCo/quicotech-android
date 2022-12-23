@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat
 import com.quico.tech.R
 import com.quico.tech.data.Constant
 import com.quico.tech.data.Constant.EMAIL
+import com.quico.tech.data.Constant.PASSWORD
 import com.quico.tech.data.Constant.PHONE_NUMBER
 import com.quico.tech.databinding.ActivityEditProfileBinding
 import com.quico.tech.model.UpdateUserBodyParameters
@@ -69,6 +70,13 @@ class EditProfileActivity : AppCompatActivity() {
                 startActivity(
                     Intent(this@EditProfileActivity, EditEmailPhoneActivity::class.java)
                         .putExtra(Constant.PROFILE_EDIT_TYPE, EMAIL)
+                )
+            }
+
+            changePasswordBtn.setOnClickListener {
+                startActivity(
+                    Intent(this@EditProfileActivity, EditEmailPhoneActivity::class.java)
+                        .putExtra(Constant.PROFILE_EDIT_TYPE, PASSWORD)
                 )
             }
         }

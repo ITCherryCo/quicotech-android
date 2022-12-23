@@ -1,13 +1,11 @@
 package com.quico.tech.activity
 
-import android.Manifest
 import android.content.Intent
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
+import android.provider.ContactsContract.Contacts.Photo
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -17,26 +15,18 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker
 import androidx.core.net.toUri
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
-import com.devlomi.record_view.OnRecordListener
-import com.devlomi.record_view.RecordPermissionHandler
 import com.quico.tech.R
 import com.quico.tech.adapter.RequestPhotoRecyclerViewAdapter
 import com.quico.tech.data.Constant
-import com.quico.tech.data.Constant.APP_MEDIA_PATH
 import com.quico.tech.data.Constant.SERVICE_ID
 import com.quico.tech.databinding.ActivityRequestBinding
 import com.quico.tech.utils.AudioRecorder
 import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 import java.io.File
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class RequestActivity : AppCompatActivity() {
@@ -54,8 +44,10 @@ class RequestActivity : AppCompatActivity() {
     var audioPath = ""
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var mediaRecorder: MediaRecorder
+    private lateinit var current_photo: PhotoService
+    private  var current_photo_position: Int=-1
 
-    class PhotoService(val id: Int, val img: Uri)
+    class PhotoService(val id: Int, var img: Uri?)
 
     private var id_generator = 1
 
@@ -93,22 +85,22 @@ class RequestActivity : AppCompatActivity() {
 
 
 
-            add1.setOnClickListener {
-                // if (total_pics_count < 4)
-                checkGalleryPermissions()
-            }
-
-            add2.setOnClickListener {
-                checkGalleryPermissions()
-            }
-
-            add3.setOnClickListener {
-                checkGalleryPermissions()
-            }
-
-            add4.setOnClickListener {
-                checkGalleryPermissions()
-            }
+//            add1.setOnClickListener {
+//                // if (total_pics_count < 4)
+//                checkGalleryPermissions()
+//            }
+//
+//            add2.setOnClickListener {
+//                checkGalleryPermissions()
+//            }
+//
+//            add3.setOnClickListener {
+//                checkGalleryPermissions()
+//            }
+//
+//            add4.setOnClickListener {
+//                checkGalleryPermissions()
+//            }
 
             setUpVoiceRecorder()
         }
@@ -145,21 +137,25 @@ class RequestActivity : AppCompatActivity() {
                     if (result.data != null && result.data!!.data != null) {
 
                         var imageUri = result.data!!.data
-                        if (photos.size < 4) {
-                            photos.add(PhotoService(id_generator, imageUri!!))
-                            id_generator++
-                            requestPhotoRecyclerViewAdapter.differ.submitList(photos)
-                        }
-                        when (photos.size) {
-                            1 -> binding.add4.visibility = View.INVISIBLE
-                            2 -> binding.add3.visibility = View.INVISIBLE
-                            3 -> binding.add2.visibility = View.INVISIBLE
-                            4 -> binding.add1.visibility = View.INVISIBLE
-                        }
-                        // binding.profileImage.setImageURI(imageUri)
+                       // photos.set(current_photo_position,PhotoService(current_photo.id,imageUri))
+                        photos.get(current_photo_position).img=imageUri
+                        Log.d("CURRENT_PHOTO",current_photo_position.toString() + " "  +current_photo.id.toString())
+                        requestPhotoRecyclerViewAdapter.differ.submitList(photos)
 
+//                        if (photos.size < 4) {
+//                            photos.add(PhotoService(id_generator, imageUri!!))
+//                            id_generator++
+//                            requestPhotoRecyclerViewAdapter.differ.submitList(photos)
+//                        }
+//                        when (photos.size) {
+//                            1 -> binding.add4.visibility = View.INVISIBLE
+//                            2 -> binding.add3.visibility = View.INVISIBLE
+//                            3 -> binding.add2.visibility = View.INVISIBLE
+//                            4 -> binding.add1.visibility = View.INVISIBLE
+//                        }
+
+                        // binding.profileImage.setImageURI(imageUri)
 //                        pics_count = result.data!!.clipData!!.itemCount
-//
 //                        total_pics_count = photos.size
 //                        pics_left = max_pics - total_pics_count
 //
@@ -199,15 +195,26 @@ class RequestActivity : AppCompatActivity() {
     fun setUpPhotosAdapter() {
         binding.apply {
 
+            photos.add(PhotoService(1,null))
+            photos.add(PhotoService(2,null))
+            photos.add(PhotoService(3,null))
+            photos.add(PhotoService(4,null))
+
             requestPhotoRecyclerViewAdapter = RequestPhotoRecyclerViewAdapter(object :
-                RequestPhotoRecyclerViewAdapter.OnDeletePhoto {
-                override fun onDeletePhoto(position: Int) {
-                    photos.removeAt(position)
-                    requestPhotoRecyclerViewAdapter.differ.submitList(photos)
+                RequestPhotoRecyclerViewAdapter.OnAddPhoto {
+                override fun onAddPhoto(position: Int,currentPhoto:PhotoService) {
+
+                    if (currentPhoto.img==null){
+                        current_photo = currentPhoto
+                        current_photo_position = position
+                        checkGalleryPermissions()
+                    }
+
+                    //requestPhotoRecyclerViewAdapter.differ.submitList(photos)
                     //  total_pics_count = photos.size
                     //  pics_left = max_pics - total_pics_count
 
-                    when (photos.size) {
+                  /*  when (photos.size) {
                         1 -> {
                             binding.add1.visibility = View.VISIBLE
                             binding.add2.visibility = View.VISIBLE
@@ -241,9 +248,11 @@ class RequestActivity : AppCompatActivity() {
                         add2.visibility = View.VISIBLE
                         add3.visibility = View.VISIBLE
                         add4.visibility = View.VISIBLE
-                    }
+                    }*/
                 }
             })
+
+
             recyclerView.layoutManager = GridLayoutManager(this@RequestActivity, 2)
             recyclerView.setItemAnimator(DefaultItemAnimator())
             recyclerView.setAdapter(requestPhotoRecyclerViewAdapter)

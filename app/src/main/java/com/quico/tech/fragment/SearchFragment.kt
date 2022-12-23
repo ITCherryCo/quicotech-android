@@ -62,12 +62,13 @@ class SearchFragment : Fragment() {
     private fun setUpText() {
         binding.apply {
 
-            title.text = viewModel.getLangResources().getString(R.string.filters)
+            searchToolbar.title.text = viewModel.getLangResources().getString(R.string.filters)
             filterText.text = viewModel.getLangResources().getString(R.string.filter)
+            searchToolbar.heartImage.visibility = View.GONE
             filterImage.setOnClickListener {
                 setUpFilerBottomSheet()
             }
-            cartImage.setOnClickListener {
+            searchToolbar.cartImage.setOnClickListener {
                 startActivity(Intent(requireContext(),CompareSearchActivity::class.java))
             }
         }

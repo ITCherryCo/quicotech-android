@@ -1,32 +1,53 @@
 package com.quico.tech.adapter
 
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.activity.RequestActivity
+import com.quico.tech.databinding.RepairPhotoItemListBinding
 import com.quico.tech.databinding.ServicePhotoItemListBinding
 
-class RequestPhotoRecyclerViewAdapter(onDeletePhoto:OnDeletePhoto) : RecyclerView.Adapter<RequestPhotoRecyclerViewAdapter.ItemViewHolder>() {
-    private var onDeletePhoto = onDeletePhoto
+class RequestPhotoRecyclerViewAdapter(onAddPhoto:OnAddPhoto) : RecyclerView.Adapter<RequestPhotoRecyclerViewAdapter.ItemViewHolder>() {
+    private var onAddPhoto = onAddPhoto
 
-    interface OnDeletePhoto {
-        fun onDeletePhoto(position: Int)
+    interface OnAddPhoto {
+        fun onAddPhoto(position: Int,currentPhoto: RequestActivity.PhotoService)
     }
 
-    inner class ItemViewHolder(private var binding: ServicePhotoItemListBinding) :
+    inner class ItemViewHolder(private var binding: RepairPhotoItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(photo: RequestActivity.PhotoService) {
             binding.apply {
-                deleteImage.visibility = View.VISIBLE
-                image.setImageURI(photo.img)
+                if (photo.img == null) {
+                    deleteImage.visibility = View.GONE
+                    cardView.visibility = View.GONE
+
+                } else {
+                    Log.d("CURRENT_PHOTO","not null")
+
+                    deleteImage.visibility = View.VISIBLE
+                    image.visibility = View.VISIBLE
+                    image.setImageURI(photo.img)
+                }
+
                 deleteImage.setOnClickListener {
-                    onDeletePhoto.onDeletePhoto(absoluteAdapterPosition)
+                    //onAddDeletePhoto.onAddDeletePhoto(absoluteAdapterPosition,photo)
+                    photo.img = null
                     notifyDataSetChanged()
+                }
+
+                add.setOnClickListener {
+
+                   // if (photo.img == null)
+                        onAddPhoto.onAddPhoto(absoluteAdapterPosition,photo)
+                   // notifyDataSetChanged()
                 }
             }
         }
@@ -34,7 +55,7 @@ class RequestPhotoRecyclerViewAdapter(onDeletePhoto:OnDeletePhoto) : RecyclerVie
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
-            ServicePhotoItemListBinding.inflate(
+            RepairPhotoItemListBinding.inflate(
                 LayoutInflater.from(
                     parent.context
                 )

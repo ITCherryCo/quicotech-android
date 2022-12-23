@@ -17,7 +17,6 @@ class ServicePhotoRecyclerViewAdapter : RecyclerView.Adapter<ServicePhotoRecycle
         fun bind(photo: String) {
             binding.apply {
 
-                deleteImage.visibility = View.GONE
                 Glide
                     .with(itemView.context)
                     .load(photo)

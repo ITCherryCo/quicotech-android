@@ -48,6 +48,7 @@ object Constant {
     var EMPTY_CART= "empty_cart"
     var NO_CARDS= "no_cards"
     var APP_MEDIA_PATH= "/QuicoTech/Media/Recording"
+    var PASSWORD= "password"
 
 
 }
