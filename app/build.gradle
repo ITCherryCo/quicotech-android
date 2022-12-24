@@ -100,4 +100,7 @@ dependencies {
     // voice recorder
     implementation 'com.github.3llomi:RecordView:3.1.0beta7' // this is for recording
 
+    // view pager indicator
+    implementation 'me.relex:circleindicator:2.1.6'
+
 }

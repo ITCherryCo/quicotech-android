@@ -1,9 +1,260 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.ProductActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/wish_toolbar" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/errorContainer"
+                    layout="@layout/error_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="150dp"
+                    android:visibility="gone" />
+
+
+                <RelativeLayout
+                    android:id="@+id/mainContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="450dp" />
+
+
+                    <me.relex.circleindicator.CircleIndicator3
+                        android:id="@+id/indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_alignBottom="@+id/viewPager"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginHorizontal="25dp"
+                        android:layout_marginBottom="60dp"
+                        android:gravity="center"
+                        app:ci_animator="@animator/scale_with_alpha"
+                        app:ci_drawable="@drawable/purple_indicator"
+                        app:ci_drawable_unselected="@drawable/gray_indicator" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/container_white_top_16"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:layout_below="@+id/indicator"
+                        android:layout_marginTop="-50dp"
+                        android:paddingTop="20dp">
+
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/bold"
+                            android:layoutDirection="locale"
+                            android:text="Sennheiser Headphonesv"
+                            android:textColor="@color/black"
+                            android:textDirection="locale"
+                            android:textSize="20sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="12dp"
+                            android:layoutDirection="locale">
+
+                            <TextView
+                                android:id="@+id/newText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="#DBD9F7"
+                                android:fontFamily="@font/bold"
+                                android:layoutDirection="locale"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp"
+                                android:text="@string/new_text"
+                                android:textColor="@color/colorPrimary"
+                                android:textDirection="locale"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/bestSellerText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_toEndOf="@+id/newText"
+                                android:background="#FFF1D7"
+                                android:fontFamily="@font/bold"
+                                android:layoutDirection="locale"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp"
+                                android:text="@string/best_seller"
+                                android:textColor="@color/orange_best_seller"
+                                android:textDirection="locale"
+                                android:textSize="12sp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layoutDirection="locale">
+
+                            <RelativeLayout
+                                android:id="@+id/qtyContainer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/container_stroke_black_4"
+                                android:layoutDirection="locale">
+
+                                <TextView
+                                    android:id="@+id/minus"
+                                    android:layout_width="35dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/ripple_minus_product_white_gray"
+                                    android:clickable="true"
+                                    android:gravity="center"
+                                    android:layoutDirection="locale"
+                                    android:text="-"
+                                    android:textColor="@color/black"
+                                    android:textDirection="locale" />
+
+                                <TextView
+                                    android:id="@+id/qty"
+                                    android:layout_width="40dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_toEndOf="@+id/minus"
+                                    android:clickable="true"
+                                    android:gravity="center"
+                                    android:layoutDirection="locale"
+                                    android:text="2"
+                                    android:textColor="@color/black"
+                                    android:textDirection="locale"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/plus"
+                                    android:layout_width="35dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_toEndOf="@+id/qty"
+                                    android:background="@drawable/ripple_plus_product_white_gray"
+                                    android:clickable="true"
+                                    android:gravity="center"
+                                    android:layoutDirection="locale"
+                                    android:text="-"
+                                    android:textColor="@color/black"
+                                    android:textDirection="locale" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/priceContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_toEndOf="@+id/qtyContainer"
+                                android:layoutDirection="locale">
+
+                                <TextView
+                                    android:id="@+id/oldPrice"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toStartOf="@+id/newPrice"
+                                    android:fontFamily="@font/bold"
+                                    android:layoutDirection="locale"
+                                    android:paddingHorizontal="5dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:text="$100.55"
+                                    android:textColor="@color/color_primary_purple"
+                                    android:textDirection="locale"
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:id="@+id/newPrice"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:fontFamily="@font/bold"
+                                    android:layoutDirection="locale"
+                                    android:text="$70.55"
+                                    android:textColor="@color/color_primary_purple"
+                                    android:textDirection="locale"
+                                    android:textSize="18sp" />
+
+                            </RelativeLayout>
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:fontFamily="@font/regular"
+                            android:layoutDirection="locale"
+                            android:text="@string/description_example"
+                            android:textColor="@color/gray_dark"
+                            android:textDirection="locale"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/compareBtn"
+                                style="@style/buttonStyle"
+                                android:layout_width="0dp"
+                                android:layout_height="55dp"
+                                android:layout_marginEnd="15dp"
+                                android:layout_weight="1"
+                                android:backgroundTint="@color/orange"
+                                android:padding="12dp"
+                                android:text="@string/compare"
+                                app:cornerRadius="10dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/addToCartBtn"
+                                style="@style/buttonStyle"
+                                android:layout_width="0dp"
+                                android:layout_height="55dp"
+                                android:layout_weight="1"
+                                android:padding="12dp"
+                                android:text="@string/add_to_cart"
+                                app:cornerRadius="10dp" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+</LinearLayout>

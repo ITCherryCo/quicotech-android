@@ -2,6 +2,7 @@
   <library name="Gradle: androidx.test.ext:junit:1.1.4@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/da345e8a184b744ad1b021a5e1fd304a/transformed/jetified-junit-1.1.4/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/da345e8a184b744ad1b021a5e1fd304a/transformed/jetified-junit-1.1.4/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/da345e8a184b744ad1b021a5e1fd304a/transformed/jetified-junit-1.1.4/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

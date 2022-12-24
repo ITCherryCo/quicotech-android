@@ -56,10 +56,10 @@
                         android:background="@drawable/ripple_minus_white_gray_container"
                         android:clickable="true"
                         android:gravity="center"
-                        android:text="-"
-                        android:textDirection="locale"
                         android:layoutDirection="locale"
+                        android:text="-"
                         android:textColor="@color/black"
+                        android:textDirection="locale"
                         android:textSize="15sp" />
 
                     <TextView

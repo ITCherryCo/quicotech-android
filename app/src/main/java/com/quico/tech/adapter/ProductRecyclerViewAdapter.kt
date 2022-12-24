@@ -1,5 +1,6 @@
 package com.quico.tech.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,20 +9,26 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
+import com.quico.tech.activity.ProductActivity
+import com.quico.tech.data.Constant.PRODUCT_ID
 import com.quico.tech.databinding.ProductItemListBinding
 import com.quico.tech.model.Product
 
 
-class ProductRecyclerViewAdapter(val small:Boolean, val withSelection:Boolean, onProductSelect:OnProductSelect?) : RecyclerView.Adapter<ProductRecyclerViewAdapter.ItemViewHolder>() {
+class ProductRecyclerViewAdapter(
+    val small: Boolean,
+    val withSelection: Boolean,
+    onProductSelect: OnProductSelect?
+) : RecyclerView.Adapter<ProductRecyclerViewAdapter.ItemViewHolder>() {
     private var lastSelectedPosition = -1
     private var defaultSelectedPosition = -1
     private var onProductSelect = onProductSelect
 
-    interface OnProductSelect{
+    interface OnProductSelect {
         fun onProductSelect(product: Product?)
     }
 
-   inner class ItemViewHolder(private var binding: ProductItemListBinding) :
+    inner class ItemViewHolder(private var binding: ProductItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product) {
             binding.apply {
@@ -52,24 +59,36 @@ class ProductRecyclerViewAdapter(val small:Boolean, val withSelection:Boolean, o
                     if (lastSelectedPosition != absoluteAdapterPosition) {
                         setUnselectedForm()
                     }
+                } else {
+                    cardView.setOnClickListener {
+                        itemView.context.startActivity(
+                            Intent(itemView.context, ProductActivity::class.java).putExtra(PRODUCT_ID, 1)
+                        )
+                    }
+
+                    cardViewSmall.setOnClickListener {
+                        itemView.context.startActivity(
+                            Intent(itemView.context, ProductActivity::class.java).putExtra(PRODUCT_ID, 1)
+                        )
+                    }
                 }
             }
         }
 
-            fun setSelectedForm() {
-                binding.apply {
-                    cardView.strokeColor = itemView.resources.getColor(R.color.color_primary_purple)
-                    cardView.strokeWidth = 5
-                }
+        fun setSelectedForm() {
+            binding.apply {
+                cardView.strokeColor = itemView.resources.getColor(R.color.color_primary_purple)
+                cardView.strokeWidth = 5
             }
+        }
 
-            fun setUnselectedForm() {
-                binding.apply {
-                    cardView.strokeColor = itemView.resources.getColor(R.color.input_field_hint)
-                    cardView.strokeWidth = 0
-                    //cardView.strokeWidth = 0
-                }
+        fun setUnselectedForm() {
+            binding.apply {
+                cardView.strokeColor = itemView.resources.getColor(R.color.input_field_hint)
+                cardView.strokeWidth = 0
+                //cardView.strokeWidth = 0
             }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
