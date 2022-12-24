@@ -1,5 +1,6 @@
 package com.quico.tech.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +46,13 @@ class ProductActivity : AppCompatActivity() {
            // oldPrice.setPaintFlags(oldPrice.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG) // draw line on old price
             oldPrice.setBackground(getResources().getDrawable(R.drawable.red_line))
 
+            compareBtn.setOnClickListener {
+                startActivity(Intent(this@ProductActivity,CompareSearchActivity::class.java))
+            }
+
+            toolbar.cartImage.setOnClickListener {
+                startActivity(Intent(this@ProductActivity,CartActivity::class.java))
+            }
         }
     }
 }

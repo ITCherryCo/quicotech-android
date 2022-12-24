@@ -98,7 +98,7 @@ Email at example@gmail.com.</string>
     <string name="logout">Logout</string>
     <string name="sure_logout">Are you Sure you want to logout?</string>
     <string name="yes">Yes</string>
-    <string name="birthday_example">Jan/01/1999</string>
+    <string name="birthday_example">1990-01-01</string>
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
     <string name="available_shipping_method">What Shipping Methods Are Available?</string>
     <string name="available_shipping_method_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
@@ -200,6 +200,7 @@ Diagnostic !! Submit a request now!!!</string>
     <string name="change_current_password">Change Current Password</string>
     <string name="wishlist">Wishlist</string>
     <string name="new_text">New</string>
+    <string name="vip">VIP</string>
     <string name="best_seller">Best Seller</string>
     <string name="compare">Compare</string>
     <string name="add_to_cart">Add To Cart</string>

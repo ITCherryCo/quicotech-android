@@ -86,11 +86,26 @@
                             android:layoutDirection="locale">
 
                             <TextView
+                                android:id="@+id/vipText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@color/orange_best_seller"
+                                android:fontFamily="@font/bold"
+                                android:layoutDirection="locale"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp"
+                                android:text="@string/vip"
+                                android:textColor="@color/home_background_grey"
+                                android:textDirection="locale"
+                                android:textSize="12sp" />
+
+                            <TextView
                                 android:id="@+id/newText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:background="#DBD9F7"
                                 android:fontFamily="@font/bold"
+                                android:layout_toEndOf="@id/vipText"
                                 android:layoutDirection="locale"
                                 android:paddingHorizontal="10dp"
                                 android:paddingVertical="5dp"

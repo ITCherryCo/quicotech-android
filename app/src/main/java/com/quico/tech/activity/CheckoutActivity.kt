@@ -149,8 +149,19 @@ class CheckoutActivity : AppCompatActivity() {
     fun setUpServiceAdapter() {
         binding.apply {
             orderSummaryText.text = viewModel.getLangResources().getString(R.string.service_name_id)
+            serviceDetailsText.visibility = View.VISIBLE
 
-            servicePhotoRecyclerViewAdapter = ServicePhotoRecyclerViewAdapter()
+            var serviceDetails = arrayOf("Service Category","Service Type","Case Problem",
+                "Delivery Type","Solution and how much it is going to cost","Start Date : DD/MM/YYYY   End Date: DD/MM/YYYY"
+            )
+
+            var serviceDetailsValue=""
+            for (serviceDetail in serviceDetails){
+                serviceDetailsValue+= ". ${serviceDetail}\n"
+            }
+            serviceDetailsText.text= serviceDetailsValue
+
+                servicePhotoRecyclerViewAdapter = ServicePhotoRecyclerViewAdapter()
             var photos = ArrayList<String>()
             photos.add("https://jakcomputer.com/wp-content/uploads/2022/09/1-26.jpg")
             photos.add("https://jakcomputer.com/wp-content/uploads/2022/09/1-26.jpg")

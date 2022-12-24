@@ -15,6 +15,7 @@ import android.provider.MediaStore
 import android.util.Base64.DEFAULT
 import android.util.Base64.encodeToString
 import android.util.Patterns
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -49,6 +50,10 @@ class EditProfileActivity : AppCompatActivity() {
         binding.apply {
 
             imageChoose.setOnClickListener {
+                checkGalleryPermissions()
+                //selectImage()
+            }
+            profileImage.setOnClickListener {
                 checkGalleryPermissions()
                 //selectImage()
             }
@@ -105,7 +110,7 @@ class EditProfileActivity : AppCompatActivity() {
         OnDateSetListener { datePicker, year, month, day ->
             var month = month
             month = month + 1
-            val date = "$month/$day/$year"
+            val date = "$year-$month-$day"
             binding.birthdayField.setText(date)
         }
 
@@ -119,7 +124,7 @@ class EditProfileActivity : AppCompatActivity() {
             birthdayField.hint = viewModel.getLangResources().getString(R.string.birthday_example)
             saveBtn.text = viewModel.getLangResources().getString(R.string.save)
             changePasswordBtn.text =
-                viewModel.getLangResources().getString(R.string.change_mobile_number)
+                viewModel.getLangResources().getString(R.string.change_password)
             changeMobileBtn.text =
                 viewModel.getLangResources().getString(R.string.change_mobile_number)
             changeEmailBtn.text =
@@ -127,6 +132,10 @@ class EditProfileActivity : AppCompatActivity() {
 
             if (viewModel.getLanguage().equals(Constant.AR))
                 backArrow.scaleX = -1f
+
+            saveBtn.setOnClickListener {
+                checkFields()
+            }
         }
     }
 
@@ -163,7 +172,6 @@ class EditProfileActivity : AppCompatActivity() {
     private fun openGallery() {
         val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         imageLauncher.launch(gallery)
-
         //  val intent = Intent()
         // intent.type = "image/*"
         // intent.action = Intent.ACTION_GET_CONTENT
@@ -218,10 +226,8 @@ class EditProfileActivity : AppCompatActivity() {
                         message: String
                     ) {
                         Common.cancelProgressDialog()
-                        message
-                        startActivity(
-                            Intent(this@EditProfileActivity, LoginActivity::class.java)
-                        )
+                        Toast.makeText(this@EditProfileActivity,message,Toast.LENGTH_LONG).show()
+
                     }
 
                     override fun onFailure(

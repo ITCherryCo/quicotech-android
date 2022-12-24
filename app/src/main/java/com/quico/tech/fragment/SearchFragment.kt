@@ -68,9 +68,6 @@ class SearchFragment : Fragment() {
             filterImage.setOnClickListener {
                 setUpFilerBottomSheet()
             }
-            searchToolbar.cartImage.setOnClickListener {
-                startActivity(Intent(requireContext(),CompareSearchActivity::class.java))
-            }
         }
     }
 

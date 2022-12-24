@@ -22,7 +22,7 @@ interface API {
     @GET("logout")
     suspend fun logout(@Header("Cookie") session_id:String): Response<RegisterResponse>
 
-    @GET("updateUserInfo")
+    @PUT("updateUserInfo")
     suspend fun updateUserInfo(@Header("Cookie") session_id:String,@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
 
     @GET("updateEmail")
