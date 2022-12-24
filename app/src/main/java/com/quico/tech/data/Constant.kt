@@ -35,7 +35,8 @@ object Constant {
     var PROFILE_EDIT_TYPE= "profile_edit_type"
     var REGISTER= "register"
     var CHANGE_PHONE_NUMBER= "change_phone_number"
-
+    var CHANGE_EMAIL= "change_email"
+    var CHANGE_PASSWORD= "change_password"
     var USER_REGISTER_TAG= "USER_REGISTER_TAG"
     var USER_LOGIN_TAG= "USER_LOGIN_TAG"
     var USER_UPDATE_TAG= "USER_UPDATE_TAG"
@@ -50,6 +51,7 @@ object Constant {
     var APP_MEDIA_PATH= "/QuicoTech/Media/Recording"
     var PASSWORD= "password"
     var PRODUCT_ID= "product_id"
+    var ITEM_ID= "item_id"
 
 
 }

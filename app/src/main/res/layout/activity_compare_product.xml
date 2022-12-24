@@ -63,6 +63,13 @@
                 layout="@layout/fragment_compare_product"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
+                android:layout_weight="1" />
+
+            <FrameLayout
+                android:id="@+id/CompareFrame1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1" />
         </RelativeLayout>
         <View
@@ -77,6 +84,13 @@
             <include
                 android:id="@+id/secondContainer"
                 layout="@layout/fragment_compare_product"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <FrameLayout
+                android:id="@+id/CompareFrame2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />

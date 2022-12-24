@@ -59,8 +59,8 @@
 
                 <EditText
                     android:id="@+id/fullNameField"
-                    style="@style/loginInputFieldStyle"
-                    android:layout_width="match_parent"
+                    style="@style/addressTextStyle"
+                    android:fontFamily="@font/regular"                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/edit_text_border"
@@ -80,8 +80,8 @@
 
                 <EditText
                     android:id="@+id/emailField"
-                    style="@style/loginInputFieldStyle"
-                    android:layout_width="match_parent"
+                    style="@style/addressTextStyle"
+                    android:fontFamily="@font/regular"                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/edit_text_border"
@@ -99,38 +99,53 @@
                     android:text="@string/phone_number"
                     android:textAllCaps="true" />
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:maxHeight="45dp"
-                    android:orientation="horizontal">
+                    android:background="@drawable/container_gray_stroke_1"
+                    android:maxHeight="45dp">
 
-                    <com.hbb20.CountryCodePicker
-                        android:id="@+id/countryPicker"
-                        android:layout_width="0dp"
+                    <!--                    <com.hbb20.CountryCodePicker-->
+                    <!--                        android:id="@+id/countryPicker"-->
+                    <!--                        android:layout_width="0dp"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_gravity="center_vertical"-->
+                    <!--                        android:layout_weight="0.3"-->
+                    <!--                        android:layoutDirection="locale"-->
+                    <!--                        android:textDirection="locale"-->
+                    <!--                        app:ccp_autoDetectCountry="true"-->
+                    <!--                        app:ccp_contentColor="@color/black"-->
+                    <!--                        app:ccp_textSize="10sp" />-->
+
+                    <TextView
+                        android:id="@+id/countryCode"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0.3"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/regular"
                         android:layoutDirection="locale"
+                        android:text="+961 -"
+                        android:textColor="@color/gray_dark"
                         android:textDirection="locale"
-                        app:ccp_autoDetectCountry="true"
-                        app:ccp_contentColor="@color/black"
-                        app:ccp_textSize="10sp" />
+                        android:textSize="14sp" />
 
                     <EditText
                         android:id="@+id/phoneNumberField"
-                        style="@style/loginInputFieldStyle"
-                        android:layout_width="0dp"
+                        style="@style/addressTextStyle"
+                        android:fontFamily="@font/regular"                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:background="@drawable/edit_text_border"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/countryCode"
+                        android:background="@null"
                         android:hint="@string/phone_number_example"
                         android:inputType="textEmailAddress"
                         android:maxHeight="45dp"
-                        android:padding="12dp" />
+                        android:paddingVertical="12dp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/passwordText"
@@ -150,8 +165,8 @@
 
                     <EditText
                         android:id="@+id/password_field"
-                        style="@style/loginInputFieldStyle"
-                        android:layout_width="match_parent"
+                        style="@style/addressTextStyle"
+                        android:fontFamily="@font/regular"                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:layout_toStartOf="@+id/eyeImage"
@@ -196,13 +211,13 @@
 
                     <EditText
                         android:id="@+id/confirmPasswordField"
-                        style="@style/loginInputFieldStyle"
-                        android:layout_width="match_parent"
+                        style="@style/addressTextStyle"
+                        android:fontFamily="@font/regular"                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/confirm_password"
-                        android:inputType="textPassword"
                         android:layout_toStartOf="@+id/eyeImage2"
                         android:background="@null"
+                        android:hint="@string/confirm_password"
+                        android:inputType="textPassword"
                         android:maxHeight="45dp"
                         android:padding="12dp" />
 

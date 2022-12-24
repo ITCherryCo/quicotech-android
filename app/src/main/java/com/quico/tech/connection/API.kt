@@ -25,10 +25,10 @@ interface API {
     @PUT("updateUserInfo")
     suspend fun updateUserInfo(@Header("Cookie") session_id:String,@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
 
-    @GET("updateEmail")
+    @PUT("updateEmail")
     suspend fun updateEmail(@Header("Cookie") session_id:String,@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
 
-    @GET("updateMobile")
+    @PUT("updateMobile")
     suspend fun updateMobile(@Header("Cookie") session_id:String,@Body updateUserBody: RegisterBodyParameters): Response<RegisterResponse>
 
     @GET("getAddresses")

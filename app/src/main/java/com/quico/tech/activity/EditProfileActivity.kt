@@ -12,9 +12,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Base64.DEFAULT
-import android.util.Base64.encodeToString
-import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
@@ -24,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.quico.tech.R
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.CHANGE_PASSWORD
 import com.quico.tech.data.Constant.EMAIL
 import com.quico.tech.data.Constant.PASSWORD
 import com.quico.tech.data.Constant.PHONE_NUMBER
@@ -66,22 +64,22 @@ class EditProfileActivity : AppCompatActivity() {
 
             changeMobileBtn.setOnClickListener {
                 startActivity(
-                    Intent(this@EditProfileActivity, EditEmailPhoneActivity::class.java)
-                        .putExtra(Constant.PROFILE_EDIT_TYPE, PHONE_NUMBER)
+                    Intent(this@EditProfileActivity, EditCredentialsActivity::class.java)
+                        .putExtra(Constant.PROFILE_EDIT_TYPE, Constant.CHANGE_PHONE_NUMBER)
                 )
             }
 
             changeEmailBtn.setOnClickListener {
                 startActivity(
-                    Intent(this@EditProfileActivity, EditEmailPhoneActivity::class.java)
-                        .putExtra(Constant.PROFILE_EDIT_TYPE, EMAIL)
+                    Intent(this@EditProfileActivity, EditCredentialsActivity::class.java)
+                        .putExtra(Constant.PROFILE_EDIT_TYPE, Constant.CHANGE_EMAIL)
                 )
             }
 
             changePasswordBtn.setOnClickListener {
                 startActivity(
-                    Intent(this@EditProfileActivity, EditEmailPhoneActivity::class.java)
-                        .putExtra(Constant.PROFILE_EDIT_TYPE, PASSWORD)
+                    Intent(this@EditProfileActivity, EditCredentialsActivity::class.java)
+                        .putExtra(Constant.PROFILE_EDIT_TYPE, CHANGE_PASSWORD)
                 )
             }
         }

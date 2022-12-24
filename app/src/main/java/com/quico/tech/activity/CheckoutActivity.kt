@@ -70,16 +70,16 @@ class CheckoutActivity : AppCompatActivity() {
                 true -> {
                     footerContainer.visibility = View.GONE
                     trackingContainer.visibility = View.VISIBLE
-                    stepView.state.steps(object : ArrayList<String?>() {
-                        init {
-                            add("")
-                            add("")
-                            add("")
-                            add("")
-                        }
-                    })
-                        .stepsNumber(4)
-                        .commit()
+//                    stepView.state.steps(object : ArrayList<String?>() {
+//                        init {
+//                            add("")
+//                            add("")
+//                            add("")
+//                            add("")
+//                        }
+//                    })
+//                        .stepsNumber(4)
+//                        .commit()
 
 //                    val descriptionData = arrayOf(
 //                        viewModel.getLangResources().getString(R.string.request_received),

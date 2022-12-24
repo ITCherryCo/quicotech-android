@@ -50,7 +50,7 @@
             android:name=".activity.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.EditEmailPhoneActivity"
+            android:name=".activity.EditCredentialsActivity"
             android:exported="false" />
         <activity
             android:name=".activity.ShippingAddressActivity"

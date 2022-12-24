@@ -1,19 +1,15 @@
 package com.quico.tech.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.quico.tech.R
-import com.quico.tech.adapter.BrandSearchRecyclerViewAdapter
-import com.quico.tech.adapter.ProductRecyclerViewAdapter
-import com.quico.tech.adapter.SpecificationRecyclerViewAdapter
+import com.quico.tech.data.Constant.AR
+import com.quico.tech.data.Constant.ITEM_ID
 import com.quico.tech.databinding.ActivityCompareProductBinding
-import com.quico.tech.databinding.ActivityCompareSearchBinding
-import com.quico.tech.model.Brand
-import com.quico.tech.model.Specification
+import com.quico.tech.fragment.CompareProductFragment
 import com.quico.tech.viewmodel.SharedViewModel
 
 class CompareProductActivity : AppCompatActivity() {
@@ -24,41 +20,47 @@ class CompareProductActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCompareProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setUpSpecificationsAdapter()
-    }
 
-    private fun setUpSpecificationsAdapter(){
+        var fragment = CompareProductFragment()
+        var bundle1 = Bundle()
+        bundle1.putInt(ITEM_ID, 1)
+        fragment.arguments= bundle1
+        fragment?.let { loadFragment1(it) }
+
+        var fragment2 = CompareProductFragment()
+        var bundle2 = Bundle()
+        bundle2.putInt(ITEM_ID, 2)
+        fragment2.arguments= bundle2
+        fragment2?.let { loadFragment2(it) }
+        setUpText()
+    }
+    private fun setUpText() {
         binding.apply {
-            var specificationRecyclerViewAdapter = SpecificationRecyclerViewAdapter()
-            val specifications = ArrayList<Specification>()
 
-            // filterImage.setEnabled(true)
-            specifications.add(Specification(1))
-            specifications.add(Specification(1))
-            specifications.add(Specification(1))
-            specifications.add(Specification(1))
-            specifications.add(Specification(1))
-            specifications.add(Specification(1))
-            specifications.add(Specification(1))
-            specifications.add(Specification(1))
-            specifications.add(Specification(1))
+            title.text = viewModel.getLangResources().getString(R.string.filters)
 
-            firstContainer.recyclerView.layoutManager = LinearLayoutManager(
-                this@CompareProductActivity,
-                LinearLayoutManager.VERTICAL,
-                false
-            )
-            firstContainer.recyclerView.setItemAnimator(DefaultItemAnimator())
-            firstContainer.recyclerView.setAdapter(specificationRecyclerViewAdapter)
-            specificationRecyclerViewAdapter.differ.submitList(specifications)
-
-            secondContainer.recyclerView.layoutManager = LinearLayoutManager(
-                this@CompareProductActivity,
-                LinearLayoutManager.VERTICAL,
-                false
-            )
-            secondContainer.recyclerView.setItemAnimator(DefaultItemAnimator())
-            secondContainer.recyclerView.setAdapter(specificationRecyclerViewAdapter)
-        }
+            backArrow.setOnClickListener {
+                onBackPressed()
+            }
+            if (viewModel.getLanguage().equals(AR))
+                backArrow.scaleX=-1f
         }
     }
+
+    private fun loadFragment1(fragment: Fragment) {
+        // load fragment
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.CompareFrame1, fragment)
+       // transaction.addToBackStack(null)
+        transaction.commitAllowingStateLoss()
+    }
+
+    private fun loadFragment2(fragment: Fragment) {
+        // load fragment
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.CompareFrame2, fragment)
+      //  transaction.addToBackStack(null)
+        transaction.commitAllowingStateLoss()
+    }
+
+}

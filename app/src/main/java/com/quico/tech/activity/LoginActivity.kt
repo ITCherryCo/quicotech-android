@@ -130,6 +130,13 @@ class LoginActivity : AppCompatActivity() {
 
                     override fun onFailure(success: Boolean, resultTitle: String, message: String) {
                         Common.cancelProgressDialog()
+                        Common.setUpAlert(
+                            this@LoginActivity, false,
+                            viewModel.getLangResources().getString(R.string.error),
+                            message,
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
                     }
                 })
             }

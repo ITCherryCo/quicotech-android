@@ -1,24 +1,25 @@
 package com.quico.tech.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.quico.tech.adapter.SpecificationRecyclerViewAdapter
+import com.quico.tech.data.Constant.ITEM_ID
 import com.quico.tech.databinding.FragmentCompareProductBinding
+import com.quico.tech.model.Specification
 import com.quico.tech.viewmodel.SharedViewModel
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 
 class CompareProductFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var item_id: Int = 0
 
     private var _binding: FragmentCompareProductBinding? = null
     private val binding get() = _binding!!
@@ -27,8 +28,7 @@ class CompareProductFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            item_id = it.getInt(ITEM_ID)
         }
     }
 
@@ -43,8 +43,40 @@ class CompareProductFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setUpSpecificationsAdapter()
+        Log.d(ITEM_ID,item_id.toString())
+
     }
 
+
+    private fun setUpSpecificationsAdapter() {
+        binding.apply {
+            var specificationRecyclerViewAdapter = SpecificationRecyclerViewAdapter()
+            val specifications = ArrayList<Specification>()
+
+            // filterImage.setEnabled(true)
+            specifications.add(Specification(1))
+            specifications.add(Specification(1))
+            specifications.add(Specification(1))
+            specifications.add(Specification(1))
+            specifications.add(Specification(1))
+            specifications.add(Specification(1))
+            specifications.add(Specification(1))
+            specifications.add(Specification(1))
+            specifications.add(Specification(1))
+
+            recyclerView.layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.VERTICAL,
+                false
+            )
+            recyclerView.setItemAnimator(DefaultItemAnimator())
+            recyclerView.setAdapter(specificationRecyclerViewAdapter)
+            specificationRecyclerViewAdapter.differ.submitList(specifications)
+
+        }
+    }
 
 
     companion object {
@@ -52,10 +84,7 @@ class CompareProductFragment : Fragment() {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             CompareProductFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+
             }
     }
 }

@@ -82,7 +82,7 @@ class RegisterActivity : AppCompatActivity() {
             eyeImage2.setOnClickListener {
                 checkConfirmPasswordText()
             }
-            countryPicker.setEnabled(false)
+           // countryPicker.setEnabled(false)
         }
     }
 
@@ -263,6 +263,13 @@ class RegisterActivity : AppCompatActivity() {
 
                 override fun onFailure(success: Boolean, resultTitle: String, message: String) {
                     Common.cancelProgressDialog()
+                    Common.setUpAlert(
+                        this@RegisterActivity, false,
+                        viewModel.getLangResources().getString(R.string.error),
+                        message,
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
                 }
             })
         }

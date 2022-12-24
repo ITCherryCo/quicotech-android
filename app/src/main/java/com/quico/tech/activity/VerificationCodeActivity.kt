@@ -2,6 +2,7 @@ package com.quico.tech.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.SpannableString
@@ -17,6 +18,7 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import com.quico.tech.R
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.CHANGE_EMAIL
 import com.quico.tech.data.Constant.CHANGE_PHONE_NUMBER
 import com.quico.tech.data.Constant.CHECKOUT_TYPE
 import com.quico.tech.data.Constant.EMAIL
@@ -27,6 +29,8 @@ import com.quico.tech.data.Constant.PHONE_NUMBER
 import com.quico.tech.data.Constant.REGISTER
 import com.quico.tech.data.Constant.TRACKING_ON
 import com.quico.tech.databinding.ActivityVerificationCodeBinding
+import com.quico.tech.model.RegisterBodyParameters
+import com.quico.tech.model.RegisterParams
 import com.quico.tech.utils.Common
 import com.quico.tech.utils.Common.cancelProgressDialog
 import com.quico.tech.utils.Common.isProgressIsLoading
@@ -41,8 +45,9 @@ import java.util.concurrent.TimeUnit
 class VerificationCodeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityVerificationCodeBinding
     private val viewModel: SharedViewModel by viewModels()
-    private lateinit var verification_type: String
-    private var operation_type: String? = null
+    private lateinit var verification_type: String  // email or phone number
+    private var operation_type: String? =
+        null     // register or change phone number or change email or checkout
     private var phone_number: String? = null
     private var code_by_system: String? = ""
     private var sms_code: String? = ""
@@ -96,7 +101,7 @@ class VerificationCodeActivity : AppCompatActivity() {
                         // MUST RESEND AN EMAIL
                     }
                 }
-                PHONE_NUMBER -> {
+                PHONE_NUMBER-> {
                     sendMsgText.text =
                         viewModel.getLangResources().getString(R.string.phone_confirmation_code)
                     phone_number?.let {
@@ -127,6 +132,10 @@ class VerificationCodeActivity : AppCompatActivity() {
 
             if (viewModel.getLanguage().equals(Constant.AR))
                 backArrow.scaleX = -1f
+
+            timer.setPaintFlags(timer.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG) // draw line on old price
+            resendText.setPaintFlags(resendText.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG) // draw line on old price
+
         }
     }
 
@@ -201,6 +210,7 @@ class VerificationCodeActivity : AppCompatActivity() {
     fun startTimer() {
         binding.apply {
             timer.setEnabled(false)
+
             resendText.setEnabled(false)
             resendText.setTextColor(resources.getColor(R.color.gray_dark))
             countDownTimer = object : CountDownTimer(mTimeLeftInMillis, 1000) {
@@ -216,7 +226,8 @@ class VerificationCodeActivity : AppCompatActivity() {
                 override fun onFinish() {
                     timer.text = "0:00"
                     resendText.setEnabled(true)
-                    resendText.setTextColor(resources.getColor(R.drawable.ripple_text_purple_gray))
+                   // resendText.setTextColor(resources.getColor(R.drawable.ripple_text_purple_gray))
+                    resendText.setTextColor(resources.getColor(R.color.color_primary_purple))
                     countDownTimer!!.cancel()
                 }
             }.start()
@@ -302,10 +313,19 @@ class VerificationCodeActivity : AppCompatActivity() {
                                     Constant.can_register = true
                                     onBackPressed()
                                 }
-                                CHANGE_PHONE_NUMBER -> Log.d(
-                                    SMS_TAG,
-                                    "call change number api"
-                                )
+                                CHANGE_PHONE_NUMBER -> {
+                                    Log.d(
+                                        SMS_TAG,
+                                        "call change number api"
+                                    )
+                                    updateMobileNumber()
+                                }
+                                CHANGE_EMAIL -> {
+                                    Log.d(
+                                        SMS_TAG,
+                                        "call change email api"
+                                    )
+                                }
                                 else -> {}
                             }
                         }
@@ -324,4 +344,38 @@ class VerificationCodeActivity : AppCompatActivity() {
                     }
                 })
     }
+
+    private fun updateMobileNumber() {
+        binding.apply {
+
+            val params = RegisterBodyParameters(
+                RegisterParams(
+                    "+961${phone_number}"
+                )
+            )
+
+            Common.setUpProgressDialog(this@VerificationCodeActivity)
+            viewModel.updateMobile(params, object : SharedViewModel.ResponseStandard {
+
+                override fun onSuccess(success: Boolean, resultTitle: String, message: String) {
+                    Common.cancelProgressDialog()
+                    Toast.makeText(this@VerificationCodeActivity, message, Toast.LENGTH_LONG).show()
+                    onBackPressed()
+                    // on back press twice see something similar to popup stack
+                }
+
+                override fun onFailure(success: Boolean, resultTitle: String, message: String) {
+                    Common.cancelProgressDialog()
+                    Common.setUpAlert(
+                        this@VerificationCodeActivity, false,
+                        viewModel.getLangResources().getString(R.string.error),
+                        message,
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
+                }
+            })
+        }
+    }
+
 }

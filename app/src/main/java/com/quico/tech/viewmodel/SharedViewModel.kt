@@ -296,7 +296,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     if (response.isSuccessful) {
                         if (response.body()?.result?.status!=null) {
                             Log.d(USER_UPDATE_TAG, "Success ${response.body()?.result?.status}")
-                            responseStandard?.onSuccess(true, SUCCESS, getLangResources().getString(R.string.info_updates_successfully))
+                            responseStandard?.onSuccess(true, SUCCESS, getLangResources().getString(R.string.info_updated_successfully))
                         }
                         else{
                             Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.result?.error}")
@@ -314,7 +314,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                    // responseStandard?.onFailure(false, ERROR,"EXCEPTION ${e.message.toString()}")
                 }
             } else {
-                Log.d(USER_LOGIN_TAG, "$CONNECTION}")
+                Log.d(USER_UPDATE_TAG, "$CONNECTION}")
                 responseStandard?.onFailure(false, CONNECTION,CONNECTION)
 
             }
@@ -328,9 +328,9 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                 try {
                     val response = repository.updateEmail(current_session_id!!,params) //_subcategories
                     if (response.isSuccessful) {
-                        if (response.body()?.result?.session_id!=null) {
+                        if (response.body()?.result?.status!=null) {
                             Log.d(USER_LOGIN_TAG, "Success")
-                            responseStandard?.onSuccess(true, SUCCESS, getLangResources().getString(R.string.info_updates_successfully))
+                            responseStandard?.onSuccess(true, SUCCESS, getLangResources().getString(R.string.info_updated_successfully))
                         }
                         else{
                             Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()}")
@@ -346,7 +346,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
                 }
             } else {
-                Log.d(USER_LOGIN_TAG, "$CONNECTION}")
+                Log.d(USER_UPDATE_TAG, "$CONNECTION}")
                 responseStandard?.onFailure(false, CONNECTION,CONNECTION)
             }
         }
@@ -358,25 +358,27 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                 try {
                     val response = repository.updateMobile(current_session_id!!,params) //_subcategories
                     if (response.isSuccessful) {
-                        if (response.body()?.result?.session_id!=null) {
-                            Log.d(USER_LOGIN_TAG, "Success")
-                            responseStandard?.onSuccess(true, SUCCESS, getLangResources().getString(R.string.info_updates_successfully))
+                        if (response.body()?.result?.status!=null) {
+                            Log.d(USER_UPDATE_TAG, "Success")
+                            responseStandard?.onSuccess(true, SUCCESS, getLangResources().getString(R.string.phone_changed_successfully))
                         }
                         else{
-                            Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()}")
-                            responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+                            Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.result?.error}")
+                           // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+                             responseStandard?.onFailure(false, ERROR,"$ERROR ${response.body()}")
                         }
-                        //  getUser(session_id)
                     } else {
                         Log.d(USER_UPDATE_TAG, "FAILUER ${response.body()}")
-                        responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+                       // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+                         responseStandard?.onFailure(false, ERROR,"FAILUER ${response.body()}")
                     }
                 } catch (e: Exception) {
                     Log.d(USER_UPDATE_TAG, "EXCEPTION ${e.message.toString()}")
-                    responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+                    //responseStandard?.onFailure(false, ERROR, getLangResources().getString(R.string.error_msg))
+                     responseStandard?.onFailure(false, ERROR,"EXCEPTION ${e.message.toString()}")
                 }
             } else {
-                Log.d(USER_LOGIN_TAG, "$CONNECTION}")
+                Log.d(USER_UPDATE_TAG, "$CONNECTION}")
                 responseStandard?.onFailure(false, CONNECTION,CONNECTION)
             }
         }
