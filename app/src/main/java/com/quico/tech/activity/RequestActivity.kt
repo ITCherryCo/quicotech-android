@@ -1,10 +1,13 @@
 package com.quico.tech.activity
 
+import android.Manifest
 import android.content.Intent
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.ContactsContract.Contacts.Photo
 import android.provider.MediaStore
 import android.util.Log
@@ -15,18 +18,25 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
+import com.devlomi.record_view.OnRecordListener
+import com.devlomi.record_view.RecordPermissionHandler
 import com.quico.tech.R
 import com.quico.tech.adapter.RequestPhotoRecyclerViewAdapter
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.APP_MEDIA_PATH
 import com.quico.tech.data.Constant.SERVICE_ID
 import com.quico.tech.databinding.ActivityRequestBinding
 import com.quico.tech.utils.AudioRecorder
 import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 import java.io.File
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class RequestActivity : AppCompatActivity() {
@@ -69,12 +79,12 @@ class RequestActivity : AppCompatActivity() {
             problemDescription.text =
                 viewModel.getLangResources().getString(R.string.problem_description)
             uploadImagesText.text = viewModel.getLangResources().getString(R.string.upload_images)
-            nextBtn.text = viewModel.getLangResources().getString(R.string.next)
+            submitBtn.text = viewModel.getLangResources().getString(R.string.next)
 
             if (viewModel.getLanguage().equals(Constant.AR))
                 backArrow.scaleX = -1f
 
-            nextBtn.setOnClickListener {
+            submitBtn.setOnClickListener {
                 startActivity(
                     Intent(this@RequestActivity, RequestDeliveryActivity::class.java).putExtra(
                         SERVICE_ID,
@@ -82,25 +92,6 @@ class RequestActivity : AppCompatActivity() {
                     )
                 )
             }
-
-
-
-//            add1.setOnClickListener {
-//                // if (total_pics_count < 4)
-//                checkGalleryPermissions()
-//            }
-//
-//            add2.setOnClickListener {
-//                checkGalleryPermissions()
-//            }
-//
-//            add3.setOnClickListener {
-//                checkGalleryPermissions()
-//            }
-//
-//            add4.setOnClickListener {
-//                checkGalleryPermissions()
-//            }
 
             setUpVoiceRecorder()
         }
@@ -140,53 +131,9 @@ class RequestActivity : AppCompatActivity() {
                        // photos.set(current_photo_position,PhotoService(current_photo.id,imageUri))
                         photos.get(current_photo_position).img=imageUri
                         Log.d("CURRENT_PHOTO",current_photo_position.toString() + " "  +current_photo.id.toString())
+
                         requestPhotoRecyclerViewAdapter.differ.submitList(photos)
-
-//                        if (photos.size < 4) {
-//                            photos.add(PhotoService(id_generator, imageUri!!))
-//                            id_generator++
-//                            requestPhotoRecyclerViewAdapter.differ.submitList(photos)
-//                        }
-//                        when (photos.size) {
-//                            1 -> binding.add4.visibility = View.INVISIBLE
-//                            2 -> binding.add3.visibility = View.INVISIBLE
-//                            3 -> binding.add2.visibility = View.INVISIBLE
-//                            4 -> binding.add1.visibility = View.INVISIBLE
-//                        }
-
-                        // binding.profileImage.setImageURI(imageUri)
-//                        pics_count = result.data!!.clipData!!.itemCount
-//                        total_pics_count = photos.size
-//                        pics_left = max_pics - total_pics_count
-//
-//                        if (pics_count > 0) {
-//                            if (pics_count >= max_pics)
-//                                iteration_nb = max_pics
-//                            else if (pics_count < max_pics) {
-//                                if (pics_count < pics_left)
-//                                    iteration_nb = pics_count
-//                                else if (pics_count >= pics_left)
-//                                    iteration_nb = pics_left
-//                            }
-//
-//                            for (i in 0 until iteration_nb) {
-//                                photos.add(PhotoService(id_generator,result.data!!.clipData!!.getItemAt(i).uri))
-//                                id_generator++
-//                            }
-//                            binding.uploadImage.visibility = View.GONE
-//                            binding.recyclerView.visibility = View.VISIBLE
-//                            requestPhotoRecyclerViewAdapter.differ.submitList(photos)
-//
-//                        } else {
-//                            binding.uploadImage.visibility = View.VISIBLE
-//                            binding.recyclerView.visibility = View.GONE
-//                        }
-                    } else {
-                        Toast.makeText(
-                            this,
-                            null,
-                            Toast.LENGTH_LONG
-                        ).show()
+                        requestPhotoRecyclerViewAdapter.notifyDataSetChanged()
                     }
                 }
             }
@@ -209,46 +156,6 @@ class RequestActivity : AppCompatActivity() {
                         current_photo_position = position
                         checkGalleryPermissions()
                     }
-
-                    //requestPhotoRecyclerViewAdapter.differ.submitList(photos)
-                    //  total_pics_count = photos.size
-                    //  pics_left = max_pics - total_pics_count
-
-                  /*  when (photos.size) {
-                        1 -> {
-                            binding.add1.visibility = View.VISIBLE
-                            binding.add2.visibility = View.VISIBLE
-                            binding.add3.visibility = View.VISIBLE
-                            binding.add4.visibility = View.INVISIBLE
-                        }
-                        2 -> {
-                            binding.add1.visibility = View.VISIBLE
-                            binding.add2.visibility = View.VISIBLE
-                            binding.add3.visibility = View.INVISIBLE
-                            binding.add4.visibility = View.INVISIBLE
-                        }
-
-                        3 -> {
-                            binding.add1.visibility = View.VISIBLE
-                            binding.add2.visibility = View.INVISIBLE
-                            binding.add3.visibility = View.INVISIBLE
-                            binding.add4.visibility = View.INVISIBLE
-                        }
-
-                        4 -> {
-                            binding.add1.visibility = View.INVISIBLE
-                            binding.add2.visibility = View.INVISIBLE
-                            binding.add3.visibility = View.INVISIBLE
-                            binding.add4.visibility = View.INVISIBLE
-                        }
-                    }
-
-                    if (photos.isEmpty()) {
-                        add1.visibility = View.VISIBLE
-                        add2.visibility = View.VISIBLE
-                        add3.visibility = View.VISIBLE
-                        add4.visibility = View.VISIBLE
-                    }*/
                 }
             })
 
@@ -263,7 +170,7 @@ class RequestActivity : AppCompatActivity() {
 
     private fun setUpVoiceRecorder() {
         binding.apply {
-/*
+
             recordBtn.setRecordView(recordView)
             recordView.setCancelBounds(8f)
             recordView.setLessThanSecondAllowed(false)
@@ -362,7 +269,7 @@ class RequestActivity : AppCompatActivity() {
                     "RecordView",
                     "Basket Animation Finished"
                 )
-            }*/
+            }
         }
     }
 

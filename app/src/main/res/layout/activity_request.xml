@@ -50,7 +50,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/nextBtn"
+        android:layout_above="@+id/submitBtn"
         android:layout_below="@+id/toolbar"
         android:background="@color/white"
         android:layoutDirection="locale">
@@ -108,67 +108,12 @@
                 android:orientation="vertical"
                 android:textDirection="locale">
 
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:columnCount="4"-->
-<!--                    android:paddingHorizontal="5dp"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/add1"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="72dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:text="+"-->
-<!--                        android:gravity="center"-->
-<!--                        android:textSize="35sp"-->
-<!--                        android:layout_marginEnd="10dp"-->
-<!--                        android:background="@drawable/container_white_gray_dotted_stroke_12" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/add2"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:layout_height="72dp"-->
-<!--                        android:text="+"-->
-<!--                        android:gravity="center"-->
-<!--                        android:textSize="35sp"-->
-<!--                        android:layout_marginEnd="10dp"-->
-<!--                        android:background="@drawable/container_white_gray_dotted_stroke_12" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/add3"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:layout_height="72dp"-->
-<!--                        android:text="+"-->
-<!--                        android:gravity="center"-->
-<!--                        android:textSize="35sp"-->
-<!--                        android:layout_marginEnd="10dp"-->
-<!--                        android:background="@drawable/container_white_gray_dotted_stroke_12" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/add4"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:layout_height="72dp"-->
-<!--                        android:text="+"-->
-<!--                        android:gravity="center"-->
-<!--                        android:textSize="35sp"-->
-<!--                        android:background="@drawable/container_white_gray_dotted_stroke_12" />-->
-
-<!--                </LinearLayout>-->
             </LinearLayout>
-
 
             <RelativeLayout
                 android:id="@+id/voiceContainer"
@@ -237,26 +182,26 @@
                 android:padding="25dp"
                 app:mic_icon="@drawable/voice" />
 
-<!--            <com.devlomi.record_view.RecordView-->
-<!--                android:id="@+id/recordView"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="45dp"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                app:counter_time_color="#ff0000"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                app:slide_to_cancel_arrow="@drawable/recv_ic_arrow"-->
-<!--                app:slide_to_cancel_arrow_color="#000000"-->
-<!--                app:slide_to_cancel_bounds="8dp"-->
-<!--                app:slide_to_cancel_margin_right="10dp"-->
-<!--                android:layout_marginEnd="10dp"-->
-<!--                app:slide_to_cancel_text="Slide To Cancel" />-->
+            <com.devlomi.record_view.RecordView
+                android:id="@+id/recordView"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                app:counter_time_color="#ff0000"
+                android:layout_marginTop="10dp"
+                app:slide_to_cancel_arrow="@drawable/recv_ic_arrow"
+                app:slide_to_cancel_arrow_color="#000000"
+                app:slide_to_cancel_bounds="8dp"
+                app:slide_to_cancel_margin_right="10dp"
+                android:layout_marginEnd="10dp"
+                app:slide_to_cancel_text="Slide To Cancel" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/nextBtn"
+        android:id="@+id/submitBtn"
         style="@style/buttonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

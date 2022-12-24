@@ -28,13 +28,15 @@ class RequestPhotoRecyclerViewAdapter(onAddPhoto:OnAddPhoto) : RecyclerView.Adap
                 if (photo.img == null) {
                     deleteImage.visibility = View.GONE
                     cardView.visibility = View.GONE
+                    add.visibility = View.VISIBLE
 
                 } else {
                     Log.d("CURRENT_PHOTO","not null")
-
                     deleteImage.visibility = View.VISIBLE
-                    image.visibility = View.VISIBLE
-                    image.setImageURI(photo.img)
+                    cardView.visibility = View.VISIBLE
+                    add.visibility = View.GONE
+
+                    image.setImageURI(photo.img!!)
                 }
 
                 deleteImage.setOnClickListener {
@@ -61,6 +63,10 @@ class RequestPhotoRecyclerViewAdapter(onAddPhoto:OnAddPhoto) : RecyclerView.Adap
                 )
             )
         )
+    }
+
+    fun submitlist(){
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {

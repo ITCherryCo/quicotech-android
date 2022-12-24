@@ -137,7 +137,7 @@ class ServiceListActivity : AppCompatActivity() {
             errorContainer.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
-            swipeRefreshLayout.setRefreshing(true)
+           // swipeRefreshLayout.setRefreshing(true)
 
             lifecycleScope.launch {
                 delay(3000)
