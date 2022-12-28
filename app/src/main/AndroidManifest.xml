@@ -22,6 +22,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".CategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ProductActivity"
             android:exported="false">
             <meta-data
@@ -65,9 +68,6 @@
             android:name=".activity.ServiceListActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MaintenanceListActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.FaqActivity"
             android:exported="false" />
         <activity
@@ -95,9 +95,6 @@
             android:name=".activity.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ProfileActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.CheckoutActivity"
             android:exported="false" />
         <activity
@@ -106,9 +103,6 @@
         <activity
             android:name=".activity.PaymentMethodActivity"
             android:exported="false" />
-        <activity
-            android:name=".activity.HomeTestActivity"
-            android:exported="true" />
         <activity
             android:name=".activity.CartActivity"
             android:exported="false" />
@@ -126,14 +120,10 @@
             android:name=".activity.IntroActivity"
             android:exported="true"
             android:theme="@style/Theme.QuicoTech.NoActionBar">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
+        <activity
+            android:name=".activity.CategoryAllActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

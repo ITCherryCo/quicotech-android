@@ -9,6 +9,7 @@ object Constant {
     var NO_ADDRESSES = "no_addresses"
     var NO_ORDERS = "no_orders"
     var NO_SERVICES = "no_services"
+    var NO_Categories = "no_categories"
     var NO_ITEMS = "no_items"
     var SERVICE_ID = "service_id"
     var EMAIL = "email"

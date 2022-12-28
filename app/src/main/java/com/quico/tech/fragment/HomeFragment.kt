@@ -1,22 +1,22 @@
 package com.quico.tech.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
-import com.quico.tech.adapter.AddressSelectionRecyclerViewAdapter
+import com.quico.tech.activity.CartActivity
+import com.quico.tech.activity.CategoryAllActivity
+import com.quico.tech.activity.HomeActivity
 import com.quico.tech.adapter.CategoryRecyclerViewAdapter
 import com.quico.tech.adapter.ProductRecyclerViewAdapter
-import com.quico.tech.databinding.ActivityHomeBinding
 import com.quico.tech.databinding.FragmentHomeBinding
-import com.quico.tech.model.Address
 import com.quico.tech.model.Category
 import com.quico.tech.model.Product
+import com.quico.tech.utils.Common
 
 
 class HomeFragment : Fragment() {
@@ -29,11 +29,35 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        init()
         getCategories();
         getHotDeals();
         getBestSellingProducts();
         getOffersProducts();
         return binding.getRoot()
+    }
+
+    fun init(){
+        initToolbar();
+        binding.apply {
+            homeContent.viewAllCategoriesLabel.setOnClickListener {
+                startActivity(Intent(context, CategoryAllActivity::class.java))
+            }
+        }
+    }
+
+    fun initToolbar(){
+        binding.apply {
+            homeContent.toolbarInclude.toolbarHome.title = getString(R.string.app_name)
+            Common.changeOverflowMenuIconColor(homeContent.toolbarInclude.toolbarHome, resources.getColor(R.color.color_primary_purple))
+            Common.setSystemBarColor(context as Activity, R.color.white)
+            Common.setSystemBarLight(context as Activity)
+            homeContent.toolbarInclude.bagIcon.setOnClickListener {
+                startActivity(Intent(context, CartActivity::class.java))
+            }
+            (activity as HomeActivity?)?.setSupportActionBar(homeContent.toolbarInclude.toolbarHome)
+            setHasOptionsMenu(true)
+        }
     }
 
     fun getCategories(){
@@ -126,4 +150,6 @@ class HomeFragment : Fragment() {
             productRecyclerViewAdapter.differ.submitList(offersProducts)
         }
     }
+
+
 }

@@ -1,22 +1,18 @@
 package com.quico.tech.activity
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import com.gauravk.bubblenavigation.listener.BubbleNavigationChangeListener
 import com.quico.tech.R
 import com.quico.tech.databinding.ActivityHomeBinding
 import com.quico.tech.fragment.*
 import com.quico.tech.utils.Common
 
+
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding : ActivityHomeBinding
-    private var actionBar: ActionBar? = null
     private var fragmentHome: HomeFragment? = null
     private var fragmentSearch: SearchFragment? = null
     private var fragmentService: ServiceFragment? = null
@@ -29,7 +25,6 @@ class HomeActivity : AppCompatActivity() {
         Common.hideSystemUIBeloR(this);
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initToolbar();
 
         binding.apply {
 
@@ -65,17 +60,6 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    fun initToolbar(){
-        binding.apply {
-            toolbarInclude.toolbar.title = getString(R.string.app_name)
-            Common.changeOverflowMenuIconColor(toolbarInclude.toolbar, resources.getColor(R.color.color_primary_purple))
-            Common.setSystemBarColor(this@HomeActivity, R.color.white)
-            Common.setSystemBarLight(this@HomeActivity)
-            toolbarInclude.bagIcon.setOnClickListener {
-                startActivity(Intent(this@HomeActivity, CartActivity::class.java))
-            }
-        }
-    }
 
     private fun loadFragment(fragment: Fragment) {
         // load fragment
@@ -85,9 +69,20 @@ class HomeActivity : AppCompatActivity() {
         transaction.commitAllowingStateLoss()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-        return true
+    override fun onBackPressed() {
+        binding.apply {
+            if(fragment==fragmentHome){
+                bubbleNavigation.setCurrentActiveItem(0)
+            }else if(fragment==fragmentProfile){
+                bubbleNavigation.setCurrentActiveItem(4)
+            }else if(fragment==fragmentSearch){
+                bubbleNavigation.setCurrentActiveItem(1)
+            }else if(fragment==fragmentWishlist){
+                bubbleNavigation.setCurrentActiveItem(3)
+            }else if(fragment==fragmentService){
+                bubbleNavigation.setCurrentActiveItem(2)
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -99,4 +94,5 @@ class HomeActivity : AppCompatActivity() {
 //        }
         return super.onOptionsItemSelected(item)
     }
+
 }
