@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:elevation="1dp"
-        android:background="@color/white"
+        android:background="@color/home_background_grey"
         android:layoutDirection="locale"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
