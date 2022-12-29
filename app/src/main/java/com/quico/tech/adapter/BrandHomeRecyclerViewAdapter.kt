@@ -1,5 +1,6 @@
 package com.quico.tech.adapter
 
+import android.content.Intent
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,6 +8,9 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.quico.tech.activity.BrandDetailActivity
+import com.quico.tech.activity.CategoryDetailActivity
+import com.quico.tech.data.Constant
 import com.quico.tech.databinding.BrandAllItemListBinding
 import com.quico.tech.databinding.BrandHomeItemListBinding
 import com.quico.tech.model.Brand
@@ -20,6 +24,14 @@ class BrandHomeRecyclerViewAdapter() : RecyclerView.Adapter<BrandHomeRecyclerVie
         fun bind(brand: Brand) {
             binding.apply {
                 brandImage.setImageDrawable(itemView.resources.getDrawable(brand.image!!))
+                itemView.setOnClickListener {
+                    itemView.context.startActivity(
+                        Intent(itemView.context, BrandDetailActivity::class.java).putExtra(
+                            Constant.BRAND_ID, 1
+                        )
+                    )
+                }
+
             }
         }
     }

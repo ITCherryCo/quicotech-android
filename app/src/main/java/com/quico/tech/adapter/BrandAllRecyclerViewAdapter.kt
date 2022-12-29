@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
+import com.quico.tech.activity.BrandDetailActivity
 import com.quico.tech.activity.RequestActivity
+import com.quico.tech.data.Constant
 import com.quico.tech.databinding.BrandAllItemListBinding
 import com.quico.tech.databinding.CategoryAllItemListBinding
 import com.quico.tech.databinding.ServiceItemListBinding
@@ -28,7 +30,11 @@ class BrandAllRecyclerViewAdapter() : RecyclerView.Adapter<BrandAllRecyclerViewA
                 brandImage.setImageDrawable(itemView.context.getDrawable(brand.image!!))
 
                 itemView.setOnClickListener {
-                    //itemView.context.startActivity(Intent(itemView.context, RequestActivity::class.java))
+                    itemView.context.startActivity(
+                        Intent(itemView.context, BrandDetailActivity::class.java).putExtra(
+                            Constant.BRAND_ID, 1
+                        )
+                    )
                 }
             }
         }

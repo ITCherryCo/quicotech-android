@@ -53,6 +53,7 @@ object Constant {
     var PASSWORD= "password"
     var PRODUCT_ID= "product_id"
     var CATEGORY_ID= "category_id"
+    var BRAND_ID= "BRAND_id"
     var ITEM_ID= "item_id"
 
 
