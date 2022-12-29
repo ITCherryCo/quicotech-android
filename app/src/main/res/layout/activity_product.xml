@@ -8,7 +8,7 @@
     tools:context=".activity.ProductActivity">
 
     <include
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbarProductDetails"
         layout="@layout/wish_toolbar" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -51,7 +51,7 @@
                         android:layout_alignBottom="@+id/viewPager"
                         android:layout_centerHorizontal="true"
                         android:layout_marginHorizontal="25dp"
-                        android:layout_marginBottom="60dp"
+                        android:layout_marginBottom="30dp"
                         android:gravity="center"
                         app:ci_animator="@animator/scale_with_alpha"
                         app:ci_drawable="@drawable/purple_indicator"
@@ -65,7 +65,7 @@
                         android:orientation="vertical"
                         android:paddingHorizontal="16dp"
                         android:layout_below="@+id/indicator"
-                        android:layout_marginTop="-50dp"
+                        android:layout_marginTop="-20dp"
                         android:paddingTop="20dp">
 
                         <TextView

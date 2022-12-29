@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="locale"
     tools:context=".activity.CategoryAllActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbarCategoryAll"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/white"
+        android:background="#F7F7F7"
         android:elevation="1dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -29,19 +30,27 @@
                 android:clickable="true"
                 android:layoutDirection="locale"
                 android:padding="8dp"
+                android:layout_alignParentStart="true"
                 android:src="@drawable/back_arrow"
                 android:textDirection="locale" />
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/Categorytitle"
                 style="@style/titleStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="45dp"
-                android:layout_toEndOf="@+id/back_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="@string/categories" />
+
+            <ImageView
+                android:id="@+id/bagIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="18dp"
+                android:layoutDirection="locale"
+                android:src="@drawable/bag" />
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -50,8 +59,8 @@
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F7F7F7"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbarCategoryAll"
+        android:background="#F7F7F7">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -67,7 +76,7 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="5dp"/>
+                    android:padding="8dp" />
 
                 <include
                     android:id="@+id/errorContainerCategoryAll"
@@ -78,24 +87,29 @@
                     android:id="@+id/shimmer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:shimmer_auto_start="false"
-                    android:visibility="gone"
-                    android:padding="5dp"
                     android:layout_above="@+id/totalContainer"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:layout_gravity="center"
                     android:layoutDirection="locale"
+                    android:padding="5dp"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:visibility="gone"
+                    app:shimmer_auto_start="false"
                     app:shimmer_duration="1000">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-                        <include layout="@layout/shimmer_loading_service" />
-                        <include layout="@layout/shimmer_loading_service" />
-                        <include layout="@layout/shimmer_loading_service" />
-                        <include layout="@layout/shimmer_loading_service" />
-                        <include layout="@layout/shimmer_loading_service" />
+
+                        <include layout="@layout/shimmer_loading_category_all_item" />
+
+                        <include layout="@layout/shimmer_loading_category_all_item" />
+
+                        <include layout="@layout/shimmer_loading_category_all_item" />
+
+                        <include layout="@layout/shimmer_loading_category_all_item" />
+
+                        <include layout="@layout/shimmer_loading_category_all_item" />
 
                     </LinearLayout>
                 </com.facebook.shimmer.ShimmerFrameLayout>

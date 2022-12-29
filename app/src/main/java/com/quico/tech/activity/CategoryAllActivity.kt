@@ -1,5 +1,7 @@
 package com.quico.tech.activity
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +19,7 @@ import com.quico.tech.databinding.ActivityCategoryAllBinding
 import com.quico.tech.model.Category
 import com.quico.tech.model.Product
 import com.quico.tech.model.Service
+import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.delay
@@ -33,7 +36,7 @@ class CategoryAllActivity : AppCompatActivity() {
 
         binding = ActivityCategoryAllBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        initToolbar()
 
         binding.apply {
 
@@ -46,9 +49,19 @@ class CategoryAllActivity : AppCompatActivity() {
         setLoading()
     }
 
+    fun initToolbar(){
+        binding.apply {
+            Common.setSystemBarColor(this@CategoryAllActivity, R.color.home_background_grey)
+            Common.setSystemBarLight(this@CategoryAllActivity)
+            bagIcon.setOnClickListener {
+                startActivity(Intent(this@CategoryAllActivity, CartActivity::class.java))
+            }
+        }
+    }
+
     private fun setUpText(){
         binding.apply {
-            title.text = viewModel.getLangResources().getString(R.string.categories)
+            Categorytitle.text = viewModel.getLangResources().getString(R.string.categories)
 
             if (viewModel.getLanguage().equals(Constant.AR))
                 backArrow.scaleX = -1f

@@ -20,12 +20,14 @@
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/container_cart_qty_black.xml" value="0.1965" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/container_purple_corner_12.xml" value="0.124" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/container_white_corner_15.xml" value="0.176" />
+        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/container_white_top_16.xml" value="0.18" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/ripple_plus_white_to_gray_container.xml" value="0.1965" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/ripple_text_purple_gray.xml" value="0.1965" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/ripple_white_gray_border_8.xml" value="0.176" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/shadow_background.xml" value="0.176" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/drawable/splash_image.xml" value="0.1135" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout-v28/category_all_item_list.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout-v28/shimmer_loading_category_all.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_address.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_address_list.xml" value="0.18854166666666666" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_card_list.xml" value="0.18854166666666666" />
@@ -43,6 +45,7 @@
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_maintenance_list.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_order_list.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_payment_method.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_product.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_profile.xml" value="0.18854166666666666" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_service_list.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_settings.xml" value="0.11302083333333333" />
@@ -67,10 +70,13 @@
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/intro_second_slide.xml" value="0.18854166666666666" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/order_item_list.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/order_summary_list.xml" value="0.18854166666666666" />
+        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/product_image.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/product_item_list.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/repair_photo_item_list.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/search_item_list.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/service_item_list.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/shimmer_loading_cart.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/shimmer_loading_category_all_item.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/shimmer_loading_fragment_home.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/shimmer_loading_order_list.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/shimmer_loading_service.xml" value="0.25416666666666665" />

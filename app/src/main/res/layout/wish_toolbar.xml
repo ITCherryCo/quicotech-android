@@ -10,12 +10,11 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/white"
-        android:elevation="1dp"
+        android:background="@color/home_background_grey"
+        android:elevation="2dp"
         android:layoutDirection="locale"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -44,7 +43,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/heartImage"
                 android:layout_toEndOf="@+id/back_arrow"
-                android:text="@string/compare_product" />
+                android:text="@string/single_offer_title" />
 
             <ImageView
                 android:id="@+id/heartImage"

@@ -1,6 +1,7 @@
 package com.quico.tech.adapter
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,7 +17,7 @@ import com.bumptech.glide.Glide
 import com.quico.tech.R
 
 class ProductImageAdapter(
-    var images: Array<String>
+    var images: Array<Int>
 ) :
     RecyclerView.Adapter<ProductImageAdapter.SliderViewHolder>() {
     var imageView: ImageView? = null
@@ -46,8 +47,8 @@ class ProductImageAdapter(
     ) {
 
         images?.let {  images->
-           imageView!!.setBackgroundResource(R.drawable.product_image_test)
 
+           imageView!!.setBackgroundResource(images[position])
 
 //            Glide
 //                .with(holder.itemView.context)

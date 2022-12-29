@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
     fun initToolbar(){
         binding.apply {
             homeContent.toolbarInclude.toolbarHome.title = getString(R.string.app_name)
-            Common.changeOverflowMenuIconColor(homeContent.toolbarInclude.toolbarHome, resources.getColor(R.color.color_primary_purple))
+            //Common.changeOverflowMenuIconColor(homeContent.toolbarInclude.toolbarHome, resources.getColor(R.color.color_primary_purple))
             Common.setSystemBarColor(context as Activity, R.color.white)
             Common.setSystemBarLight(context as Activity)
             homeContent.toolbarInclude.bagIcon.setOnClickListener {
