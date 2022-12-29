@@ -30,10 +30,12 @@ class ShippingAddressActivity : AppCompatActivity() {
         setUpText()
         setLoading()
     }
+
     private fun setUpText() {
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.shipping_addresses)
-            includedFragment.addNewAddressText.text = viewModel.getLangResources().getString(R.string.add_new_address)
+            includedFragment.addNewAddressText.text =
+                viewModel.getLangResources().getString(R.string.add_new_address)
 
             if (viewModel.getLanguage().equals(Constant.AR))
                 backArrow.scaleX = -1f
@@ -82,7 +84,7 @@ class ShippingAddressActivity : AppCompatActivity() {
     fun setLoading() {
         binding.apply {
             includedFragment.recyclerView.visibility = View.GONE
-            includedFragment.errorContainer.visibility = View.GONE
+            includedFragment.shippingAddressErrorContainer.errorContainer.visibility = View.GONE
             includedFragment.shimmer.visibility = View.VISIBLE
             includedFragment.shimmer.startShimmer()
             swipeRefreshLayout.setRefreshing(true)
@@ -107,27 +109,32 @@ class ShippingAddressActivity : AppCompatActivity() {
         binding.apply {
             swipeRefreshLayout.setRefreshing(false)
             includedFragment.recyclerView.visibility = View.GONE
-            includedFragment.errorContainer.visibility = View.VISIBLE
-            includedFragment.errorImage.setImageResource(android.R.color.transparent)
+
             stopShimmer()
-            includedFragment.errorMsg1.visibility = View.GONE
             swipeRefreshLayout.setEnabled(true)
+            includedFragment.shippingAddressErrorContainer.apply {
+                errorMsg1.visibility = View.GONE
+                errorContainer.visibility = View.VISIBLE
+                errorImage.setImageResource(android.R.color.transparent)
+                when (error_type) {
+                    Constant.CONNECTION -> {
+                        errorMsg2.setText(
+                            viewModel.getLangResources().getString(R.string.check_connection)
+                        )
+                    }
+                    Constant.NO_ADDRESSES -> {
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.no_addresses)
+                        errorImage.setImageResource(R.drawable.empty_item)
+                    }
 
-            when (error_type) {
-                Constant.CONNECTION -> {
-                    includedFragment.errorMsg2.setText(
-                        viewModel.getLangResources().getString(R.string.check_connection)
-                    )
+                    Constant.ERROR -> {
+                        errorMsg2.setText(
+                            viewModel.getLangResources().getString(R.string.error_msg)
+                        )
+                    }
                 }
-                Constant.NO_ADDRESSES -> {
-                    includedFragment.errorMsg2.text = viewModel.getLangResources().getString(R.string.no_addresses)
-                    includedFragment.errorImage.setImageResource(R.drawable.empty_item)
-                }
-
-                Constant.ERROR -> {
-                    includedFragment.errorMsg2.setText(viewModel.getLangResources().getString(R.string.error_msg))
-                }
+            }
             }
         }
     }
-}

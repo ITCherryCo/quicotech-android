@@ -107,6 +107,12 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         getLangResources()
     }
 
+    var user: User?
+        get() = prefManager.current_user
+        set(new_user) {
+            prefManager.current_user = new_user
+        }
+
     var canRegister: Boolean
         get() = can_register.value
         set(value) {
@@ -115,11 +121,11 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
 
-    var current_session_id:String?
+ /*   var current_session_id:String?
         get() = prefManager.session_id
         set(new_session_id) {
             prefManager.session_id = new_session_id
-        }
+        }*/
 
     fun updateOrderFilterType(order_filter: String) {
         viewModelScope.launch {
@@ -180,31 +186,32 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     val response = repository.login(params) //_subcategories
                     if (response.isSuccessful) {
                         if (response.body()?.result?.session_id!=null) {
-                            Log.d(USER_LOGIN_TAG, "yessss")
-                            var session_id = ""
+                            Log.d(USER_LOGIN_TAG, "user exists")
+                          /*  var session_id = ""
                             response.headers().get("Set-Cookie")?.let { cookieHeader ->
                                 var sessionFirstPart = cookieHeader.substringBefore(";")
                                 session_id = sessionFirstPart.substringAfter("=")
                                 Log.d(USER_LOGIN_TAG, "first hit $session_id")
                             }
-                            current_session_id = session_id
-
+                            current_session_id = session_id*/
+                            user = response.body()?.result
                             responseStandard?.onSuccess(true, SUCCESS, getLangResources().getString(R.string.login_successfully))
                         }
                         else{
                             Log.d(USER_LOGIN_TAG, "$ERROR ${response.body()}")
-                            responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
-
+                            responseStandard?.onFailure(false, ERROR,response.body().toString())
+                           // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
                         }
-                      //  getUser(session_id)
                     } else {
                         Log.d(USER_LOGIN_TAG, "FAILUER ${response.body()}")
-                        responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+                        responseStandard?.onFailure(false, "FAILUER",response.body().toString())
+                      //  responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
 
                     }
                 } catch (e: Exception) {
                     Log.d(USER_LOGIN_TAG, "EXCEPTION ${e.message.toString()}")
-                    responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+                    responseStandard?.onFailure(false, "EXCEPTION",e.message.toString())
+                   // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
 
                 }
             } else {
@@ -215,7 +222,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun getUser(session_id: String) {
+   /* fun getUser(session_id: String) {
        // Toast.makeText(context, "logged in ${session_id}", Toast.LENGTH_LONG) .show()
         viewModelScope.launch {
             if (checkInternet(context)) {
@@ -230,12 +237,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     Toast.makeText(context, "success ${response.body()?.data}", Toast.LENGTH_LONG) .show()
                     if (response.isSuccessful) {
                         Log.d(USER_LOGIN_TAG, "$SUCCESS ")
-                       // prefManager.current_user =
-//                        response.headers().get("Set-Cookie")?.let { cookieHeader->
-//                            var sessionFirstPart = cookieHeader.substringBefore(";")
-//                            var session_id = sessionFirstPart.substringAfter("=")
-//                            Log.d(USER_LOGIN_TAG, "second hit $session_id")
-//                        }
+
                     } else {
                         Log.d(USER_LOGIN_TAG, "$ERROR $response")
                     }
@@ -246,39 +248,43 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                 Log.d(USER_LOGIN_TAG, "$CONNECTION}")
             }
         }
-    }
+    }*/
 
     fun logout(session_id: String, responseStandard: ResponseStandard?) {
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
+                    user?.session_id?.let { session_id->
 
-                    val response = repository.logout("$SESSION_ID=$current_session_id") //_subcategories
-                    if (response.isSuccessful) {
-                        if (response.body()?.result?.status!=null) {
-                            Log.d(USER_LOGOUT_TAG, "$SUCCESS")
-                            current_session_id = null
-                            responseStandard?.onSuccess(
-                                true,
-                                SUCCESS,
-                                response.body().toString()
-                            )
+                        val response =
+                            repository.logout("$SESSION_ID=$session_id") //_subcategories
+                            //repository.logout("$SESSION_ID=$session_id") //_subcategories
+                        if (response.isSuccessful) {
+                            if (response.body()?.result?.status != null) {
+                                Log.d(USER_LOGOUT_TAG, "$SUCCESS")
+                                user = null
+                                responseStandard?.onSuccess(
+                                    true,
+                                    SUCCESS,
+                                    response.body().toString()
+                                )
+                            } else {
+                                Log.d(USER_LOGOUT_TAG, "FAILURE  ${response.body()}")
+                                //responseStandard?.onFailure(false, ERROR, getLangResources().getString(R.string.error_msg))
+                                 responseStandard?.onFailure(false, "FAILURE","${response.body()}")
+                            }
+                        } else {
+                            Log.d(USER_LOGOUT_TAG, "$ERROR ${response.body()}  ${response.body()?.result}")
+                           // responseStandard?.onFailure(false, ERROR, getLangResources().getString(R.string.error_msg))
+                             responseStandard?.onFailure(false, "NOT SUCCESS","${response.body()}")
                         }
-                        else{
-                            Log.d(USER_LOGOUT_TAG, "FAILURE  ${response.body()}")
-                            responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
-                           // responseStandard?.onFailure(false, "FAILURE","${response.body()}")
-                        }
-                    } else {
-                        Log.d(USER_LOGOUT_TAG, "$ERROR ${response.body()}")
-                        responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
-                       // responseStandard?.onFailure(false, "NOT SUCCESS","${response.body()}")
                     }
                 } catch (e: Exception) {
                     Log.d(USER_LOGOUT_TAG, "EXCEPTION ${e.message.toString()}")
-                   // responseStandard?.onFailure(false,ERROR,"EXCEPTION ${e.message.toString()}")
-                    responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+                    responseStandard?.onFailure(false,ERROR,"EXCEPTION ${e.message.toString()}")
+                    //responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
                 }
+
             } else {
                 responseStandard?.onFailure(false,CONNECTION,"$CONNECTION")
                 Log.d(USER_LOGOUT_TAG ,"$CONNECTION")
@@ -291,27 +297,29 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-
-                    val response = repository.updateUserInfo(current_session_id!!,params) //_subcategories
-                    if (response.isSuccessful) {
-                        if (response.body()?.result?.status!=null) {
-                            Log.d(USER_UPDATE_TAG, "Success ${response.body()?.result?.status}")
-                            responseStandard?.onSuccess(true, SUCCESS, getLangResources().getString(R.string.info_updated_successfully))
+                    user?.session_id?.let { session_id ->
+                        val response =
+                            //repository.updateUserInfo(session_id, params)
+                            repository.updateUserInfo( params)
+                        if (response.isSuccessful) {
+                            if (response.body()?.result?.status != null) {
+                                Log.d(USER_UPDATE_TAG, "Success ${response.body()?.result?.status}")
+                                responseStandard?.onSuccess(true, SUCCESS, getLangResources().getString(R.string.info_updated_successfully))
+                            } else {
+                                Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.result?.error}")
+                              //  responseStandard?.onFailure(false, ERROR, getLangResources().getString(R.string.error_msg))
+                                 responseStandard?.onFailure(false, ERROR,"$ERROR ${response.body()}")
+                            }
+                        } else {
+                            Log.d(USER_UPDATE_TAG, "FAILUER ${response.body()}")
+                           // responseStandard?.onFailure(false, ERROR, getLangResources().getString(R.string.error_msg))
+                             responseStandard?.onFailure(false, ERROR,"FAILUER ${response.body()}")
                         }
-                        else{
-                            Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.result?.error}")
-                            responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
-                           // responseStandard?.onFailure(false, ERROR,"$ERROR ${response.body()}")
-                        }
-                    } else {
-                        Log.d(USER_UPDATE_TAG, "FAILUER ${response.body()}")
-                        responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
-                       // responseStandard?.onFailure(false, ERROR,"FAILUER ${response.body()}")
                     }
                 } catch (e: Exception) {
                     Log.d(USER_UPDATE_TAG, "EXCEPTION ${e.message.toString()}")
-                    responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
-                   // responseStandard?.onFailure(false, ERROR,"EXCEPTION ${e.message.toString()}")
+                   // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+                    responseStandard?.onFailure(false, ERROR,"EXCEPTION ${e.message.toString()}")
                 }
             } else {
                 Log.d(USER_UPDATE_TAG, "$CONNECTION}")
@@ -326,20 +334,33 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                    val response = repository.updateEmail(current_session_id!!,params) //_subcategories
-                    if (response.isSuccessful) {
-                        if (response.body()?.result?.status!=null) {
-                            Log.d(USER_LOGIN_TAG, "Success")
-                            responseStandard?.onSuccess(true, SUCCESS, getLangResources().getString(R.string.info_updated_successfully))
+                    user?.session_id?.let { session_id ->
+                        val response = repository.updateEmail(session_id!!, params) //_subcategories
+                        if (response.isSuccessful) {
+                            if (response.body()?.result?.status != null) {
+                                Log.d(USER_LOGIN_TAG, "Success")
+                                responseStandard?.onSuccess(
+                                    true,
+                                    SUCCESS,
+                                    getLangResources().getString(R.string.info_updated_successfully)
+                                )
+                            } else {
+                                Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()}")
+                                responseStandard?.onFailure(
+                                    false,
+                                    ERROR,
+                                    getLangResources().getString(R.string.error_msg)
+                                )
+                            }
+                            //  getUser(session_id)
+                        } else {
+                            Log.d(USER_UPDATE_TAG, "FAILUER ${response.body()}")
+                            responseStandard?.onFailure(
+                                false,
+                                ERROR,
+                                getLangResources().getString(R.string.error_msg)
+                            )
                         }
-                        else{
-                            Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()}")
-                            responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
-                        }
-                        //  getUser(session_id)
-                    } else {
-                        Log.d(USER_UPDATE_TAG, "FAILUER ${response.body()}")
-                        responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
                     }
                 } catch (e: Exception) {
                     Log.d(USER_UPDATE_TAG, "EXCEPTION ${e.message.toString()}")
@@ -356,21 +377,31 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                    val response = repository.updateMobile(current_session_id!!,params) //_subcategories
-                    if (response.isSuccessful) {
-                        if (response.body()?.result?.status!=null) {
-                            Log.d(USER_UPDATE_TAG, "Success")
-                            responseStandard?.onSuccess(true, SUCCESS, getLangResources().getString(R.string.phone_changed_successfully))
+                    user?.session_id?.let { session_id ->
+                        val response =
+                            repository.updateMobile(session_id!!, params) //_subcategories
+                        if (response.isSuccessful) {
+                            if (response.body()?.result?.status != null) {
+                                Log.d(USER_UPDATE_TAG, "Success")
+                                responseStandard?.onSuccess(
+                                    true,
+                                    SUCCESS,
+                                    getLangResources().getString(R.string.phone_changed_successfully)
+                                )
+                            } else {
+                                Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.result?.error}")
+                                // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+                                responseStandard?.onFailure(
+                                    false,
+                                    ERROR,
+                                    "$ERROR ${response.body()}"
+                                )
+                            }
+                        } else {
+                            Log.d(USER_UPDATE_TAG, "FAILUER ${response.body()}")
+                            // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+                            responseStandard?.onFailure(false, ERROR, "FAILUER ${response.body()}")
                         }
-                        else{
-                            Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.result?.error}")
-                           // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
-                             responseStandard?.onFailure(false, ERROR,"$ERROR ${response.body()}")
-                        }
-                    } else {
-                        Log.d(USER_UPDATE_TAG, "FAILUER ${response.body()}")
-                       // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
-                         responseStandard?.onFailure(false, ERROR,"FAILUER ${response.body()}")
                     }
                 } catch (e: Exception) {
                     Log.d(USER_UPDATE_TAG, "EXCEPTION ${e.message.toString()}")

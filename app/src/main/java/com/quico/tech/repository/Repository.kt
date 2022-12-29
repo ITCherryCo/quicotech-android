@@ -11,7 +11,7 @@ class Repository {
     suspend fun login(registerBody: RegisterBodyParameters) = RetrofitInstance.api.login(registerBody)
     suspend fun getUser(session_id:String) = RetrofitInstance.api.getUser(session_id)
     suspend fun logout(session_id:String) = RetrofitInstance.api.logout(session_id)
-    suspend fun updateUserInfo(session_id:String,updateBody:UpdateUserBodyParameters) = RetrofitInstance.api.updateUserInfo(session_id,updateBody)
+    suspend fun updateUserInfo(updateBody:UpdateUserBodyParameters) = RetrofitInstance.api.updateUserInfo(updateBody)
     suspend fun updateEmail(session_id:String,updateBody:UpdateUserBodyParameters) = RetrofitInstance.api.updateEmail(session_id,updateBody)
     suspend fun updateMobile(session_id:String,updateBody:RegisterBodyParameters) = RetrofitInstance.api.updateMobile(session_id,updateBody)
 

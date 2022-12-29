@@ -43,7 +43,7 @@ class CardListActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpText(){
+    private fun setUpText() {
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.my_cards)
             safeInfo.text = viewModel.getLangResources().getString(R.string.safe_information)
@@ -54,7 +54,7 @@ class CardListActivity : AppCompatActivity() {
         }
     }
 
-   private fun setUpCardAdapter() {
+    private fun setUpCardAdapter() {
         binding.apply {
             cardRecyclerViewAdapter = CardRecyclerViewAdapter()
             stopShimmer()
@@ -76,7 +76,7 @@ class CardListActivity : AppCompatActivity() {
     }
 
 
-   private fun stopShimmer(){
+    private fun stopShimmer() {
         binding.apply {
             shimmer.visibility = View.GONE
             shimmer.stopShimmer()
@@ -85,10 +85,11 @@ class CardListActivity : AppCompatActivity() {
 
     private fun setLoading() {
         binding.apply {
-            ErrorContainer.visibility = View.GONE
+            cardErrorContainer.errorContainer.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
             recyclerView.visibility = View.GONE
+            swipeRefreshLayout.setRefreshing(false)
 
             lifecycleScope.launch {
                 delay(3000)
@@ -97,23 +98,54 @@ class CardListActivity : AppCompatActivity() {
         }
     }
 
-    private  fun onRefresh() {
+    private fun onRefresh() {
         setLoading()
-        //viewModel.getAddresses(1)
+        //viewModel.getCards(1)
     }
+
 
     private fun setUpErrorForm(error_type: String) {
         binding.apply {
-
-            stopShimmer()
-            ErrorContainer.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
+            stopShimmer()
+            cardErrorContainer.apply {
+                errorContainer.visibility = View.VISIBLE
+                tryAgain.visibility = View.VISIBLE
+                errorImage.visibility = View.GONE
+                errorBtn.visibility = View.GONE
+                tryAgain.setText(
+                    viewModel.getLangResources().getString(R.string.try_again)
+                )
+                tryAgain.setOnClickListener {  }
 
-            when(error_type){
-                Constant.CONNECTION ->errorText.setText(viewModel.getLangResources().getString(R.string.check_connection))
-                Constant.NO_CARDS ->errorText.setText(viewModel.getLangResources().getString(R.string.no_cards))
-                Constant.ERROR ->errorText.setText(viewModel.getLangResources().getString(R.string.error_msg))
+                when (error_type) {
+                    Constant.CONNECTION -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.connection)
+
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.check_connection)
+
+                    }
+                    Constant.NO_CARDS -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.card)
+
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.no_cards)
+                    }
+
+                    Constant.ERROR -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.error)
+
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.error_msg)
+                    }
+                }
             }
+            swipeRefreshLayout.setEnabled(true)
+
         }
     }
 }

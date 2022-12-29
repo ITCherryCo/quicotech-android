@@ -21,6 +21,17 @@ data class RegisterParams(
     )
 
     constructor(
+        login: String,
+        mobile: String,
+        name: String
+    ) : this(
+        login,
+        mobile,
+        name,
+        null
+    )
+
+    constructor(
         mobile: String,
     ) : this(
         null,
@@ -38,44 +49,64 @@ data class RegisterResponse(
 )
 
 
-data class UserResponse(
-    val code: Int,
-    val data: ArrayList<Data>?,
-    val success: Boolean,
-    val status: String?
-)
-
 data class Result(
     val status: String?,
-    val error: String?,
+    val error: String?
+){
+}
+
+data class UserResponse(
+    val id: Any,
+    val jsonrpc: String,
+    val result: User
+)
+
+data class User(
     val session_id: String?,
-    val user_id: Int?,
-    val partner_id: Int?,
+    val is_vip: Boolean,
+    val email_verified: Boolean,
+    val partner_id: Int,
+    val user_id: Int,
+    val name: String,
+    val email: String,
+    val mobile: String,
+    val image: String,
+    val error: String?
 ){
     // this is for login successfully
     constructor(
-        session_id: String?,
-        user_id: Int?,
-        partner_id: Int?
+        email: String,
+        mobile: String,
     ) : this(
         null,
+        false,
+        false,
+        0,
+        0,
+        "",
+        email,
+        mobile,
+        "",
+        null
+    )
+
+    // to update user info: phone
+    constructor(
+        mobile: String,
+    ) : this(
         null,
-        session_id,
-        partner_id,
-        user_id
+        false,
+        false,
+        0,
+        0,
+        "",
+        "",
+        mobile,
+        "",
+        null
     )
 }
 
-data class Data(
-    val city: String,
-    val email: String,
-    val mobile: String,
-    val name: String,
-    val partner_id: Int,
-    val street: String,
-    val street2: String,
-    val zip: String
-)
 
 data class UpdateUserBodyParameters(
     val params: UpdateUserParams
@@ -88,6 +119,7 @@ data class UpdateUserParams(
     val email: String?,
     val mobile: String?,
 ) {
+    // to update user info: name, dob and image
     constructor(
         name: String,
         dob: String,
@@ -100,6 +132,7 @@ data class UpdateUserParams(
         null
     )
 
+    // to update user info: email
     constructor(
         email: String
     ) : this(

@@ -63,7 +63,7 @@ class ServiceListActivity : AppCompatActivity() {
                         binding.apply {
                             swipeRefreshLayout.setRefreshing(false)
                             swipeRefreshLayout.setEnabled(false)
-                            errorContainer.setVisibility(View.GONE)
+                            serviceErrorContainer.errorContainer.visibility=View.GONE
                             recyclerView.visibility = View.VISIBLE
                         }
 
@@ -134,7 +134,7 @@ class ServiceListActivity : AppCompatActivity() {
     fun setLoading() {
         binding.apply {
             recyclerView.visibility = View.GONE
-            errorContainer.visibility = View.GONE
+            serviceErrorContainer.errorContainer.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
            // swipeRefreshLayout.setRefreshing(true)
@@ -159,25 +159,31 @@ class ServiceListActivity : AppCompatActivity() {
         binding.apply {
             swipeRefreshLayout.setRefreshing(false)
             recyclerView.visibility = View.GONE
-            errorContainer.visibility = View.VISIBLE
-            errorImage.setImageResource(android.R.color.transparent)
-            stopShimmer()
-            errorMsg1.visibility = View.GONE
             swipeRefreshLayout.setEnabled(true)
+            stopShimmer()
+            serviceErrorContainer.apply {
+                errorMsg1.visibility = View.GONE
+                errorContainer.visibility = View.VISIBLE
+                errorBtn.visibility = View.GONE
+                errorImage.setImageResource(android.R.color.transparent)
 
-            when (error_type) {
-                Constant.CONNECTION -> {
-                    errorMsg2.setText(
-                        viewModel.getLangResources().getString(R.string.check_connection)
-                    )
-                }
-                Constant.NO_SERVICES -> {
-                    errorMsg2.text = viewModel.getLangResources().getString(R.string.no_services)
-                    errorImage.setImageResource(R.drawable.empty_item)
-                }
+                when (error_type) {
+                    Constant.CONNECTION -> {
+                        errorMsg2.setText(
+                            viewModel.getLangResources().getString(R.string.check_connection)
+                        )
+                    }
+                    Constant.NO_SERVICES -> {
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.no_services)
+                        errorImage.setImageResource(R.drawable.empty_item)
+                    }
 
-                Constant.ERROR -> {
-                    errorMsg2.setText(viewModel.getLangResources().getString(R.string.error_msg))
+                    Constant.ERROR -> {
+                        errorMsg2.setText(
+                            viewModel.getLangResources().getString(R.string.error_msg)
+                        )
+                    }
                 }
             }
         }

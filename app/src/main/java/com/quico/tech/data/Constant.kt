@@ -1,5 +1,8 @@
 package com.quico.tech.data
 
+import com.quico.tech.model.RegisterParams
+import com.quico.tech.model.User
+
 object Constant {
     var WEB_BASE_URL = "http://13.39.86.18:8069/api/"
     var ERROR = "error"
@@ -16,6 +19,7 @@ object Constant {
     var PHONE_NUMBER = "phone_number"
     var VERIFICATION_TYPE = "verification_type" // email link or phone number verification
     var OPERATION_TYPE = "operation_type"       // register new account or change phone number
+    var EMAIL_LINK = "email_link"       // register new account or change phone number
     var ORDERS_TAG = "ORDERS_RESPONSE"
     var ORDERS_TYPE= "orders_type"
     var ONGOING_ORDERS= "ongoing_orders"
@@ -53,6 +57,8 @@ object Constant {
     var PASSWORD= "password"
     var PRODUCT_ID= "product_id"
     var ITEM_ID= "item_id"
+    var SEND_EMAIL_LINK= "SEND_EMAIL_LINK"
+    var TEMPORAR_USER : User? =null
 
 
 }

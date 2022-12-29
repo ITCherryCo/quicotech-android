@@ -13,7 +13,7 @@ interface API {
 
     @POST("login")
    // @Headers("Content-Type: application/json")
-    suspend fun login(@Body registerBody: RegisterBodyParameters): Response<RegisterResponse>
+    suspend fun login(@Body registerBody: RegisterBodyParameters): Response<UserResponse>
 
     @GET("getUser")
    // @Headers("Content-Type: application/json")
@@ -23,7 +23,8 @@ interface API {
     suspend fun logout(@Header("Cookie") session_id:String): Response<RegisterResponse>
 
     @PUT("updateUserInfo")
-    suspend fun updateUserInfo(@Header("Cookie") session_id:String,@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
+   // suspend fun updateUserInfo(@Header("Cookie") session_id:String,@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
+    suspend fun updateUserInfo(@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
 
     @PUT("updateEmail")
     suspend fun updateEmail(@Header("Cookie") session_id:String,@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>

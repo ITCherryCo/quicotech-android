@@ -80,7 +80,7 @@ Email at example@gmail.com.</string>
     <string name="verification">Verification</string>
     <string name="enter_verification_code">Enter Verification Code</string>
     <string name="phone_confirmation_code">Enter the confirmation code that we sent to your Phone number.</string>
-    <string name="email_confirmation_code">Enter the confirmation code that we sent to your Email at example@gmail.com.</string>
+    <string name="email_confirmation_code">We have sent you a verification link to your Email at %1$s .</string>
     <string name="resend_code"><u>Resend Code</u></string>
     <string name="or">OR</string>
     <string name="call"><u>Call</u></string>
@@ -211,5 +211,7 @@ Diagnostic !! Submit a request now!!!</string>
     <string name="description_example">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets</string>
     <string name="new_text">New</string>
     <string name="no_categories">No Categories found</string>
-
+    <string name="success">Success</string>
+    <string name="email_verification">Email Verification </string>
+    <string name="verify_link">Please open your Email to verify the link.</string>
 </resources>

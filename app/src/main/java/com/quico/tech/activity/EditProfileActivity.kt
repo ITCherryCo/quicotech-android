@@ -6,12 +6,16 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64.DEFAULT
+import android.util.Base64.decode
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
@@ -30,6 +34,8 @@ import com.quico.tech.model.UpdateUserBodyParameters
 import com.quico.tech.model.UpdateUserParams
 import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
+import java.lang.Byte.decode
+import java.net.URLDecoder.decode
 import java.util.*
 
 class EditProfileActivity : AppCompatActivity() {
@@ -46,6 +52,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         setUpText()
         binding.apply {
+            loadImage()
 
             imageChoose.setOnClickListener {
                 checkGalleryPermissions()
@@ -85,8 +92,30 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkField() {
+    private fun loadImage() {
+        try {
 
+            binding.apply {
+                if (viewModel.user?.image.isNullOrEmpty()) {
+                    profileImage.setImageResource(R.drawable.profile_user)
+                } else {
+                    val imageBytes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        Base64.getDecoder().decode(viewModel.user?.image)
+
+                    } else {
+                        android.util.Base64.decode(
+                            viewModel.user?.image,
+                            android.util.Base64.DEFAULT
+                        )
+                    }
+
+                    var decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                    profileImage.setImageBitmap(decodedImage)
+
+                    //                        binding.profileImage.setImageURI(imageUri)
+                }
+            }
+        }catch (e:Exception){}
     }
 
     fun chooseDate() {
@@ -133,6 +162,13 @@ class EditProfileActivity : AppCompatActivity() {
 
             saveBtn.setOnClickListener {
                 checkFields()
+            }
+
+            viewModel.user?.let { user ->
+                if (user.name.isNullOrEmpty())
+                    nameField.hint = viewModel.getLangResources().getString(R.string.full_name)
+                else
+                    nameField.setText(user.name)
             }
         }
     }

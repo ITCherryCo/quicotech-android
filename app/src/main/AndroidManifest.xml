@@ -21,9 +21,7 @@
         android:theme="@style/Theme.QuicoTech"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".CategoryActivity"
-            android:exported="false" />
+
         <activity
             android:name=".activity.ProductActivity"
             android:exported="false">
@@ -45,8 +43,8 @@
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
         <activity
@@ -78,7 +76,22 @@
             android:exported="false" />
         <activity
             android:name=".activity.VerificationCodeActivity"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="itcherry.net" android:scheme="https"/>
+
+                <data
+                    android:host="quico.page.link"
+                    android:scheme="https"/>
+
+                <data
+                    android:host="quico.page.link"
+                    android:scheme="http"/>
+
+            </intent-filter>
+       </activity>
         <activity
             android:name=".activity.GeneralWebInfoActivity"
             android:exported="false" />

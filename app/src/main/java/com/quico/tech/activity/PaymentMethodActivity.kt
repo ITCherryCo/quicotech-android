@@ -89,7 +89,7 @@ class PaymentMethodActivity : AppCompatActivity() {
     fun setLoading() {
         binding.apply {
             recyclerView.visibility = View.GONE
-            errorContainer.visibility = View.GONE
+            paymentErrorContainer.errorContainer.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
 
@@ -111,24 +111,29 @@ class PaymentMethodActivity : AppCompatActivity() {
         binding.apply {
 
             recyclerView.visibility = View.GONE
-            errorContainer.visibility = View.VISIBLE
-            errorImage.setImageResource(android.R.color.transparent)
             stopShimmer()
-            errorMsg1.visibility = View.GONE
 
-            when (error_type) {
-                Constant.CONNECTION -> {
-                    errorMsg2.setText(
-                        viewModel.getLangResources().getString(R.string.check_connection)
-                    )
-                }
-                Constant.NO_CARDS -> {
-                    errorMsg2.text = viewModel.getLangResources().getString(R.string.no_cards)
-                    errorImage.setImageResource(R.drawable.empty_item)
-                }
+            paymentErrorContainer.apply {
+                errorContainer.visibility = View.VISIBLE
+                errorImage.setImageResource(android.R.color.transparent)
+                errorMsg1.visibility = View.GONE
 
-                Constant.ERROR -> {
-                    errorMsg2.setText(viewModel.getLangResources().getString(R.string.error_msg))
+                when (error_type) {
+                    Constant.CONNECTION -> {
+                        errorMsg2.setText(
+                            viewModel.getLangResources().getString(R.string.check_connection)
+                        )
+                    }
+                    Constant.NO_CARDS -> {
+                        errorMsg2.text = viewModel.getLangResources().getString(R.string.no_cards)
+                        errorImage.setImageResource(R.drawable.empty_item)
+                    }
+
+                    Constant.ERROR -> {
+                        errorMsg2.setText(
+                            viewModel.getLangResources().getString(R.string.error_msg)
+                        )
+                    }
                 }
             }
         }

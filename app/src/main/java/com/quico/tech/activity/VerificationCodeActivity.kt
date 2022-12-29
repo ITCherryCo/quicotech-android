@@ -12,7 +12,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
@@ -22,12 +21,15 @@ import com.quico.tech.data.Constant.CHANGE_EMAIL
 import com.quico.tech.data.Constant.CHANGE_PHONE_NUMBER
 import com.quico.tech.data.Constant.CHECKOUT_TYPE
 import com.quico.tech.data.Constant.EMAIL
+import com.quico.tech.data.Constant.EMAIL_LINK
 import com.quico.tech.data.Constant.OPERATION_TYPE
-import com.quico.tech.data.Constant.VERIFICATION_TYPE
 import com.quico.tech.data.Constant.ORDERS
 import com.quico.tech.data.Constant.PHONE_NUMBER
 import com.quico.tech.data.Constant.REGISTER
+import com.quico.tech.data.Constant.SEND_EMAIL_LINK
+import com.quico.tech.data.Constant.TEMPORAR_USER
 import com.quico.tech.data.Constant.TRACKING_ON
+import com.quico.tech.data.Constant.VERIFICATION_TYPE
 import com.quico.tech.databinding.ActivityVerificationCodeBinding
 import com.quico.tech.model.RegisterBodyParameters
 import com.quico.tech.model.RegisterParams
@@ -36,9 +38,6 @@ import com.quico.tech.utils.Common.cancelProgressDialog
 import com.quico.tech.utils.Common.isProgressIsLoading
 import com.quico.tech.utils.Common.setUpProgressDialog
 import com.quico.tech.viewmodel.SharedViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import java.lang.Exception
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -50,11 +49,13 @@ class VerificationCodeActivity : AppCompatActivity() {
         null     // register or change phone number or change email or checkout
     private var phone_number: String? = null
     private var code_by_system: String? = ""
+    private var emailLink: String? = null
     private var sms_code: String? = ""
     private var firebaseAuth: FirebaseAuth? = null
     private val SMS_TAG = "SMS_CODE"
     var countDownTimer: CountDownTimer? = null
     private val mTimeLeftInMillis: Long = 45000
+    private lateinit var actionCodeSettings: ActionCodeSettings
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +67,23 @@ class VerificationCodeActivity : AppCompatActivity() {
         operation_type = intent.extras?.getString(OPERATION_TYPE)
         phone_number = intent.extras?.getString(PHONE_NUMBER)
         firebaseAuth = FirebaseAuth.getInstance()
+
+        actionCodeSettings = ActionCodeSettings.newBuilder()
+            .setUrl("https://itcherry.net")
+            .setHandleCodeInApp(true)
+            .setAndroidPackageName("com.quico.tech", false, null)
+            //.setIOSBundleId("com.example.ios")
+            //.setAndroidPackageName("com.example.android", true, /* installIfNotAvailable */"12"    /* minimumVersion */)
+            .build()
+
+        emailLink = intent?.data?.toString()
+
+        if (emailLink == null) {
+            emailLink = intent.extras?.getString(EMAIL_LINK)
+        }
+        emailLink?.let {
+            Log.d(SEND_EMAIL_LINK, "Email is received well we can start verifying.")
+        }
         checkOperationType()
         setUpText()
         viewModel.canRegister = false
@@ -74,6 +92,21 @@ class VerificationCodeActivity : AppCompatActivity() {
 
 
     // to check wether i want to send an sms verification code or an email confirmation
+
+    private fun setUpText() {
+        binding.apply {
+            title.text = viewModel.getLangResources().getString(R.string.verification)
+            resendText.text = viewModel.getLangResources().getString(R.string.resend_code)
+            verifyBtn.text = viewModel.getLangResources().getString(R.string.verify)
+
+            if (viewModel.getLanguage().equals(Constant.AR))
+                backArrow.scaleX = -1f
+
+            timer.setPaintFlags(timer.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG) // draw line on old price
+            resendText.setPaintFlags(resendText.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG) // draw line on old price
+        }
+    }
+
     private fun checkOperationType() {
         binding.apply {
             val content = SpannableString("00:00")
@@ -82,26 +115,47 @@ class VerificationCodeActivity : AppCompatActivity() {
 
             title.text = viewModel.getLangResources().getString(R.string.verification)
             verifyBtn.text = viewModel.getLangResources().getString(R.string.verify)
-            enterVerificationCodeText.text =
-                viewModel.getLangResources().getString(R.string.enter_verification_code)
+
 
             when (verification_type) {
                 EMAIL -> {
+                    enterVerificationCodeText.text =
+                        viewModel.getLangResources().getString(R.string.email_verification)
                     sendMsgText.text =
-                        viewModel.getLangResources().getString(R.string.email_confirmation_code)
-
-                    verifyBtn.setOnClickListener {
-                        startActivity(
-                            Intent(this@VerificationCodeActivity, CheckoutActivity::class.java)
-                                .putExtra(TRACKING_ON, false)
-                                .putExtra(CHECKOUT_TYPE, ORDERS)
+                        viewModel.getLangResources().getString(
+                            R.string.email_confirmation_code,
+                            TEMPORAR_USER!!.email
                         )
-                    }
-                    resendText.setOnClickListener {
-                        // MUST RESEND AN EMAIL
+
+                    /* verifyBtn.setOnClickListener {
+                         startActivity(
+                             Intent(this@VerificationCodeActivity, CheckoutActivity::class.java)
+                                 .putExtra(TRACKING_ON, false)
+                                 .putExtra(CHECKOUT_TYPE, ORDERS)
+                         )
+                     }*/
+                    pinview.visibility = View.GONE
+                    verifyBtn.visibility = View.GONE
+                    if (emailLink == null) {
+                        startTimer()
+                        sendEmailLink(TEMPORAR_USER!!.email!!)
+                        resendText.setOnClickListener {
+                            // MUST RESEND AN EMAIL
+                            sendEmailLink(TEMPORAR_USER!!.email!!)
+                        }
+                    } else {
+                        // must verify email link
+                        verifyBtn.visibility = View.VISIBLE
+                        verifyBtn.setOnClickListener {
+                            verifyEmail(TEMPORAR_USER!!.email!!, emailLink!!)
+                        }
                     }
                 }
-                PHONE_NUMBER-> {
+
+                PHONE_NUMBER -> {
+                    pinview.visibility = View.VISIBLE
+                    enterVerificationCodeText.text =
+                        viewModel.getLangResources().getString(R.string.enter_verification_code)
                     sendMsgText.text =
                         viewModel.getLangResources().getString(R.string.phone_confirmation_code)
                     phone_number?.let {
@@ -122,22 +176,6 @@ class VerificationCodeActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpText() {
-        binding.apply {
-            title.text = viewModel.getLangResources().getString(R.string.profile)
-            enterVerificationCodeText.text =
-                viewModel.getLangResources().getString(R.string.enter_verification_code)
-            resendText.text = viewModel.getLangResources().getString(R.string.resend_code)
-            verifyBtn.text = viewModel.getLangResources().getString(R.string.verify)
-
-            if (viewModel.getLanguage().equals(Constant.AR))
-                backArrow.scaleX = -1f
-
-            timer.setPaintFlags(timer.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG) // draw line on old price
-            resendText.setPaintFlags(resendText.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG) // draw line on old price
-
-        }
-    }
 
     private val mCallback: PhoneAuthProvider.OnVerificationStateChangedCallbacks =
         object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -226,11 +264,21 @@ class VerificationCodeActivity : AppCompatActivity() {
                 override fun onFinish() {
                     timer.text = "0:00"
                     resendText.setEnabled(true)
-                   // resendText.setTextColor(resources.getColor(R.drawable.ripple_text_purple_gray))
+                    // resendText.setTextColor(resources.getColor(R.drawable.ripple_text_purple_gray))
                     resendText.setTextColor(resources.getColor(R.color.color_primary_purple))
                     countDownTimer!!.cancel()
                 }
             }.start()
+        }
+
+    }
+
+    private fun stopTimer() {
+        binding.apply {
+            timer.text = "0:00"
+            resendText.setEnabled(true)
+            resendText.setTextColor(resources.getColor(R.color.color_primary_purple))
+            countDownTimer!!.cancel()
         }
     }
 
@@ -311,7 +359,7 @@ class VerificationCodeActivity : AppCompatActivity() {
                                 REGISTER -> {
                                     viewModel.canRegister = true
                                     Constant.can_register = true
-                                    onBackPressed()
+                                     onBackPressed()
                                 }
                                 CHANGE_PHONE_NUMBER -> {
                                     Log.d(
@@ -378,4 +426,67 @@ class VerificationCodeActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun sendEmailLink(email: String) {
+        firebaseAuth?.sendSignInLinkToEmail(email, actionCodeSettings)
+            ?.addOnCompleteListener(OnCompleteListener<Void?> { task ->
+                Log.d(SEND_EMAIL_LINK, "onComplete: ")
+                if (task.isSuccessful) {
+                    Log.d(SEND_EMAIL_LINK, "Email sent.")
+                    Common.setUpAlert(
+                        this@VerificationCodeActivity, true,
+                        viewModel.getLangResources().getString(R.string.success),
+                        viewModel.getLangResources().getString(R.string.verify_link),
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
+                    stopTimer()
+
+                } else {
+                    Log.d(SEND_EMAIL_LINK, "EXCEPTION ${task.exception}")
+                    Common.setUpAlert(
+                        this@VerificationCodeActivity, false,
+                        viewModel.getLangResources().getString(R.string.error),
+                        viewModel.getLangResources().getString(R.string.error_msg),
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
+                }
+            })
+        //quico.page.link
+    }
+
+    private fun verifyEmail(email: String, emailLink: String) {
+        Log.d(SEND_EMAIL_LINK, "VERIFY IS CALLED")
+        Common.setUpProgressDialog(this)
+        // Confirm the link is a sign-in with email link.
+        if (firebaseAuth!!.isSignInWithEmailLink(emailLink)) {
+            // Retrieve this from wherever you stored it
+            // The client SDK will parse the code from the link for you.
+            firebaseAuth!!.signInWithEmailLink(email, emailLink)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        cancelProgressDialog()
+                        Log.d(SEND_EMAIL_LINK, "Successfully signed in with email link!")
+                        val result = task.result
+                        // You can access the new user via result.getUser()
+                        // Additional user info profile *not* available via:
+                        // result.getAdditionalUserInfo().getProfile() == null
+                        // You can check if the user is new or existing:
+                        // result.getAdditionalUserInfo().isNewUser()
+                         reloadPageWithPhone()
+                    } else {
+                        Log.e(SEND_EMAIL_LINK, "Error signing in with email link", task.exception)
+                        cancelProgressDialog()
+                    }
+                }
+        }
+    }
+
+    private fun reloadPageWithPhone() {
+        verification_type = PHONE_NUMBER
+        OPERATION_TYPE = REGISTER
+        PHONE_NUMBER = TEMPORAR_USER!!.mobile.toString()
+        checkOperationType()
+    }
 }

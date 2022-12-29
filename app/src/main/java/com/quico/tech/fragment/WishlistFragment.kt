@@ -27,8 +27,6 @@ class WishlistFragment : Fragment() {
     private val viewModel: SharedViewModel by viewModels()
     private lateinit var productRecyclerViewAdapter: ProductRecyclerViewAdapter
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,7 +58,7 @@ class WishlistFragment : Fragment() {
 
     fun setUpItemsAdapter() {
         binding.apply {
-            productRecyclerViewAdapter = ProductRecyclerViewAdapter(false,false,null)
+            productRecyclerViewAdapter = ProductRecyclerViewAdapter(false, false, null)
             val items = ArrayList<Product>()
             stopShimmer()
             recyclerView.visibility = View.VISIBLE
@@ -89,6 +87,7 @@ class WishlistFragment : Fragment() {
             shimmer.stopShimmer()
         }
     }
+
     fun setLoading() {
         binding.apply {
             recyclerView.visibility = View.GONE
@@ -107,37 +106,44 @@ class WishlistFragment : Fragment() {
     fun setUpErrorForm(error_type: String) {
         binding.apply {
             recyclerView.visibility = View.GONE
-            errorContainer.errorContainer.visibility = View.VISIBLE
             stopShimmer()
-            errorContainer.tryAgain.visibility = View.VISIBLE
-            errorContainer.errorImage.visibility = View.VISIBLE
-            errorContainer.errorImage.setImageResource(android.R.color.transparent)
+            favoriteErrorContainer.apply {
+                errorContainer.visibility = View.VISIBLE
+                tryAgain.visibility = View.VISIBLE
+                errorImage.visibility = View.VISIBLE
+                errorImage.setImageResource(android.R.color.transparent)
+                errorBtn.text = viewModel.getLangResources().getString(R.string.start_shopping)
+                tryAgain.setText(
+                    viewModel.getLangResources().getString(R.string.try_again)
+                )
+                tryAgain.setOnClickListener {  }
 
+                when (error_type) {
+                    Constant.CONNECTION -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.connection)
 
-            when (error_type) {
-                Constant.CONNECTION -> {
-                    errorContainer.errorMsg1.text =
-                        viewModel.getLangResources().getString(R.string.connection)
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.check_connection)
 
-                    errorContainer.errorMsg2.text =
-                        viewModel.getLangResources().getString(R.string.check_connection)
+                    }
+                    Constant.NO_ITEMS -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.no_search_result)
 
-                }
-                Constant.NO_ITEMS -> {
-                    errorContainer.errorMsg1.text =
-                        viewModel.getLangResources().getString(R.string.no_search_result)
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.no_search_result_msg)
+                        errorImage.setImageResource(R.drawable.no_favorite)
 
-                    errorContainer.errorMsg2.text =
-                        viewModel.getLangResources().getString(R.string.no_search_result_msg)
-                    errorContainer.errorImage.setImageResource(R.drawable.no_favorite)
+                    }
 
-                }
+                    Constant.ERROR -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.error)
 
-                Constant.ERROR -> {
-                    errorContainer. errorMsg1.text =
-                        viewModel.getLangResources().getString(R.string.error)
-
-                    errorContainer.errorMsg2.text = viewModel.getLangResources().getString(R.string.error_msg)
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.error_msg)
+                    }
                 }
             }
         }

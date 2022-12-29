@@ -37,10 +37,11 @@ class AddressListActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.apply {
-          nextBtn.setOnClickListener {
-                startActivity(Intent(this@AddressListActivity, VerificationCodeActivity::class.java)
-                    .putExtra(VERIFICATION_TYPE, EMAIL)
-                    .putExtra(VERIFICATION_TYPE, EMAIL)
+            nextBtn.setOnClickListener {
+                startActivity(
+                    Intent(this@AddressListActivity, VerificationCodeActivity::class.java)
+                        .putExtra(VERIFICATION_TYPE, EMAIL)
+                        .putExtra(VERIFICATION_TYPE, EMAIL)
                 )
             }
             backArrow.setOnClickListener {
@@ -48,7 +49,7 @@ class AddressListActivity : AppCompatActivity() {
             }
         }
         setUpText()
-       // setUpCartAdapter()
+        // setUpCartAdapter()
 
         onRefresh()
 //        viewModel.getAddresses(1)
@@ -56,11 +57,13 @@ class AddressListActivity : AppCompatActivity() {
 
     }
 
-    private fun setUpText(){
+    private fun setUpText() {
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.address)
-            selectPaymentText.text = viewModel.getLangResources().getString(R.string.select_payment_method)
-            addNewAddressText.text = viewModel.getLangResources().getString(R.string.add_new_address)
+            selectPaymentText.text =
+                viewModel.getLangResources().getString(R.string.select_payment_method)
+            addNewAddressText.text =
+                viewModel.getLangResources().getString(R.string.add_new_address)
             nextBtn.text = viewModel.getLangResources().getString(R.string.next)
 
             if (viewModel.getLanguage().equals(Constant.AR))
@@ -68,7 +71,7 @@ class AddressListActivity : AppCompatActivity() {
         }
     }
 
-    private fun subscribeAddresses(){
+    private fun subscribeAddresses() {
         lifecycleScope.launch {
             viewModel.addresses.collect { response ->
                 when (response) {
@@ -82,7 +85,9 @@ class AddressListActivity : AppCompatActivity() {
                             if (addressesResponse.addresses.isEmpty())
                                 setUpErrorForm(NO_ADDRESSES)
                             else {
-                                addressSelectionRecyclerViewAdapter.differ.submitList(addressesResponse.addresses)
+                                addressSelectionRecyclerViewAdapter.differ.submitList(
+                                    addressesResponse.addresses
+                                )
                                 binding.recyclerView.setVisibility(View.VISIBLE)
                             }
                         }
@@ -111,7 +116,7 @@ class AddressListActivity : AppCompatActivity() {
     }
 
 
-    private  fun setUpCartAdapter() {
+    private fun setUpCartAdapter() {
         // call the adapter for item list
         binding.apply {
             stopShimmer()
@@ -136,7 +141,7 @@ class AddressListActivity : AppCompatActivity() {
         }
     }
 
-    private fun stopShimmer(){
+    private fun stopShimmer() {
         binding.apply {
             shimmer.visibility = View.GONE
             shimmer.stopShimmer()
@@ -145,7 +150,7 @@ class AddressListActivity : AppCompatActivity() {
 
     private fun setLoading() {
         binding.apply {
-            ErrorContainer.visibility = View.GONE
+            addressErrorContainer.errorContainer.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
             recyclerView.visibility = View.GONE
@@ -163,19 +168,47 @@ class AddressListActivity : AppCompatActivity() {
         //viewModel.getAddresses(1)
     }
 
-    private fun setUpErrorForm(error_type: String) {
+    fun setUpErrorForm(error_type: String) {
         binding.apply {
-
-            stopShimmer()
-            ErrorContainer.visibility = View.VISIBLE
-            selectPaymentText.visibility = View.GONE
             recyclerView.visibility = View.GONE
+            stopShimmer()
+            addressErrorContainer.apply {
+                errorContainer.visibility = View.VISIBLE
+                tryAgain.visibility = View.VISIBLE
+                errorImage.visibility = View.GONE
+                errorBtn.visibility = View.GONE
+                tryAgain.setText(
+                    viewModel.getLangResources().getString(R.string.try_again)
+                )
+                tryAgain.setOnClickListener {  }
 
-            when(error_type){
-                CONNECTION->errorText.setText(viewModel.getLangResources().getString(R.string.check_connection))
-                NO_ADDRESSES->errorText.setText(viewModel.getLangResources().getString(R.string.no_addresses))
-                ERROR->errorText.setText(viewModel.getLangResources().getString(R.string.error_msg))
+                when (error_type) {
+                    Constant.CONNECTION -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.connection)
+
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.check_connection)
+
+                    }
+                    NO_ADDRESSES -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.address)
+
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.no_addresses)
+                    }
+
+                    Constant.ERROR -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.error)
+
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.error_msg)
+                    }
+                }
             }
         }
     }
 }
+

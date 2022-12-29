@@ -2,30 +2,32 @@ package com.quico.tech.activity
 
 import android.content.Intent
 import android.graphics.Paint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.util.Patterns
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import com.quico.tech.R
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityRegisterBinding
 import com.quico.tech.model.RegisterBodyParameters
 import com.quico.tech.model.RegisterParams
+import com.quico.tech.model.User
 import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.launch
+
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private val viewModel: SharedViewModel by viewModels()
     private var showPass = false
     private var showConfirmPass = false
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +37,13 @@ class RegisterActivity : AppCompatActivity() {
         init()
         setUpText()
         subscribeRegisterUser()
+
     }
 
     fun init() {
         //Remove Statusbar
         Common.removeStatusBarColor(this);
-      //  Common.hideSystemUIBeloR(this);
+        //  Common.hideSystemUIBeloR(this);
     }
 
     private fun setUpText() {
@@ -82,24 +85,24 @@ class RegisterActivity : AppCompatActivity() {
             eyeImage2.setOnClickListener {
                 checkConfirmPasswordText()
             }
-           // countryPicker.setEnabled(false)
+            // countryPicker.setEnabled(false)
         }
     }
 
-     fun subscribeRegisterUser() {
+    fun subscribeRegisterUser() {
         binding.apply {
             lifecycleScope.launch {
                 viewModel.can_register.collect { can_register ->
                     when (can_register) {
                         true -> {
                             Log.d(Constant.USER_REGISTER_TAG, "can register now")
-                           // Toast.makeText(this@RegisterActivity,"can register",Toast.LENGTH_LONG).show()
-                           // Common.setUpProgressDialog(this@RegisterActivity)
-                           // registerUser()
+                            // Toast.makeText(this@RegisterActivity,"can register",Toast.LENGTH_LONG).show()
+                            // Common.setUpProgressDialog(this@RegisterActivity)
+                            // registerUser()
                         }
                         false -> {
                             Log.d(Constant.USER_REGISTER_TAG, "cant register now")
-                          //  Toast.makeText(this@RegisterActivity,"cant",Toast.LENGTH_LONG).show()
+                            //  Toast.makeText(this@RegisterActivity,"cant",Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -110,7 +113,7 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-      //  subscribeRegisterUser()
+        //  subscribeRegisterUser()
         if (Constant.can_register)
             registerUser()
     }
@@ -148,32 +151,38 @@ class RegisterActivity : AppCompatActivity() {
                     viewModel.getLangResources().getString(R.string.mismatch_password)
             else {
                 // send sms verification code
-
+                // verify email
+                // save user temporary
+              /*  Constant.TEMPORAR_USER = User(emailField.text.toString(),phoneValue)
                 startActivity(
                     Intent(this@RegisterActivity, VerificationCodeActivity::class.java)
-                        .putExtra(Constant.VERIFICATION_TYPE, Constant.PHONE_NUMBER)
+                        .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
+                       // .putExtra(Constant.VERIFICATION_TYPE, Constant.PHONE_NUMBER)
                         .putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
                         .putExtra(Constant.PHONE_NUMBER, phoneValue)
-                )
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                )*/
+                registerUser()
             }
         }
     }
 
-    fun checkPasswordText() {
+
+    private fun checkPasswordText() {
         if (showPass)
             hidePassword()
         else
             showPassword()
     }
 
-    fun checkConfirmPasswordText() {
+    private fun checkConfirmPasswordText() {
         if (showConfirmPass)
             showConfirmPassword()
         else
             hideConfirmPassword()
     }
 
-    fun showPassword() {
+    private fun showPassword() {
         showPass = true
         binding.apply {
             passwordField.setTransformationMethod(null)
@@ -183,7 +192,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    fun hidePassword() {
+    private fun hidePassword() {
         showPass = false
         binding.apply {
             passwordField.setTransformationMethod(PasswordTransformationMethod())
@@ -195,7 +204,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
 
-    fun showConfirmPassword() {
+    private fun showConfirmPassword() {
         showConfirmPass = true
         binding.apply {
             confirmPasswordField.setTransformationMethod(null)
@@ -205,7 +214,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    fun hideConfirmPassword() {
+    private fun hideConfirmPassword() {
         showConfirmPass = false
         binding.apply {
             confirmPasswordField.setTransformationMethod(PasswordTransformationMethod())
@@ -248,7 +257,7 @@ class RegisterActivity : AppCompatActivity() {
                                 startActivity(
                                     Intent(this@RegisterActivity, HomeActivity::class.java)
                                 )
-                                viewModel.canRegister=false
+                                viewModel.canRegister = false
                             }
 
                             override fun onFailure(
