@@ -212,5 +212,6 @@ Diagnostic !! Submit a request now!!!</string>
     <string name="new_text">New</string>
     <string name="no_categories">No Categories found</string>
     <string name="single_offer_title">SINGLE OFFER</string>
+    <string name="single_category">SINGLE CATEGORY</string>
 
 </resources>

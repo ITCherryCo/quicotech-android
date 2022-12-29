@@ -1,6 +1,7 @@
 package com.quico.tech.adapter
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,9 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
+import com.quico.tech.activity.CategoryDetailActivity
+import com.quico.tech.activity.ProductActivity
+import com.quico.tech.data.Constant
 import com.quico.tech.databinding.CategoryItemListBinding
 import com.quico.tech.model.Category
 
@@ -30,6 +34,8 @@ class CategoryRecyclerViewAdapter(var withFilterSelection : Boolean) : RecyclerV
                     if (withFilterSelection) {
                         lastSelectedPosition = absoluteAdapterPosition
                         notifyDataSetChanged()
+                    }else{
+                        itemView.context.startActivity(Intent(itemView.context, CategoryDetailActivity::class.java).putExtra(Constant.CATEGORY_ID, 1))
                     }
                 }
 

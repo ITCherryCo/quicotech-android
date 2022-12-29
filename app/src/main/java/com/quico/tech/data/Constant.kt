@@ -52,6 +52,7 @@ object Constant {
     var APP_MEDIA_PATH= "/QuicoTech/Media/Recording"
     var PASSWORD= "password"
     var PRODUCT_ID= "product_id"
+    var CATEGORY_ID= "category_id"
     var ITEM_ID= "item_id"
 
 

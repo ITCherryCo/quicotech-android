@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quico.tech.R
+import com.quico.tech.activity.BrandAllActivity
 import com.quico.tech.activity.CartActivity
 import com.quico.tech.activity.CategoryAllActivity
 import com.quico.tech.activity.HomeActivity
+import com.quico.tech.adapter.BrandHomeRecyclerViewAdapter
 import com.quico.tech.adapter.CategoryRecyclerViewAdapter
 import com.quico.tech.adapter.ProductRecyclerViewAdapter
 import com.quico.tech.databinding.FragmentHomeBinding
+import com.quico.tech.model.Brand
 import com.quico.tech.model.Category
 import com.quico.tech.model.Product
 import com.quico.tech.utils.Common
@@ -23,6 +26,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding : FragmentHomeBinding
     private lateinit var categoryRecyclerViewAdapter: CategoryRecyclerViewAdapter
     private lateinit var productRecyclerViewAdapter: ProductRecyclerViewAdapter
+    private lateinit var brandHomeRecyclerViewAdapter: BrandHomeRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +35,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         init()
         getCategories();
+        getBrands()
         getHotDeals();
         getBestSellingProducts();
         getOffersProducts();
@@ -42,6 +47,9 @@ class HomeFragment : Fragment() {
         binding.apply {
             homeContent.viewAllCategoriesLabel.setOnClickListener {
                 startActivity(Intent(context, CategoryAllActivity::class.java))
+            }
+            homeContent.viewAllBrandsLabel.setOnClickListener {
+                startActivity(Intent(context, BrandAllActivity::class.java))
             }
         }
     }
@@ -81,6 +89,29 @@ class HomeFragment : Fragment() {
 
             categoryRecyclerViewAdapter.differ.submitList(categories)
 
+        }
+    }
+
+    fun getBrands(){
+        binding.apply {
+
+            brandHomeRecyclerViewAdapter = BrandHomeRecyclerViewAdapter()
+            val brands = ArrayList<Brand>()
+            brands.add(Brand(1,"Canon",R.drawable.brand_canon))
+            brands.add(Brand(2,"Canon",R.drawable.brand_canon))
+            brands.add(Brand(3,"Canon",R.drawable.brand_canon))
+            brands.add(Brand(4,"Canon",R.drawable.brand_canon))
+            brands.add(Brand(5,"Canon",R.drawable.brand_canon))
+            brands.add(Brand(6,"Canon",R.drawable.brand_canon))
+            brands.add(Brand(7,"Canon",R.drawable.brand_canon))
+            brands.add(Brand(8,"Canon",R.drawable.brand_canon))
+
+
+            homeContent.recyclerViewBrands.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            homeContent.recyclerViewBrands.setItemAnimator(DefaultItemAnimator())
+            homeContent.recyclerViewBrands.setAdapter(brandHomeRecyclerViewAdapter)
+
+            brandHomeRecyclerViewAdapter.differ.submitList(brands)
 
         }
     }

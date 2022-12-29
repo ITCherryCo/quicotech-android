@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
+import com.quico.tech.activity.CategoryDetailActivity
 import com.quico.tech.activity.RequestActivity
+import com.quico.tech.data.Constant
 import com.quico.tech.databinding.CategoryAllItemListBinding
 import com.quico.tech.databinding.ServiceItemListBinding
 import com.quico.tech.model.Category
@@ -25,7 +27,7 @@ class CategoryAllRecyclerViewAdapter() : RecyclerView.Adapter<CategoryAllRecycle
 
 
                 itemView.setOnClickListener {
-                    //itemView.context.startActivity(Intent(itemView.context, RequestActivity::class.java))
+                    itemView.context.startActivity(Intent(itemView.context, CategoryDetailActivity::class.java).putExtra(Constant.CATEGORY_ID, 1))
                 }
             }
         }
