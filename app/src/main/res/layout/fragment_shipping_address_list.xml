@@ -6,97 +6,106 @@
     android:layout_height="match_parent"
     tools:context=".fragment.ShippingAddressListFragment">
 
-<!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_below="@+id/toolbar">-->
+    <!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_below="@+id/toolbar">-->
 
-<!--        <androidx.core.widget.NestedScrollView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
+    <!--        <androidx.core.widget.NestedScrollView-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent">-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
+
+        <include
+            android:id="@+id/shippingAddressErrorContainer"
+            layout="@layout/error_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:visibility="gone"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="locale"
+            android:textDirection="locale" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/totalContainer"
+            android:layout_gravity="center"
+            android:layoutDirection="locale"
+            android:paddingTop="20dp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:visibility="gone"
+            app:shimmer_auto_start="false"
+            app:shimmer_duration="1000">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingBottom="20dp">
+                android:orientation="vertical">
 
-                <include
-                    android:id="@+id/shippingAddressErrorContainer"
-                    layout="@layout/error_container"
-                    android:visibility="gone" />
+                <include layout="@layout/shimmer_loading_shipping_address" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textDirection="locale"
-                    android:layoutDirection="locale"/>
+                <include layout="@layout/shimmer_loading_shipping_address" />
 
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/shimmer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:shimmer_auto_start="false"
-                    android:visibility="gone"
-                    android:paddingTop="20dp"
-                    android:layout_above="@+id/totalContainer"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
-                    android:layoutDirection="locale"
-                    app:shimmer_duration="1000">
+                <include layout="@layout/shimmer_loading_shipping_address" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-                        <include layout="@layout/shimmer_loading_shipping_address" />
-                        <include layout="@layout/shimmer_loading_shipping_address" />
-                        <include layout="@layout/shimmer_loading_shipping_address" />
-                        <include layout="@layout/shimmer_loading_shipping_address" />
-                        <include layout="@layout/shimmer_loading_shipping_address" />
+                <include layout="@layout/shimmer_loading_shipping_address" />
 
-                    </LinearLayout>
-                </com.facebook.shimmer.ShimmerFrameLayout>
-
-                <RelativeLayout
-                    android:id="@+id/addAddressContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="65dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/ripple_white_gray_border_8"
-                    android:elevation="4dp"
-                    android:clickable="true"
-                    android:layoutDirection="locale"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/addImage"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_centerVertical="true"
-                        android:layoutDirection="locale"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/add_circle" />
-
-                    <TextView
-                        android:id="@+id/addNewAddressText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginHorizontal="10dp"
-                        android:layout_toEndOf="@+id/addImage"
-                        android:layoutDirection="locale"
-                        android:text="@string/add_new_address"
-                        android:textColor="@color/gray_dark"
-                        android:textDirection="locale"
-                        android:fontFamily="@font/medium"
-                        android:textSize="15sp" />
-                </RelativeLayout>
+                <include layout="@layout/shimmer_loading_shipping_address" />
 
             </LinearLayout>
-<!--        </androidx.core.widget.NestedScrollView>-->
-<!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/addAddressContainer"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/ripple_white_gray_border_8"
+            android:clickable="true"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:layoutDirection="locale">
+
+            <ImageView
+                android:id="@+id/addImage"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:layoutDirection="locale"
+                android:scaleType="fitXY"
+                android:src="@drawable/add_circle" />
+
+            <TextView
+                android:id="@+id/addNewAddressText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="10dp"
+                android:layout_toEndOf="@+id/addImage"
+                android:fontFamily="@font/medium"
+                android:layoutDirection="locale"
+                android:text="@string/add_new_address"
+                android:textColor="@color/gray_dark"
+                android:textDirection="locale"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+    <!--        </androidx.core.widget.NestedScrollView>-->
+    <!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
 </RelativeLayout>

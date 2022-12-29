@@ -10,6 +10,7 @@ import com.quico.tech.data.Constant.AR
 import com.quico.tech.data.Constant.ITEM_ID
 import com.quico.tech.databinding.ActivityCompareProductBinding
 import com.quico.tech.fragment.CompareProductFragment
+import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 
 class CompareProductActivity : AppCompatActivity() {
@@ -33,6 +34,12 @@ class CompareProductActivity : AppCompatActivity() {
         fragment2.arguments= bundle2
         fragment2?.let { loadFragment2(it) }
         setUpText()
+        initStatusBar()
+    }
+
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
     }
     private fun setUpText() {
         binding.apply {

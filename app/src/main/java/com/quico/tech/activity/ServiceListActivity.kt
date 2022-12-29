@@ -14,6 +14,7 @@ import com.quico.tech.adapter.ServiceRecyclerViewAdapter
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityServiceListBinding
 import com.quico.tech.model.Service
+import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.delay
@@ -38,7 +39,7 @@ class ServiceListActivity : AppCompatActivity() {
                 onBackPressed()
             }
         }
-
+        initStatusBar()
         setUpText()
         setLoading()
 //        onRefresh()
@@ -46,6 +47,10 @@ class ServiceListActivity : AppCompatActivity() {
 //        subscribeServices()
     }
 
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
+    }
     private fun setUpText(){
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.services)
@@ -63,7 +68,7 @@ class ServiceListActivity : AppCompatActivity() {
                         binding.apply {
                             swipeRefreshLayout.setRefreshing(false)
                             swipeRefreshLayout.setEnabled(false)
-                            serviceErrorContainer.errorContainer.visibility=View.GONE
+                            serviceErrorContainer.root.visibility=View.GONE
                             recyclerView.visibility = View.VISIBLE
                         }
 
@@ -134,7 +139,7 @@ class ServiceListActivity : AppCompatActivity() {
     fun setLoading() {
         binding.apply {
             recyclerView.visibility = View.GONE
-            serviceErrorContainer.errorContainer.visibility = View.GONE
+            serviceErrorContainer.root.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
            // swipeRefreshLayout.setRefreshing(true)
@@ -163,7 +168,7 @@ class ServiceListActivity : AppCompatActivity() {
             stopShimmer()
             serviceErrorContainer.apply {
                 errorMsg1.visibility = View.GONE
-                errorContainer.visibility = View.VISIBLE
+                root.visibility = View.VISIBLE
                 errorBtn.visibility = View.GONE
                 errorImage.setImageResource(android.R.color.transparent)
 

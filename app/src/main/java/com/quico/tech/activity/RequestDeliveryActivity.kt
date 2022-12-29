@@ -32,6 +32,12 @@ class RequestDeliveryActivity : AppCompatActivity() {
         setUpText()
         setUpCardAdapter()
         monitorRadioBtns()
+        initStatusBar()
+    }
+
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
     }
     private fun setUpText() {
         binding.apply {
@@ -125,9 +131,9 @@ class RequestDeliveryActivity : AppCompatActivity() {
         binding.apply {
             addressRecyclerViewAdapter = AddressRecyclerViewAdapter()
             var addresses = ArrayList<Address>()
+           /* addresses.add(Address(1))
             addresses.add(Address(1))
-            addresses.add(Address(1))
-            addresses.add(Address(1))
+            addresses.add(Address(1))*/
 
             addressListFragment.recyclerView.layoutManager =
                 LinearLayoutManager(

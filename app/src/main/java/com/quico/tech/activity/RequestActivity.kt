@@ -69,9 +69,13 @@ class RequestActivity : AppCompatActivity() {
         setContentView(binding.root)
         setUpText()
         setUpPhotosAdapter()
-
+        initStatusBar()
     }
 
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
+    }
     private fun setUpText() {
         binding.apply {
 

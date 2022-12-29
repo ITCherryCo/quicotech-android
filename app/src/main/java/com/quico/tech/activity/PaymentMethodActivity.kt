@@ -14,6 +14,7 @@ import com.quico.tech.adapter.CardSelectionRecyclerViewAdapter
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityPaymentMethodBinding
 import com.quico.tech.model.Card
+import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -30,7 +31,7 @@ class PaymentMethodActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setLoading()
-
+        initStatusBar()
         setUpText()
         binding.apply {
             nextBtn.setOnClickListener {
@@ -43,7 +44,10 @@ class PaymentMethodActivity : AppCompatActivity() {
         }
     }
 
-
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
+    }
     private fun setUpText() {
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.payment_method)
@@ -89,7 +93,7 @@ class PaymentMethodActivity : AppCompatActivity() {
     fun setLoading() {
         binding.apply {
             recyclerView.visibility = View.GONE
-            paymentErrorContainer.errorContainer.visibility = View.GONE
+            paymentErrorContainer.root.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
 
@@ -114,7 +118,7 @@ class PaymentMethodActivity : AppCompatActivity() {
             stopShimmer()
 
             paymentErrorContainer.apply {
-                errorContainer.visibility = View.VISIBLE
+                root.visibility = View.VISIBLE
                 errorImage.setImageResource(android.R.color.transparent)
                 errorMsg1.visibility = View.GONE
 

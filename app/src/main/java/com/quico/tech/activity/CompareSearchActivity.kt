@@ -16,6 +16,7 @@ import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityCompareSearchBinding
 import com.quico.tech.model.Brand
 import com.quico.tech.model.Product
+import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,13 +45,17 @@ class CompareSearchActivity : AppCompatActivity() {
             }
         }
         setUpText()
+        initStatusBar()
         setBrandsLoading()
         // setUpCartAdapter()
 
         //onRefresh()
 //        subscribeAddresses()
     }
-
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
+    }
     private fun setUpText() {
         binding.apply {
 

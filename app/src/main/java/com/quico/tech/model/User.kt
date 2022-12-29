@@ -47,7 +47,9 @@ data class RegisterResponse(
     val result: Result,
     val error: ErrorData?
 )
-
+data class SessionResponse(
+    val result: String,
+)
 
 data class Result(
     val status: String?,

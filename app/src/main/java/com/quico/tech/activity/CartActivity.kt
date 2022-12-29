@@ -14,6 +14,7 @@ import com.quico.tech.adapter.CartRecyclerViewAdapter
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityCartBinding
 import com.quico.tech.model.Item
+import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ class CartActivity : AppCompatActivity() {
         setLoading()
        // setUpCartAdapter()
         setUpText()
+        initStatusBar()
         binding.apply {
             checkoutBtn.setOnClickListener {
                 startActivity(Intent(this@CartActivity, PaymentMethodActivity::class.java))
@@ -43,6 +45,10 @@ class CartActivity : AppCompatActivity() {
         }
     }
 
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
+    }
     private fun setUpText(){
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.cart)
@@ -90,7 +96,7 @@ class CartActivity : AppCompatActivity() {
     private fun setLoading() {
         binding.apply {
             recyclerView.visibility=View.GONE
-            cartErrorContainer.errorContainer.visibility=View.GONE
+            cartErrorContainer.root.visibility=View.GONE
             totalContainer.visibility = View.GONE
             checkoutBtn.setEnabled(false)
             shimmer.visibility = View.VISIBLE
@@ -130,7 +136,7 @@ class CartActivity : AppCompatActivity() {
             checkoutBtn.setEnabled(false)
             swipeRefreshLayout.setEnabled(true)
             cartErrorContainer.apply {
-                errorContainer.visibility = View.VISIBLE
+                root.visibility = View.VISIBLE
                 errorMsg1.visibility = View.GONE
                 errorImage.setImageResource(android.R.color.transparent)
 

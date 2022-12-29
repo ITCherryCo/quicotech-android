@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import com.quico.tech.R
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityNewCardBinding
+import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 
 class NewCardActivity : AppCompatActivity() {
@@ -23,11 +24,14 @@ class NewCardActivity : AppCompatActivity() {
                 onBackPressed()
             }
         }
-
+        initStatusBar()
         setUpText()
     }
 
-
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
+    }
     private fun setUpText() {
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.new_card)

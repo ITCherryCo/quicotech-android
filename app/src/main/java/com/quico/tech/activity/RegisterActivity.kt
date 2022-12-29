@@ -28,7 +28,6 @@ class RegisterActivity : AppCompatActivity() {
     private var showConfirmPass = false
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -37,7 +36,6 @@ class RegisterActivity : AppCompatActivity() {
         init()
         setUpText()
         subscribeRegisterUser()
-
     }
 
     fun init() {
@@ -128,12 +126,7 @@ class RegisterActivity : AppCompatActivity() {
                     viewModel.getLangResources().getString(R.string.required_field)
             } else if (!Patterns.EMAIL_ADDRESS.matcher(emailField.text).matches())
                 emailField.error = viewModel.getLangResources().getString(R.string.wrong_email)
-            else if (phoneValue.isEmpty())
-                phoneNumberField.error =
-                    viewModel.getLangResources().getString(R.string.required_field)
-            else if (!phoneValue.isEmpty() && phoneValue.length < 8)
-                phoneNumberField.error =
-                    viewModel.getLangResources().getString(R.string.invalid_phone_number)
+
             else if (passwordField.text.toString().isEmpty())
                 passwordField.error =
                     viewModel.getLangResources().getString(R.string.required_field)
@@ -149,6 +142,13 @@ class RegisterActivity : AppCompatActivity() {
             )
                 confirmPasswordField.error =
                     viewModel.getLangResources().getString(R.string.mismatch_password)
+            else if (phoneValue.isEmpty())
+                phoneNumberField.error =
+                    viewModel.getLangResources().getString(R.string.required_field)
+            else if (!phoneValue.isEmpty() && phoneValue.length < 8)
+                phoneNumberField.error =
+                    viewModel.getLangResources().getString(R.string.invalid_phone_number)
+
             else {
                 // send sms verification code
                 // verify email

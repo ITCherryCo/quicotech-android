@@ -23,6 +23,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.bumptech.glide.Glide
 import com.quico.tech.R
 import com.quico.tech.data.Constant
 import com.quico.tech.data.Constant.CHANGE_PASSWORD
@@ -50,6 +51,7 @@ class EditProfileActivity : AppCompatActivity() {
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initStatusBar()
         setUpText()
         binding.apply {
             loadImage()
@@ -92,27 +94,22 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
+    }
+
     private fun loadImage() {
         try {
-
             binding.apply {
                 if (viewModel.user?.image.isNullOrEmpty()) {
                     profileImage.setImageResource(R.drawable.profile_user)
                 } else {
-                    val imageBytes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        Base64.getDecoder().decode(viewModel.user?.image)
-
-                    } else {
-                        android.util.Base64.decode(
-                            viewModel.user?.image,
-                            android.util.Base64.DEFAULT
-                        )
-                    }
-
-                    var decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-                    profileImage.setImageBitmap(decodedImage)
-
-                    //                        binding.profileImage.setImageURI(imageUri)
+                    Glide.with(this@EditProfileActivity)
+                        .load(viewModel.user?.image)
+                        //.placeholder(R.drawable.placeholder)
+                        //.error(R.drawable.imagenotfound)
+                        .into(profileImage)
                 }
             }
         }catch (e:Exception){}

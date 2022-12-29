@@ -36,10 +36,15 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
 
-
+            initStatusBar()
             setUpText()
             checkLanguage()
         }
+    }
+
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
     }
 
     private fun setUpText(){

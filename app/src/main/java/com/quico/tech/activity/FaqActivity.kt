@@ -10,6 +10,7 @@ import com.quico.tech.adapter.FaqRecyclerViewAdapter
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityFaqBinding
 import com.quico.tech.model.FAQ
+import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 
 class FaqActivity : AppCompatActivity() {
@@ -23,11 +24,15 @@ class FaqActivity : AppCompatActivity() {
         binding = ActivityFaqBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initStatusBar()
         setUpText()
         setUpFAQAdapter()
     }
 
-
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
+    }
     private fun setUpText() {
         binding.apply {
             backArrow.setOnClickListener {

@@ -12,6 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityGeneralWebInfoBinding
+import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.launch
@@ -34,13 +35,17 @@ class GeneralWebInfoActivity : AppCompatActivity() {
             title.text = viewModel.getLangResources().getString(R.string.terms_and_conditions)
             //webView.setBackgroundColor(Color.parseColor("#EFEFEF"))
         }
+        initStatusBar()
         setUpText()
 
         // onRefresh()
         //  monitorInfo()
         // viewModel.generalWebInfo()
     }
-
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
+    }
 
     private fun setUpText() {
         binding.apply {
@@ -58,7 +63,7 @@ class GeneralWebInfoActivity : AppCompatActivity() {
                     is Resource.Success -> {
                         binding.swipeRefreshLayout.setRefreshing(false)
                         binding.swipeRefreshLayout.setEnabled(false)
-                        binding.webErrorContainer.errorContainer.visibility=View.GONE
+                        binding.webErrorContainer.root.visibility=View.GONE
                         binding.webView.setVisibility(View.VISIBLE)
 
                         response.data?.let { webResponse ->
@@ -101,7 +106,7 @@ class GeneralWebInfoActivity : AppCompatActivity() {
     fun setLoading() {
         binding.apply {
             webView.visibility = View.GONE
-            webErrorContainer.errorContainer.visibility = View.GONE
+            webErrorContainer.root.visibility = View.GONE
             swipeRefreshLayout.setRefreshing(true)
         }
     }
@@ -111,7 +116,7 @@ class GeneralWebInfoActivity : AppCompatActivity() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
                 webView.visibility = View.GONE
-                webErrorContainer.errorContainer.visibility = View.GONE
+                webErrorContainer.root.visibility = View.GONE
                 viewModel.generalWebInfo()
             })
         }
@@ -123,7 +128,7 @@ class GeneralWebInfoActivity : AppCompatActivity() {
 
         binding.apply {
             webErrorContainer.apply {
-                errorContainer.visibility = View.VISIBLE
+                root.visibility = View.VISIBLE
                 tryAgain.visibility = View.GONE
                 errorImage.visibility = View.GONE
                 errorBtn.visibility = View.GONE

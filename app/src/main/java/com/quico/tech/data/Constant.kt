@@ -44,6 +44,7 @@ object Constant {
     var CHANGE_PASSWORD= "change_password"
     var USER_REGISTER_TAG= "USER_REGISTER_TAG"
     var USER_LOGIN_TAG= "USER_LOGIN_TAG"
+    var ADDRESS_TAG= "ADDRESS_TAG"
     var USER_UPDATE_TAG= "USER_UPDATE_TAG"
     var USER_LOGOUT_TAG= "USER_LOGON_TAG"
     var COOKIE= "Cookie"

@@ -1,6 +1,7 @@
 package com.quico.tech.repository
 
 import com.quico.tech.connection.RetrofitInstance
+import com.quico.tech.model.AddressBodyParameters
 import com.quico.tech.model.RegisterBodyParameters
 import com.quico.tech.model.UpdateUserBodyParameters
 import com.quico.tech.model.UpdateUserParams
@@ -15,7 +16,10 @@ class Repository {
     suspend fun updateEmail(session_id:String,updateBody:UpdateUserBodyParameters) = RetrofitInstance.api.updateEmail(session_id,updateBody)
     suspend fun updateMobile(session_id:String,updateBody:RegisterBodyParameters) = RetrofitInstance.api.updateMobile(session_id,updateBody)
 
-    suspend fun getAddresses(customer_id:Int) = RetrofitInstance.api.getAddresses(customer_id)
+    suspend fun addAddress(session_id:String,updateBody:AddressBodyParameters) = RetrofitInstance.api.addAddress(session_id,updateBody)
+    suspend fun getAddresses(session_id:String) = RetrofitInstance.api.getAddresses(session_id)
+    suspend fun getSession() = RetrofitInstance.api.getSession()
+
     suspend fun getOngoingOrders(customer_id:Int) = RetrofitInstance.api.getOngoingOrders(customer_id)
     suspend fun getDoneOrders(customer_id:Int) = RetrofitInstance.api.getDoneOrders(customer_id)
     suspend fun termsAndConditions(store_id:Int) = RetrofitInstance.api.termsAndConditions(store_id)

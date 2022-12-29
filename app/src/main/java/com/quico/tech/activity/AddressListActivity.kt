@@ -19,6 +19,7 @@ import com.quico.tech.data.Constant.NO_ADDRESSES
 import com.quico.tech.data.Constant.VERIFICATION_TYPE
 import com.quico.tech.databinding.ActivityAddressListBinding
 import com.quico.tech.model.Address
+import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.delay
@@ -49,6 +50,7 @@ class AddressListActivity : AppCompatActivity() {
             }
         }
         setUpText()
+        initStatusBar()
         // setUpCartAdapter()
 
         onRefresh()
@@ -57,7 +59,13 @@ class AddressListActivity : AppCompatActivity() {
 
     }
 
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
+    }
+
     private fun setUpText() {
+
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.address)
             selectPaymentText.text =
@@ -82,11 +90,11 @@ class AddressListActivity : AppCompatActivity() {
                         }
 
                         response.data?.let { addressesResponse ->
-                            if (addressesResponse.addresses.isEmpty())
+                            if (addressesResponse.result.isEmpty())
                                 setUpErrorForm(NO_ADDRESSES)
                             else {
                                 addressSelectionRecyclerViewAdapter.differ.submitList(
-                                    addressesResponse.addresses
+                                    addressesResponse.result
                                 )
                                 binding.recyclerView.setVisibility(View.VISIBLE)
                             }
@@ -124,11 +132,11 @@ class AddressListActivity : AppCompatActivity() {
             recyclerView.visibility = View.VISIBLE
 
             var addresses = ArrayList<Address>()
+           /* addresses.add(Address(1))
             addresses.add(Address(1))
             addresses.add(Address(1))
             addresses.add(Address(1))
-            addresses.add(Address(1))
-            addresses.add(Address(1))
+            addresses.add(Address(1))*/
 
             nextBtn.setEnabled(true)
 
@@ -150,7 +158,7 @@ class AddressListActivity : AppCompatActivity() {
 
     private fun setLoading() {
         binding.apply {
-            addressErrorContainer.errorContainer.visibility = View.GONE
+            addressErrorContainer.root.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
             recyclerView.visibility = View.GONE
@@ -173,7 +181,7 @@ class AddressListActivity : AppCompatActivity() {
             recyclerView.visibility = View.GONE
             stopShimmer()
             addressErrorContainer.apply {
-                errorContainer.visibility = View.VISIBLE
+                root.visibility = View.VISIBLE
                 tryAgain.visibility = View.VISIBLE
                 errorImage.visibility = View.GONE
                 errorBtn.visibility = View.GONE

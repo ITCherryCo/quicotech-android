@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.quico.tech.R
 import com.quico.tech.activity.*
 import com.quico.tech.data.Constant
@@ -42,11 +43,11 @@ class ProfileFragment : Fragment() {
 
             if (viewModel.user == null) {
                 loginInfo.visibility = View.GONE
-                profileErrorContainer.errorContainer.visibility = View.VISIBLE
+                profileErrorContainer.root.visibility = View.VISIBLE
             }
             viewModel.user?.let { user ->
                 loginInfo.visibility = View.VISIBLE
-                profileErrorContainer.errorContainer.visibility = View.GONE
+                profileErrorContainer.root.visibility = View.GONE
                 if (user.is_vip)
                     vipImage.visibility = View.VISIBLE
                 else
@@ -104,24 +105,29 @@ class ProfileFragment : Fragment() {
                 if (viewModel.user?.image.isNullOrEmpty()) {
                     profileImage.setImageResource(R.drawable.profile_user)
                 } else {
-                    val imageBytes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        Base64.getDecoder().decode(viewModel.user?.image)
-
-                    } else {
-                        android.util.Base64.decode(
-                            viewModel.user?.image,
-                            android.util.Base64.DEFAULT
-                        )
-                    }
-
-                    var decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-                    profileImage.setImageBitmap(decodedImage)
-
-                    //                        binding.profileImage.setImageURI(imageUri)
+                    Glide.with(this@ProfileFragment)
+                        .load(viewModel.user?.image)
+                        //.placeholder(R.drawable.placeholder)
+                        //.error(R.drawable.imagenotfound)
+                        .into(profileImage)
                 }
             }
         } catch (e: Exception) {
         }
+    }
+
+    private fun decodeImage(){
+        /*val imageBytes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                  Base64.getDecoder().decode(viewModel.user?.image)
+              } else {
+                  android.util.Base64.decode(
+                      viewModel.user?.image,
+                      android.util.Base64.DEFAULT
+                  )
+              }
+              var decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+              profileImage.setImageBitmap(decodedImage)
+*/
     }
 
     private fun setUpText() {
@@ -136,15 +142,17 @@ class ProfileFragment : Fragment() {
             faqText.text = viewModel.getLangResources().getString(R.string.faq)
             termsText.text = viewModel.getLangResources().getString(R.string.terms_and_conditions)
             settingsText.text = viewModel.getLangResources().getString(R.string.settings)
-            profileErrorContainer.errorImage.setImageResource(R.drawable.guest)
+            profileErrorContainer.apply {
 
-            profileErrorContainer.errorMsg1.text =
-                viewModel.getLangResources().getString(R.string.you_are_guest)
-            profileErrorContainer.errorMsg2.text =
-                viewModel.getLangResources().getString(R.string.need_to_login)
-            profileErrorContainer.errorBtn.text =
-                viewModel.getLangResources().getString(R.string.login)
+                errorImage.setImageResource(R.drawable.guest)
 
+                errorMsg1.text =
+                    viewModel.getLangResources().getString(R.string.you_are_guest)
+                errorMsg2.text =
+                    viewModel.getLangResources().getString(R.string.need_to_login)
+               errorBtn.text =
+                    viewModel.getLangResources().getString(R.string.login)
+            }
             // set margins to the button
         }
     }

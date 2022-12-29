@@ -63,6 +63,9 @@ class VerificationCodeActivity : AppCompatActivity() {
         binding = ActivityVerificationCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initStatusBar()
+        setUpText()
+
         verification_type = intent.extras?.getString(VERIFICATION_TYPE)!!
         operation_type = intent.extras?.getString(OPERATION_TYPE)
         phone_number = intent.extras?.getString(PHONE_NUMBER)
@@ -85,13 +88,15 @@ class VerificationCodeActivity : AppCompatActivity() {
             Log.d(SEND_EMAIL_LINK, "Email is received well we can start verifying.")
         }
         checkOperationType()
-        setUpText()
+
         viewModel.canRegister = false
         Constant.can_register = false
     }
 
-
-    // to check wether i want to send an sms verification code or an email confirmation
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
+    }
 
     private fun setUpText() {
         binding.apply {

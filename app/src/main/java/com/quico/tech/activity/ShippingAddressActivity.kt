@@ -1,5 +1,6 @@
 package com.quico.tech.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,8 @@ import com.quico.tech.adapter.AddressRecyclerViewAdapter
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityShippingAddressBinding
 import com.quico.tech.model.Address
+import com.quico.tech.utils.Common
+import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -28,7 +31,14 @@ class ShippingAddressActivity : AppCompatActivity() {
         binding = ActivityShippingAddressBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpText()
-        setLoading()
+        initStatusBar()
+        subscribeAddresses()
+        viewModel.getAddresses()
+    }
+
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
     }
 
     private fun setUpText() {
@@ -45,6 +55,48 @@ class ShippingAddressActivity : AppCompatActivity() {
             }
 
             includedFragment.addAddressContainer.setOnClickListener {
+                startActivity(
+                    Intent(this@ShippingAddressActivity, AddressActivity::class.java)
+                        //.putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
+                )
+            }
+        }
+    }
+
+    fun subscribeAddresses() {
+        lifecycleScope.launch {
+            viewModel.addresses.collect { response ->
+                when (response) {
+
+                    is Resource.Success -> {
+                        stopShimmer()
+                        binding.swipeRefreshLayout.setRefreshing(false)
+
+                        response.data?.let { addressesResponse ->
+
+                            if (addressesResponse.result.isNullOrEmpty()) {
+                                setUpErrorForm(Constant.NO_ADDRESSES)
+                            } else {
+                                addressRecyclerViewAdapter.differ.submitList(addressesResponse.result)
+                                binding.includedFragment.recyclerView.visibility = View.VISIBLE
+                            }
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        response.message?.let { message ->
+                            setUpErrorForm(Constant.ERROR)
+                        }
+                    }
+
+                    is Resource.Connection -> {
+                        setUpErrorForm(Constant.CONNECTION)
+                    }
+
+                    is Resource.Loading -> {
+                        setLoading()
+                    }
+                }
             }
         }
     }
@@ -52,14 +104,11 @@ class ShippingAddressActivity : AppCompatActivity() {
     fun setUpAddressAdapter() {
         binding.apply {
             addressRecyclerViewAdapter = AddressRecyclerViewAdapter()
-            stopShimmer()
-            includedFragment.recyclerView.visibility = View.VISIBLE
-            swipeRefreshLayout.setRefreshing(false)
 
             var addresses = ArrayList<Address>()
+         /*   addresses.add(Address(1))
             addresses.add(Address(1))
-            addresses.add(Address(1))
-            addresses.add(Address(1))
+            addresses.add(Address(1))*/
 
             includedFragment.recyclerView.layoutManager =
                 LinearLayoutManager(
@@ -84,15 +133,15 @@ class ShippingAddressActivity : AppCompatActivity() {
     fun setLoading() {
         binding.apply {
             includedFragment.recyclerView.visibility = View.GONE
-            includedFragment.shippingAddressErrorContainer.errorContainer.visibility = View.GONE
+            includedFragment.shippingAddressErrorContainer.root.visibility = View.GONE
             includedFragment.shimmer.visibility = View.VISIBLE
             includedFragment.shimmer.startShimmer()
-            swipeRefreshLayout.setRefreshing(true)
+            swipeRefreshLayout.setRefreshing(false)
 
-            lifecycleScope.launch {
+          /*  lifecycleScope.launch {
                 delay(3000)
                 setUpAddressAdapter()
-            }
+            }*/
         }
     }
 
@@ -100,7 +149,7 @@ class ShippingAddressActivity : AppCompatActivity() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
                 setLoading() // later we will remove it because the observable will call it
-                // viewModel.getOrders(1, orders_type) // get User id
+                 viewModel.getAddresses() // get User id
             })
         }
     }
@@ -114,13 +163,17 @@ class ShippingAddressActivity : AppCompatActivity() {
             swipeRefreshLayout.setEnabled(true)
             includedFragment.shippingAddressErrorContainer.apply {
                 errorMsg1.visibility = View.GONE
-                errorContainer.visibility = View.VISIBLE
+                tryAgain.visibility = View.GONE
+                errorBtn.visibility = View.GONE
+                root.visibility = View.VISIBLE
                 errorImage.setImageResource(android.R.color.transparent)
                 when (error_type) {
                     Constant.CONNECTION -> {
                         errorMsg2.setText(
                             viewModel.getLangResources().getString(R.string.check_connection)
                         )
+                        errorImage.setImageResource(R.drawable.empty_item)
+
                     }
                     Constant.NO_ADDRESSES -> {
                         errorMsg2.text =
@@ -132,6 +185,8 @@ class ShippingAddressActivity : AppCompatActivity() {
                         errorMsg2.setText(
                             viewModel.getLangResources().getString(R.string.error_msg)
                         )
+                        errorImage.setImageResource(R.drawable.empty_item)
+
                     }
                 }
             }

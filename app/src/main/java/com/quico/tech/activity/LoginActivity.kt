@@ -118,7 +118,6 @@ class LoginActivity : AppCompatActivity() {
                 )
             else {
                 Common.setUpProgressDialog(this@LoginActivity)
-                Log.d(Constant.USER_LOGIN_TAG,Common.encryptPassword(passwordField.text.toString()))
 
                     val loginParams = RegisterBodyParameters(
                     RegisterParams(
