@@ -13,7 +13,7 @@ interface API {
 
     @POST("login")
    // @Headers("Content-Type: application/json")
-    suspend fun login(@Body registerBody: RegisterBodyParameters): Response<RegisterResponse>
+    suspend fun login(@Body registerBody: RegisterBodyParameters): Response<UserResponse>
 
     @GET("getUser")
    // @Headers("Content-Type: application/json")
@@ -23,7 +23,8 @@ interface API {
     suspend fun logout(@Header("Cookie") session_id:String): Response<RegisterResponse>
 
     @PUT("updateUserInfo")
-    suspend fun updateUserInfo(@Header("Cookie") session_id:String,@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
+   // suspend fun updateUserInfo(@Header("Cookie") session_id:String,@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
+    suspend fun updateUserInfo(@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
 
     @PUT("updateEmail")
     suspend fun updateEmail(@Header("Cookie") session_id:String,@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
@@ -31,8 +32,15 @@ interface API {
     @PUT("updateMobile")
     suspend fun updateMobile(@Header("Cookie") session_id:String,@Body updateUserBody: RegisterBodyParameters): Response<RegisterResponse>
 
+    @POST("createDeliveryAddress")
+    suspend fun addAddress(@Header("Cookie") session_id:String,@Body updateUserBody: AddressBodyParameters): Response<RegisterResponse>
+
     @GET("getAddresses")
-    suspend fun getAddresses(@Query("customer_id") customer_id: Int?): Response<AddressResponse>
+    suspend fun getAddresses(@Header("Cookie") session_id:String): Response<AddressResponse>
+
+
+    @GET("getSession")
+    suspend fun getSession(): Response<SessionResponse>
 
     @GET("getOngoingOrders")
     suspend fun getOngoingOrders(@Query("customer_id") customer_id: Int?): Response<OrderResponse>

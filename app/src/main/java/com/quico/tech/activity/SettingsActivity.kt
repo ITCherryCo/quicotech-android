@@ -26,20 +26,25 @@ class SettingsActivity : AppCompatActivity() {
             backArrow.setOnClickListener {
                 onBackPressed()
             }
-            if (viewModel.current_session_id.isNullOrEmpty())
+            if (viewModel.user==null)
                 logoutContainer.visibility = View.GONE
 
-            viewModel.current_session_id?.let {
+            viewModel.user?.session_id?.let {
                 logoutContainer.visibility = View.VISIBLE
                 logoutBtn.setOnClickListener {
                     logoutAlert()
                 }
             }
 
-
+            initStatusBar()
             setUpText()
             checkLanguage()
         }
+    }
+
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
     }
 
     private fun setUpText(){
@@ -84,7 +89,7 @@ class SettingsActivity : AppCompatActivity() {
             viewModel.getLangResources().getString(R.string.yes),
             object : Common.ResponseConfirm{
                 override fun onConfirm() {
-                    viewModel.current_session_id?.let { session_id->
+                    viewModel.user?.session_id?.let { session_id->
 
                         Common.setUpProgressDialog(this@SettingsActivity)
                         viewModel.logout(
@@ -99,6 +104,7 @@ class SettingsActivity : AppCompatActivity() {
                                     viewModel.getLangResources().getString(R.string.logged_out)
                                     startActivity(
                                         Intent(this@SettingsActivity, LoginActivity::class.java)
+                                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                                     )
                                 }
 

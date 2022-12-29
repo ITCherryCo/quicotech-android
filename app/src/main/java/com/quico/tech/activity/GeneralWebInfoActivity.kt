@@ -12,6 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityGeneralWebInfoBinding
+import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.launch
@@ -25,24 +26,28 @@ class GeneralWebInfoActivity : AppCompatActivity() {
         binding = ActivityGeneralWebInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-         binding.apply {
+        binding.apply {
             backArrow.setOnClickListener {
                 onBackPressed()
             }
             webView.settings.javaScriptEnabled = true
             webView.webViewClient = WebViewClient()
-             title.text = viewModel.getLangResources().getString(R.string.terms_and_conditions)
+            title.text = viewModel.getLangResources().getString(R.string.terms_and_conditions)
             //webView.setBackgroundColor(Color.parseColor("#EFEFEF"))
         }
+        initStatusBar()
         setUpText()
 
-       // onRefresh()
-      //  monitorInfo()
-       // viewModel.generalWebInfo()
+        // onRefresh()
+        //  monitorInfo()
+        // viewModel.generalWebInfo()
+    }
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
     }
 
-
-    private fun setUpText(){
+    private fun setUpText() {
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.terms_and_conditions)
             if (viewModel.getLanguage().equals(Constant.AR))
@@ -53,55 +58,55 @@ class GeneralWebInfoActivity : AppCompatActivity() {
     fun monitorInfo() {
 
         lifecycleScope.launch {
-        viewModel.general_web_info.collect{ response->
-            when (response) {
-                is Resource.Success -> {
-                    binding.swipeRefreshLayout.setRefreshing(false)
-                    binding.swipeRefreshLayout.setEnabled(false)
-                    binding.errorRel.setVisibility(View.GONE)
-                    binding.webView.setVisibility(View.VISIBLE)
+            viewModel.general_web_info.collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        binding.swipeRefreshLayout.setRefreshing(false)
+                        binding.swipeRefreshLayout.setEnabled(false)
+                        binding.webErrorContainer.root.visibility=View.GONE
+                        binding.webView.setVisibility(View.VISIBLE)
 
-                    response.data?.let { webResponse ->
+                        response.data?.let { webResponse ->
 
-                        binding.apply {
-                            webView.setVisibility(View.VISIBLE)
-                            webView.loadData(webResponse.data, "text/html", "UTF-8")
-                            webView.setWebViewClient(object : WebViewClient() {
-                                override fun onPageFinished(view: WebView, url: String) {
-                                    swipeRefreshLayout.setRefreshing(false)
-                                    swipeRefreshLayout.setEnabled(false)
-                                }
-                            })
+                            binding.apply {
+                                webView.setVisibility(View.VISIBLE)
+                                webView.loadData(webResponse.data, "text/html", "UTF-8")
+                                webView.setWebViewClient(object : WebViewClient() {
+                                    override fun onPageFinished(view: WebView, url: String) {
+                                        swipeRefreshLayout.setRefreshing(false)
+                                        swipeRefreshLayout.setEnabled(false)
+                                    }
+                                })
+                            }
                         }
                     }
-                }
 
-                is Resource.Error -> {
-                    response.message?.let { message ->
-                        Log.d("WEB_RESPONSE", "ERROR " + message)
-                        setErrorRel(false)
+                    is Resource.Error -> {
+                        response.message?.let { message ->
+                            Log.d("WEB_RESPONSE", "ERROR " + message)
+                            setUpErrorForm(false)
+                        }
+                    }
+
+                    is Resource.Connection -> {
+                        Log.d("WEB_RESPONSE", "ERROR ")
+                        setUpErrorForm(true)
+                    }
+
+                    is Resource.Loading -> {
+                        setLoading()
+                        Log.d("WEB_RESPONSE", "LOADING")
                     }
                 }
-
-                is Resource.Connection -> {
-                    Log.d("WEB_RESPONSE", "ERROR ")
-                    setErrorRel(true)
-                }
-
-                is Resource.Loading -> {
-                    setLoading()
-                    Log.d("WEB_RESPONSE", "LOADING")
-                }
             }
-        }
         }
     }
 
 
     fun setLoading() {
         binding.apply {
-            webView.setVisibility(View.GONE)
-            errorRel.setVisibility(View.GONE)
+            webView.visibility = View.GONE
+            webErrorContainer.root.visibility = View.GONE
             swipeRefreshLayout.setRefreshing(true)
         }
     }
@@ -110,36 +115,47 @@ class GeneralWebInfoActivity : AppCompatActivity() {
     fun onRefresh() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
-                webView.setVisibility(View.GONE)
-                errorRel.setVisibility(View.GONE)
+                webView.visibility = View.GONE
+                webErrorContainer.root.visibility = View.GONE
                 viewModel.generalWebInfo()
             })
         }
     }
 
-    fun setErrorRel(connection: Boolean) {
+
+
+    fun setUpErrorForm(connection: Boolean) {
 
         binding.apply {
-            swipeRefreshLayout.setRefreshing(false)
-            webView.setVisibility(View.GONE)
-            errorRel.setVisibility(View.VISIBLE)
-            errorImage.setImageResource(android.R.color.transparent)
+            webErrorContainer.apply {
+                root.visibility = View.VISIBLE
+                tryAgain.visibility = View.GONE
+                errorImage.visibility = View.GONE
+                errorBtn.visibility = View.GONE
+                when (connection) {
 
-            when(connection){
-                true-> {
-                    //errorImage.setImageResource(R.drawable.connection)
-                    errorText.setText(
-                        viewModel.getLangResources().getString(R.string.check_connection)
-                    )
+                    true -> {
+                        errorMsg1.setText(
+                            viewModel.getLangResources().getString(R.string.connection)
+                        )
+
+                        errorMsg2.setText(
+                            viewModel.getLangResources().getString(R.string.check_connection)
+                        )
+                    }
+                    else -> {
+                        //errorImage.setImageResource(R.drawable.connection)
+                        errorMsg1.setText(
+                            viewModel.getLangResources().getString(R.string.error)
+                        )
+
+                        errorMsg2.setText(
+                            viewModel.getLangResources().getString(R.string.error_msg)
+                        )
+                    }
                 }
-                else -> {
-                    //errorImage.setImageResource(R.drawable.connection)
-                    errorText.setText(
-                        viewModel.getLangResources().getString(R.string.error_msg)
-                    )
-                }
+                swipeRefreshLayout.setEnabled(true)
             }
-            swipeRefreshLayout.setEnabled(true)
         }
     }
 }

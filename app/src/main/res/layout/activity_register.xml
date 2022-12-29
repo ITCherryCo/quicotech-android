@@ -90,62 +90,7 @@
                     android:maxHeight="45dp"
                     android:padding="12dp" />
 
-                <TextView
-                    android:id="@+id/phoneNumberText"
-                    style="@style/loginTitleTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/phone_number"
-                    android:textAllCaps="true" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/container_gray_stroke_1"
-                    android:maxHeight="45dp">
-
-                    <!--                    <com.hbb20.CountryCodePicker-->
-                    <!--                        android:id="@+id/countryPicker"-->
-                    <!--                        android:layout_width="0dp"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_gravity="center_vertical"-->
-                    <!--                        android:layout_weight="0.3"-->
-                    <!--                        android:layoutDirection="locale"-->
-                    <!--                        android:textDirection="locale"-->
-                    <!--                        app:ccp_autoDetectCountry="true"-->
-                    <!--                        app:ccp_contentColor="@color/black"-->
-                    <!--                        app:ccp_textSize="10sp" />-->
-
-                    <TextView
-                        android:id="@+id/countryCode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginEnd="5dp"
-                        android:fontFamily="@font/regular"
-                        android:layoutDirection="locale"
-                        android:text="+961 -"
-                        android:textColor="@color/gray_dark"
-                        android:textDirection="locale"
-                        android:textSize="14sp" />
-
-                    <EditText
-                        android:id="@+id/phoneNumberField"
-                        style="@style/addressTextStyle"
-                        android:fontFamily="@font/regular"                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/countryCode"
-                        android:background="@null"
-                        android:hint="@string/phone_number_example"
-                        android:inputType="textEmailAddress"
-                        android:maxHeight="45dp"
-                        android:paddingVertical="12dp" />
-
-                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/passwordText"
@@ -232,6 +177,63 @@
                         android:clickable="true"
                         android:src="@drawable/hide_password"
                         android:textDirection="locale" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/phoneNumberText"
+                    style="@style/loginTitleTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/phone_number"
+                    android:textAllCaps="true" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/container_gray_stroke_1"
+                    android:maxHeight="45dp">
+
+                    <!--                    <com.hbb20.CountryCodePicker-->
+                    <!--                        android:id="@+id/countryPicker"-->
+                    <!--                        android:layout_width="0dp"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_gravity="center_vertical"-->
+                    <!--                        android:layout_weight="0.3"-->
+                    <!--                        android:layoutDirection="locale"-->
+                    <!--                        android:textDirection="locale"-->
+                    <!--                        app:ccp_autoDetectCountry="true"-->
+                    <!--                        app:ccp_contentColor="@color/black"-->
+                    <!--                        app:ccp_textSize="10sp" />-->
+
+                    <TextView
+                        android:id="@+id/countryCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/regular"
+                        android:layoutDirection="locale"
+                        android:text="+961 -"
+                        android:textColor="@color/gray_dark"
+                        android:textDirection="locale"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/phoneNumberField"
+                        style="@style/addressTextStyle"
+                        android:fontFamily="@font/regular"                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/countryCode"
+                        android:background="@null"
+                        android:hint="@string/phone_number_example"
+                        android:inputType="phone"
+                        android:maxHeight="45dp"
+                        android:paddingVertical="12dp" />
+
                 </RelativeLayout>
 
                 <com.google.android.material.button.MaterialButton

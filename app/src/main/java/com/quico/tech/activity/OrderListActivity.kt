@@ -25,6 +25,7 @@ import com.quico.tech.data.Constant.SERVICES
 import com.quico.tech.data.Constant.TRACK_ORDER
 import com.quico.tech.databinding.ActivityOrderListBinding
 import com.quico.tech.model.Order
+import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.delay
@@ -52,6 +53,7 @@ class OrderListActivity : AppCompatActivity() {
         orders_type = intent.extras?.getString(ORDERS_TYPE)!!
         controlBtnsClicks()
         subscribeOrderFilterType()
+        initStatusBar()
         setUpText()
         viewModel.updateOrderFilterType(ALL)
         setLoading()
@@ -59,6 +61,10 @@ class OrderListActivity : AppCompatActivity() {
 //        subscribeOrders()
     }
 
+    fun initStatusBar() {
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
+    }
 
     private fun subscribeOrderFilterType() {
         lifecycleScope.launch {
@@ -94,7 +100,7 @@ class OrderListActivity : AppCompatActivity() {
 
                     is Resource.Success -> {
                         stopShimmer()
-                        binding.errorContainer.setVisibility(View.GONE)
+                        binding.ordersErrorContainer.root.visibility = View.GONE
 
                         response.data?.let { ordersResponse ->
 
@@ -102,7 +108,7 @@ class OrderListActivity : AppCompatActivity() {
                                 setUpErrorForm(NO_ORDERS)
                             } else {
                                 orderRecyclerViewAdapter.differ.submitList(ordersResponse.orders)
-                                binding.recyclerView.setVisibility(View.VISIBLE)
+                                binding.recyclerView.visibility = View.VISIBLE
                             }
                         }
                     }
@@ -242,7 +248,7 @@ class OrderListActivity : AppCompatActivity() {
     fun setLoading() {
         binding.apply {
             recyclerView.visibility = View.GONE
-            errorContainer.visibility = View.GONE
+            ordersErrorContainer.root.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
 
@@ -256,31 +262,46 @@ class OrderListActivity : AppCompatActivity() {
     fun onRefresh() {
         setLoading() // later we will remove it because the observable will call it
         // viewModel.getOrders(1, orders_type) // get User id
-
-
     }
 
     fun setUpErrorForm(error_type: String) {
         binding.apply {
             recyclerView.visibility = View.GONE
-            errorContainer.visibility = View.VISIBLE
-            errorImage.setImageResource(android.R.color.transparent)
             stopShimmer()
-            errorMsg1.visibility = View.GONE
+            ordersErrorContainer.apply {
+                root.visibility = View.VISIBLE
+                tryAgain.visibility = View.VISIBLE
+                errorImage.visibility = View.GONE
+                errorBtn.visibility = View.GONE
+                tryAgain.setText(
+                    viewModel.getLangResources().getString(R.string.try_again)
+                )
+                tryAgain.setOnClickListener { }
 
-            when (error_type) {
-                Constant.CONNECTION -> {
-                    errorMsg2.setText(
-                        viewModel.getLangResources().getString(R.string.check_connection)
-                    )
-                }
-                Constant.NO_ORDERS -> {
-                    errorMsg2.text = viewModel.getLangResources().getString(R.string.no_orders)
-                    errorImage.setImageResource(R.drawable.empty_item)
-                }
+                when (error_type) {
+                    Constant.CONNECTION -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.connection)
 
-                Constant.ERROR -> {
-                    errorMsg2.setText(viewModel.getLangResources().getString(R.string.error_msg))
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.check_connection)
+
+                    }
+                    Constant.NO_ORDERS -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.orders)
+
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.no_orders)
+                    }
+
+                    Constant.ERROR -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.error)
+
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.error_msg)
+                    }
                 }
             }
         }

@@ -36,6 +36,7 @@ class CheckoutActivity : AppCompatActivity() {
         checkout_type = intent.extras?.getString(Constant.CHECKOUT_TYPE)!!
 
         setUpText()
+        initStatusBar()
         manageTracking()
         binding.apply {
 
@@ -61,6 +62,11 @@ class CheckoutActivity : AppCompatActivity() {
                 onBackPressed()
             }
         }
+    }
+
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
     }
 
     private fun manageTracking() {

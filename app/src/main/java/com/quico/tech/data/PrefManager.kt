@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.quico.tech.data.Constant.EN
 import com.quico.tech.data.Constant.SESSION_ID
-import com.quico.tech.model.Data
+import com.quico.tech.model.User
 
 class PrefManager(var context: Context) {
     var sharedPreferences: SharedPreferences
@@ -41,12 +41,12 @@ class PrefManager(var context: Context) {
             editor.apply()
         }
 
-    var current_user:Data?
+    var current_user: User?
         get() {
             val gson = Gson()
             val json: String = sharedPreferences.getString(USER, null).toString()
-            var user: Data? = null
-            user = gson.fromJson(json, Data::class.java)
+            var user: User? = null
+            user = gson.fromJson(json, User::class.java)
             return user
         }
 
@@ -57,11 +57,11 @@ class PrefManager(var context: Context) {
         editor.apply()
     }
 
-    var session_id:String?
+  /*  var session_id:String?
     get() = sharedPreferences.getString(SESSION_ID, null)
     set(new_session_id) {
         editor.putString(SESSION_ID,new_session_id)
         editor.apply()
-    }
+    }*/
 
 }

@@ -5,10 +5,13 @@ import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.quico.tech.R
+import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityLoginBinding
 import com.quico.tech.model.RegisterBodyParameters
 
@@ -115,7 +118,8 @@ class LoginActivity : AppCompatActivity() {
                 )
             else {
                 Common.setUpProgressDialog(this@LoginActivity)
-                val loginParams = RegisterBodyParameters(
+
+                    val loginParams = RegisterBodyParameters(
                     RegisterParams(
                         emailField.text.toString(),Common.encryptPassword(passwordField.text.toString())
                     )

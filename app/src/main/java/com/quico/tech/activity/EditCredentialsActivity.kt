@@ -23,6 +23,13 @@ class EditCredentialsActivity : AppCompatActivity() {
         setContentView(binding.root)
         edit_profile_type = intent.extras?.getString(Constant.PROFILE_EDIT_TYPE)!!
         checkEditType()
+        initStatusBar()
+    }
+
+
+    fun initStatusBar(){
+        Common.setSystemBarColor(this, R.color.white)
+        Common.setSystemBarLight(this)
     }
 
     private fun checkEditType() {

@@ -17,7 +17,6 @@
         android:hint="@string/contact_name" />
 
 
-
     <EditText
         android:id="@+id/streetField"
         android:layout_width="match_parent"
