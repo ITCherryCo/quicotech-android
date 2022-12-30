@@ -4,19 +4,16 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.quico.tech.R
-import com.quico.tech.connection.RetrofitInstance
-import com.quico.tech.data.Constant
 import com.quico.tech.data.Constant.ADDRESS_TAG
 import com.quico.tech.data.Constant.ALL
 import com.quico.tech.data.Constant.CONNECTION
 import com.quico.tech.data.Constant.EN
 import com.quico.tech.data.Constant.ERROR
-import com.quico.tech.data.Constant.EXCEPTION
 import com.quico.tech.data.Constant.ONGOING_ORDERS
+import com.quico.tech.data.Constant.SERVICE_TAG
 import com.quico.tech.data.Constant.SESSION_ID
 import com.quico.tech.data.Constant.SUCCESS
 import com.quico.tech.data.Constant.USER_LOGIN_TAG
@@ -70,6 +67,9 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private val _can_register: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val can_register: StateFlow<Boolean> get() = _can_register
 
+    private val _send_otp: MutableStateFlow<String> = MutableStateFlow("")
+    val send_otp: StateFlow<String> get() = _send_otp
+
     // I called general web info because it could load multiple page as About us, terms , privacy policy...
     private val _general_web_info: MutableStateFlow<Resource<WebInfoResponse>> =
         MutableStateFlow(Resource.Nothing())
@@ -119,6 +119,14 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         set(value) {
             viewModelScope.launch {
                 _can_register.emit(value)
+            }
+        }
+
+    var sendOtpPhoneNumber: String
+        get() = send_otp.value
+        set(value) {
+            viewModelScope.launch {
+                _send_otp.emit(value)
             }
         }
 
@@ -205,13 +213,13 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                             Log.d(USER_LOGIN_TAG, "SESSION_IDS $session_id ")
 
                             user = response.body()?.result
-                            user = user?.copy(session_id=session_id)
-                           // getSessionID()
-                              responseStandard?.onSuccess(
-                                  true,
-                                  SUCCESS,
-                                  getLangResources().getString(R.string.login_successfully)
-                              )
+                            user = user!!.copy(session_id = session_id)
+
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.login_successfully)
+                            )
                         } else {
                             Log.d(USER_LOGIN_TAG, "$ERROR ${response.body()}")
                             responseStandard?.onFailure(false, ERROR, response.body().toString())
@@ -237,7 +245,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun getSessionID() {
+    fun getSessionID(responseStandard: ResponseStandard?) {
         viewModelScope.launch {
             val response = repository.getSession()
             if (response.isSuccessful) {
@@ -248,6 +256,13 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                          session_id = sessionFirstPart.substringAfter("=")
                          Log.d(USER_LOGIN_TAG, "first hit $session_id")
                      }*/
+                    user = user!!.copy(session_id = response.body()?.result)
+
+                    responseStandard?.onSuccess(
+                        true,
+                        SUCCESS,
+                        getLangResources().getString(R.string.login_successfully)
+                    )
                     Log.d(USER_LOGIN_TAG, "GET_SESSION_ID ${response.body()?.result}")
 
                 } else {
@@ -297,6 +312,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                         val response =
                             repository.logout("$SESSION_ID=$session_id") //_subcategories
                         //repository.logout("$SESSION_ID=$session_id") //_subcategories
+                        Log.d("SESSION_ID", "$session_id")
+
                         if (response.isSuccessful) {
                             if (response.body()?.result?.status != null) {
                                 Log.d(USER_LOGOUT_TAG, "$SUCCESS")
@@ -468,22 +485,149 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun addAddress(params: AddressBodyParameters, responseStandard: ResponseStandard?) {
+    fun addEditAddress(
+        address_id: Int,
+        params: AddressBodyParameters,
+        responseStandard: ResponseStandard?
+    ) {
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
                     user?.session_id?.let { session_id ->
                         Log.d(ADDRESS_TAG, "$session_id")
+                        Log.d("SESSION_ID", "$session_id")
+                        var response: Response<RegisterResponse>? = null
+                        if (address_id != 0)
+                            response = repository.editAddress(
+                                session_id!!,
+                                "updateDeliveryAddress/${address_id}",
+                                params
+                            )
+                        // response = repository.editAddress(session_id!!, address_id,params)
+                        else
+                            response = repository.addAddress(session_id!!, params)
 
-                        val response = repository.addAddress(session_id!!, params) //_subcategories
+                        /* val response: Response<String> = Ion.with(context)
+                             .load("POST", URLbuilder.getURL())
+                             .setHeader("x-api", " API KEY HERE ")
+                             .setStringBody(feedback.toJson())
+                             .asString()
+                             .withResponse()
+                             .get()*/
+
+                        if (response.isSuccessful) {
+                            if (response.body()?.result?.status != null) {
+                                Log.d(ADDRESS_TAG, "Success")
+                                var msg =
+                                    getLangResources().getString(R.string.address_created_successfully)
+                                if (address_id != 0)
+                                    msg =
+                                        getLangResources().getString(R.string.address_updated_successfully)
+                                responseStandard?.onSuccess(
+                                    true,
+                                    SUCCESS,
+                                    msg
+                                )
+                            } else {
+                                Log.d(ADDRESS_TAG, "$ERROR ${response.body()}")
+                                /*  responseStandard?.onFailure(
+                                      false,
+                                      ERROR,
+                                      getLangResources().getString(R.string.error_msg)
+                                  )*/
+
+                                responseStandard?.onFailure(
+                                    false,
+                                    ERROR,
+                                    response.body().toString()
+                                )
+                            }
+                            //  getUser(session_id)
+                        } else {
+                            Log.d(ADDRESS_TAG, "FAILUER ${response.body()}")
+                            /*  responseStandard?.onFailure(
+                                  false,
+                                  ERROR,
+                                  getLangResources().getString(R.string.error_msg)
+                              )*/
+                            responseStandard?.onFailure(
+                                false,
+                                "FAILUER",
+                                response.body().toString()
+                            )
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.d(ADDRESS_TAG, "EXCEPTION ${e.message.toString()}")
+                    /* responseStandard?.onFailure(
+                         false,
+                         ERROR,
+                         getLangResources().getString(R.string.error_msg)
+                     )*/
+                    responseStandard?.onFailure(
+                        false,
+                        "EXCEPTION",
+                        "${e.message.toString()}"
+                    )
+                }
+            } else {
+                Log.d(ADDRESS_TAG, "$CONNECTION}")
+                responseStandard?.onFailure(false, CONNECTION, CONNECTION)
+            }
+        }
+    }
+
+    fun getAddresses(loadWithSwipeRefresh: Boolean) {
+        viewModelScope.launch {
+            if (loadWithSwipeRefresh)
+                _addresses.emit(Resource.Loading())
+
+            if (checkInternet(context)) {
+                try {
+                    Log.d("SESSION_ID", "${user?.session_id}")
+                    val response = repository.getAddresses(user?.session_id!!)
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            Log.d(ADDRESS_TAG, "SUCCESS ${resultResponse.result?.size}}")
+                            _addresses.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        Log.d(ADDRESS_TAG, "ERROR ${response}}")
+
+                        _addresses.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d(ADDRESS_TAG, "EXCEPTION ${e.message}}}")
+                    _addresses.emit(Resource.Error(ERROR))
+                }
+            } else {
+                Log.d(ADDRESS_TAG, "$CONNECTION}")
+                _addresses.emit(Resource.Connection())
+            }
+        }
+    }
+
+    fun deleteAddress(params: IDBodyParameters, responseStandard: ResponseStandard?) {
+        viewModelScope.launch {
+            if (checkInternet(context)) {
+                try {
+                    user?.session_id?.let { session_id ->
+                        Log.d(ADDRESS_TAG, "$session_id")
+                        Log.d("SESSION_ID", "$session_id")
+
+                        val response =
+                            repository.deleteAddress(session_id!!, params) //_subcategories
                         if (response.isSuccessful) {
                             if (response.body()?.result?.status != null) {
                                 Log.d(ADDRESS_TAG, "Success")
                                 responseStandard?.onSuccess(
                                     true,
                                     SUCCESS,
-                                    getLangResources().getString(R.string.address_created_successfully)
+                                    getLangResources().getString(R.string.address_deleted_successfully)
                                 )
+                                getAddresses(false)
+                                // must load
                             } else {
                                 Log.d(ADDRESS_TAG, "$ERROR ${response.body()}")
                                 responseStandard?.onFailure(
@@ -517,29 +661,33 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun getAddresses() {
+    fun getServices() {
         viewModelScope.launch {
-            _addresses.emit(Resource.Loading())
+
+            _services.emit(Resource.Loading())
+
             if (checkInternet(context)) {
                 try {
-                    val response = repository.getAddresses(user?.session_id!!)
+                    Log.d("SESSION_ID", "${user?.session_id}")
+                    val response = repository.getServices()
 
                     if (response.isSuccessful) {
                         response.body()?.let { resultResponse ->
-                            Log.d(ADDRESS_TAG, "SUCCESS ${resultResponse.result.size}}")
-                            _addresses.emit(Resource.Success(resultResponse))
+                            Log.d(SERVICE_TAG, "SUCCESS ${resultResponse.result?.size}}")
+                            _services.emit(Resource.Success(resultResponse))
                         }
                     } else {
-                        Log.d(ADDRESS_TAG, "ERROR ${response.body()}}")
-                        _addresses.emit(Resource.Error(response.message()))
+                        Log.d(SERVICE_TAG, "ERROR ${response}}")
+
+                        _services.emit(Resource.Error(response.message()))
                     }
                 } catch (e: Exception) {
-                    Log.d(ADDRESS_TAG, "EXCEPTION ${e.message}}")
-                    _addresses.emit(Resource.Error(ERROR))
+                    Log.d(SERVICE_TAG, "EXCEPTION ${e.message}}}")
+                    _services.emit(Resource.Error(ERROR))
                 }
             } else {
-                Log.d(ADDRESS_TAG, "$CONNECTION}")
-                _addresses.emit(Resource.Connection())
+                Log.d(SERVICE_TAG, "$CONNECTION}")
+                _services.emit(Resource.Connection())
             }
         }
     }

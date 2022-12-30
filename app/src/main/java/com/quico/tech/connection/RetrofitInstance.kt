@@ -14,19 +14,19 @@ import java.net.CookieManager
 import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
-    private val retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(WEB_BASE_URL)
-            .client(createHttpClient())
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
-            //.cookieJar(new JavaNetCookieJar(new CookieManager()))
-            .build()
-    }
-    val api by lazy {
-        retrofit.create(API::class.java)
-    }
+        private val retrofit by lazy {
+            Retrofit.Builder()
+                .baseUrl(WEB_BASE_URL)
+                .client(createHttpClient())
+                .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+                //.cookieJar(new JavaNetCookieJar(new CookieManager()))
+                .build()
+        }
+        val api by lazy {
+            retrofit.create(API::class.java)
+        }
 
-    val builder by lazy {
+        val builder by lazy {
         OkHttpClient.Builder()
             .connectTimeout(5, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)

@@ -72,11 +72,11 @@ class ServiceListActivity : AppCompatActivity() {
                             recyclerView.visibility = View.VISIBLE
                         }
 
-                        response.data?.let { cartResponse ->
-                            if (cartResponse.services.isEmpty())
+                        response.data?.let { servicesResponse ->
+                            if (servicesResponse.result!!.isEmpty())
                                 setUpErrorForm(Constant.NO_SERVICES)
                             else {
-                                serviceRecyclerViewAdapter.differ.submitList(cartResponse.services)
+                               // serviceRecyclerViewAdapter.differ.submitList(servicesResponse.result)
                                 binding.recyclerView.setVisibility(View.VISIBLE)
                             }
                         }
@@ -112,14 +112,14 @@ class ServiceListActivity : AppCompatActivity() {
             recyclerView.visibility = View.VISIBLE
             swipeRefreshLayout.setRefreshing(false)
 
+          /*  services.add(Service(1))
             services.add(Service(1))
             services.add(Service(1))
             services.add(Service(1))
             services.add(Service(1))
             services.add(Service(1))
             services.add(Service(1))
-            services.add(Service(1))
-            services.add(Service(1))
+            services.add(Service(1))*/
 
             recyclerView.layoutManager = GridLayoutManager(this@ServiceListActivity, 2)
             recyclerView.setItemAnimator(DefaultItemAnimator())

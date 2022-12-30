@@ -9,8 +9,8 @@
     tools:context=".fragment.WishlistFragment">
 
    <include
-       android:id="@+id/toolbar"
-       layout="@layout/wish_toolbar"/>
+       android:id="@+id/wishlistToolbar"
+       layout="@layout/wish_toolbar" />
 
    <include
       android:id="@+id/favoriteErrorContainer"

@@ -153,7 +153,8 @@ class RegisterActivity : AppCompatActivity() {
                 // send sms verification code
                 // verify email
                 // save user temporary
-              /*  Constant.TEMPORAR_USER = User(emailField.text.toString(),phoneValue)
+                viewModel.sendOtpPhoneNumber = ""
+                Constant.TEMPORAR_USER = User(emailField.text.toString(),phoneValue)
                 startActivity(
                     Intent(this@RegisterActivity, VerificationCodeActivity::class.java)
                         .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
@@ -161,8 +162,8 @@ class RegisterActivity : AppCompatActivity() {
                         .putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
                         .putExtra(Constant.PHONE_NUMBER, phoneValue)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                )*/
-                registerUser()
+                )
+               // registerUser()
             }
         }
     }

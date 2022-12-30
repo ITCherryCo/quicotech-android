@@ -18,7 +18,7 @@ class SplashScreen : AppCompatActivity() {
 
         if (emailLink != null) {
             emailLink?.let {
-                Log.d(Constant.SEND_EMAIL_LINK, "Email is received well we can start verifying.")
+                Log.d(Constant.SEND_EMAIL_LINK, "Email is received well send it to verify.")
                 startActivity(
                     Intent(this, VerificationCodeActivity::class.java)
                         .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
@@ -29,13 +29,14 @@ class SplashScreen : AppCompatActivity() {
             }
         } else {
 
-          //  prefManager.current_user = null
+           // prefManager.current_user = null
             if (prefManager!!.isFirstTimeLaunch) {
                 prefManager.isFirstTimeLaunch = false
                 startActivity(
                     Intent(this, LoginActivity::class.java)
                 )
             }
+
            else if (prefManager.current_user==null) {
                 startActivity(
                     Intent(this, LoginActivity::class.java)

@@ -146,6 +146,7 @@ class ProfileFragment : Fragment() {
 
                 errorImage.setImageResource(R.drawable.guest)
 
+                tryAgain.visibility = View.GONE
                 errorMsg1.text =
                     viewModel.getLangResources().getString(R.string.you_are_guest)
                 errorMsg2.text =

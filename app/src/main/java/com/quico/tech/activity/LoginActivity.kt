@@ -124,12 +124,31 @@ class LoginActivity : AppCompatActivity() {
                         emailField.text.toString(),Common.encryptPassword(passwordField.text.toString())
                     )
                 )
+
                 viewModel.login(loginParams,object :SharedViewModel.ResponseStandard{
                     override fun onSuccess(success: Boolean, resultTitle: String, message: String) {
-                        Common.cancelProgressDialog()
-                        startActivity(
-                            Intent(this@LoginActivity, HomeActivity::class.java)
-                        )
+
+                        viewModel.getSessionID(object :SharedViewModel.ResponseStandard{
+                            override fun onSuccess(
+                                success: Boolean,
+                                resultTitle: String,
+                                message: String
+                            ) {
+                                Common.cancelProgressDialog()
+                                startActivity(
+                                    Intent(this@LoginActivity, HomeActivity::class.java)
+                                )
+                            }
+
+                            override fun onFailure(
+                                success: Boolean,
+                                resultTitle: String,
+                                message: String
+                            ) {
+                                Common.cancelProgressDialog()
+                            }
+
+                        })
                     }
 
                     override fun onFailure(success: Boolean, resultTitle: String, message: String) {

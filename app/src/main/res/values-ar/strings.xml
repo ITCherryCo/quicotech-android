@@ -214,6 +214,16 @@ Diagnostic !! Submit a request now!!!</string>
     <string name="success">Success</string>
     <string name="email_verification">Email Verification </string>
     <string name="address_created_successfully">Delivery Address is created successfully</string>
+    <string name="sure_delete_address">Are you sure you want to delete this address?</string>
+    <string name="delete_address">Delete Address</string>
+    <string name="single_offer_title">SINGLE OFFER</string>
+    <string name="single_category">SINGLE CATEGORY</string>
+    <string name="become_a_vip">BECOME A VIP</string>
+    <string name="subscribe">SUBSCRIBE</string>
+    <string name="brand_details">Brand details</string>
+    <string name="no">No</string>
+    <string name="address_deleted_successfully">Address is deleted successfully</string>
+    <string name="address_updated_successfully">Address is updated successfully</string>
 
     <string name="verify_link">Please open your Email to verify the link.</string>
 </resources>
