@@ -86,8 +86,8 @@
                     android:layout_gravity="center"
                     android:layoutDirection="locale"
                     android:padding="5dp"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
                     android:visibility="gone"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
                     app:shimmer_auto_start="false"
                     app:shimmer_duration="1000">
 
@@ -96,7 +96,10 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
-<!--                        <include layout="@layout/shimmer_loading_service" />-->
+                        <include layout="@layout/shimmer_loading_service_list" />
+                        <include layout="@layout/shimmer_loading_service_list" />
+                        <include layout="@layout/shimmer_loading_service_list" />
+                        <include layout="@layout/shimmer_loading_service_list" />
 
                     </LinearLayout>
                 </com.facebook.shimmer.ShimmerFrameLayout>

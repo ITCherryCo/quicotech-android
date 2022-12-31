@@ -14,6 +14,7 @@ import com.quico.tech.adapter.ServiceRecyclerViewAdapter
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityServiceListBinding
 import com.quico.tech.model.Service
+import com.quico.tech.model.ServiceType
 import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
@@ -24,6 +25,7 @@ class ServiceListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityServiceListBinding
     private lateinit var serviceRecyclerViewAdapter: ServiceRecyclerViewAdapter
     private val viewModel: SharedViewModel by viewModels()
+    private var service_type_id:Int=0
 
     var TAG = "SERVICES_RESPONSE"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +34,7 @@ class ServiceListActivity : AppCompatActivity() {
         binding = ActivityServiceListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        service_type_id = intent.extras!!.getInt(Constant.SERVICE_ID)
 
         binding.apply {
 
@@ -39,12 +42,13 @@ class ServiceListActivity : AppCompatActivity() {
                 onBackPressed()
             }
         }
+
         initStatusBar()
         setUpText()
-        setLoading()
-//        onRefresh()
-//        viewModel.getServices(1)
-//        subscribeServices()
+        subscribeServices()
+        setUpServicesAdapter()
+        onRefresh()
+        viewModel.getServiceTypes(service_type_id)
     }
 
     fun initStatusBar(){
@@ -62,7 +66,7 @@ class ServiceListActivity : AppCompatActivity() {
 
     fun subscribeServices(){
         lifecycleScope.launch {
-            viewModel.services.collect { response ->
+            viewModel.service_types.collect { response ->
                 when (response) {
                     is Resource.Success -> {
                         binding.apply {
@@ -71,12 +75,13 @@ class ServiceListActivity : AppCompatActivity() {
                             serviceErrorContainer.root.visibility=View.GONE
                             recyclerView.visibility = View.VISIBLE
                         }
+                        stopShimmer()
 
-                        response.data?.let { servicesResponse ->
-                            if (servicesResponse.result!!.isEmpty())
+                        response.data?.let { servicesTypeResponse ->
+                            if (servicesTypeResponse.result!!.isEmpty())
                                 setUpErrorForm(Constant.NO_SERVICES)
                             else {
-                               // serviceRecyclerViewAdapter.differ.submitList(servicesResponse.result)
+                                serviceRecyclerViewAdapter.differ.submitList(servicesTypeResponse.result)
                                 binding.recyclerView.setVisibility(View.VISIBLE)
                             }
                         }
@@ -107,8 +112,7 @@ class ServiceListActivity : AppCompatActivity() {
     private fun setUpServicesAdapter() {
         binding.apply {
             serviceRecyclerViewAdapter = ServiceRecyclerViewAdapter()
-            var services = ArrayList<Service>()
-            stopShimmer()
+            var services = ArrayList<ServiceType>()
             recyclerView.visibility = View.VISIBLE
             swipeRefreshLayout.setRefreshing(false)
 
@@ -144,10 +148,10 @@ class ServiceListActivity : AppCompatActivity() {
             shimmer.startShimmer()
            // swipeRefreshLayout.setRefreshing(true)
 
-            lifecycleScope.launch {
+           /* lifecycleScope.launch {
                 delay(3000)
                 setUpServicesAdapter()
-            }
+            }*/
         }
     }
 
@@ -155,7 +159,7 @@ class ServiceListActivity : AppCompatActivity() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
                 setLoading() // later we will remove it because the observable will call it
-                // viewModel.getOrders(1, orders_type) // get User id
+                 viewModel.getServiceTypes(service_type_id) // get User id
             })
         }
     }
@@ -170,7 +174,9 @@ class ServiceListActivity : AppCompatActivity() {
                 errorMsg1.visibility = View.GONE
                 root.visibility = View.VISIBLE
                 errorBtn.visibility = View.GONE
+                tryAgain.visibility = View.GONE
                 errorImage.setImageResource(android.R.color.transparent)
+                errorImage.setImageResource(R.drawable.empty_item)
 
                 when (error_type) {
                     Constant.CONNECTION -> {

@@ -36,8 +36,6 @@ class CompareSearchActivity : AppCompatActivity() {
             compareProductBtn.setOnClickListener {
                 startActivity(
                     Intent(this@CompareSearchActivity, CompareProductActivity::class.java)
-                    .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
-                    .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
                 )
             }
             backArrow.setOnClickListener {

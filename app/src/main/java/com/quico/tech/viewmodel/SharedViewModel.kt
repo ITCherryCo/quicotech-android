@@ -66,6 +66,10 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         MutableStateFlow(Resource.Nothing())
     val services: StateFlow<Resource<ServiceResponse>> get() = _services
 
+    private val _service_types: MutableStateFlow<Resource<ServiceTypeResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val service_types: StateFlow<Resource<ServiceTypeResponse>> get() = _service_types
+
     private val _can_register: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val can_register: StateFlow<Boolean> get() = _can_register
 
@@ -460,7 +464,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                 try {
                     user?.session_id?.let { session_id ->
                         val response =
-                            repository.updateMobile(session_id!!, params) //_subcategories
+                            repository.updateMobile( params) //_subcategories
                         if (response.isSuccessful) {
                             if (response.body()?.result?.status != null) {
                                 Log.d(USER_UPDATE_TAG, "Success")
@@ -699,6 +703,37 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             } else {
                 Log.d(SERVICE_TAG, "$CONNECTION}")
                 _services.emit(Resource.Connection())
+            }
+        }
+    }
+
+
+    fun getServiceTypes(service_id:Int) {
+        viewModelScope.launch {
+
+            _service_types.emit(Resource.Loading())
+
+            if (checkInternet(context)) {
+                try {
+                    val response = repository.getServices(service_id)
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            Log.d(SERVICE_TAG, "SUCCESS ${resultResponse.result?.size}}")
+                            _service_types.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        Log.d(SERVICE_TAG, "ERROR ${response}}")
+
+                        _service_types.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d(SERVICE_TAG, "EXCEPTION ${e.message}}}")
+                    _service_types.emit(Resource.Error(ERROR))
+                }
+            } else {
+                Log.d(SERVICE_TAG, "$CONNECTION}")
+                _service_types.emit(Resource.Connection())
             }
         }
     }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
 import com.quico.tech.activity.ServiceListActivity
+import com.quico.tech.data.Constant.SERVICE_ID
 import com.quico.tech.data.Maintenance
 import com.quico.tech.databinding.MaintenaceItemListBinding
 import com.quico.tech.model.Service
@@ -24,28 +25,30 @@ class MaintenanceRecyclerViewAdapter : RecyclerView.Adapter<MaintenanceRecyclerV
                 description.text = service.description
                // image.setImageResource(service.image)
 
-                when(service.id){
-                    1-> {
+                when(absoluteAdapterPosition){
+                    0-> {
                         verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.color_primary_purple))
                         image.setImageResource(R.drawable.repair2)
                     }
-                    2-> {
+                    1-> {
                         verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.green))
                         image.setImageResource(R.drawable.recovery)
                     }
-                    3-> {
+                    2-> {
                         verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.orange))
                         image.setImageResource(R.drawable.technical)
                     }
 
-                    4-> {
+                    3-> {
                         verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.red_dark))
                         image.setImageResource(R.drawable.repair2)
                     }
                 }
 
                 itemView.setOnClickListener {
-                    itemView.context.startActivity(Intent(itemView.context, ServiceListActivity::class.java))
+                    itemView.context.startActivity(Intent(itemView.context, ServiceListActivity::class.java)
+                        .putExtra(SERVICE_ID,service.id))
+
                 }
             }
         }

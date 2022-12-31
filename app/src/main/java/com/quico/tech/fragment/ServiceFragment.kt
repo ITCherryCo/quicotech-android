@@ -51,7 +51,7 @@ class ServiceFragment : Fragment() {
                 activity?.onBackPressed()
             }
         }
-
+        onRefresh()
         setUpMaintenanceAdapter()
         subscribeServicesList()
         viewModel.getServices()
@@ -178,7 +178,7 @@ class ServiceFragment : Fragment() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
                 setLoading() // later we will remove it because the observable will call it
-                // viewModel.getOrders(1, orders_type) // get User id
+                 viewModel.getServices() // get User id
             })
         }
     }
@@ -193,7 +193,9 @@ class ServiceFragment : Fragment() {
                 errorMsg1.visibility = View.GONE
                 root.visibility = View.VISIBLE
                 errorBtn.visibility = View.GONE
+                tryAgain.visibility = View.GONE
                 errorImage.setImageResource(android.R.color.transparent)
+                errorImage.setImageResource(R.drawable.empty_item)
 
                 when (error_type) {
                     Constant.CONNECTION -> {

@@ -15,13 +15,6 @@ interface API {
     @Headers("Content-Type: application/json")
     suspend fun login(@Body registerBody: RegisterBodyParameters): Response<UserResponse>
 
-    @GET("getUser")
-    // @Headers("Content-Type: application/json")
-    suspend fun getUser(@Header("Cookie") session_id: String): Response<UserResponse>
-
-    @GET("logout")
-    suspend fun logout2(@Header("Cookie") session_id: String): Response<RegisterResponse>
-
     @GET("logout")
     suspend fun logout(): Response<RegisterResponse>
 
@@ -37,15 +30,9 @@ interface API {
 
     @PUT("updateMobile")
     suspend fun updateMobile(
-        @Header("Cookie") session_id: String,
         @Body updateUserBody: RegisterBodyParameters
     ): Response<RegisterResponse>
 
-   /* @POST("createDeliveryAddress")
-    suspend fun addAddress(
-        @Header("Cookie") session_id: String,
-        @Body updateUserBody: AddressBodyParameters
-    ): Response<RegisterResponse>*/
 
     @POST("createDeliveryAddress")
     suspend fun addAddress(
@@ -58,6 +45,27 @@ interface API {
         @Path("address_id") address_id: Int,
         @Body updateUserBody: AddressBodyParameters
     ): Response<RegisterResponse>
+
+    @GET("getServiceTypes/{service_id}")
+    suspend fun getServiceTypes(@Path("service_id") service_id: Int): Response<ServiceTypeResponse>
+
+    @GET("getServices")
+    // @Headers("Content-Type: application/json")
+    suspend fun getServices(): Response<ServiceResponse>
+    /*
+    *  @PUT("updateMobile")
+    suspend fun updateMobile(
+        @Header("Cookie") session_id: String,
+        @Body updateUserBody: RegisterBodyParameters
+    ): Response<RegisterResponse>
+*/
+   /* @POST("createDeliveryAddress")
+    suspend fun addAddress(
+        @Header("Cookie") session_id: String,
+        @Body updateUserBody: AddressBodyParameters
+    ): Response<RegisterResponse>*/
+
+
 
  /*   @PUT("updateDeliveryAddress/{address_id}")
     suspend fun editAddress(
@@ -96,9 +104,7 @@ interface API {
     @GET("getSession")
     suspend fun getSession(): Response<SessionResponse>
 
-    @GET("getServices")
-   // @Headers("Content-Type: application/json")
-    suspend fun getServices(): Response<ServiceResponse>
+
 
     @GET("getOngoingOrders")
     suspend fun getOngoingOrders(@Query("customer_id") customer_id: Int?): Response<OrderResponse>

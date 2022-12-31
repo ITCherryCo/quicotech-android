@@ -108,7 +108,7 @@ class EditProfileActivity : AppCompatActivity() {
                     Glide.with(this@EditProfileActivity)
                         .load(viewModel.user?.image)
                         //.placeholder(R.drawable.placeholder)
-                        //.error(R.drawable.imagenotfound)
+                        .error(R.drawable.profile_user)
                         .into(profileImage)
                 }
             }
