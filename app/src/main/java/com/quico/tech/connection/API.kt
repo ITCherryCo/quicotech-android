@@ -12,7 +12,7 @@ interface API {
     suspend fun register(@Body registerBody: RegisterBodyParameters): Response<RegisterResponse>
 
     @POST("login")
-    // @Headers("Content-Type: application/json")
+    @Headers("Content-Type: application/json")
     suspend fun login(@Body registerBody: RegisterBodyParameters): Response<UserResponse>
 
     @GET("getUser")
@@ -20,7 +20,10 @@ interface API {
     suspend fun getUser(@Header("Cookie") session_id: String): Response<UserResponse>
 
     @GET("logout")
-    suspend fun logout(@Header("Cookie") session_id: String): Response<RegisterResponse>
+    suspend fun logout2(@Header("Cookie") session_id: String): Response<RegisterResponse>
+
+    @GET("logout")
+    suspend fun logout(): Response<RegisterResponse>
 
     @PUT("updateUserInfo")
     // suspend fun updateUserInfo(@Header("Cookie") session_id:String,@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
@@ -38,39 +41,63 @@ interface API {
         @Body updateUserBody: RegisterBodyParameters
     ): Response<RegisterResponse>
 
-    @POST("createDeliveryAddress")
+   /* @POST("createDeliveryAddress")
     suspend fun addAddress(
         @Header("Cookie") session_id: String,
         @Body updateUserBody: AddressBodyParameters
+    ): Response<RegisterResponse>*/
+
+    @POST("createDeliveryAddress")
+    suspend fun addAddress(
+
+        @Body updateUserBody: AddressBodyParameters
     ): Response<RegisterResponse>
 
-   /* @POST("updateDeliveryAddress/{address_id}")
+    @PUT("updateDeliveryAddress/{address_id}")
+    suspend fun editAddress(
+        @Path("address_id") address_id: Int,
+        @Body updateUserBody: AddressBodyParameters
+    ): Response<RegisterResponse>
+
+ /*   @PUT("updateDeliveryAddress/{address_id}")
     suspend fun editAddress(
         @Header("Cookie") session_id: String,
         @Path("address_id") address_id: Int,
         @Body updateUserBody: AddressBodyParameters
-    ): Response<RegisterResponse>*/
+    ): Response<RegisterResponse> */
 
-    @PUT
-    suspend fun editAddress2(
-        @Header("Cookie") session_id: String,
-        @Url updateAddressURL: String,
-        @Body updateUserBody: AddressBodyParameters
-    ): Response<RegisterResponse>
+    /*  @PUT
+      suspend fun editAddress2(
+          @Header("Cookie") session_id: String,
+          @Url updateAddressURL: String,
+          @Body updateUserBody: AddressBodyParameters
+      ): Response<RegisterResponse> */
 
     @GET("getDeliveryAddresses")
-    suspend fun getAddresses(@Header("Cookie") session_id: String): Response<AddressResponse>
+    suspend fun getAddresses2(@Header("Cookie") session_id: String): Response<AddressResponse>
+
+    @GET("getDeliveryAddresses")
+   // @Headers("Content-Type: application/json")
+    suspend fun getAddresses(): Response<AddressResponse>
 
     @POST("removeDeliveryAddress")
+    suspend fun deleteAddress(
+        @Body idBodyParameters: IDBodyParameters
+    ): Response<RegisterResponse>
+
+    /*
+    *  @POST("removeDeliveryAddress")
     suspend fun deleteAddress(
         @Header("Cookie") session_id: String,
         @Body idBodyParameters: IDBodyParameters
     ): Response<RegisterResponse>
+*/
 
     @GET("getSession")
     suspend fun getSession(): Response<SessionResponse>
 
     @GET("getServices")
+   // @Headers("Content-Type: application/json")
     suspend fun getServices(): Response<ServiceResponse>
 
     @GET("getOngoingOrders")

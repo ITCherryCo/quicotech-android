@@ -10,6 +10,7 @@ import com.quico.tech.R
 import com.quico.tech.data.Constant.ADDRESS_TAG
 import com.quico.tech.data.Constant.ALL
 import com.quico.tech.data.Constant.CONNECTION
+
 import com.quico.tech.data.Constant.EN
 import com.quico.tech.data.Constant.ERROR
 import com.quico.tech.data.Constant.ONGOING_ORDERS
@@ -38,7 +39,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     lateinit var resources: Resources
     private val localeHelper: LocalHelper = LocalHelper()
     private lateinit var context: Context
-    private val repository = Repository()
+   // private lateinit var repository:Repository
+    private  val repository=Repository()
 
     private val _addresses: MutableStateFlow<Resource<AddressResponse>> =
         MutableStateFlow(Resource.Nothing())
@@ -78,6 +80,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     init {
         context = getApplication<Application>().applicationContext
         prefManager = PrefManager(context)
+       // repository= Repository(context)
     }
 
     interface ResponseStandard {
@@ -202,6 +205,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     val response = repository.login(params)
                     if (response.isSuccessful) {
                         if (response.body()?.result != null) {
+                            prefManager.cookies=null
                             //Log.d(USER_LOGIN_TAG, "user exists")
                             var session_id = ""
                             response.headers().get("Set-Cookie")?.let { cookieHeader ->
@@ -214,6 +218,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
                             user = response.body()?.result
                             user = user!!.copy(session_id = session_id)
+                            prefManager.session_id = session_id
+                            prefManager.cookies = response.headers().get("Set-Cookie")
 
                             responseStandard?.onSuccess(
                                 true,
@@ -308,16 +314,16 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             if (checkInternet(context)) {
                 try {
                     user?.session_id?.let { session_id ->
+                        //val response = repository.logout2("$SESSION_ID=$session_id")
+                        val response = repository.logout()
 
-                        val response =
-                            repository.logout("$SESSION_ID=$session_id") //_subcategories
-                        //repository.logout("$SESSION_ID=$session_id") //_subcategories
                         Log.d("SESSION_ID", "$session_id")
 
                         if (response.isSuccessful) {
                             if (response.body()?.result?.status != null) {
                                 Log.d(USER_LOGOUT_TAG, "$SUCCESS")
                                 user = null
+                                prefManager.cookies = null
                                 responseStandard?.onSuccess(
                                     true,
                                     SUCCESS,
@@ -362,6 +368,11 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                         if (response.isSuccessful) {
                             if (response.body()?.result?.status != null) {
                                 Log.d(USER_UPDATE_TAG, "Success ${response.body()?.result?.status}")
+                                user = user!!.copy(name = params.params.name!!)
+                                // later when receiving dob with user change it
+                                if (!params.params.image.isNullOrEmpty())
+                                    user = user!!.copy(image = "data:image/jpeg;base64,${params.params.image!!}")
+
                                 responseStandard?.onSuccess(
                                     true,
                                     SUCCESS,
@@ -498,14 +509,11 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                         Log.d("SESSION_ID", "$session_id")
                         var response: Response<RegisterResponse>? = null
                         if (address_id != 0)
-                            response = repository.editAddress(
-                                session_id!!,
-                                "updateDeliveryAddress/${address_id}",
-                                params
-                            )
-                        // response = repository.editAddress(session_id!!, address_id,params)
+                            response = repository.editAddress( address_id, params)
+                           // response = repository.editAddress(session_id!!, address_id, params)
                         else
-                            response = repository.addAddress(session_id!!, params)
+                            response = repository.addAddress( params)
+                           // response = repository.addAddress(session_id!!, params)
 
                         /* val response: Response<String> = Ion.with(context)
                              .load("POST", URLbuilder.getURL())
@@ -585,7 +593,9 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             if (checkInternet(context)) {
                 try {
                     Log.d("SESSION_ID", "${user?.session_id}")
-                    val response = repository.getAddresses(user?.session_id!!)
+
+                    // val response = repository.getAddresses2(user?.session_id!!)
+                    val response = repository.getAddresses()
 
                     if (response.isSuccessful) {
                         response.body()?.let { resultResponse ->
@@ -617,7 +627,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                         Log.d("SESSION_ID", "$session_id")
 
                         val response =
-                            repository.deleteAddress(session_id!!, params) //_subcategories
+                            repository.deleteAddress(params)
+                           // repository.deleteAddress(session_id!!, params)
                         if (response.isSuccessful) {
                             if (response.body()?.result?.status != null) {
                                 Log.d(ADDRESS_TAG, "Success")

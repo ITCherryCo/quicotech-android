@@ -134,17 +134,27 @@ data class UpdateUserParams(
         null
     )
 
-    // to update user info: email
+    // to update user info: name
     constructor(
-        email: String
+        name: String
     ) : this(
+        name,
         null,
         null,
         null,
-        email,
         null
     )
 
-
+    // to update user info: name and dob
+    constructor(
+        name: String,
+        dob: String,
+    ) : this(
+        name,
+        dob,
+        null,
+        null,
+        null
+    )
 
 }

@@ -127,8 +127,11 @@ class LoginActivity : AppCompatActivity() {
 
                 viewModel.login(loginParams,object :SharedViewModel.ResponseStandard{
                     override fun onSuccess(success: Boolean, resultTitle: String, message: String) {
-
-                        viewModel.getSessionID(object :SharedViewModel.ResponseStandard{
+                        Common.cancelProgressDialog()
+                        startActivity(
+                            Intent(this@LoginActivity, HomeActivity::class.java)
+                        )
+                     /*   viewModel.getSessionID(object :SharedViewModel.ResponseStandard{
                             override fun onSuccess(
                                 success: Boolean,
                                 resultTitle: String,
@@ -148,7 +151,7 @@ class LoginActivity : AppCompatActivity() {
                                 Common.cancelProgressDialog()
                             }
 
-                        })
+                        })*/
                     }
 
                     override fun onFailure(success: Boolean, resultTitle: String, message: String) {

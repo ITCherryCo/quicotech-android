@@ -66,6 +66,8 @@ object Constant {
     var SEND_EMAIL_LINK= "SEND_EMAIL_LINK"
     var TEMPORAR_USER : User? =null
     var TEMPORAR_ADDRESS : Address? =null
+    var COOKIES_KEY ="cookiesKey"
+
 
 
 }

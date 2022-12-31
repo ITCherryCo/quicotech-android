@@ -29,7 +29,7 @@ class SplashScreen : AppCompatActivity() {
             }
         } else {
 
-           // prefManager.current_user = null
+         //   prefManager.current_user = null
             if (prefManager!!.isFirstTimeLaunch) {
                 prefManager.isFirstTimeLaunch = false
                 startActivity(
