@@ -48,66 +48,7 @@ object RetrofitInstance {
     }
 
 
-    val interceptor = object : Interceptor {
-        val cookies = mutableListOf<String>()
-
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request = chain.request()
-            val response = chain.proceed(request)
-
-            // Check for the Set-Cookie header
-            val setCookieHeader = response.header("Set-Cookie")
-            if (setCookieHeader != null) {
-                // Split the cookie value on ";" to get individual cookies
-                val cookies = setCookieHeader.split(";".toRegex()).dropLastWhile { it.isEmpty() }
-                    .toTypedArray()
-                // Add the cookies to the list
-                if (cookies.isEmpty())
-                    this.cookies.addAll(cookies)
-            }
-            // Return the original response
-            return response
-        }
-    }
-
     val interceptor2 = object : Interceptor {
-        val cookies = mutableListOf<String>()
-
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request = chain.request()
-
-            // Check if the request has a cookie header
-            val cookieHeader = request.header("Cookie")
-            if (cookieHeader != null) {
-                // Add the cookie to the list of cookies
-                cookies.add(cookieHeader)
-            }
-
-            val builder = request.newBuilder()
-            // builder.addHeader("Content-Type", "application/json")
-            // Add the cookies to the request header
-            if (cookies.isNotEmpty()) {
-                builder.addHeader("Cookie", cookies.joinToString(";"))
-            }
-
-            val modifiedRequest = builder.build()
-            val response = chain.proceed(modifiedRequest)
-
-            // Check for the Set-Cookie header
-            val setCookieHeader = response.header("Set-Cookie")
-            if (setCookieHeader != null) {
-                // Split the cookie value on ";" to get individual cookies
-                val cookies = setCookieHeader.split(";".toRegex()).dropLastWhile { it.isEmpty() }
-                    .toTypedArray()
-                // Add the cookies to the list
-                this.cookies.addAll(cookies)
-            }
-            return response
-
-        }
-    }
-
-    val interceptor3 = object : Interceptor {
 
         override fun intercept(chain: Interceptor.Chain): Response {
 
@@ -144,7 +85,7 @@ object RetrofitInstance {
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
 
-        builder.addInterceptor(interceptor3)
+        builder.addInterceptor(interceptor2)
 
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(logging)

@@ -5,111 +5,131 @@
     android:layout_height="match_parent"
     tools:context=".fragment.CompareProductFragment">
 
-  <androidx.core.widget.NestedScrollView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:orientation="vertical">
-      <include
-          android:id="@+id/compareErrorContainer"
-          layout="@layout/error_container"
-          android:layout_height="match_parent"
-          android:layout_width="match_parent"
-          android:visibility="gone"
-          android:layout_marginTop="150dp"/>
-      <LinearLayout
-          android:id="@+id/mainContainer"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:background="@color/gray_light"
-          android:orientation="vertical">
 
-          <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:paddingVertical="10dp"
-              android:background="@color/gray_compare"
-              android:paddingHorizontal="25dp">
+    <include
+        android:id="@+id/compareErrorContainer"
+        layout="@layout/error_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="150dp"
+        android:visibility="gone" />
 
-              <TextView
-                  android:id="@+id/compareText"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:layoutDirection="locale"
-                  android:textDirection="locale"
-                  android:textAllCaps="true"
-                  android:fontFamily="@font/regular"
-                  android:textSize="9sp"
-                  android:textColor="@color/black"
-                  android:text="@string/compare_with"/>
+    <RelativeLayout
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_light"
+        android:orientation="vertical">
 
-              <RelativeLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="25dp"
-                  android:layout_marginTop="5dp"
-                  android:padding="1dp"
-                  android:background="@drawable/container_black_stroke_1">
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_compare"
+            android:orientation="vertical"
+            android:paddingHorizontal="25dp"
+            android:paddingVertical="10dp">
 
-                  <SearchView
-                      android:id="@+id/searchView"
-                      android:layout_width="match_parent"
-                      android:layout_height="45dp"
-                      android:background="@color/white"
-                      android:layoutDirection="locale"
-                      android:queryHint="@string/search_hint"
-                      android:textDirection="locale" />
-              </RelativeLayout>
+            <TextView
+                android:id="@+id/compareText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/regular"
+                android:layoutDirection="locale"
+                android:text="@string/compare_with"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textDirection="locale"
+                android:textSize="9sp" />
 
-              <TextView
-                  android:id="@+id/enterProductText"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:layoutDirection="locale"
-                  android:textDirection="locale"
-                  android:textAllCaps="true"
-                  android:fontFamily="@font/regular"
-                  android:textSize="9sp"
-                  android:layout_marginTop="5dp"
-                  android:textColor="@color/gray_dark"
-                  android:text="@string/enter_product_name"/>
-          </LinearLayout>
-          <TextView
-              android:id="@+id/name"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layoutDirection="locale"
-              android:textDirection="locale"
-              android:fontFamily="@font/bold"
-              android:textSize="13sp"
-              android:gravity="center"
-              android:layout_marginTop="20dp"
-              android:layout_marginHorizontal="25dp"
-              android:textColor="@color/black"
-              android:text="EVO Handheld Gimbal"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/container_black_stroke_1"
+                android:padding="1dp">
 
-          <ImageView
-              android:id="@+id/image"
-              android:layout_width="match_parent"
-              android:layout_height="190dp"
-              android:layout_marginHorizontal="25dp"
-              android:src="@drawable/gimble"
-              android:layout_marginTop="10dp"/>
+                <SearchView
+                    android:id="@+id/searchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@color/white"
+                    android:layoutDirection="locale"
+                    android:queryHint="@string/search_hint"
+                    android:textDirection="locale" />
+            </RelativeLayout>
 
-          <View
-              android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:layout_marginTop="20dp"
-              android:background="@color/shimmer_placeholder"/>
+            <TextView
+                android:id="@+id/enterProductText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/regular"
+                android:layoutDirection="locale"
+                android:text="@string/enter_product_name"
+                android:textAllCaps="true"
+                android:textColor="@color/gray_dark"
+                android:textDirection="locale"
+                android:textSize="9sp" />
+        </LinearLayout>
 
-          <androidx.recyclerview.widget.RecyclerView
-              android:id="@+id/recyclerView"
-              tools:listitem="@layout/specification_item_list"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"/>
-      </LinearLayout>
-      </LinearLayout>
-  </androidx.core.widget.NestedScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="25dp"
+            android:layout_below="@+id/header"
+            android:visibility="gone"
+            android:elevation="1dp"
+            android:layout_marginTop="-30dp"/>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="25dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/bold"
+                    android:gravity="center"
+                    android:layoutDirection="locale"
+                    android:text="EVO Handheld Gimbal"
+                    android:textColor="@color/black"
+                    android:textDirection="locale"
+                    android:textSize="13sp" />
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_marginHorizontal="25dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/gimble" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/shimmer_placeholder" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/specification_item_list" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
+
 </RelativeLayout>
