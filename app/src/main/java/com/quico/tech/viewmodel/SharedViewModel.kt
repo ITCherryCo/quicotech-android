@@ -14,6 +14,7 @@ import com.quico.tech.data.Constant.CONNECTION
 import com.quico.tech.data.Constant.EN
 import com.quico.tech.data.Constant.ERROR
 import com.quico.tech.data.Constant.ONGOING_ORDERS
+import com.quico.tech.data.Constant.PRODUCT_TAG
 import com.quico.tech.data.Constant.SERVICE_TAG
 import com.quico.tech.data.Constant.SESSION_ID
 import com.quico.tech.data.Constant.SUCCESS
@@ -80,6 +81,10 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private val _general_web_info: MutableStateFlow<Resource<WebInfoResponse>> =
         MutableStateFlow(Resource.Nothing())
     val general_web_info: StateFlow<Resource<WebInfoResponse>> get() = _general_web_info
+
+    private val _product: MutableStateFlow<Resource<ProductResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val product: StateFlow<Resource<ProductResponse>> get() = _product
 
     init {
         context = getApplication<Application>().applicationContext
@@ -734,6 +739,35 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             } else {
                 Log.d(SERVICE_TAG, "$CONNECTION}")
                 _service_types.emit(Resource.Connection())
+            }
+        }
+    }
+
+    fun getProduct(product_id:Int) {
+        viewModelScope.launch {
+                _product.emit(Resource.Loading())
+
+            if (checkInternet(context)) {
+                try {
+
+                    val response = repository.getProduct(product_id)
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            Log.d(PRODUCT_TAG, "SUCCESS")
+                            _product.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        Log.d(PRODUCT_TAG, "ERROR ${response}}")
+                        _product.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d(PRODUCT_TAG, "EXCEPTION ${e.message}}}")
+                    _product.emit(Resource.Error(ERROR))
+                }
+            } else {
+                Log.d(PRODUCT_TAG, "$CONNECTION}")
+                _product.emit(Resource.Connection())
             }
         }
     }

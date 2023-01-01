@@ -2,6 +2,10 @@
   <library name="Gradle: androidx.multidex:multidex-instrumentation:2.0.0@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/a5453bd4e71e6fc5155ba19ce255100e/transformed/multidex-instrumentation-2.0.0/jars/classes.jar!/" />
+<<<<<<< HEAD
+=======
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a5453bd4e71e6fc5155ba19ce255100e/transformed/multidex-instrumentation-2.0.0/res" />
+>>>>>>> 6da47a7417fd1dac7f1fae3fd0fa60b153e77db2
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a5453bd4e71e6fc5155ba19ce255100e/transformed/multidex-instrumentation-2.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
