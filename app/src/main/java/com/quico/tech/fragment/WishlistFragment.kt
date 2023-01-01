@@ -46,11 +46,11 @@ class WishlistFragment : Fragment() {
     private fun setUpText() {
         binding.apply {
 
-            toolbar.title.text = viewModel.getLangResources().getString(R.string.wishlist)
-            toolbar.heartImage.visibility = View.GONE
-            toolbar.backArrow.visibility = View.GONE
+            wishlistToolbar.title.text = viewModel.getLangResources().getString(R.string.wishlist)
+            wishlistToolbar.heartImage.visibility = View.GONE
+            wishlistToolbar.backArrow.visibility = View.GONE
 
-            toolbar.cartImage.setOnClickListener {
+            wishlistToolbar.cartImage.setOnClickListener {
                 startActivity(Intent(requireContext(), CompareSearchActivity::class.java))
             }
         }

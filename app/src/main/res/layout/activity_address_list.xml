@@ -80,7 +80,6 @@
                 android:textColor="@color/gray_dark"
                 android:fontFamily="@font/regular" />
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"

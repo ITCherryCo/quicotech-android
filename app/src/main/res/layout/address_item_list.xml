@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
@@ -60,7 +61,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/address"
+                android:id="@+id/addressText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/username"
@@ -77,8 +78,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/address"
-                android:layout_alignStart="@+id/address"
+                android:layout_below="@+id/addressText"
+                android:layout_alignStart="@+id/addressText"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
@@ -101,7 +102,6 @@
                     android:id="@+id/delete"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
                     android:layout_toEndOf="@+id/locationImage"
                     android:layout_weight="0.7"
                     android:clickable="true"
@@ -120,6 +120,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:gravity="end"
+                    android:visibility="gone"
                     android:text="@string/set_as_default"
                     android:textDirection="locale"
                     android:layoutDirection="locale"
@@ -128,5 +129,15 @@
                     android:textSize="14sp" />
             </LinearLayout>
         </RelativeLayout>
+
     </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:visibility="gone"
+        android:layout_below="@+id/mainContainer"
+        android:layout_marginHorizontal="25dp"
+        />
 </RelativeLayout>

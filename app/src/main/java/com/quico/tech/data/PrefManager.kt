@@ -3,6 +3,7 @@ package com.quico.tech.data
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.quico.tech.data.Constant.COOKIE
 import com.quico.tech.data.Constant.EN
 import com.quico.tech.data.Constant.SESSION_ID
 import com.quico.tech.model.User
@@ -57,11 +58,18 @@ class PrefManager(var context: Context) {
         editor.apply()
     }
 
-  /*  var session_id:String?
+    var session_id:String?
     get() = sharedPreferences.getString(SESSION_ID, null)
     set(new_session_id) {
         editor.putString(SESSION_ID,new_session_id)
         editor.apply()
-    }*/
+    }
+
+    var cookies:String?
+        get() = sharedPreferences.getString(COOKIE, null)
+        set(new_session_id) {
+            editor.putString(COOKIE,new_session_id)
+            editor.apply()
+        }
 
 }

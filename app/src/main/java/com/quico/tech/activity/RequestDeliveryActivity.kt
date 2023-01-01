@@ -129,7 +129,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
     }
     fun setUpCardAdapter() {
         binding.apply {
-            addressRecyclerViewAdapter = AddressRecyclerViewAdapter()
+            addressRecyclerViewAdapter = AddressRecyclerViewAdapter(viewModel)
             var addresses = ArrayList<Address>()
            /* addresses.add(Address(1))
             addresses.add(Address(1))

@@ -32,8 +32,10 @@ class ShippingAddressActivity : AppCompatActivity() {
         setContentView(binding.root)
         setUpText()
         initStatusBar()
+        setUpAddressAdapter()
+        onRefresh()
         subscribeAddresses()
-        viewModel.getAddresses()
+        viewModel.getAddresses(true)
     }
 
     fun initStatusBar(){
@@ -55,6 +57,7 @@ class ShippingAddressActivity : AppCompatActivity() {
             }
 
             includedFragment.addAddressContainer.setOnClickListener {
+                Constant.TEMPORAR_ADDRESS = null
                 startActivity(
                     Intent(this@ShippingAddressActivity, AddressActivity::class.java)
                         //.putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
@@ -77,6 +80,9 @@ class ShippingAddressActivity : AppCompatActivity() {
                             if (addressesResponse.result.isNullOrEmpty()) {
                                 setUpErrorForm(Constant.NO_ADDRESSES)
                             } else {
+                                if (addressesResponse.result.size<3)
+                                    binding.includedFragment.addAddressContainer.setEnabled(true)
+
                                 addressRecyclerViewAdapter.differ.submitList(addressesResponse.result)
                                 binding.includedFragment.recyclerView.visibility = View.VISIBLE
                             }
@@ -103,7 +109,7 @@ class ShippingAddressActivity : AppCompatActivity() {
 
     fun setUpAddressAdapter() {
         binding.apply {
-            addressRecyclerViewAdapter = AddressRecyclerViewAdapter()
+            addressRecyclerViewAdapter = AddressRecyclerViewAdapter(viewModel)
 
             var addresses = ArrayList<Address>()
          /*   addresses.add(Address(1))
@@ -137,6 +143,7 @@ class ShippingAddressActivity : AppCompatActivity() {
             includedFragment.shimmer.visibility = View.VISIBLE
             includedFragment.shimmer.startShimmer()
             swipeRefreshLayout.setRefreshing(false)
+            includedFragment.addAddressContainer.setEnabled(false)
 
           /*  lifecycleScope.launch {
                 delay(3000)
@@ -149,7 +156,7 @@ class ShippingAddressActivity : AppCompatActivity() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
                 setLoading() // later we will remove it because the observable will call it
-                 viewModel.getAddresses() // get User id
+                 viewModel.getAddresses(true) // get User id
             })
         }
     }
@@ -158,6 +165,7 @@ class ShippingAddressActivity : AppCompatActivity() {
         binding.apply {
             swipeRefreshLayout.setRefreshing(false)
             includedFragment.recyclerView.visibility = View.GONE
+            includedFragment.addAddressContainer.setEnabled(true)
 
             stopShimmer()
             swipeRefreshLayout.setEnabled(true)

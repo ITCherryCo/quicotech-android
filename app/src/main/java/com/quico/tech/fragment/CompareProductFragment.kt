@@ -7,13 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.quico.tech.R
+import com.quico.tech.adapter.MaintenanceRecyclerViewAdapter
+import com.quico.tech.adapter.SearchItemRecyclerViewAdapter
 import com.quico.tech.adapter.SpecificationRecyclerViewAdapter
 import com.quico.tech.data.Constant.ITEM_ID
 import com.quico.tech.databinding.FragmentCompareProductBinding
+import com.quico.tech.model.Product
+import com.quico.tech.model.Service
 import com.quico.tech.model.Specification
 import com.quico.tech.viewmodel.SharedViewModel
 
@@ -24,6 +30,7 @@ class CompareProductFragment : Fragment() {
     private var _binding: FragmentCompareProductBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SharedViewModel by viewModels()
+    private lateinit var searchItemRecyclerViewAdapter: SearchItemRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +53,53 @@ class CompareProductFragment : Fragment() {
 
         setUpSpecificationsAdapter()
         Log.d(ITEM_ID,item_id.toString())
-
+        setUpItemsAdapter()
+        setUpSearchView()
     }
 
+    private fun setUpSearchView(){
+        binding.apply {
+            searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener,
+                android.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(searchText: String): Boolean {
+                  if (searchText.isEmpty()){
+                      searchRecyclerView.visibility = View.GONE
+                  }
+                    else
+                      searchRecyclerView.visibility = View.VISIBLE
+
+                    return false
+                }
+            })
+        }
+    }
+
+    private fun setUpItemsAdapter() {
+        binding.apply {
+
+            searchItemRecyclerViewAdapter = SearchItemRecyclerViewAdapter()
+            var products = ArrayList<Product>()
+            products.add(Product("", resources.getDrawable(R.drawable.laptop),100f))
+            products.add(Product("", resources.getDrawable(R.drawable.laptop),100f))
+            products.add(Product("", resources.getDrawable(R.drawable.laptop),100f))
+            products.add(Product("", resources.getDrawable(R.drawable.laptop),100f))
+
+            searchRecyclerView.layoutManager =
+                LinearLayoutManager(
+                    activity,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
+            searchRecyclerView.setItemAnimator(DefaultItemAnimator())
+            searchRecyclerView.setAdapter(searchItemRecyclerViewAdapter)
+
+            searchItemRecyclerViewAdapter.differ.submitList(products)
+        }
+    }
 
     private fun setUpSpecificationsAdapter() {
         binding.apply {

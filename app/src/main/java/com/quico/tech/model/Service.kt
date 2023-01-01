@@ -1,8 +1,14 @@
 package com.quico.tech.model
 
 data class ServiceResponse(
-    val services: List<Service>,
-    val result: String
+    val id: Any,
+    val jsonrpc: String,
+    val result: List<Service>?,
+    val error: ErrorData?
 )
-data class Service(val id:Int) {
-}
+
+data class Service(
+    val description: String,
+    val id: Int,
+    val name: String
+)

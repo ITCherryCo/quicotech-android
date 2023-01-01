@@ -30,7 +30,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="30dp">
+                android:paddingVertical="25dp"
+                android:paddingHorizontal="15dp">
 
                 <ImageView
                     android:id="@+id/image"
@@ -49,12 +50,12 @@
                     android:layout_marginTop="30dp"
                     android:fontFamily="@font/medium"
                     android:gravity="center"
-                    android:maxLines="3"
+                    android:maxLines="4"
                     android:text="Smartphone
 Repair Services"
                     android:textColor="@color/black"
                     android:textDirection="locale"
-                    android:textSize="13sp" />
+                    android:textSize="12sp" />
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>

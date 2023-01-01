@@ -37,6 +37,12 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onResume() {
+        super.onResume()
         setUpText()
         loadImage()
         binding.apply {
@@ -48,6 +54,9 @@ class ProfileFragment : Fragment() {
             viewModel.user?.let { user ->
                 loginInfo.visibility = View.VISIBLE
                 profileErrorContainer.root.visibility = View.GONE
+                name.text = user.name
+                phoneNumber.text = user.mobile
+
                 if (user.is_vip)
                     vipImage.visibility = View.VISIBLE
                 else
@@ -108,7 +117,7 @@ class ProfileFragment : Fragment() {
                     Glide.with(this@ProfileFragment)
                         .load(viewModel.user?.image)
                         //.placeholder(R.drawable.placeholder)
-                        //.error(R.drawable.imagenotfound)
+                        .error(R.drawable.profile_user)
                         .into(profileImage)
                 }
             }
@@ -146,6 +155,7 @@ class ProfileFragment : Fragment() {
 
                 errorImage.setImageResource(R.drawable.guest)
 
+                tryAgain.visibility = View.GONE
                 errorMsg1.text =
                     viewModel.getLangResources().getString(R.string.you_are_guest)
                 errorMsg2.text =

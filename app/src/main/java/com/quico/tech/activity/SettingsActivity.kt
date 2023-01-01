@@ -84,10 +84,12 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun logoutAlert() {
-        Common.setUpAlert(
-            this, false, viewModel.getLangResources().getString(R.string.logout), viewModel.getLangResources().getString(R.string.sure_logout),
+        Common.setUpChoicesAlert(
+            this,
+            viewModel.getLangResources().getString(R.string.logout), viewModel.getLangResources().getString(R.string.sure_logout),
+            viewModel.getLangResources().getString(R.string.no),
             viewModel.getLangResources().getString(R.string.yes),
-            object : Common.ResponseConfirm{
+            object : Common.ResponseChoices{
                 override fun onConfirm() {
                     viewModel.user?.session_id?.let { session_id->
 
@@ -106,6 +108,7 @@ class SettingsActivity : AppCompatActivity() {
                                         Intent(this@SettingsActivity, LoginActivity::class.java)
                                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                                     )
+                                    this@SettingsActivity.finish()
                                 }
 
                                 override fun onFailure(
@@ -125,6 +128,10 @@ class SettingsActivity : AppCompatActivity() {
                                 }
                             })
                     }
+                }
+
+                override fun onCancel() {
+
                 }
             }
         )

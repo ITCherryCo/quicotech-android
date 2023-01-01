@@ -57,7 +57,11 @@ class ProductActivity : AppCompatActivity() {
             oldPrice.setBackground(getResources().getDrawable(R.drawable.red_line))
 
             compareBtn.setOnClickListener {
-                startActivity(Intent(this@ProductActivity,CompareSearchActivity::class.java))
+                //startActivity(Intent(this@ProductActivity,CompareSearchActivity::class.java))
+                startActivity(
+                    Intent(this@ProductActivity, CompareProductActivity::class.java)
+                        .putExtra(Constant.ITEM_ID, 1)
+                )
             }
 
             toolbarProductDetails.cartImage.setOnClickListener {

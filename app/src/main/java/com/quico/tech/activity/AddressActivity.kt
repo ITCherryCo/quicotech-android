@@ -1,24 +1,26 @@
 package com.quico.tech.activity
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.quico.tech.R
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.ADDRESS
+import com.quico.tech.data.Constant.TEMPORAR_ADDRESS
 import com.quico.tech.databinding.ActivityAddressBinding
 import com.quico.tech.model.Address
 import com.quico.tech.model.AddressBodyParameters
-import com.quico.tech.model.RegisterBodyParameters
-import com.quico.tech.model.RegisterParams
 import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
+
 
 class AddressActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddressBinding
     private val viewModel: SharedViewModel by viewModels()
+    private var address :Address? = null
+    private var address_id :Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -26,9 +28,20 @@ class AddressActivity : AppCompatActivity() {
         binding = ActivityAddressBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+      //  address =  intent.extras?.getParcelable(ADDRESS)
 
+        //address = intent.getParcelableExtra(ADDRESS)!! as(Address)
+        address = intent.getParcelableExtra<Address>(ADDRESS)
+        address=TEMPORAR_ADDRESS
         setUpText()
         initStatusBar()
+        Log.d("ADDRESS", "NULL")
+
+        address?.let {
+            setUpAddress(it)
+            Log.d("ADDRESS", "NOT NULL")
+            address_id = it.id
+        }
 
     }
 
@@ -43,11 +56,26 @@ class AddressActivity : AppCompatActivity() {
             title.text = viewModel.getLangResources().getString(R.string.add_new_address)
             saveBtn.text = viewModel.getLangResources().getString(R.string.save)
 
+            includedAddressFragment.nameField.setText(viewModel.user?.name)
             if (viewModel.getLanguage().equals(Constant.AR))
                 backArrow.scaleX = -1f
 
             saveBtn.setOnClickListener {
                 checkFields()
+            }
+        }
+    }
+
+    private fun setUpAddress(address: Address) {
+
+        binding.apply {
+            title.text = viewModel.getLangResources().getString(R.string.edit_address)
+            includedAddressFragment.apply {
+                nameField.setText( address.name)
+                streetField.setText( address.street)
+                apartmentField.setText( address.street2)
+                cityField.setText( address.city)
+                postalCodeField.setText( address.zip)
             }
         }
     }
@@ -97,17 +125,22 @@ class AddressActivity : AppCompatActivity() {
         val addressParams = AddressBodyParameters(
             address
         )
+        Log.d("ADDRESS", "NOT NULL ${address.id}")
+
         Common.setUpProgressDialog(this)
 
-        viewModel.addAddress(addressParams,object :SharedViewModel.ResponseStandard{
+        viewModel.addEditAddress(if (address==null) 0 else address_id, addressParams,object :SharedViewModel.ResponseStandard{
             override fun onSuccess(success: Boolean, resultTitle: String, message: String) {
                 Common.cancelProgressDialog()
                 Toast.makeText(this@AddressActivity,message,Toast.LENGTH_LONG).show()
+                Constant.TEMPORAR_ADDRESS = null
                 onBackPressed()
             }
 
             override fun onFailure(success: Boolean, resultTitle: String, message: String) {
                 Common.cancelProgressDialog()
+                Constant.TEMPORAR_ADDRESS = null
+
                 Common.setUpAlert(
                     this@AddressActivity, false,
                     viewModel.getLangResources().getString(R.string.error),

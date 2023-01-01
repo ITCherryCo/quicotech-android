@@ -51,10 +51,8 @@ class AddressListActivity : AppCompatActivity() {
         }
         setUpText()
         initStatusBar()
-        // setUpCartAdapter()
-
-        onRefresh()
-//        viewModel.getAddresses(1)
+         setUpCartAdapter()
+        viewModel.getAddresses(false)
 //        subscribeAddresses()
 
     }
@@ -90,7 +88,7 @@ class AddressListActivity : AppCompatActivity() {
                         }
 
                         response.data?.let { addressesResponse ->
-                            if (addressesResponse.result.isEmpty())
+                            if (addressesResponse.result?.isEmpty()!!)
                                 setUpErrorForm(NO_ADDRESSES)
                             else {
                                 addressSelectionRecyclerViewAdapter.differ.submitList(
@@ -164,16 +162,16 @@ class AddressListActivity : AppCompatActivity() {
             recyclerView.visibility = View.GONE
             nextBtn.setEnabled(false)
 
-            lifecycleScope.launch {
+          /*  lifecycleScope.launch {
                 delay(3000)
                 setUpCartAdapter()
-            }
+            }*/
         }
     }
 
     private fun onRefresh() {
         setLoading()
-        //viewModel.getAddresses(1)
+        viewModel.getAddresses(false)
     }
 
     fun setUpErrorForm(error_type: String) {
@@ -188,7 +186,9 @@ class AddressListActivity : AppCompatActivity() {
                 tryAgain.setText(
                     viewModel.getLangResources().getString(R.string.try_again)
                 )
-                tryAgain.setOnClickListener {  }
+                tryAgain.setOnClickListener {
+                    onRefresh()
+                }
 
                 when (error_type) {
                     Constant.CONNECTION -> {

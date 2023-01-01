@@ -98,6 +98,10 @@ class EditCredentialsActivity : AppCompatActivity() {
                     else if (!phoneValue.isEmpty() && phoneValue.length < 8)
                         phoneField.error =
                             viewModel.getLangResources().getString(R.string.invalid_phone_number)
+                    else if (phoneValue.equals(viewModel.user!!.mobile.substring(4))){
+                        phoneField.error =
+                            viewModel.getLangResources().getString(R.string.same_phone_number)
+                    }
                     else {
                         // go to verification
                         startActivity(

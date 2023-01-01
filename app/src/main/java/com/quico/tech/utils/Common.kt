@@ -20,6 +20,7 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import com.quico.tech.R
+import com.quico.tech.databinding.AlertChoicesDialogBinding
 import com.quico.tech.databinding.AlertSuccessDialogBinding
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -32,6 +33,12 @@ object Common {
     interface ResponseConfirm {
         fun onConfirm()
     }
+
+    interface ResponseChoices {
+        fun onConfirm()
+        fun onCancel()
+    }
+
 
     fun setSystemBarColor(act: Activity, @ColorRes color: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -98,7 +105,7 @@ object Common {
         }
     }
 
-     fun checkGalleryPermissions(context: Context) :Boolean{
+    fun checkGalleryPermissions(context: Context): Boolean {
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.READ_EXTERNAL_STORAGE
@@ -113,7 +120,7 @@ object Common {
         return false
     }
 
-     fun requestPermissions(activity: Activity) {
+    fun requestPermissions(activity: Activity) {
 
         val PERMISSIONS = arrayOf(
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -170,6 +177,43 @@ object Common {
         }
     }
 
+
+    fun setUpChoicesAlert(
+        context: Context,
+        title: String,
+        msg: String,
+        cancelBtnText: String,
+        confirmBtnText: String,
+        responseChoices: ResponseChoices?
+    ) {
+        val dialog = Dialog(context)
+        dialog.setContentView(R.layout.alert_choices_dialog)
+        val binding: AlertChoicesDialogBinding =
+            AlertChoicesDialogBinding.inflate(LayoutInflater.from(context))
+        dialog.setContentView(binding.getRoot())
+        dialog.setCancelable(false)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        binding.apply {
+
+            titleText.text = title
+            msgText.text = msg
+            cancelBtn.text = cancelBtnText
+            confirmBtn.text = confirmBtnText
+
+            dialog.show()
+            confirmBtn.setOnClickListener {
+                dialog.dismiss()
+                responseChoices?.onConfirm()
+            }
+
+            cancelBtn.setOnClickListener {
+                dialog.dismiss()
+                responseChoices?.onCancel()
+            }
+        }
+    }
+
     fun setUpProgressDialog(context: Context) {
         progressDialog = Dialog(context)
         progressDialog?.setContentView(R.layout.loading_progress_dialog)
@@ -182,7 +226,7 @@ object Common {
         if (progressDialog != null) progressDialog!!.dismiss()
     }
 
-    fun isProgressIsLoading()=  (progressDialog !=null && progressDialog?.isShowing == true)
+    fun isProgressIsLoading() = (progressDialog != null && progressDialog?.isShowing == true)
 
     fun isPasswordValid(password: String): Boolean {
         val PASSWORD_PATTERN: Pattern = Pattern.compile(

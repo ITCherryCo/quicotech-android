@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="145dp"
+        android:layout_margin="10dp"
+        android:elevation="10dp"
+        android:layoutDirection="locale"
+        app:cardCornerRadius="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="locale">
+
+            <View
+                android:id="@+id/verticalLine"
+                android:layout_width="3.5dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="9dp"
+                android:background="@color/shimmer_placeholder"
+                android:layoutDirection="locale" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/verticalLine"
+                android:layoutDirection="locale"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="120dp"
+                    android:layout_height="18dp"
+                    android:background="@color/shimmer_placeholder"
+                    android:layoutDirection="locale"
+                    android:textDirection="locale" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layoutDirection="locale"
+                        android:textDirection="locale"
+                        android:background="@color/shimmer_placeholder"/>
+
+                    <TextView
+                        android:id="@+id/description2"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layoutDirection="locale"
+                        android:textDirection="locale"
+                        android:background="@color/shimmer_placeholder"/>
+
+                    <TextView
+                        android:id="@+id/description3"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layoutDirection="locale"
+                        android:textDirection="locale"
+                        android:background="@color/shimmer_placeholder"/>
+
+
+                    <TextView
+                        android:id="@+id/description4"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layoutDirection="locale"
+                        android:textDirection="locale"
+                        android:background="@color/shimmer_placeholder"/>
+
+                    <TextView
+                        android:id="@+id/description5"
+                        android:layout_width="190dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layoutDirection="locale"
+                        android:textDirection="locale"
+                        android:background="@color/shimmer_placeholder"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

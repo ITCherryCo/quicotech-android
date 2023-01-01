@@ -6,27 +6,46 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.quico.tech.R
 import com.quico.tech.activity.RequestActivity
+import com.quico.tech.activity.ServiceListActivity
+import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ServiceItemListBinding
 import com.quico.tech.model.Service
+import com.quico.tech.model.ServiceType
 
-class ServiceRecyclerViewAdapter() : RecyclerView.Adapter<ServiceRecyclerViewAdapter.ItemViewHolder>() {
+class ServiceRecyclerViewAdapter() :
+    RecyclerView.Adapter<ServiceRecyclerViewAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(private var binding: ServiceItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(service: Service) {
+        fun bind(serviceType: ServiceType) {
             binding.apply {
-                when(absoluteAdapterPosition){
-                    0->image.setImageResource(R.drawable.smartphone)
-                    1->image.setImageResource(R.drawable.gaming)
-                    2->image.setImageResource(R.drawable.smartphone)
-                    3->image.setImageResource(R.drawable.gaming)
-                }
 
+                name.text = serviceType.type
+                name.text = serviceType.type
                 itemView.setOnClickListener {
-                    itemView.context.startActivity(Intent(itemView.context, RequestActivity::class.java))
+                    if (serviceType.have_sub_service)
+                        itemView.context.startActivity(
+                            Intent(itemView.context, ServiceListActivity::class.java)
+                                .putExtra(Constant.SERVICE_ID, serviceType.id)
+                        )
+                    else
+                        itemView.context.startActivity(
+                            Intent(
+                                itemView.context,
+                                RequestActivity::class.java
+                            )
+                        )
+                }
+                if (serviceType.image.isNullOrEmpty()) {
+                    Glide.with(itemView)
+                        .load(serviceType.image)
+                        //.placeholder(R.drawable.placeholder)
+                        .error(R.drawable.smartphone)
+                        .into(image)
                 }
             }
         }
@@ -43,13 +62,13 @@ class ServiceRecyclerViewAdapter() : RecyclerView.Adapter<ServiceRecyclerViewAda
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val service = differ.currentList[position]
-        holder.bind(service)
+        val serviceType = differ.currentList[position]
+        holder.bind(serviceType)
     }
 
-    private var onItemClickListener: ((Service) -> Unit)? = null
+    private var onItemClickListener: ((ServiceType) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (Service) -> Unit) {
+    fun setOnItemClickListener(listener: (ServiceType) -> Unit) {
         onItemClickListener = listener
     }
 
@@ -57,13 +76,12 @@ class ServiceRecyclerViewAdapter() : RecyclerView.Adapter<ServiceRecyclerViewAda
         return differ.currentList.size
     }
 
-
-    private val differCallback = object : DiffUtil.ItemCallback<Service>() {
-        override fun areItemsTheSame(oldItem: Service, newItem: Service): Boolean {
+    private val differCallback = object : DiffUtil.ItemCallback<ServiceType>() {
+        override fun areItemsTheSame(oldItem: ServiceType, newItem: ServiceType): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Service, newItem: Service): Boolean {
+        override fun areContentsTheSame(oldItem: ServiceType, newItem: ServiceType): Boolean {
             return oldItem == newItem
         }
     }

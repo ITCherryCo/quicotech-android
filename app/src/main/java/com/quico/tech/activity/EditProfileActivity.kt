@@ -108,7 +108,7 @@ class EditProfileActivity : AppCompatActivity() {
                     Glide.with(this@EditProfileActivity)
                         .load(viewModel.user?.image)
                         //.placeholder(R.drawable.placeholder)
-                        //.error(R.drawable.imagenotfound)
+                        .error(R.drawable.profile_user)
                         .into(profileImage)
                 }
             }
@@ -231,10 +231,10 @@ class EditProfileActivity : AppCompatActivity() {
             if (nameField.text.toString().isEmpty()) {
                 nameField.error =
                     viewModel.getLangResources().getString(R.string.required_field)
-            } else if (birthdayField.text.toString().isEmpty()) {
+            } /*else if (birthdayField.text.toString().isEmpty()) {
                 birthdayField.error =
                     viewModel.getLangResources().getString(R.string.required_field)
-            } else {
+            }*/ else {
                 updateUserInfo(nameField.text.toString(), birthdayField.text.toString(), imageEncoded)
             }
         }
@@ -244,9 +244,18 @@ class EditProfileActivity : AppCompatActivity() {
         binding.apply {
             Common.setUpProgressDialog(this@EditProfileActivity)
 
+            var userParams= UpdateUserParams(name)
+
+            if (dob.isNotEmpty())
+                userParams = userParams.copy(dob = dob)
+
+            if (!imageEncoded.isNullOrEmpty())
+                userParams = userParams.copy(image = imageEncoded)
+
             var updateUserBodyParameters = UpdateUserBodyParameters(
-                UpdateUserParams(name,dob,image)
+                userParams
             )
+
 
             viewModel.updateUserInfo(
                 updateUserBodyParameters,

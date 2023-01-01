@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
@@ -38,6 +39,11 @@ import com.quico.tech.utils.Common.cancelProgressDialog
 import com.quico.tech.utils.Common.isProgressIsLoading
 import com.quico.tech.utils.Common.setUpProgressDialog
 import com.quico.tech.viewmodel.SharedViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -65,7 +71,7 @@ class VerificationCodeActivity : AppCompatActivity() {
 
         initStatusBar()
         setUpText()
-
+        monitorPhoneNumber()
         verification_type = intent.extras?.getString(VERIFICATION_TYPE)!!
         operation_type = intent.extras?.getString(OPERATION_TYPE)
         phone_number = intent.extras?.getString(PHONE_NUMBER)
@@ -82,6 +88,7 @@ class VerificationCodeActivity : AppCompatActivity() {
         emailLink = intent?.data?.toString()
 
         if (emailLink == null) {
+
             emailLink = intent.extras?.getString(EMAIL_LINK)
         }
         emailLink?.let {
@@ -113,69 +120,86 @@ class VerificationCodeActivity : AppCompatActivity() {
     }
 
     private fun checkOperationType() {
-        binding.apply {
-            val content = SpannableString("00:00")
-            content.setSpan(UnderlineSpan(), 0, content.length, 0)
-            timer.text = content
+        this.runOnUiThread {
+            // This code will be executed on the main thread
 
-            title.text = viewModel.getLangResources().getString(R.string.verification)
-            verifyBtn.text = viewModel.getLangResources().getString(R.string.verify)
+            binding.apply {
+                val content = SpannableString("00:00")
+                content.setSpan(UnderlineSpan(), 0, content.length, 0)
+                timer.text = content
 
+                title.text = viewModel.getLangResources().getString(R.string.verification)
+                verifyBtn.text = viewModel.getLangResources().getString(R.string.verify)
 
-            when (verification_type) {
-                EMAIL -> {
-                    enterVerificationCodeText.text =
-                        viewModel.getLangResources().getString(R.string.email_verification)
-                    sendMsgText.text =
-                        viewModel.getLangResources().getString(
-                            R.string.email_confirmation_code,
-                            TEMPORAR_USER!!.email
-                        )
+                Log.d(SEND_EMAIL_LINK, "verification_type ${verification_type}")
 
-                    /* verifyBtn.setOnClickListener {
+                try {
+                    when (verification_type) {
+
+                        EMAIL -> {
+                            enterVerificationCodeText.text =
+                                viewModel.getLangResources().getString(R.string.email_verification)
+                            sendMsgText.text =
+                                viewModel.getLangResources().getString(
+                                    R.string.email_confirmation_code,
+                                    TEMPORAR_USER!!.email
+                                )
+
+                            /* verifyBtn.setOnClickListener {
                          startActivity(
                              Intent(this@VerificationCodeActivity, CheckoutActivity::class.java)
                                  .putExtra(TRACKING_ON, false)
                                  .putExtra(CHECKOUT_TYPE, ORDERS)
                          )
                      }*/
-                    pinview.visibility = View.GONE
-                    verifyBtn.visibility = View.GONE
-                    if (emailLink == null) {
-                        startTimer()
-                        sendEmailLink(TEMPORAR_USER!!.email!!)
-                        resendText.setOnClickListener {
-                            // MUST RESEND AN EMAIL
-                            sendEmailLink(TEMPORAR_USER!!.email!!)
+                            pinview.visibility = View.GONE
+                            verifyBtn.visibility = View.GONE
+                            try {
+                                if (emailLink == null) {
+                                    startTimer()
+                                    sendEmailLink(TEMPORAR_USER!!.email!!)
+                                    resendText.setOnClickListener {
+                                        // MUST RESEND AN EMAIL
+                                        sendEmailLink(TEMPORAR_USER!!.email!!)
+                                    }
+                                } else {
+                                    // must verify email link
+                                    verifyBtn.visibility = View.VISIBLE
+                                    verifyBtn.setOnClickListener {
+                                        if (viewModel.sendOtpPhoneNumber.isEmpty())
+                                            verifyEmail(TEMPORAR_USER!!.email!!, emailLink!!)
+                                    }
+                                }
+                            } catch (e: Exception) {
+                                Log.d(SEND_EMAIL_LINK, "EXCEPTION ${e.message}")
+                            }
                         }
-                    } else {
-                        // must verify email link
-                        verifyBtn.visibility = View.VISIBLE
-                        verifyBtn.setOnClickListener {
-                            verifyEmail(TEMPORAR_USER!!.email!!, emailLink!!)
+
+                        PHONE_NUMBER -> {
+                            pinview.visibility = View.VISIBLE
+                            enterVerificationCodeText.text =
+                                viewModel.getLangResources()
+                                    .getString(R.string.enter_verification_code)
+                            sendMsgText.text =
+                                viewModel.getLangResources()
+                                    .getString(R.string.phone_confirmation_code)
+                            phone_number?.let {
+                                setUpCode("+961", it)
+                            }
+                            verifyBtn.setOnClickListener {
+                                check_code()
+                            }
+
+                            resendText.setOnClickListener {
+                                setUpCode(
+                                    "+961",
+                                    phone_number!!
+                                )
+                            }
                         }
                     }
-                }
-
-                PHONE_NUMBER -> {
-                    pinview.visibility = View.VISIBLE
-                    enterVerificationCodeText.text =
-                        viewModel.getLangResources().getString(R.string.enter_verification_code)
-                    sendMsgText.text =
-                        viewModel.getLangResources().getString(R.string.phone_confirmation_code)
-                    phone_number?.let {
-                        setUpCode("+961", it)
-                    }
-                    verifyBtn.setOnClickListener {
-                        check_code()
-                    }
-
-                    resendText.setOnClickListener {
-                        setUpCode(
-                            "+961",
-                            phone_number!!
-                        )
-                    }
+                } catch (e: Exception) {
+                    Log.d(SMS_TAG, "ERROR_ON_PHONE ${e.message.toString()}")
                 }
             }
         }
@@ -479,7 +503,10 @@ class VerificationCodeActivity : AppCompatActivity() {
                         // result.getAdditionalUserInfo().getProfile() == null
                         // You can check if the user is new or existing:
                         // result.getAdditionalUserInfo().isNewUser()
-                         reloadPageWithPhone()
+                        // reloadPageWithPhone()
+                        lifecycleScope.launch {
+                            viewModel.sendOtpPhoneNumber = TEMPORAR_USER!!.mobile
+                        }
                     } else {
                         Log.e(SEND_EMAIL_LINK, "Error signing in with email link", task.exception)
                         cancelProgressDialog()
@@ -488,10 +515,21 @@ class VerificationCodeActivity : AppCompatActivity() {
         }
     }
 
-    private fun reloadPageWithPhone() {
-        verification_type = PHONE_NUMBER
-        OPERATION_TYPE = REGISTER
-        PHONE_NUMBER = TEMPORAR_USER!!.mobile.toString()
-        checkOperationType()
+    private fun monitorPhoneNumber(){
+        lifecycleScope.launch {
+            viewModel.send_otp.collect{ phone_number->
+                if (phone_number.isNotEmpty()) {
+                    verification_type = PHONE_NUMBER
+                    OPERATION_TYPE = REGISTER
+                    PHONE_NUMBER = TEMPORAR_USER!!.mobile.toString()
+                    launch(Dispatchers.Main) {
+                        checkOperationType()
+                        // This code will be executed on the main thread
+                    }
+                }
+            }
+        }
     }
+
+
 }

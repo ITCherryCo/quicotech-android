@@ -8,30 +8,47 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
 import com.quico.tech.activity.ServiceListActivity
+import com.quico.tech.data.Constant.SERVICE_ID
 import com.quico.tech.data.Maintenance
 import com.quico.tech.databinding.MaintenaceItemListBinding
+import com.quico.tech.model.Service
 
 class MaintenanceRecyclerViewAdapter : RecyclerView.Adapter<MaintenanceRecyclerViewAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(private var binding: MaintenaceItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(maintenance: Maintenance) {
+        fun bind(service: Service) {
             binding.apply {
 
-                title.text = maintenance.title
-                description.text = maintenance.description
-                image.setImageResource(maintenance.image)
+                title.text = service.name
+                description.text = service.description
+               // image.setImageResource(service.image)
 
-                when(maintenance.id){
-                    1->verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.color_primary_purple))
-                    2->verticalLine.setBackgroundColor (itemView.resources.getColor(R.color.green))
-                    3->verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.orange))
-                    4->verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.red_dark))
+                when(absoluteAdapterPosition){
+                    0-> {
+                        verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.color_primary_purple))
+                        image.setImageResource(R.drawable.repair2)
+                    }
+                    1-> {
+                        verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.green))
+                        image.setImageResource(R.drawable.recovery)
+                    }
+                    2-> {
+                        verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.orange))
+                        image.setImageResource(R.drawable.technical)
+                    }
+
+                    3-> {
+                        verticalLine.setBackgroundColor(itemView.resources.getColor(R.color.red_dark))
+                        image.setImageResource(R.drawable.repair2)
+                    }
                 }
 
                 itemView.setOnClickListener {
-                    itemView.context.startActivity(Intent(itemView.context, ServiceListActivity::class.java))
+                    itemView.context.startActivity(Intent(itemView.context, ServiceListActivity::class.java)
+                        .putExtra(SERVICE_ID,service.id))
+
                 }
             }
         }
@@ -52,9 +69,9 @@ class MaintenanceRecyclerViewAdapter : RecyclerView.Adapter<MaintenanceRecyclerV
         holder.bind(maintenance)
     }
 
-    private var onItemClickListener: ((Maintenance) -> Unit)? = null
+    private var onItemClickListener: ((Service) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (Maintenance) -> Unit) {
+    fun setOnItemClickListener(listener: (Service) -> Unit) {
         onItemClickListener = listener
     }
 
@@ -63,12 +80,12 @@ class MaintenanceRecyclerViewAdapter : RecyclerView.Adapter<MaintenanceRecyclerV
     }
 
 
-    private val differCallback = object : DiffUtil.ItemCallback<Maintenance>() {
-        override fun areItemsTheSame(oldItem: Maintenance, newItem: Maintenance): Boolean {
+    private val differCallback = object : DiffUtil.ItemCallback<Service>() {
+        override fun areItemsTheSame(oldItem: Service, newItem: Service): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Maintenance, newItem: Maintenance): Boolean {
+        override fun areContentsTheSame(oldItem: Service, newItem: Service): Boolean {
             return oldItem == newItem
         }
     }

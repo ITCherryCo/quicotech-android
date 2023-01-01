@@ -1,5 +1,6 @@
 package com.quico.tech.data
 
+import com.quico.tech.model.Address
 import com.quico.tech.model.RegisterParams
 import com.quico.tech.model.User
 
@@ -45,6 +46,8 @@ object Constant {
     var USER_REGISTER_TAG= "USER_REGISTER_TAG"
     var USER_LOGIN_TAG= "USER_LOGIN_TAG"
     var ADDRESS_TAG= "ADDRESS_TAG"
+    var SERVICE_TAG= "SERVICE_TAG"
+    var ADDRESS= "address"
     var USER_UPDATE_TAG= "USER_UPDATE_TAG"
     var USER_LOGOUT_TAG= "USER_LOGON_TAG"
     var COOKIE= "Cookie"
@@ -62,6 +65,9 @@ object Constant {
     var ITEM_ID= "item_id"
     var SEND_EMAIL_LINK= "SEND_EMAIL_LINK"
     var TEMPORAR_USER : User? =null
+    var TEMPORAR_ADDRESS : Address? =null
+    var COOKIES_KEY ="cookiesKey"
+
 
 
 }
