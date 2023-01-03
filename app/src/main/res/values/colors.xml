@@ -43,5 +43,7 @@
     <color name="shimmer_placeholder">#dddddd</color>
     <color name="pink">#F9B3B3</color>
     <color name="gray_compare">#F3F3F3</color>
+    <color name="purple_light">#8179E3</color>
+<!--    show more text-->
 
 </resources>

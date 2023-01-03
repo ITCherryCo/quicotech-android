@@ -93,6 +93,11 @@ interface API {
         @Body idBodyParameters: IDBodyParameters
     ): Response<RegisterResponse>
 
+    @PUT("getProduct/{product_id}")
+    suspend fun getProduct(
+        @Path("product_id") product_id: Int
+    ): Response<ProductResponse>
+
     /*
     *  @POST("removeDeliveryAddress")
     suspend fun deleteAddress(

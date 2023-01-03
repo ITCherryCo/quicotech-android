@@ -227,5 +227,9 @@ Diagnostic !! Submit a request now!!!</string>
 
     <string name="verify_link">Please open your Email to verify the link.</string>
     <string name="same_phone_number">Its your phone number please enter another one</string>
+    <string name="show_more">Show more</string>
+    <string name="see_less">See less</string>
+    <string name="details">Details</string>
+    <string name="no_item">Sorry,Item is not found</string>
 
 </resources>
