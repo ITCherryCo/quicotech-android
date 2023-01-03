@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.quico.tech.R
 import com.quico.tech.data.Constant.ADDRESS_TAG
 import com.quico.tech.data.Constant.ALL
+import com.quico.tech.data.Constant.CATEGORY_TAG
 import com.quico.tech.data.Constant.CONNECTION
 
 import com.quico.tech.data.Constant.EN
@@ -85,6 +86,11 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private val _product: MutableStateFlow<Resource<ProductResponse>> =
         MutableStateFlow(Resource.Nothing())
     val product: StateFlow<Resource<ProductResponse>> get() = _product
+
+    private val _categories: MutableStateFlow<Resource<CategoryResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val categories: StateFlow<Resource<CategoryResponse>> get() = _categories
+
 
     init {
         context = getApplication<Application>().applicationContext
@@ -878,6 +884,38 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                 }
             } else {
                 _general_web_info.emit(Resource.Connection())
+            }
+        }
+    }
+
+
+    fun getAllCategories() {
+        viewModelScope.launch {
+
+            _categories.emit(Resource.Loading())
+
+            if (checkInternet(context)) {
+                try {
+                    Log.d("SESSION_ID", "${user?.session_id}")
+                    val response = repository.getAllCategories()
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            Log.d(CATEGORY_TAG, "SUCCESS ${resultResponse.result?.size}}")
+                            _categories.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        Log.d(CATEGORY_TAG, "ERROR ${response}}")
+
+                        _categories.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d(CATEGORY_TAG, "EXCEPTION ${e.message}}}")
+                    _categories.emit(Resource.Error(ERROR))
+                }
+            } else {
+                Log.d(CATEGORY_TAG, "$CONNECTION}")
+                _categories.emit(Resource.Connection())
             }
         }
     }

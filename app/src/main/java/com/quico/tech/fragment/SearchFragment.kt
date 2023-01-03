@@ -156,15 +156,15 @@ class SearchFragment : Fragment() {
             categoriesText.text = viewModel.getLangResources().getString(R.string.categories)
 
             categoryContainer.visibility = View.VISIBLE
-            categories.add(Category("Servers", resources.getDrawable(R.drawable.server)))
-            categories.add(Category("Computers", resources.getDrawable(R.drawable.computer)))
-            categories.add(Category("Mobiles", resources.getDrawable(R.drawable.aurdino)))
-            categories.add(Category("Servers", resources.getDrawable(R.drawable.games)))
-            categories.add(Category("Computers", resources.getDrawable(R.drawable.computer)))
-            categories.add(Category("Mobiles", resources.getDrawable(R.drawable.aurdino)))
-            categories.add(Category("Servers", resources.getDrawable(R.drawable.server)))
-            categories.add(Category("Computers", resources.getDrawable(R.drawable.computer)))
-            categories.add(Category("Mobiles", resources.getDrawable(R.drawable.server)))
+//            categories.add(Category("Servers", resources.getDrawable(R.drawable.server)))
+//            categories.add(Category("Computers", resources.getDrawable(R.drawable.computer)))
+//            categories.add(Category("Mobiles", resources.getDrawable(R.drawable.aurdino)))
+//            categories.add(Category("Servers", resources.getDrawable(R.drawable.games)))
+//            categories.add(Category("Computers", resources.getDrawable(R.drawable.computer)))
+//            categories.add(Category("Mobiles", resources.getDrawable(R.drawable.aurdino)))
+//            categories.add(Category("Servers", resources.getDrawable(R.drawable.server)))
+//            categories.add(Category("Computers", resources.getDrawable(R.drawable.computer)))
+//            categories.add(Category("Mobiles", resources.getDrawable(R.drawable.server)))
 
             if (categories.isEmpty()) {
                 categoryContainer.visibility = View.GONE

@@ -33,14 +33,16 @@ class Repository() {
 
     suspend fun loadCart(store_id: Int, order_id: Int) = RetrofitInstance.api.loadCart(store_id, order_id)
 
-   /* suspend fun getSession() = RetrofitInstance.newRetrofit(context).getSession()
-    suspend fun getAddresses(session_id: String) = RetrofitInstance.newRetrofit(context).getAddresses(session_id)
-    suspend fun logout(session_id: String) = RetrofitInstance.newRetrofit(context).logout(session_id)
-    suspend fun login(registerBody: RegisterBodyParameters) = RetrofitInstance.newRetrofit(context).login(registerBody)//RetrofitInstance.api.login(registerBody)
-    suspend fun editAddress(session_id: String, address_id: Int, updateBody: AddressBodyParameters) = RetrofitInstance.api.editAddress(session_id, address_id, updateBody)
-    suspend fun deleteAddress(session_id: String, idBodyParameters: IDBodyParameters) = RetrofitInstance.api.deleteAddress(session_id, idBodyParameters)
-    suspend fun addAddress(session_id: String, updateBody: AddressBodyParameters) = RetrofitInstance.api.addAddress(session_id, updateBody)
-    suspend fun updateMobile(session_id: String, updateBody: RegisterBodyParameters) = RetrofitInstance.api.updateMobile(session_id, updateBody)
+    suspend fun getAllCategories() = RetrofitInstance.api.getAllCategories()
 
-*/
+    /* suspend fun getSession() = RetrofitInstance.newRetrofit(context).getSession()
+     suspend fun getAddresses(session_id: String) = RetrofitInstance.newRetrofit(context).getAddresses(session_id)
+     suspend fun logout(session_id: String) = RetrofitInstance.newRetrofit(context).logout(session_id)
+     suspend fun login(registerBody: RegisterBodyParameters) = RetrofitInstance.newRetrofit(context).login(registerBody)//RetrofitInstance.api.login(registerBody)
+     suspend fun editAddress(session_id: String, address_id: Int, updateBody: AddressBodyParameters) = RetrofitInstance.api.editAddress(session_id, address_id, updateBody)
+     suspend fun deleteAddress(session_id: String, idBodyParameters: IDBodyParameters) = RetrofitInstance.api.deleteAddress(session_id, idBodyParameters)
+     suspend fun addAddress(session_id: String, updateBody: AddressBodyParameters) = RetrofitInstance.api.addAddress(session_id, updateBody)
+     suspend fun updateMobile(session_id: String, updateBody: RegisterBodyParameters) = RetrofitInstance.api.updateMobile(session_id, updateBody)
+
+ */
 }

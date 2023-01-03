@@ -133,4 +133,8 @@ interface API {
     ): Response<CartResponse>
 
 
+    @GET("getCategories")
+    // @Headers("Content-Type: application/json")
+    suspend fun getAllCategories(): Response<CategoryResponse>
+
 }

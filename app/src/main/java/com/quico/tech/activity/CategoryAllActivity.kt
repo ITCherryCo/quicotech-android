@@ -29,8 +29,9 @@ class CategoryAllActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCategoryAllBinding
     private lateinit var categoryAllRecyclerViewAdapter: CategoryAllRecyclerViewAdapter
     private val viewModel: SharedViewModel by viewModels()
-
     var TAG = "CATEGORIES_RESPONSE"
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,14 +40,19 @@ class CategoryAllActivity : AppCompatActivity() {
         initToolbar()
 
         binding.apply {
+            Categorytitle.text = viewModel.getLangResources().getString(R.string.categories)
+            if (viewModel.getLanguage().equals(Constant.AR))
+                backArrow.scaleX = -1f
 
             backArrow.setOnClickListener {
                 onBackPressed()
             }
         }
 
-        setUpText()
-        setLoading()
+        onRefresh()
+        setUpCategoriesAdapter()
+        subscribeCategoriesList()
+        viewModel.getAllCategories()
     }
 
     fun initToolbar(){
@@ -59,32 +65,56 @@ class CategoryAllActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpText(){
-        binding.apply {
-            Categorytitle.text = viewModel.getLangResources().getString(R.string.categories)
+    fun subscribeCategoriesList(){
+        lifecycleScope.launch {
+            viewModel.categories.collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        binding.apply {
+                            swipeRefreshLayout.setRefreshing(false)
+                            swipeRefreshLayout.setEnabled(false)
+                            errorContainerCategoryAll.root.visibility=View.GONE
+                            recyclerView.visibility = View.VISIBLE
+                        }
+                        stopShimmer()
+                        response.data?.let { categoriesResponse ->
+                            if (categoriesResponse.result!!.isNullOrEmpty())
+                                setUpErrorForm(Constant.NO_SERVICES)
+                            else {
+                                categoryAllRecyclerViewAdapter.differ.submitList(categoriesResponse.result!!)
+                                binding.recyclerView.setVisibility(View.VISIBLE)
+                            }
+                        }
+                        Log.d(TAG, "SUCCESS")
+                    }
 
-            if (viewModel.getLanguage().equals(Constant.AR))
-                backArrow.scaleX = -1f
+                    is Resource.Error -> {
+                        response.message?.let { message ->
+                            Log.d(TAG, "ERROR $message")
+                            setUpErrorForm(Constant.ERROR)
+                        }
+                    }
+
+                    is Resource.Connection -> {
+                        Log.d(TAG, "ERROR CONNECTION")
+                        setUpErrorForm(Constant.CONNECTION)
+                    }
+
+                    is Resource.Loading -> {
+                        setLoading()
+                        Log.d(TAG, "LOADING")
+                    }
+                }
+            }
         }
     }
+
 
     private fun setUpCategoriesAdapter() {
         binding.apply {
             categoryAllRecyclerViewAdapter = CategoryAllRecyclerViewAdapter()
             var categories = ArrayList<Category>()
-            stopShimmer()
-            recyclerView.visibility = View.VISIBLE
-            swipeRefreshLayout.setRefreshing(false)
 
-            categories.add(Category("Mobiles",resources.getDrawable(R.drawable.mobiles_all)))
-            categories.add(Category("Servers",resources.getDrawable(R.drawable.server_all)))
-            categories.add(Category("Computers",resources.getDrawable(R.drawable.computer_all)))
-            categories.add(Category("Mobiles",resources.getDrawable(R.drawable.mobiles_all)))
-            categories.add(Category("Servers",resources.getDrawable(R.drawable.server_all)))
-            categories.add(Category("Computers",resources.getDrawable(R.drawable.computer_all)))
-            categories.add(Category("Mobiles",resources.getDrawable(R.drawable.mobiles_all)))
-            categories.add(Category("Servers",resources.getDrawable(R.drawable.server_all)))
-            categories.add(Category("Computers",resources.getDrawable(R.drawable.computer_all)))
 
             recyclerView.layoutManager = GridLayoutManager(this@CategoryAllActivity, 2)
             recyclerView.setItemAnimator(DefaultItemAnimator())
@@ -107,12 +137,6 @@ class CategoryAllActivity : AppCompatActivity() {
             errorContainerCategoryAll.errorContainer.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
-            // swipeRefreshLayout.setRefreshing(true)
-
-            lifecycleScope.launch {
-                delay(3000)
-                setUpCategoriesAdapter()
-            }
         }
     }
 
@@ -120,7 +144,7 @@ class CategoryAllActivity : AppCompatActivity() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
                 setLoading() // later we will remove it because the observable will call it
-                // viewModel.getOrders(1, orders_type) // get User id
+                viewModel.getAllCategories() // get User id
             })
         }
     }
@@ -129,25 +153,33 @@ class CategoryAllActivity : AppCompatActivity() {
         binding.apply {
             swipeRefreshLayout.setRefreshing(false)
             recyclerView.visibility = View.GONE
-            errorContainerCategoryAll.errorContainer.visibility = View.VISIBLE
-            errorContainerCategoryAll.errorImage.setImageResource(android.R.color.transparent)
-            stopShimmer()
-            errorContainerCategoryAll.errorMsg1.visibility = View.GONE
             swipeRefreshLayout.setEnabled(true)
+            stopShimmer()
+            errorContainerCategoryAll.apply {
+                errorMsg1.visibility = View.GONE
+                root.visibility = View.VISIBLE
+                errorBtn.visibility = View.GONE
+                tryAgain.visibility = View.GONE
+                errorImage.setImageResource(android.R.color.transparent)
+                errorImage.setImageResource(R.drawable.empty_item)
 
-            when (error_type) {
-                Constant.CONNECTION -> {
-                    errorContainerCategoryAll.errorMsg2.setText(
-                        viewModel.getLangResources().getString(R.string.check_connection)
-                    )
-                }
-                Constant.NO_Categories -> {
-                    errorContainerCategoryAll.errorMsg2.text = viewModel.getLangResources().getString(R.string.no_categories)
-                    errorContainerCategoryAll.errorImage.setImageResource(R.drawable.empty_item)
-                }
+                when (error_type) {
+                    Constant.CONNECTION -> {
+                        errorMsg2.setText(
+                            viewModel.getLangResources().getString(R.string.check_connection)
+                        )
+                    }
+                    Constant.NO_SERVICES -> {
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.no_services)
+                        errorImage.setImageResource(R.drawable.empty_item)
+                    }
 
-                Constant.ERROR -> {
-                    errorContainerCategoryAll.errorMsg2.setText(viewModel.getLangResources().getString(R.string.error_msg))
+                    Constant.ERROR -> {
+                        errorMsg2.setText(
+                            viewModel.getLangResources().getString(R.string.error_msg)
+                        )
+                    }
                 }
             }
         }

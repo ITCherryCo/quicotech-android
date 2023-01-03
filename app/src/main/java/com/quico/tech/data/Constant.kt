@@ -48,6 +48,7 @@ object Constant {
     var USER_LOGIN_TAG= "USER_LOGIN_TAG"
     var ADDRESS_TAG= "ADDRESS_TAG"
     var SERVICE_TAG= "SERVICE_TAG"
+    var CATEGORY_TAG= "CATEGORY_TAG"
     var PRODUCT_TAG= "PRODUCT_TAG"
     var ADDRESS= "address"
     var USER_UPDATE_TAG= "USER_UPDATE_TAG"
