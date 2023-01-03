@@ -137,4 +137,8 @@ interface API {
     // @Headers("Content-Type: application/json")
     suspend fun getAllCategories(): Response<CategoryResponse>
 
+    @GET("getBrands")
+    // @Headers("Content-Type: application/json")
+    suspend fun getAllBrands(): Response<BrandResponse>
+
 }

@@ -79,7 +79,7 @@ class CategoryAllActivity : AppCompatActivity() {
                         stopShimmer()
                         response.data?.let { categoriesResponse ->
                             if (categoriesResponse.result!!.isNullOrEmpty())
-                                setUpErrorForm(Constant.NO_SERVICES)
+                                setUpErrorForm(Constant.NO_Categories)
                             else {
                                 categoryAllRecyclerViewAdapter.differ.submitList(categoriesResponse.result!!)
                                 binding.recyclerView.setVisibility(View.VISIBLE)
@@ -169,9 +169,9 @@ class CategoryAllActivity : AppCompatActivity() {
                             viewModel.getLangResources().getString(R.string.check_connection)
                         )
                     }
-                    Constant.NO_SERVICES -> {
+                    Constant.NO_Categories -> {
                         errorMsg2.text =
-                            viewModel.getLangResources().getString(R.string.no_services)
+                            viewModel.getLangResources().getString(R.string.no_categories)
                         errorImage.setImageResource(R.drawable.empty_item)
                     }
 

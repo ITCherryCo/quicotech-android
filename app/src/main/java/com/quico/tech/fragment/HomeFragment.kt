@@ -97,14 +97,14 @@ class HomeFragment : Fragment() {
 
             brandHomeRecyclerViewAdapter = BrandHomeRecyclerViewAdapter()
             val brands = ArrayList<Brand>()
-            brands.add(Brand(1,"Canon",R.drawable.brand_canon))
+          /*  brands.add(Brand(1,"Canon",R.drawable.brand_canon))
             brands.add(Brand(2,"Canon",R.drawable.brand_canon))
             brands.add(Brand(3,"Canon",R.drawable.brand_canon))
             brands.add(Brand(4,"Canon",R.drawable.brand_canon))
             brands.add(Brand(5,"Canon",R.drawable.brand_canon))
             brands.add(Brand(6,"Canon",R.drawable.brand_canon))
             brands.add(Brand(7,"Canon",R.drawable.brand_canon))
-            brands.add(Brand(8,"Canon",R.drawable.brand_canon))
+            brands.add(Brand(8,"Canon",R.drawable.brand_canon))*/
 
 
             homeContent.recyclerViewBrands.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)

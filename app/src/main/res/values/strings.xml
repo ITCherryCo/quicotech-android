@@ -228,5 +228,6 @@ Diagnostic !! Submit a request now!!!</string>
     <string name="show_more">Show more</string>
     <string name="see_less">See less</string>
     <string name="details">Details</string>
+    <string name="no_brands">No Brands found</string>
 
 </resources>

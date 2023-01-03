@@ -28,7 +28,7 @@ class BrandSearchRecyclerViewAdapter :
                 if (brand.image != null) {
                     name.visibility = View.GONE
                     image.visibility = View.VISIBLE
-                    image.setImageResource(brand.image!!)
+                    //image.setImageResource(brand.image!!)
                 } else {
                     name.visibility = View.VISIBLE
                     image.visibility = View.GONE

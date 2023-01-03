@@ -70,13 +70,13 @@ class CompareSearchActivity : AppCompatActivity() {
             stopProductShimmer()
             brandRecyclerView.visibility = View.VISIBLE
             // filterImage.setEnabled(true)
-            brands.add(Brand(1, "all",null))
-            brands.add(Brand(2, "Brand Name", R.drawable.dji))
-            brands.add(Brand(3, "Brand Name", R.drawable.evo))
-            brands.add(Brand(4, "Brand Name", R.drawable.sony))
-            brands.add(Brand(5, "Brand Name", R.drawable.canon))
-            brands.add(Brand(6, "Brand Name", R.drawable.nikon))
-            brands.add(Brand(7, "Brand Name", R.drawable.dji))
+//            brands.add(Brand(1, "all",null))
+//            brands.add(Brand(2, "Brand Name", R.drawable.dji))
+//            brands.add(Brand(3, "Brand Name", R.drawable.evo))
+//            brands.add(Brand(4, "Brand Name", R.drawable.sony))
+//            brands.add(Brand(5, "Brand Name", R.drawable.canon))
+//            brands.add(Brand(6, "Brand Name", R.drawable.nikon))
+//            brands.add(Brand(7, "Brand Name", R.drawable.dji))
 
             brandRecyclerView.layoutManager = LinearLayoutManager(
                 this@CompareSearchActivity,

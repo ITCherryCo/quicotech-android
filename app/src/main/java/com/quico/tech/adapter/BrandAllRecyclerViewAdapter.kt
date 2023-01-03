@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.quico.tech.R
 import com.quico.tech.activity.BrandDetailActivity
 import com.quico.tech.activity.RequestActivity
@@ -27,7 +28,12 @@ class BrandAllRecyclerViewAdapter() : RecyclerView.Adapter<BrandAllRecyclerViewA
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         fun bind(brand: Brand) {
             binding.apply {
-                brandImage.setImageDrawable(itemView.context.getDrawable(brand.image!!))
+                //brandImage.setImageDrawable(itemView.context.getDrawable(brand.image!!))
+                Glide.with(itemView.context)
+                    .load(brand.image)
+                    //.placeholder(R.drawable.placeholder)
+                    .error(R.drawable.profile_user)
+                    .into(brandImage)
 
                 itemView.setOnClickListener {
                     itemView.context.startActivity(

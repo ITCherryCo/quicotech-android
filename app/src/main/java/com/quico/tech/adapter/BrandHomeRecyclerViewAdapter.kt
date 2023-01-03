@@ -23,7 +23,7 @@ class BrandHomeRecyclerViewAdapter() : RecyclerView.Adapter<BrandHomeRecyclerVie
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         fun bind(brand: Brand) {
             binding.apply {
-                brandImage.setImageDrawable(itemView.resources.getDrawable(brand.image!!))
+                //brandImage.setImageDrawable(itemView.resources.getDrawable(brand.image!!))
                 itemView.setOnClickListener {
                     itemView.context.startActivity(
                         Intent(itemView.context, BrandDetailActivity::class.java).putExtra(

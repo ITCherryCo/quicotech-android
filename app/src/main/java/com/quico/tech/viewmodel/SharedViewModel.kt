@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.quico.tech.R
 import com.quico.tech.data.Constant.ADDRESS_TAG
 import com.quico.tech.data.Constant.ALL
+import com.quico.tech.data.Constant.BRAND_TAG
 import com.quico.tech.data.Constant.CATEGORY_TAG
 import com.quico.tech.data.Constant.CONNECTION
 
@@ -91,6 +92,9 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         MutableStateFlow(Resource.Nothing())
     val categories: StateFlow<Resource<CategoryResponse>> get() = _categories
 
+    private val _brands: MutableStateFlow<Resource<BrandResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val brands: StateFlow<Resource<BrandResponse>> get() = _brands
 
     init {
         context = getApplication<Application>().applicationContext
@@ -916,6 +920,37 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             } else {
                 Log.d(CATEGORY_TAG, "$CONNECTION}")
                 _categories.emit(Resource.Connection())
+            }
+        }
+    }
+
+    fun getAllBrands() {
+        viewModelScope.launch {
+
+            _brands.emit(Resource.Loading())
+
+            if (checkInternet(context)) {
+                try {
+                    Log.d("SESSION_ID", "${user?.session_id}")
+                    val response = repository.getAllBrands()
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            Log.d(BRAND_TAG, "SUCCESS ${resultResponse.result?.size}}")
+                            _brands.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        Log.d(BRAND_TAG, "ERROR ${response}}")
+
+                        _brands.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d(BRAND_TAG, "EXCEPTION ${e.message}}}")
+                    _brands.emit(Resource.Error(ERROR))
+                }
+            } else {
+                Log.d(BRAND_TAG, "$CONNECTION}")
+                _brands.emit(Resource.Connection())
             }
         }
     }

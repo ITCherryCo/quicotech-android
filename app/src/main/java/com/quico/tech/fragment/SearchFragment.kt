@@ -202,14 +202,14 @@ class SearchFragment : Fragment() {
             priceText.text = viewModel.getLangResources().getString(R.string.price)
             filterBtn.text = viewModel.getLangResources().getString(R.string.filter)
 
+         /*   brands.add(Brand(1, "Brand Name",null))
             brands.add(Brand(1, "Brand Name",null))
             brands.add(Brand(1, "Brand Name",null))
             brands.add(Brand(1, "Brand Name",null))
             brands.add(Brand(1, "Brand Name",null))
             brands.add(Brand(1, "Brand Name",null))
             brands.add(Brand(1, "Brand Name",null))
-            brands.add(Brand(1, "Brand Name",null))
-            brands.add(Brand(1, "Brand Name",null))
+            brands.add(Brand(1, "Brand Name",null))*/
 
             if (brands.isEmpty()) {
                 brandContainer.visibility = View.GONE
@@ -269,12 +269,12 @@ class SearchFragment : Fragment() {
             }
 
 
+           /* memory_sizes.add(Brand(1, "125 GB",null))
             memory_sizes.add(Brand(1, "125 GB",null))
             memory_sizes.add(Brand(1, "125 GB",null))
             memory_sizes.add(Brand(1, "125 GB",null))
             memory_sizes.add(Brand(1, "125 GB",null))
-            memory_sizes.add(Brand(1, "125 GB",null))
-            memory_sizes.add(Brand(1, "125 GB",null))
+            memory_sizes.add(Brand(1, "125 GB",null))*/
 
             if (memory_sizes.isEmpty()) {
                 sizeContainer.visibility = View.GONE
@@ -296,8 +296,8 @@ class SearchFragment : Fragment() {
                 brandSelectionRecyclerViewAdapter.differ.submitList(memory_sizes)
             }
 
-            conditions.add(Brand(1, "new",null))
-            conditions.add(Brand(1, "used",null))
+          /*  conditions.add(Brand(1, "new",null))
+            conditions.add(Brand(1, "used",null))*/
 
             if (memory_sizes.isEmpty()) {
                 conditionsContainer.visibility = View.GONE
