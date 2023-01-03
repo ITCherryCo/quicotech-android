@@ -43,7 +43,6 @@ class AddressRecyclerViewAdapter(val viewModel: SharedViewModel) :
 
                 edit.setOnClickListener {
                     Constant.TEMPORAR_ADDRESS = address
-
                     itemView.context.startActivity(
                         Intent(itemView.context, AddressActivity::class.java)
                             .putExtra(Constant.ADDRESS, address))

@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
     fun init() {
         //Remove Statusbar
         Common.removeStatusBarColor(this)
-      //  Common.hideSystemUIBeloR(this)
+        //  Common.hideSystemUIBeloR(this)
     }
 
     private fun setUpText() {
@@ -58,6 +58,21 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(
                     Intent(this@LoginActivity, RegisterActivity::class.java)
                 )
+            }
+
+            forgetPasswordText.setOnClickListener {
+                if (!Patterns.EMAIL_ADDRESS.matcher(emailField.text).matches())
+                    emailField.error = viewModel.getLangResources().getString(R.string.wrong_email)
+                else {
+                    Constant.CREDENTIAL_OPERATION_TYPE = Constant.FORGET_PASSWORD
+
+                    Constant.TEMPORAR_USER = RegisterParams(emailField.text.toString(),"")
+                    startActivity(
+                        Intent(this@LoginActivity, VerificationCodeActivity::class.java)
+                            .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
+                            .putExtra(Constant.OPERATION_TYPE, Constant.FORGET_PASSWORD)
+                    )
+                }
             }
 
             guestText.setOnClickListener {
@@ -117,41 +132,42 @@ class LoginActivity : AppCompatActivity() {
                     viewModel.getLangResources().getString(R.string.wrong_password)
                 )
             else {
-                Common.setUpProgressDialog(this@LoginActivity)
 
-                    val loginParams = RegisterBodyParameters(
+                val loginParams = RegisterBodyParameters(
                     RegisterParams(
-                        emailField.text.toString(),Common.encryptPassword(passwordField.text.toString())
+                        emailField.text.toString(),
+                        Common.encryptPassword(passwordField.text.toString())
                     )
                 )
+                Common.setUpProgressDialog(this@LoginActivity)
 
-                viewModel.login(loginParams,object :SharedViewModel.ResponseStandard{
+                viewModel.login(loginParams, object : SharedViewModel.ResponseStandard {
                     override fun onSuccess(success: Boolean, resultTitle: String, message: String) {
                         Common.cancelProgressDialog()
                         startActivity(
                             Intent(this@LoginActivity, HomeActivity::class.java)
                         )
-                     /*   viewModel.getSessionID(object :SharedViewModel.ResponseStandard{
-                            override fun onSuccess(
-                                success: Boolean,
-                                resultTitle: String,
-                                message: String
-                            ) {
-                                Common.cancelProgressDialog()
-                                startActivity(
-                                    Intent(this@LoginActivity, HomeActivity::class.java)
-                                )
-                            }
+                        /*   viewModel.getSessionID(object :SharedViewModel.ResponseStandard{
+                               override fun onSuccess(
+                                   success: Boolean,
+                                   resultTitle: String,
+                                   message: String
+                               ) {
+                                   Common.cancelProgressDialog()
+                                   startActivity(
+                                       Intent(this@LoginActivity, HomeActivity::class.java)
+                                   )
+                               }
 
-                            override fun onFailure(
-                                success: Boolean,
-                                resultTitle: String,
-                                message: String
-                            ) {
-                                Common.cancelProgressDialog()
-                            }
+                               override fun onFailure(
+                                   success: Boolean,
+                                   resultTitle: String,
+                                   message: String
+                               ) {
+                                   Common.cancelProgressDialog()
+                               }
 
-                        })*/
+                           })*/
                     }
 
                     override fun onFailure(success: Boolean, resultTitle: String, message: String) {

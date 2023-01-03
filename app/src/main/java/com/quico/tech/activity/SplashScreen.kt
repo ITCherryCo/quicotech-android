@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.CREDENTIAL_OPERATION_TYPE
 import com.quico.tech.data.PrefManager
 import com.quico.tech.viewmodel.SharedViewModel
 
@@ -23,13 +24,14 @@ class SplashScreen : AppCompatActivity() {
                     Intent(this, VerificationCodeActivity::class.java)
                         .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
                         .putExtra(Constant.EMAIL_LINK, it)
-                        .putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
+                        .putExtra(Constant.OPERATION_TYPE,CREDENTIAL_OPERATION_TYPE)
+                        //.putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
                         .putExtra(Constant.PHONE_NUMBER, Constant.TEMPORAR_USER?.mobile)
                 )
             }
         } else {
 
-         //   prefManager.current_user = null
+          //  prefManager.current_user = null
             if (prefManager!!.isFirstTimeLaunch) {
                 prefManager.isFirstTimeLaunch = false
                 startActivity(

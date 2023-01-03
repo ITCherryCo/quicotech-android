@@ -78,20 +78,33 @@
                 android:fontFamily="@font/regular"
                 android:layout_marginHorizontal="30dp"
                 android:text="@string/door_to_door" />
+            <include
+                android:id="@+id/addressErrorContainer"
+                layout="@layout/error_container"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
 
             <include
                 android:id="@+id/addressListFragment"
                 layout="@layout/fragment_shipping_address_list"
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="15dp"
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/addressFragment"
                 layout="@layout/fragment_address"
                 android:visibility="gone"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"/>
 

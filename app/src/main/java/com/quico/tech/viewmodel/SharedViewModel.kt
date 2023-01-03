@@ -505,6 +505,51 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    fun changePassword(reset:Boolean,params: PasswordBodyParameters, responseStandard: ResponseStandard?) {
+        viewModelScope.launch {
+            if (checkInternet(context)) {
+                try {
+                    var response: Response<RegisterResponse>? = null
+                    if (reset)
+                        repository.forgetPassword(params)
+                    else
+                     response = repository.changePassword(params)
+
+                    if (response!!.isSuccessful) {
+                        if (response.body()?.result != null) {
+                            user = null
+                            prefManager.cookies = null
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.password_changed)
+                            )
+                        } else {
+                            Log.d(USER_LOGIN_TAG, "$ERROR ${response.body()}")
+                            responseStandard?.onFailure(false, ERROR, response.body().toString())
+                            // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+                        }
+                    } else {
+                        Log.d(USER_LOGIN_TAG, "FAILUER ${response.body()}")
+                        responseStandard?.onFailure(false, "FAILUER", response.body().toString())
+                        //  responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+
+                    }
+                } catch (e: Exception) {
+                    Log.d(USER_LOGIN_TAG, "EXCEPTION ${e.message.toString()}")
+                    responseStandard?.onFailure(false, "EXCEPTION", e.message.toString())
+                    // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+
+                }
+            } else {
+                Log.d(USER_LOGIN_TAG, "$CONNECTION}")
+                responseStandard?.onFailure(false, CONNECTION, CONNECTION)
+
+            }
+        }
+    }
+
+
     fun addEditAddress(
         address_id: Int,
         params: AddressBodyParameters,

@@ -231,5 +231,6 @@ Diagnostic !! Submit a request now!!!</string>
     <string name="see_less">See less</string>
     <string name="details">Details</string>
     <string name="no_item">Sorry,Item is not found</string>
+    <string name="password_changed">Password is changed successfully</string>
 
 </resources>

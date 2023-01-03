@@ -33,9 +33,9 @@ class ShippingAddressActivity : AppCompatActivity() {
         setUpText()
         initStatusBar()
         setUpAddressAdapter()
-        onRefresh()
+     /*   onRefresh()
         subscribeAddresses()
-        viewModel.getAddresses(true)
+        viewModel.getAddresses(true)*/
     }
 
     fun initStatusBar(){
@@ -60,10 +60,16 @@ class ShippingAddressActivity : AppCompatActivity() {
                 Constant.TEMPORAR_ADDRESS = null
                 startActivity(
                     Intent(this@ShippingAddressActivity, AddressActivity::class.java)
-                        //.putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
                 )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        onRefresh()
+        subscribeAddresses()
+        viewModel.getAddresses(true)
     }
 
     fun subscribeAddresses() {

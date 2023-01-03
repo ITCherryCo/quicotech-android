@@ -12,17 +12,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.quico.tech.R
 import com.quico.tech.adapter.AddressSelectionRecyclerViewAdapter
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.CHECKOUT_TYPE
 import com.quico.tech.data.Constant.CONNECTION
 import com.quico.tech.data.Constant.EMAIL
 import com.quico.tech.data.Constant.ERROR
 import com.quico.tech.data.Constant.NO_ADDRESSES
+import com.quico.tech.data.Constant.ORDERS
+import com.quico.tech.data.Constant.TRACKING_ON
 import com.quico.tech.data.Constant.VERIFICATION_TYPE
 import com.quico.tech.databinding.ActivityAddressListBinding
 import com.quico.tech.model.Address
 import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AddressListActivity : AppCompatActivity() {
@@ -39,22 +41,26 @@ class AddressListActivity : AppCompatActivity() {
 
         binding.apply {
             nextBtn.setOnClickListener {
-                startActivity(
+              /*  startActivity(
                     Intent(this@AddressListActivity, VerificationCodeActivity::class.java)
                         .putExtra(VERIFICATION_TYPE, EMAIL)
                         .putExtra(VERIFICATION_TYPE, EMAIL)
+                )*/
+
+                startActivity(
+                    Intent(this@AddressListActivity, CheckoutActivity::class.java)
+                        .putExtra(TRACKING_ON, false)
+                        .putExtra(CHECKOUT_TYPE, ORDERS)
                 )
             }
             backArrow.setOnClickListener {
                 onBackPressed()
             }
         }
+
         setUpText()
         initStatusBar()
-         setUpCartAdapter()
-        viewModel.getAddresses(false)
-//        subscribeAddresses()
-
+        setUpAddressesAdapter()
     }
 
     fun initStatusBar(){
@@ -67,14 +73,30 @@ class AddressListActivity : AppCompatActivity() {
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.address)
             selectPaymentText.text =
-                viewModel.getLangResources().getString(R.string.select_payment_method)
+                viewModel.getLangResources().getString(R.string.select_your_address)
             addNewAddressText.text =
                 viewModel.getLangResources().getString(R.string.add_new_address)
             nextBtn.text = viewModel.getLangResources().getString(R.string.next)
 
             if (viewModel.getLanguage().equals(Constant.AR))
                 backArrow.scaleX = -1f
+
+            newAddressContainer.setEnabled(false)
+
+            newAddressContainer.setOnClickListener {
+                Constant.TEMPORAR_ADDRESS = null
+                startActivity(
+                    Intent(this@AddressListActivity, AddressActivity::class.java)
+                )
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        subscribeAddresses()
+        binding.newAddressContainer.setEnabled(false)
+        viewModel.getAddresses(false)
     }
 
     private fun subscribeAddresses() {
@@ -88,13 +110,17 @@ class AddressListActivity : AppCompatActivity() {
                         }
 
                         response.data?.let { addressesResponse ->
-                            if (addressesResponse.result?.isEmpty()!!)
-                                setUpErrorForm(NO_ADDRESSES)
-                            else {
-                                addressSelectionRecyclerViewAdapter.differ.submitList(
-                                    addressesResponse.result
-                                )
-                                binding.recyclerView.setVisibility(View.VISIBLE)
+                            if (addressesResponse.result.isNullOrEmpty()) {
+                                setUpErrorForm(Constant.NO_ADDRESSES)
+                            } else {
+
+                                if (addressesResponse.result.size<3)
+                                   binding.newAddressContainer.setEnabled(true)
+                                else
+                                    binding.newAddressContainer.setEnabled(false)
+
+                                addressSelectionRecyclerViewAdapter.differ.submitList(addressesResponse.result)
+                                binding.recyclerView.visibility = View.VISIBLE
                             }
                         }
                         Log.d(ADDRESS_TAG, "SUCCESS")
@@ -122,7 +148,7 @@ class AddressListActivity : AppCompatActivity() {
     }
 
 
-    private fun setUpCartAdapter() {
+    private fun setUpAddressesAdapter() {
         // call the adapter for item list
         binding.apply {
             stopShimmer()
@@ -130,12 +156,6 @@ class AddressListActivity : AppCompatActivity() {
             recyclerView.visibility = View.VISIBLE
 
             var addresses = ArrayList<Address>()
-           /* addresses.add(Address(1))
-            addresses.add(Address(1))
-            addresses.add(Address(1))
-            addresses.add(Address(1))
-            addresses.add(Address(1))*/
-
             nextBtn.setEnabled(true)
 
             recyclerView.layoutManager =
@@ -156,6 +176,7 @@ class AddressListActivity : AppCompatActivity() {
 
     private fun setLoading() {
         binding.apply {
+            newAddressContainer.setEnabled(false)
             addressErrorContainer.root.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
@@ -178,6 +199,8 @@ class AddressListActivity : AppCompatActivity() {
         binding.apply {
             recyclerView.visibility = View.GONE
             stopShimmer()
+            newAddressContainer.setEnabled(true)
+
             addressErrorContainer.apply {
                 root.visibility = View.VISIBLE
                 tryAgain.visibility = View.VISIBLE

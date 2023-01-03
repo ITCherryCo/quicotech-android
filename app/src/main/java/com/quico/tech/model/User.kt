@@ -47,6 +47,7 @@ data class RegisterResponse(
     val result: Result,
     val error: ErrorData?
 )
+
 data class SessionResponse(
     val result: String,
 )
@@ -54,7 +55,7 @@ data class SessionResponse(
 data class Result(
     val status: String?,
     val error: String?
-){
+) {
 }
 
 data class UserResponse(
@@ -74,7 +75,7 @@ data class User(
     val mobile: String,
     val image: String,
     val error: String?
-){
+) {
     // this is for login successfully
     constructor(
         email: String,
@@ -157,4 +158,22 @@ data class UpdateUserParams(
         null
     )
 
+
+}
+
+data class PasswordBodyParameters(
+    val params: PasswordParams
+)
+
+data class PasswordParams(
+    val login: String?,
+    val new_password: String?
+){
+    constructor(
+        new_password: String,
+    ) : this(
+
+        null,
+        new_password
+    )
 }

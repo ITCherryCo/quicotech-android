@@ -1,5 +1,6 @@
 package com.quico.tech.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -41,6 +42,7 @@ class CheckoutActivity : AppCompatActivity() {
         binding.apply {
 
             confirmBtn.setOnClickListener {
+                // here must call an api to create order then make an alert to continue shopping
                 Common.setUpAlert(
                     this@CheckoutActivity, true, viewModel.getLangResources().getString(
                         R.string.thank_you
@@ -52,7 +54,7 @@ class CheckoutActivity : AppCompatActivity() {
                         R.string.go_home
                     ), object : Common.ResponseConfirm {
                         override fun onConfirm() {
-
+                           startActivity(Intent(this@CheckoutActivity,CartActivity::class.java))
                         }
                     }
                 )

@@ -32,17 +32,18 @@ class AddressActivity : AppCompatActivity() {
 
         //address = intent.getParcelableExtra(ADDRESS)!! as(Address)
         address = intent.getParcelableExtra<Address>(ADDRESS)
+       // Toast.makeText(this,address.toString(),Toast.LENGTH_LONG).show()
+        Log.d("ADDRESS", address.toString())
+
         address=TEMPORAR_ADDRESS
         setUpText()
         initStatusBar()
-        Log.d("ADDRESS", "NULL")
 
         address?.let {
             setUpAddress(it)
             Log.d("ADDRESS", "NOT NULL")
             address_id = it.id
         }
-
     }
 
     fun initStatusBar() {
@@ -88,18 +89,18 @@ class AddressActivity : AppCompatActivity() {
                     nameField.error =
                         viewModel.getLangResources().getString(R.string.required_field)
 
-                if (streetField.text.toString().isEmpty())
+               else if (streetField.text.toString().isEmpty())
                     streetField.error =
                         viewModel.getLangResources().getString(R.string.required_field)
 
-                if (apartmentField.text.toString().isEmpty())
+                else if (apartmentField.text.toString().isEmpty())
                     apartmentField.error =
                         viewModel.getLangResources().getString(R.string.required_field)
 
-                if (cityField.text.toString().isEmpty())
+                else if (cityField.text.toString().isEmpty())
                     cityField.error =
                         viewModel.getLangResources().getString(R.string.required_field)
-                if (postalCodeField.text.toString().isEmpty())
+                else if (postalCodeField.text.toString().isEmpty())
                     postalCodeField.error =
                         viewModel.getLangResources().getString(R.string.required_field)
                 else {

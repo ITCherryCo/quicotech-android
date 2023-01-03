@@ -20,6 +20,14 @@ class AddressSelectionRecyclerViewAdapter :
 
         fun bind(address: Address) {
             binding.apply {
+                var addressValue = ""
+                addressValue = "${address.country}, ${address.city}, ${address.street}"
+                if (address.street2.isNotEmpty())
+                    addressValue = "${addressValue} , ${address.street2}"
+
+                addressValue = "${addressValue}, ${address.zip}"
+
+                addressText.text = addressValue
 
                 itemView.setOnClickListener {
                     lastSelectedPosition = absoluteAdapterPosition

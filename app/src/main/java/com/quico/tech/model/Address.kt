@@ -43,8 +43,7 @@ data class Address(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!
-    ) {
-    }
+    )
 
     // to send params
     constructor(

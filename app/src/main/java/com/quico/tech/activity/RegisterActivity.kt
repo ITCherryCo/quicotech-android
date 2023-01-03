@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.quico.tech.R
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.REGISTER
 import com.quico.tech.databinding.ActivityRegisterBinding
 import com.quico.tech.model.RegisterBodyParameters
 import com.quico.tech.model.RegisterParams
@@ -26,7 +27,6 @@ class RegisterActivity : AppCompatActivity() {
     private val viewModel: SharedViewModel by viewModels()
     private var showPass = false
     private var showConfirmPass = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -154,7 +154,8 @@ class RegisterActivity : AppCompatActivity() {
                 // verify email
                 // save user temporary
                 viewModel.sendOtpPhoneNumber = ""
-                Constant.TEMPORAR_USER = User(emailField.text.toString(),phoneValue)
+                Constant.TEMPORAR_USER = RegisterParams(emailField.text.toString(),phoneValue,fullNameField.text.toString(),Common.encryptPassword(passwordField.text.toString()))
+                Constant.CREDENTIAL_OPERATION_TYPE = REGISTER
                 startActivity(
                     Intent(this@RegisterActivity, VerificationCodeActivity::class.java)
                         .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
@@ -178,9 +179,9 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun checkConfirmPasswordText() {
         if (showConfirmPass)
-            showConfirmPassword()
-        else
             hideConfirmPassword()
+        else
+            showConfirmPassword()
     }
 
     private fun showPassword() {
@@ -209,8 +210,8 @@ class RegisterActivity : AppCompatActivity() {
         showConfirmPass = true
         binding.apply {
             confirmPasswordField.setTransformationMethod(null)
-            eyeImage.setImageResource(android.R.color.transparent)
-            eyeImage.setImageResource(R.drawable.show_password)
+            eyeImage2.setImageResource(android.R.color.transparent)
+            eyeImage2.setImageResource(R.drawable.show_password)
             confirmPasswordField.setSelection(confirmPasswordField.text.length)
         }
     }
@@ -219,8 +220,8 @@ class RegisterActivity : AppCompatActivity() {
         showConfirmPass = false
         binding.apply {
             confirmPasswordField.setTransformationMethod(PasswordTransformationMethod())
-            eyeImage.setImageResource(android.R.color.transparent)
-            eyeImage.setImageResource(R.drawable.hide_password)
+            eyeImage2.setImageResource(android.R.color.transparent)
+            eyeImage2.setImageResource(R.drawable.hide_password)
             confirmPasswordField.setSelection(confirmPasswordField.text.length)
             confirmPasswordField.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START)
         }
