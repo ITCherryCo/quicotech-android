@@ -35,8 +35,7 @@ import com.quico.tech.data.Constant.TEMPORAR_USER
 import com.quico.tech.data.Constant.TRACKING_ON
 import com.quico.tech.data.Constant.VERIFICATION_TYPE
 import com.quico.tech.databinding.ActivityVerificationCodeBinding
-import com.quico.tech.model.RegisterBodyParameters
-import com.quico.tech.model.RegisterParams
+import com.quico.tech.model.*
 import com.quico.tech.utils.Common
 import com.quico.tech.utils.Common.cancelProgressDialog
 import com.quico.tech.utils.Common.isProgressIsLoading
@@ -414,8 +413,11 @@ class VerificationCodeActivity : AppCompatActivity() {
                                         SMS_TAG,
                                         "call change email api"
                                     )
+                                    //
                                 }
-                                else -> {}
+                                else -> {
+
+                                }
                             }
                         }
                     } else {
@@ -533,11 +535,9 @@ class VerificationCodeActivity : AppCompatActivity() {
                                 )
                             }
                             CHANGE_EMAIL->{
-//                                startActivity(
-//                                    Intent(this, EditCredentialsActivity::class.java)
-//                                        .putExtra(Constant.PROFILE_EDIT_TYPE, Constant.CHANGE_EMAIL)
-//                                )
+                               // startActivity(Intent(this, EditCredentialsActivity::class.java).putExtra(Constant.PROFILE_EDIT_TYPE, Constant.CHANGE_EMAIL))
                                 // must call change email api
+                                updateEmail(EmailBodyParameters(EmailParams(TEMPORAR_USER!!.login!!)))
                             }
                         }
                     } else {
@@ -628,5 +628,49 @@ class VerificationCodeActivity : AppCompatActivity() {
             })
         }
         }
+    }
+
+
+    private fun updateEmail( emailParams: EmailBodyParameters) {
+        Common.setUpProgressDialog(this)
+
+        viewModel.updateEmail(
+            emailParams!!,
+            object : SharedViewModel.ResponseStandard {
+                override fun onSuccess(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    Common.cancelProgressDialog()
+                    Toast.makeText(
+                        this@VerificationCodeActivity,
+                        message,
+                        Toast.LENGTH_LONG
+                    )
+                    startActivity(
+                        Intent(
+                            this@VerificationCodeActivity,
+                            LoginActivity::class.java
+                        )
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    )
+                }
+
+                override fun onFailure(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    Common.cancelProgressDialog()
+                    Common.setUpAlert(
+                        this@VerificationCodeActivity, false,
+                        viewModel.getLangResources().getString(R.string.error),
+                        message,
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
+                }
+            })
     }
 }

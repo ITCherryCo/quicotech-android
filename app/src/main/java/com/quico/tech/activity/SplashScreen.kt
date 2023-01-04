@@ -18,17 +18,19 @@ class SplashScreen : AppCompatActivity() {
         val emailLink = intent?.data?.toString()
 
         if (emailLink != null) {
-            emailLink?.let {
-                Log.d(Constant.SEND_EMAIL_LINK, "Email is received well send it to verify.")
-                startActivity(
-                    Intent(this, VerificationCodeActivity::class.java)
-                        .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
-                        .putExtra(Constant.EMAIL_LINK, it)
-                        .putExtra(Constant.OPERATION_TYPE,CREDENTIAL_OPERATION_TYPE)
-                        //.putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
-                        .putExtra(Constant.PHONE_NUMBER, Constant.TEMPORAR_USER?.mobile)
-                )
-            }
+            Log.d(Constant.SEND_EMAIL_LINK, "Email is received well ${emailLink}")
+
+             emailLink?.let {
+                 Log.d(Constant.SEND_EMAIL_LINK, "Email is received well send it to verify.")
+                 startActivity(
+                     Intent(this, VerificationCodeActivity::class.java)
+                         .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
+                         .putExtra(Constant.EMAIL_LINK, it)
+                         .putExtra(Constant.OPERATION_TYPE,CREDENTIAL_OPERATION_TYPE)
+                         //.putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
+                         .putExtra(Constant.PHONE_NUMBER, Constant.TEMPORAR_USER?.mobile)
+                 )
+             }
         } else {
 
           //  prefManager.current_user = null

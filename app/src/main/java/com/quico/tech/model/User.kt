@@ -168,7 +168,7 @@ data class PasswordBodyParameters(
 data class PasswordParams(
     val login: String?,
     val new_password: String?
-){
+) {
     constructor(
         new_password: String,
     ) : this(
@@ -177,3 +177,11 @@ data class PasswordParams(
         new_password
     )
 }
+
+data class EmailBodyParameters(
+    val params: EmailParams
+)
+
+data class EmailParams(
+    val login: String
+)

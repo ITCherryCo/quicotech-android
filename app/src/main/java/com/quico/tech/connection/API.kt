@@ -29,10 +29,10 @@ interface API {
     @PUT("updateUserInfo")
     suspend fun updateUserInfo(@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
 
-    @PUT("updateEmail")
+    @POST("updateEmail")
     suspend fun updateEmail(
-        @Header("Cookie") session_id: String,
-        @Body updateUserBody: UpdateUserBodyParameters
+       // @Header("Cookie") session_id: String,
+        @Body emailBody: EmailBodyParameters
     ): Response<RegisterResponse>
 
     @PUT("updateMobile")

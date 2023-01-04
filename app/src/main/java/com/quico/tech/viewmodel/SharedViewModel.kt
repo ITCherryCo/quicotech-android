@@ -430,12 +430,12 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
 
-    fun updateEmail(params: UpdateUserBodyParameters, responseStandard: ResponseStandard?) {
+    fun updateEmail(params: EmailBodyParameters, responseStandard: ResponseStandard?) {
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
                     user?.session_id?.let { session_id ->
-                        val response = repository.updateEmail(session_id!!, params) //_subcategories
+                        val response = repository.updateEmail(params) //_subcategories
                         if (response.isSuccessful) {
                             if (response.body()?.result?.status != null) {
                                 Log.d(USER_LOGIN_TAG, "Success")
@@ -525,7 +525,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                 try {
                     var response: Response<RegisterResponse>? = null
                     if (reset)
-                        repository.forgetPassword(params)
+                        response= repository.forgetPassword(params)
                     else
                      response = repository.changePassword(params)
 
@@ -547,7 +547,6 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                         Log.d(USER_LOGIN_TAG, "FAILUER ${response.body()}")
                         responseStandard?.onFailure(false, "FAILUER", response.body().toString())
                         //  responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
-
                     }
                 } catch (e: Exception) {
                     Log.d(USER_LOGIN_TAG, "EXCEPTION ${e.message.toString()}")

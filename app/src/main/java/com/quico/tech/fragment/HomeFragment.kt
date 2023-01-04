@@ -41,6 +41,7 @@ class HomeFragment : Fragment() {
     }
 
     fun init(){
+        Constant.TEMPORAR_USER = null
         initToolbar();
         binding.apply {
             homeContent.viewAllCategoriesLabel.setOnClickListener {

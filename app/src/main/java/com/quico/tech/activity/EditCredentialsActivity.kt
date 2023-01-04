@@ -17,6 +17,7 @@ import com.quico.tech.data.Constant.TEMPORAR_USER
 import com.quico.tech.databinding.ActivityEditCredentialsBinding
 import com.quico.tech.model.PasswordBodyParameters
 import com.quico.tech.model.PasswordParams
+import com.quico.tech.model.RegisterParams
 import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 
@@ -154,6 +155,10 @@ class EditCredentialsActivity : AppCompatActivity() {
                     confirmPasswordField.hint =
                         viewModel.getLangResources().getString(R.string.password)
                 }
+                FORGET_PASSWORD -> {
+                    title.text =
+                        viewModel.getLangResources().getString(R.string.change_current_password)
+                }
             }
         }
     }
@@ -193,6 +198,7 @@ class EditCredentialsActivity : AppCompatActivity() {
                         emailField.error =
                             viewModel.getLangResources().getString(R.string.wrong_email)
                     else {
+                        TEMPORAR_USER = RegisterParams(emailField.text.toString(),"")
                         startActivity(
                             Intent(
                                 this@EditCredentialsActivity,
@@ -224,16 +230,15 @@ class EditCredentialsActivity : AppCompatActivity() {
                     else {
 
                         var reset = false
-                        var passwordParams:PasswordBodyParameters? = null
+                        var passwordParams: PasswordBodyParameters? = null
                         if (edit_profile_type.equals(CHANGE_PASSWORD)) {
-                            reset =false
-                             passwordParams = PasswordBodyParameters(
+                            reset = false
+                            passwordParams = PasswordBodyParameters(
                                 PasswordParams(
                                     Common.encryptPassword(passwordField.text.toString())
                                 )
                             )
-                        }
-                        else if (edit_profile_type.equals(FORGET_PASSWORD)) {
+                        } else if (edit_profile_type.equals(FORGET_PASSWORD)) {
                             reset = true
                             passwordParams = PasswordBodyParameters(
                                 PasswordParams(
@@ -242,52 +247,54 @@ class EditCredentialsActivity : AppCompatActivity() {
                                 )
                             )
                         }
-
-                            Common.setUpProgressDialog(this@EditCredentialsActivity)
-
-                            viewModel.changePassword(reset,
-                                passwordParams!!,
-                                object : SharedViewModel.ResponseStandard {
-                                    override fun onSuccess(
-                                        success: Boolean,
-                                        resultTitle: String,
-                                        message: String
-                                    ) {
-                                        Common.cancelProgressDialog()
-                                        Toast.makeText(
-                                            this@EditCredentialsActivity,
-                                            message,
-                                            Toast.LENGTH_LONG
-                                        )
-                                        startActivity(
-                                            Intent(
-                                                this@EditCredentialsActivity,
-                                                LoginActivity::class.java
-                                            )
-                                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                        )
-                                    }
-
-                                    override fun onFailure(
-                                        success: Boolean,
-                                        resultTitle: String,
-                                        message: String
-                                    ) {
-                                        Common.cancelProgressDialog()
-                                        Common.setUpAlert(
-                                            this@EditCredentialsActivity, false,
-                                            viewModel.getLangResources().getString(R.string.error),
-                                            message,
-                                            viewModel.getLangResources().getString(R.string.ok),
-                                            null
-                                        )
-                                    }
-                                })
-                        }
-
+                        changeResetPassword(reset, passwordParams!!)
+                    }
                 }
             }
         }
+    }
+
+    private fun changeResetPassword(reset: Boolean, passwordParams: PasswordBodyParameters) {
+        Common.setUpProgressDialog(this@EditCredentialsActivity)
+
+        viewModel.changePassword(reset,
+            passwordParams!!,
+            object : SharedViewModel.ResponseStandard {
+                override fun onSuccess(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    Common.cancelProgressDialog()
+                    Toast.makeText(
+                        this@EditCredentialsActivity,
+                        message,
+                        Toast.LENGTH_LONG
+                    )
+                    startActivity(
+                        Intent(
+                            this@EditCredentialsActivity,
+                            LoginActivity::class.java
+                        )
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    )
+                }
+
+                override fun onFailure(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    Common.cancelProgressDialog()
+                    Common.setUpAlert(
+                        this@EditCredentialsActivity, false,
+                        viewModel.getLangResources().getString(R.string.error),
+                        message,
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
+                }
+            })
     }
 }
 
