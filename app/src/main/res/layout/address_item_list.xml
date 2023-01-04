@@ -142,8 +142,12 @@
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="6dp"
+        android:indeterminate="true"
         android:visibility="gone"
+        android:indeterminateDrawable="@drawable/custom_progressbar"
+        android:indeterminateDuration="800"
+        android:indeterminateBehavior="repeat"
         android:layout_below="@+id/cardView"
         android:layout_marginHorizontal="25dp"
         />

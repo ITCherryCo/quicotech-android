@@ -253,5 +253,8 @@ efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifen
     <string name="no_brands">No Brands found</string>
     <string name="no_items">No Items are not found</string>
     <string name="empty_search">Enter few word to find your needed product</string>
+    <string name="select_address">Select Address</string>
+    <string name="select_address_msg">Please select an address to continue the process.</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

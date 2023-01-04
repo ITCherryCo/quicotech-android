@@ -29,7 +29,7 @@ class AddressRecyclerViewAdapter(
 
     interface OnAddressSelect {
         fun onAddressSelect(id:Int)
-        fun OnEditAddress(address: Address?)
+        fun OnEditAddress(address: Address)
     }
 
 
@@ -59,7 +59,7 @@ class AddressRecyclerViewAdapter(
 
                     if (lastSelectedPosition == absoluteAdapterPosition) {
                         setSelectedForm()
-                       // onAddressSelect!!.onAddressSelect(address)
+                        onAddressSelect!!.onAddressSelect(address.id)
                     }
 
                     if (lastSelectedPosition != absoluteAdapterPosition) {
@@ -68,6 +68,7 @@ class AddressRecyclerViewAdapter(
 
                     edit.setOnClickListener {
                         Constant.TEMPORAR_ADDRESS = address
+                        onAddressSelect!!.OnEditAddress(address)
                     }
                 } else {
                     edit.setOnClickListener {
@@ -102,6 +103,10 @@ class AddressRecyclerViewAdapter(
                                             message: String
                                         ) {
                                             // later add progress bar to view
+                                            if (withSelection && lastSelectedPosition == absoluteAdapterPosition){
+                                                lastSelectedPosition =-1
+                                                onAddressSelect!!.onAddressSelect(0)
+                                            }
 
                                             progressBar.visibility = View.GONE
                                             Toast.makeText(
