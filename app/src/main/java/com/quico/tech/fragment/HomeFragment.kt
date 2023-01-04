@@ -8,13 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quico.tech.R
-import com.quico.tech.activity.BrandAllActivity
-import com.quico.tech.activity.CartActivity
-import com.quico.tech.activity.CategoryAllActivity
-import com.quico.tech.activity.HomeActivity
+import com.quico.tech.activity.*
 import com.quico.tech.adapter.BrandHomeRecyclerViewAdapter
 import com.quico.tech.adapter.CategoryRecyclerViewAdapter
 import com.quico.tech.adapter.ProductRecyclerViewAdapter
+import com.quico.tech.data.Constant
 import com.quico.tech.databinding.FragmentHomeBinding
 import com.quico.tech.model.Brand
 import com.quico.tech.model.Category
@@ -51,6 +49,7 @@ class HomeFragment : Fragment() {
             homeContent.viewAllBrandsLabel.setOnClickListener {
                 startActivity(Intent(context, BrandAllActivity::class.java))
             }
+
         }
     }
 
@@ -63,6 +62,16 @@ class HomeFragment : Fragment() {
             homeContent.toolbarInclude.bagIcon.setOnClickListener {
                 startActivity(Intent(context, CartActivity::class.java))
             }
+
+            homeContent.toolbarInclude.vipStarIcon.setOnClickListener {
+                startActivity(
+                    Intent(activity, GeneralTermsActivity::class.java).putExtra(
+                        Constant.ACTIVITY_TYPE,
+                        Constant.VIP_BENEFITS
+                    )
+                )
+            }
+
             (activity as HomeActivity?)?.setSupportActionBar(homeContent.toolbarInclude.toolbarHome)
             setHasOptionsMenu(true)
         }

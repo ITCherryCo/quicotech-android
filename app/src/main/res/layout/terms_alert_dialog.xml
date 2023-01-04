@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/container_white_corner_20"
+        android:gravity="center"
+        android:layoutDirection="locale"
+        android:orientation="vertical"
+        android:paddingVertical="45dp"
+        android:paddingHorizontal="35dp">
+
+        <CheckBox
+            android:id="@+id/termsCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/vip_terms_conditions"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/acceptBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/color_primary_purple"
+            android:padding="12dp"
+            android:text="@string/accept"
+            android:textAllCaps="false"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:fontFamily="@font/bold"
+            app:cornerRadius="10dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/rejectBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@color/red_dark"
+            android:padding="12dp"
+            android:text="@string/reject"
+            android:textAllCaps="false"
+            android:textDirection="locale"
+            android:layoutDirection="locale"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:fontFamily="@font/bold"
+            app:cornerRadius="10dp" />
+    </LinearLayout>
+</RelativeLayout>

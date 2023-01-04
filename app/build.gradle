@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.quico.tech"
-        minSdk 19
+        minSdk 21
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -102,5 +102,6 @@ dependencies {
 
     // view pager indicator
     implementation 'me.relex:circleindicator:2.1.6'
+    implementation  'io.ak1:bubbletabbar:1.0.8'
 
 }

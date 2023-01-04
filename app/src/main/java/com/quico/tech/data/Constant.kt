@@ -71,6 +71,9 @@ object Constant {
     var TEMPORAR_ADDRESS : Address? =null
     var COOKIES_KEY ="cookiesKey"
     var CREDENTIAL_OPERATION_TYPE =""
+    var ACTIVITY_TYPE ="activity_type"
+    var TERMS_OF_USE ="terms_of_use"
+    var VIP_BENEFITS ="vip_benefits"
 
 
 

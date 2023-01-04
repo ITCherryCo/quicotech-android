@@ -222,12 +222,30 @@ Diagnostic !! Submit a request now!!!</string>
     <string name="single_offer_title">SINGLE OFFER</string>
     <string name="single_category">SINGLE CATEGORY</string>
     <string name="become_a_vip">BECOME A VIP</string>
-    <string name="subscribe">SUBSCRIBE</string>
     <string name="brand_details">Brand details</string>
     <string name="same_phone_number">Its your phone number please enter another one</string>
     <string name="show_more">Show more</string>
     <string name="see_less">See less</string>
     <string name="details">Details</string>
     <string name="password_changed">Password is changed successfully</string>
+    <string name="vip_benefits">Vip Benefits</string>
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="vip_benefits_description">>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
+efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.
+    >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
+efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.
+    >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
+efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.</string>
+    <string name="terms_description">terms >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
+efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.
+    >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
+efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.
+    >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
+efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.
+    >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
+efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.</string>
+    <string name="vip_terms_conditions">VIP Terms and Conditions</string>
 
 </resources>

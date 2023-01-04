@@ -1,7 +1,6 @@
 package com.quico.tech.fragment
 
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,6 +13,8 @@ import com.bumptech.glide.Glide
 import com.quico.tech.R
 import com.quico.tech.activity.*
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.ACTIVITY_TYPE
+import com.quico.tech.data.Constant.TERMS_OF_USE
 import com.quico.tech.databinding.FragmentProfileBinding
 import com.quico.tech.viewmodel.SharedViewModel
 import java.util.*
@@ -94,7 +95,8 @@ class ProfileFragment : Fragment() {
             }
 
             termsImage.setOnClickListener {
-                startActivity(Intent(activity, GeneralWebInfoActivity::class.java))
+                startActivity(Intent(activity, GeneralTermsActivity::class.java).putExtra(ACTIVITY_TYPE,
+                    TERMS_OF_USE))
             }
 
             faqImage.setOnClickListener {
