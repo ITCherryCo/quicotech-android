@@ -83,10 +83,7 @@ class CompareProductFragment : Fragment() {
 
             searchItemRecyclerViewAdapter = SearchItemRecyclerViewAdapter()
             var products = ArrayList<Product>()
-            products.add(Product("", resources.getDrawable(R.drawable.laptop),100f))
-            products.add(Product("", resources.getDrawable(R.drawable.laptop),100f))
-            products.add(Product("", resources.getDrawable(R.drawable.laptop),100f))
-            products.add(Product("", resources.getDrawable(R.drawable.laptop),100f))
+
 
             searchRecyclerView.layoutManager =
                 LinearLayoutManager(

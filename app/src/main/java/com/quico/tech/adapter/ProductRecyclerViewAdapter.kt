@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
 import com.quico.tech.activity.ProductActivity
 import com.quico.tech.data.Constant.PRODUCT_ID
+import com.quico.tech.data.Constant.PRODUCT_NAME
 import com.quico.tech.databinding.ProductItemListBinding
 import com.quico.tech.model.Product
 
@@ -36,14 +37,14 @@ class ProductRecyclerViewAdapter(
                     largeContainer.visibility = View.GONE
                     smallContainer.visibility = View.VISIBLE
                     productName.text = product.name
-                    productImage.setImageDrawable(product.image)
-                    productPrice.text = product.price.toString()
+                    productImage.setImageDrawable(itemView.resources.getDrawable(R.drawable.product_image_test))
+                    productPrice.text = product.new_price.toString()
                 } else {
                     largeContainer.visibility = View.VISIBLE
                     smallContainer.visibility = View.GONE
-                    largeProductName.text = product.name
+                  /*  largeProductName.text = product.name
                     largeProductImage.setImageDrawable(product.image)
-                    largeProductPrice.text = product.price.toString()
+                    largeProductPrice.text = product.new_price.toString()*/
                 }
 
                 if (withSelection) {
@@ -62,13 +63,16 @@ class ProductRecyclerViewAdapter(
                 } else {
                     cardView.setOnClickListener {
                         itemView.context.startActivity(
-                            Intent(itemView.context, ProductActivity::class.java).putExtra(PRODUCT_ID, 1)
+                            Intent(itemView.context, ProductActivity::class.java).putExtra(PRODUCT_ID, 4)
+                                .putExtra(PRODUCT_NAME,product.name)
                         )
                     }
 
                     cardViewSmall.setOnClickListener {
                         itemView.context.startActivity(
-                            Intent(itemView.context, ProductActivity::class.java).putExtra(PRODUCT_ID, 1)
+                            Intent(itemView.context, ProductActivity::class.java).putExtra(PRODUCT_ID, 4)
+                                .putExtra(PRODUCT_NAME,product.name)
+
                         )
                     }
                 }

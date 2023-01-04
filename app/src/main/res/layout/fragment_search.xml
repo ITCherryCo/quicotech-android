@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_light"
+    android:background="@color/home_background_grey"
     android:orientation="vertical"
     tools:context=".fragment.SearchFragment">
 
@@ -18,22 +18,22 @@
         android:layout_height="45dp"
         android:background="@color/white"
         android:layoutDirection="locale"
-        android:paddingHorizontal="20dp"
+        android:paddingEnd="20dp"
         android:paddingVertical="5dp">
 
-        <TextView
-            android:id="@+id/filterText"
-            style="@style/addressTextStyle"
+        <SearchView
+            android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layoutDirection="locale"
+            android:queryHint="@string/search_hint"
+            android:iconifiedByDefault="false"
+            android:textDirection="locale"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
-            android:layout_toStartOf="@+id/filterImage"
-            android:fontFamily="@font/regular"
-            android:gravity="start|center_vertical"
-            android:text="@string/filter"
-            android:textAllCaps="true"
-            android:textColor="@color/gray_dark" />
+            style="@style/AppTheme.Toolbar"
+            android:layout_toStartOf="@+id/filterImage"/>
 
         <ImageView
             android:id="@+id/filterImage"
@@ -100,41 +100,40 @@
                 </LinearLayout>
             </com.facebook.shimmer.ShimmerFrameLayout>
 
-            <LinearLayout
-                android:id="@+id/categoryContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layoutDirection="locale"
-                android:orientation="vertical">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/categoryContainer"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layoutDirection="locale"-->
+<!--                android:orientation="vertical">-->
 
-                <TextView
-                    android:id="@+id/categoriesText"
-                    style="@style/titleStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginVertical="10dp"
-                    android:gravity="start"
-                    android:layoutDirection="locale"
-                    android:text="@string/categories"
-                    android:textAllCaps="false"
-                    android:textDirection="locale" />
+<!--                <TextView-->
+<!--                    android:id="@+id/categoriesText"-->
+<!--                    style="@style/titleStyle"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="20dp"-->
+<!--                    android:layout_marginVertical="10dp"-->
+<!--                    android:gravity="start"-->
+<!--                    android:layoutDirection="locale"-->
+<!--                    android:text="@string/categories"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textDirection="locale" />-->
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/categoryRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layoutDirection="locale"
-                    android:padding="10dp" />
-            </LinearLayout>
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/categoryRecyclerView"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layoutDirection="locale"-->
+<!--                    android:padding="10dp" />-->
+<!--            </LinearLayout>-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/productRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                android:layout_marginTop="10dp" />
+                android:layout_height="match_parent"
+                android:paddingVertical="20dp"/>
 
             <include
                 android:id="@+id/items_error_container"

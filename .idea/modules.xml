@@ -7,6 +7,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Quico_Tech.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Quico_Tech.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Quico_Tech.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Quico_Tech.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Quico_Tech.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Quico_Tech.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.Quico_Tech.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.Quico_Tech.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.Quico_Tech.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.Quico_Tech.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.Quico_Tech.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.Quico_Tech.app.unitTest.iml" />
     </modules>
   </component>
 </project>

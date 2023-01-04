@@ -14,10 +14,10 @@ class ProductDetailsRecyclerViewAdapter : RecyclerView.Adapter<ProductDetailsRec
 
     inner class ItemViewHolder(private var binding: ProductDetailsItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(productDetails: ProductDetails) {
+        fun bind(productDetails: ArrayList<String>) {
             binding.apply {
-                name.text = productDetails.name
-                value.text = productDetails.value
+                name.text = productDetails[0]
+                value.text = productDetails[1]
             }
         }
 
@@ -38,22 +38,17 @@ class ProductDetailsRecyclerViewAdapter : RecyclerView.Adapter<ProductDetailsRec
         holder.bind(item)
     }
 
-    private var onItemClickListener: ((Product) -> Unit)? = null
-
-    fun setOnItemClickListener(listener: (Product) -> Unit) {
-        onItemClickListener = listener
-    }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
 
-    private val differCallback = object : DiffUtil.ItemCallback<ProductDetails>() {
-        override fun areItemsTheSame(oldItem: ProductDetails, newItem: ProductDetails): Boolean {
-            return oldItem.name == newItem.name
+    private val differCallback = object : DiffUtil.ItemCallback<ArrayList<String>>() {
+        override fun areItemsTheSame(oldItem: ArrayList<String>, newItem: ArrayList<String>): Boolean {
+            return oldItem[0] == newItem[0]
         }
 
-        override fun areContentsTheSame(oldItem: ProductDetails, newItem: ProductDetails): Boolean {
+        override fun areContentsTheSame(oldItem: ArrayList<String>, newItem: ArrayList<String>): Boolean {
             return oldItem == newItem
         }
     }

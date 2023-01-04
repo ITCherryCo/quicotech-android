@@ -190,7 +190,16 @@ class RequestDeliveryActivity : AppCompatActivity() {
 
     fun setUpAdressesAdapter() {
         binding.apply {
-            addressRecyclerViewAdapter = AddressRecyclerViewAdapter(viewModel)
+            addressRecyclerViewAdapter = AddressRecyclerViewAdapter(true,object :AddressRecyclerViewAdapter.OnAddressSelect{
+
+
+                override fun onAddressSelect(id: Int) {
+                }
+
+                override fun OnEditAddress(address: Address?) {
+                }
+            },viewModel)
+
             var addresses = ArrayList<Address>()
 
             addressListFragment.recyclerView.layoutManager =

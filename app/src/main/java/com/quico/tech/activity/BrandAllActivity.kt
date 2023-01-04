@@ -29,8 +29,8 @@ class BrandAllActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBrandAllBinding
     private lateinit var brandAllRecyclerViewAdapter: BrandAllRecyclerViewAdapter
     private val viewModel: SharedViewModel by viewModels()
-
     var TAG = "BRANDS_RESPONSE"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,14 +39,19 @@ class BrandAllActivity : AppCompatActivity() {
         initToolbar()
 
         binding.apply {
+            Brandtitle.text = viewModel.getLangResources().getString(R.string.brands)
+            if (viewModel.getLanguage().equals(Constant.AR))
+                backArrow.scaleX = -1f
 
             backArrow.setOnClickListener {
                 onBackPressed()
             }
         }
 
-        setUpText()
-        setLoading()
+        onRefresh()
+        setUpBrandsAdapter()
+        subscribeBrandsList()
+        viewModel.getAllBrands()
     }
 
     fun initToolbar(){
@@ -59,29 +64,56 @@ class BrandAllActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpText(){
-        binding.apply {
-            Brandtitle.text = viewModel.getLangResources().getString(R.string.brands)
+    fun subscribeBrandsList(){
+        lifecycleScope.launch {
+            viewModel.brands.collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        binding.apply {
+                            swipeRefreshLayout.setRefreshing(false)
+                            swipeRefreshLayout.setEnabled(false)
+                            errorContainerBrandAll.root.visibility=View.GONE
+                            recyclerView.visibility = View.VISIBLE
+                        }
+                        stopShimmer()
+                        response.data?.let { brandsResponse ->
+                            if (brandsResponse.result!!.isNullOrEmpty())
+                                setUpErrorForm(Constant.NO_BRANDS)
+                            else {
+                                brandAllRecyclerViewAdapter.differ.submitList(brandsResponse.result!!)
+                                binding.recyclerView.setVisibility(View.VISIBLE)
+                            }
+                        }
+                        Log.d(TAG, "SUCCESS")
+                    }
 
-            if (viewModel.getLanguage().equals(Constant.AR))
-                backArrow.scaleX = -1f
+                    is Resource.Error -> {
+                        response.message?.let { message ->
+                            Log.d(TAG, "ERROR $message")
+                            setUpErrorForm(Constant.ERROR)
+                        }
+                    }
+
+                    is Resource.Connection -> {
+                        Log.d(TAG, "ERROR CONNECTION")
+                        setUpErrorForm(Constant.CONNECTION)
+                    }
+
+                    is Resource.Loading -> {
+                        setLoading()
+                        Log.d(TAG, "LOADING")
+                    }
+                }
+            }
         }
     }
 
-    private fun setUpCategoriesAdapter() {
+
+    private fun setUpBrandsAdapter() {
         binding.apply {
             brandAllRecyclerViewAdapter = BrandAllRecyclerViewAdapter()
             var brands = ArrayList<Brand>()
-            stopShimmer()
-            recyclerView.visibility = View.VISIBLE
-            swipeRefreshLayout.setRefreshing(false)
 
-            brands.add(Brand(1,"Apple",R.drawable.brand_canon))
-            brands.add(Brand(2,"Sony",R.drawable.brand_canon))
-            brands.add(Brand(3,"dji",R.drawable.brand_canon))
-            brands.add(Brand(4,"samsung",R.drawable.brand_canon))
-            brands.add(Brand(5,"canon",R.drawable.brand_canon))
-            brands.add(Brand(6,"Nikon",R.drawable.brand_canon))
 
             recyclerView.layoutManager = GridLayoutManager(this@BrandAllActivity, 2)
             recyclerView.setItemAnimator(DefaultItemAnimator())
@@ -104,12 +136,6 @@ class BrandAllActivity : AppCompatActivity() {
             errorContainerBrandAll.errorContainer.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
-            // swipeRefreshLayout.setRefreshing(true)
-
-            lifecycleScope.launch {
-                delay(3000)
-                setUpCategoriesAdapter()
-            }
         }
     }
 
@@ -117,7 +143,7 @@ class BrandAllActivity : AppCompatActivity() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
                 setLoading() // later we will remove it because the observable will call it
-                // viewModel.getOrders(1, orders_type) // get User id
+                viewModel.getAllBrands() // get User id
             })
         }
     }
@@ -138,8 +164,8 @@ class BrandAllActivity : AppCompatActivity() {
                         viewModel.getLangResources().getString(R.string.check_connection)
                     )
                 }
-                Constant.NO_Categories -> {
-                    errorContainerBrandAll.errorMsg2.text = viewModel.getLangResources().getString(R.string.no_categories)
+                Constant.NO_BRANDS -> {
+                    errorContainerBrandAll.errorMsg2.text = viewModel.getLangResources().getString(R.string.no_brands)
                     errorContainerBrandAll.errorImage.setImageResource(R.drawable.empty_item)
                 }
 

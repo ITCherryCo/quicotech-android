@@ -10,12 +10,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
 import com.quico.tech.adapter.CardRecyclerViewAdapter
 import com.quico.tech.adapter.MaintenanceRecyclerViewAdapter
 import com.quico.tech.adapter.ProductDetailsRecyclerViewAdapter
 import com.quico.tech.adapter.ProductImageAdapter
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.PRODUCT_ID
+import com.quico.tech.data.Constant.PRODUCT_NAME
 import com.quico.tech.databinding.ActivityProductBinding
 import com.quico.tech.model.Card
 import com.quico.tech.model.Product
@@ -31,6 +34,8 @@ class ProductActivity : AppCompatActivity() {
     private val viewModel: SharedViewModel by viewModels()
     private lateinit var productDetailsRecyclerViewAdapter: ProductDetailsRecyclerViewAdapter
     private var showText = false
+    private var product_id: Int? = 0
+    private var product_name: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +43,16 @@ class ProductActivity : AppCompatActivity() {
         setContentView(binding.root)
         initToolbar()
 
+        product_id = intent?.extras?.getInt(PRODUCT_ID)
+        product_name = intent?.extras?.getString(PRODUCT_NAME)!!
         setUpText()
-        setImages()
-        setUpDetailsAdapter()
-        // viewModel.getProduct(1)
-        // subscribeProduct()
+
+        product_id?.let { product_id ->
+            if (product_id != 0)
+                viewModel.getProduct(product_id)
+        }
+        onRefresh()
+        subscribeProduct()
     }
 
     fun initToolbar() {
@@ -51,17 +61,6 @@ class ProductActivity : AppCompatActivity() {
             Common.setSystemBarLight(this@ProductActivity)
             toolbarProductDetails.title.text =
                 viewModel.getLangResources().getString(R.string.single_offer_title)
-        }
-    }
-
-    private fun setImages() {
-        var images =
-            arrayOf(R.drawable.product_image_test, R.drawable.computer_all, R.drawable.headphones)
-        binding.apply {
-            var productImageAdapter = ProductImageAdapter(images)
-            viewPager.setAdapter(productImageAdapter)
-            productImageAdapter.registerAdapterDataObserver(indicator.getAdapterDataObserver())
-            indicator.setViewPager(viewPager)
         }
     }
 
@@ -74,6 +73,8 @@ class ProductActivity : AppCompatActivity() {
             addToCartBtn.text = viewModel.getLangResources().getString(R.string.add_to_cart)
             showHideText.text = viewModel.getLangResources().getString(R.string.show_more)
             detailsText.text = viewModel.getLangResources().getString(R.string.details)
+            name.text = product_name
+            toolbarProductDetails.title.text = product_name
 
             showHideText.setPaintFlags(oldPrice.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG) // draw line on old price
 
@@ -81,7 +82,6 @@ class ProductActivity : AppCompatActivity() {
                 toolbarProductDetails.backArrow.scaleX = -1f
 
             // oldPrice.setPaintFlags(oldPrice.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG) // draw line on old price
-            oldPrice.setBackground(getResources().getDrawable(R.drawable.red_line))
 
             compareBtn.setOnClickListener {
                 //startActivity(Intent(this@ProductActivity,CompareSearchActivity::class.java))
@@ -96,20 +96,7 @@ class ProductActivity : AppCompatActivity() {
             }
 
             detailsContainer.visibility = View.GONE
-            showHideText.setOnClickListener {
-                showText = !showText
 
-                if (showText) {
-                    detailsContainer.visibility = View.VISIBLE
-                    showHideText.text = viewModel.getLangResources().getString(R.string.see_less)
-
-                }
-                else {
-                    detailsContainer.visibility = View.GONE
-                    showHideText.text = viewModel.getLangResources().getString(R.string.show_more)
-
-                }
-            }
         }
     }
 
@@ -147,7 +134,7 @@ class ProductActivity : AppCompatActivity() {
                     }
 
                     is Resource.Loading -> {
-                        //setLoading()
+                        setLoading()
                         Log.d(Constant.PRODUCT_TAG, "LOADING")
                     }
                 }
@@ -156,28 +143,104 @@ class ProductActivity : AppCompatActivity() {
     }
 
     private fun setProductData(product: Product) {
+        binding.apply {
+            if (!product.images.isNullOrEmpty())
+                setImages(product.images)
+
+            bestSellerText.visibility = View.GONE
+            newText.visibility = View.GONE
+            vipText.visibility = View.GONE
+
+            if (product.is_on_sale) {
+                bestSellerText.visibility = View.VISIBLE
+                bestSellerText.text = viewModel.getLangResources().getString(R.string.best_seller)
+            }
+
+            if (product.is_vip) {
+                vipText.visibility = View.VISIBLE
+                vipText.text = viewModel.getLangResources().getString(R.string.best_seller)
+            }
+            if (product.is_vip || product.is_on_sale) {
+                oldPrice.visibility = View.VISIBLE
+                newPrice.visibility = View.VISIBLE
+                oldPrice.text = "$ ${product.regular_price.toString()}"
+                newPrice.text = "$ ${product.new_price.toString()}"
+                oldPrice.setBackground(getResources().getDrawable(R.drawable.red_line))
+            }
+            else{
+                oldPrice.visibility = View.GONE
+                newPrice.text = "$ ${product.regular_price.toString()}"
+            }
+
+            name.text = product.name
+            description.text = product.description
+
+            if (!product.specifications.isNullOrEmpty()){
+                showHideText.visibility = View.VISIBLE
+                setUpDetailsAdapter(product.specifications)
+                showHideText.setOnClickListener {
+                    showText = !showText
+
+                    if (showText) {
+                        detailsContainer.visibility = View.VISIBLE
+                        showHideText.text = viewModel.getLangResources().getString(R.string.see_less)
+
+                    } else {
+                        detailsContainer.visibility = View.GONE
+                        showHideText.text = viewModel.getLangResources().getString(R.string.show_more)
+
+                    }
+                }
+            }
+            else {
+                showHideText.visibility = View.VISIBLE
+                detailsContainer.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun minusQty(){
 
     }
 
-    private fun setUpDetailsAdapter() {
+    private fun setImages(images: ArrayList<String>) {
+
+        // var images =  arrayOf(R.drawable.product_image_test, R.drawable.computer_all, R.drawable.headphones)
+
+        binding.apply {
+            var productImageAdapter = ProductImageAdapter(images)
+            viewPager.setAdapter(productImageAdapter)
+            productImageAdapter.registerAdapterDataObserver(indicator.getAdapterDataObserver())
+            indicator.setViewPager(viewPager)
+        }
+    }
+
+    private fun setUpDetailsAdapter( details:ArrayList<ArrayList<String>>) {
         binding.apply {
             productDetailsRecyclerViewAdapter = ProductDetailsRecyclerViewAdapter()
-
-            var productDetails = ArrayList<ProductDetails>()
-            productDetails.add(ProductDetails(1, "Brand", "HP"))
-            productDetails.add(ProductDetails(1, "Screen Size", "14 Inches"))
-            productDetails.add(ProductDetails(1, "Hard Disk Size", "1000 GB"))
-            productDetails.add(ProductDetails(1, "GPU Model", "Risen 3"))
-            productDetails.add(ProductDetails(1, "Operating System", "Windows 11"))
-            productDetails.add(ProductDetails(1, "Card Description", "Integrated"))
-            productDetails.add(ProductDetails(1, "Card Coprocessor", "AMD"))
-            productDetails.add(ProductDetails(1, "CPU Speed", "2.6 GHz"))
 
             recyclerView.layoutManager =
                 LinearLayoutManager(this@ProductActivity, LinearLayoutManager.VERTICAL, false)
             recyclerView.setItemAnimator(DefaultItemAnimator())
             recyclerView.setAdapter(productDetailsRecyclerViewAdapter)
-            productDetailsRecyclerViewAdapter.differ.submitList(productDetails)
+            productDetailsRecyclerViewAdapter.differ.submitList(details)
+        }
+    }
+
+    fun setLoading() {
+        binding.apply {
+            swipeRefreshLayout.setRefreshing(true)
+            mainContainer.visibility = View.GONE
+            productErrorContainer.root.visibility = View.GONE
+        }
+    }
+
+    fun onRefresh() {
+        binding.apply {
+            swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+                    setLoading()
+                    viewModel.getProduct(product_id!!) // get User id
+            })
         }
     }
 

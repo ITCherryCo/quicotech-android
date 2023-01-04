@@ -1,13 +1,15 @@
 package com.quico.tech.fragment
 
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Html
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -15,16 +17,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.quico.tech.R
-import com.quico.tech.activity.CompareSearchActivity
 import com.quico.tech.adapter.BrandRecyclerViewAdapter
-import com.quico.tech.adapter.CategoryRecyclerViewAdapter
 import com.quico.tech.adapter.ColorRecyclerViewAdapter
 import com.quico.tech.adapter.ProductRecyclerViewAdapter
+import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.EMPTY_SEARCH
+import com.quico.tech.data.Constant.PRODUCT_TAG
 import com.quico.tech.databinding.FilterBottomSheetBinding
 import com.quico.tech.databinding.FragmentSearchBinding
-import com.quico.tech.model.Brand
-import com.quico.tech.model.Category
-import com.quico.tech.model.Product
+import com.quico.tech.model.*
+import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -40,6 +42,10 @@ class SearchFragment : Fragment() {
     private var conditions = ArrayList<Brand>()
     private var colors = ArrayList<com.quico.tech.model.Color>()
     private var categories = ArrayList<Category>()
+    private var current_page = 1
+    private var total_pages = 1
+    private var search_text = ""
+    private var products = ArrayList<Product>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,17 +59,22 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setUpItemsAdapter()
+        setUpProductsAdapter()
         setUpText()
-        setCategoriesLoading()
-//        viewModel.search(1)
+        setUpSearchView()
+        setUpProductsAdapter()
+        subscribeProducts()
     }
 
     private fun setUpText() {
         binding.apply {
 
             searchToolbar.title.text = viewModel.getLangResources().getString(R.string.filters)
-            filterText.text = viewModel.getLangResources().getString(R.string.filter)
+            //searchView.queryHint = viewModel.getLangResources().getString(R.string.search_hint)
+            searchView.setQueryHint(Html.fromHtml("<font color = #5F5F5F>" + viewModel.getLangResources().getString(R.string.search_hint) + "</font>"));
+
+            searchView.requestFocus()
+            //filterText.text = viewModel.getLangResources().getString(R.string.filter)
             searchToolbar.heartImage.visibility = View.GONE
             filterImage.setOnClickListener {
                 setUpFilerBottomSheet()
@@ -71,28 +82,94 @@ class SearchFragment : Fragment() {
         }
     }
 
-    fun setUpItemsAdapter() {
+    private fun setUpSearchView(){
+        binding.apply {
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+                android.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(searchText: String): Boolean {
+                    search_text = searchText
+                    if (searchText.isEmpty()){
+                        setUpErrorForm(EMPTY_SEARCH)
+                    }
+                    else if(searchText.trim { it<=' ' }.length>2) {
+                        setProductsLoading()
+                        productRecyclerView.visibility = View.VISIBLE
+                        viewModel.searchProducts(SearchBodyParameters(NameParams(search_text)))
+                    }
+                    return false
+                }
+            })
+        }
+    }
+
+
+    private fun subscribeProducts() {
+        lifecycleScope.launch {
+            viewModel.search_products.collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        binding.apply {
+                            stopProductShimmer()
+                            productRecyclerView.visibility = View.VISIBLE
+                        }
+
+                        response.data?.let { itemsResponse ->
+                            if (itemsResponse.result.isNullOrEmpty()) {
+                               // setUpErrorForm(Constant.NO_ITEMS)
+                            } else {
+                                products.clear()
+                                products.addAll(itemsResponse.result)
+                                productRecyclerViewAdapter.differ.submitList(products)
+                            }
+                        }
+                        Log.d(PRODUCT_TAG, "SUCCESS")
+                    }
+
+                    is Resource.Error -> {
+                        response.message?.let { message ->
+                            Log.d(PRODUCT_TAG, "ERROR $message")
+                            setUpErrorForm(Constant.ERROR)
+                        }
+                    }
+
+                    is Resource.Connection -> {
+                        Log.d(PRODUCT_TAG, "ERROR CONNECTION")
+                        setUpErrorForm(Constant.CONNECTION)
+                    }
+
+                    is Resource.Loading -> {
+                        setProductsLoading()
+                        Log.d(PRODUCT_TAG, "LOADING")
+                    }
+                }
+            }
+        }
+    }
+
+    fun setUpProductsAdapter() {
         binding.apply {
             productRecyclerViewAdapter = ProductRecyclerViewAdapter(false,false,null)
-            val items = ArrayList<Product>()
-            stopProductShimmer()
-            productRecyclerView.visibility = View.VISIBLE
+            //stopProductShimmer()
             // filterImage.setEnabled(true)
 
-            items.add(Product("P1", resources.getDrawable(R.drawable.product_image_test), 9.9f))
-            items.add(Product("P2", resources.getDrawable(R.drawable.product_image_test), 22.9f))
-            items.add(Product("P3", resources.getDrawable(R.drawable.product_image_test), 43.9f))
-            items.add(Product("P4", resources.getDrawable(R.drawable.product_image_test), 45.22f))
-            items.add(Product("P5", resources.getDrawable(R.drawable.product_image_test), 93.9f))
-            items.add(Product("P6", resources.getDrawable(R.drawable.product_image_test), 49.9f))
-            items.add(Product("P7", resources.getDrawable(R.drawable.product_image_test), 19.9f))
-            items.add(Product("P8", resources.getDrawable(R.drawable.product_image_test), 59.9f))
-            items.add(Product("P9", resources.getDrawable(R.drawable.product_image_test), 69.9f))
-
+         /*   items.add(Product("P1", resources.getDrawable(R.drawable.product_image_test), 9.9))
+            items.add(Product("P2", resources.getDrawable(R.drawable.product_image_test), 22.9))
+            items.add(Product("P3", resources.getDrawable(R.drawable.product_image_test), 43.9))
+            items.add(Product("P4", resources.getDrawable(R.drawable.product_image_test), 45.22))
+            items.add(Product("P5", resources.getDrawable(R.drawable.product_image_test), 93.9))
+            items.add(Product("P6", resources.getDrawable(R.drawable.product_image_test), 49.9))
+            items.add(Product("P7", resources.getDrawable(R.drawable.product_image_test), 19.9))
+            items.add(Product("P8", resources.getDrawable(R.drawable.product_image_test), 59.9))
+            items.add(Product("P9", resources.getDrawable(R.drawable.product_image_test), 69.9))
+*/
             productRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
             productRecyclerView.setItemAnimator(DefaultItemAnimator())
             productRecyclerView.setAdapter(productRecyclerViewAdapter)
-            productRecyclerViewAdapter.differ.submitList(items)
+            productRecyclerViewAdapter.differ.submitList(products)
         }
     }
 
@@ -107,18 +184,21 @@ class SearchFragment : Fragment() {
     private fun stopProductShimmer() {
         binding.apply {
             productShimmer.visibility = View.GONE
-            productShimmer.stopShimmer()
+            lifecycleScope.launch {
+                delay(1000)
+                productShimmer.stopShimmer()
+            }
         }
     }
 
 
-    fun setCategoriesLoading() {
+  /*  fun setCategoriesLoading() {
         binding.apply {
             categoryContainer.visibility = View.GONE
             productRecyclerView.visibility = View.GONE
             progressBar.visibility = View.GONE
             categoryShimmer.visibility = View.VISIBLE
-            categoryShimmer.startShimmer()
+           // categoryShimmer.startShimmer()
             // filterImage.setEnabled(false)
 
             lifecycleScope.launch {
@@ -127,21 +207,22 @@ class SearchFragment : Fragment() {
                 setProductsLoading()
             }
         }
-    }
+    }*/
 
     fun setProductsLoading() {
         binding.apply {
+            itemsErrorContainer.root.visibility = View.GONE
             productRecyclerView.visibility = View.GONE
             progressBar.visibility = View.GONE
             productShimmer.visibility = View.VISIBLE
             productShimmer.startShimmer()
             // filterImage.setEnabled(false)
 
-            lifecycleScope.launch {
+            /*lifecycleScope.launch {
                 delay(1500)
                 setUpItemsAdapter()
                 setUpCategoryAdapter()
-            }
+            }*/
         }
     }
 
@@ -150,21 +231,21 @@ class SearchFragment : Fragment() {
 //        // viewModel.search(1) // get User id
 //    }
 
-    private fun setUpCategoryAdapter() {
+  /*  private fun setUpCategoryAdapter() {
         binding.apply {
             stopCategoryShimmer()
             categoriesText.text = viewModel.getLangResources().getString(R.string.categories)
 
             categoryContainer.visibility = View.VISIBLE
-            categories.add(Category("Servers", resources.getDrawable(R.drawable.server)))
-            categories.add(Category("Computers", resources.getDrawable(R.drawable.computer)))
-            categories.add(Category("Mobiles", resources.getDrawable(R.drawable.aurdino)))
-            categories.add(Category("Servers", resources.getDrawable(R.drawable.games)))
-            categories.add(Category("Computers", resources.getDrawable(R.drawable.computer)))
-            categories.add(Category("Mobiles", resources.getDrawable(R.drawable.aurdino)))
-            categories.add(Category("Servers", resources.getDrawable(R.drawable.server)))
-            categories.add(Category("Computers", resources.getDrawable(R.drawable.computer)))
-            categories.add(Category("Mobiles", resources.getDrawable(R.drawable.server)))
+//            categories.add(Category("Servers", resources.getDrawable(R.drawable.server)))
+//            categories.add(Category("Computers", resources.getDrawable(R.drawable.computer)))
+//            categories.add(Category("Mobiles", resources.getDrawable(R.drawable.aurdino)))
+//            categories.add(Category("Servers", resources.getDrawable(R.drawable.games)))
+//            categories.add(Category("Computers", resources.getDrawable(R.drawable.computer)))
+//            categories.add(Category("Mobiles", resources.getDrawable(R.drawable.aurdino)))
+//            categories.add(Category("Servers", resources.getDrawable(R.drawable.server)))
+//            categories.add(Category("Computers", resources.getDrawable(R.drawable.computer)))
+//            categories.add(Category("Mobiles", resources.getDrawable(R.drawable.server)))
 
             if (categories.isEmpty()) {
                 categoryContainer.visibility = View.GONE
@@ -186,7 +267,7 @@ class SearchFragment : Fragment() {
                 categoryRecyclerViewAdapter.differ.submitList(categories)
             }
         }
-    }
+    }*/
 
 
     private fun setUpFilerBottomSheet() {
@@ -202,14 +283,14 @@ class SearchFragment : Fragment() {
             priceText.text = viewModel.getLangResources().getString(R.string.price)
             filterBtn.text = viewModel.getLangResources().getString(R.string.filter)
 
+         /*   brands.add(Brand(1, "Brand Name",null))
             brands.add(Brand(1, "Brand Name",null))
             brands.add(Brand(1, "Brand Name",null))
             brands.add(Brand(1, "Brand Name",null))
             brands.add(Brand(1, "Brand Name",null))
             brands.add(Brand(1, "Brand Name",null))
             brands.add(Brand(1, "Brand Name",null))
-            brands.add(Brand(1, "Brand Name",null))
-            brands.add(Brand(1, "Brand Name",null))
+            brands.add(Brand(1, "Brand Name",null))*/
 
             if (brands.isEmpty()) {
                 brandContainer.visibility = View.GONE
@@ -269,12 +350,12 @@ class SearchFragment : Fragment() {
             }
 
 
+           /* memory_sizes.add(Brand(1, "125 GB",null))
             memory_sizes.add(Brand(1, "125 GB",null))
             memory_sizes.add(Brand(1, "125 GB",null))
             memory_sizes.add(Brand(1, "125 GB",null))
             memory_sizes.add(Brand(1, "125 GB",null))
-            memory_sizes.add(Brand(1, "125 GB",null))
-            memory_sizes.add(Brand(1, "125 GB",null))
+            memory_sizes.add(Brand(1, "125 GB",null))*/
 
             if (memory_sizes.isEmpty()) {
                 sizeContainer.visibility = View.GONE
@@ -296,8 +377,8 @@ class SearchFragment : Fragment() {
                 brandSelectionRecyclerViewAdapter.differ.submitList(memory_sizes)
             }
 
-            conditions.add(Brand(1, "new",null))
-            conditions.add(Brand(1, "used",null))
+          /*  conditions.add(Brand(1, "new",null))
+            conditions.add(Brand(1, "used",null))*/
 
             if (memory_sizes.isEmpty()) {
                 conditionsContainer.visibility = View.GONE
@@ -321,42 +402,65 @@ class SearchFragment : Fragment() {
         }
     }
 
-    /*  fun setUpErrorForm(error_type: String) {
-          binding.apply {
-              recyclerView.visibility = View.GONE
-              errorContainer.visibility = View.VISIBLE
-              progressBar.visibility = View.GONE
+    private fun onRefresh(){
+        binding.apply {
+            viewModel.searchProducts(SearchBodyParameters(NameParams( search_text)))
+        }
+    }
 
-              stopShimmer()
-              tryAgain.text =
-                  viewModel.getLangResources().getString(R.string.try_again)
+    fun setUpErrorForm(error_type: String) {
+        binding.apply {
+            stopProductShimmer()
+            productRecyclerView.visibility = View.GONE
 
-              when (error_type) {
-                  Constant.CONNECTION -> {
-                      errorMsg1.text =
-                          viewModel.getLangResources().getString(R.string.connection)
+            itemsErrorContainer.apply {
+                root.visibility = View.VISIBLE
+                tryAgain.visibility = View.VISIBLE
+                errorMsg1.visibility = View.VISIBLE
+                errorBtn.visibility = View.GONE
+                errorImage.setImageResource(R.drawable.empty_item)
+                tryAgain.setText(
+                    viewModel.getLangResources().getString(R.string.try_again)
+                )
+                tryAgain.setOnClickListener {
+                    onRefresh()
+                }
 
-                      errorMsg2.text =
-                          viewModel.getLangResources().getString(R.string.check_connection)
+                when (error_type) {
+                    Constant.CONNECTION -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.connection)
 
-                  }
-                  Constant.NO_ITEMS -> {
-                      errorMsg1.text =
-                          viewModel.getLangResources().getString(R.string.no_search_result)
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.check_connection)
 
-                      errorMsg2.text =
-                          viewModel.getLangResources().getString(R.string.no_search_result_msg)
-                  }
+                    }
+                    Constant.EMPTY_SEARCH -> {
+                        errorMsg1.visibility = View.GONE
+                        tryAgain.visibility = View.GONE
 
-                  Constant.ERROR -> {
-                      errorMsg1.text =
-                          viewModel.getLangResources().getString(R.string.error)
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.empty_search)
+                    }
 
-                      errorMsg2.text = viewModel.getLangResources().getString(R.string.error_msg)
-                  }
-              }
-          }
-      }*/
+                    Constant.NO_ITEMS -> {
+                        errorMsg1.visibility = View.GONE
+
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.no_items)
+                    }
+
+                    Constant.ERROR -> {
+                        errorMsg1.text =
+                            viewModel.getLangResources().getString(R.string.error)
+
+                        errorMsg2.text =
+                            viewModel.getLangResources().getString(R.string.error_msg)
+                    }
+                }
+            }
+        }
+    }
 
 
     companion object {

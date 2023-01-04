@@ -71,13 +71,13 @@ class BrandDetailActivity : AppCompatActivity() {
             stopProductShimmer()
             brandRecyclerView.visibility = View.VISIBLE
             // filterImage.setEnabled(true)
-            brands.add(Brand(1, "all",null))
-            brands.add(Brand(2, "Brand Name", R.drawable.dji))
-            brands.add(Brand(3, "Brand Name", R.drawable.evo))
-            brands.add(Brand(4, "Brand Name", R.drawable.sony))
-            brands.add(Brand(5, "Brand Name", R.drawable.canon))
-            brands.add(Brand(6, "Brand Name", R.drawable.nikon))
-            brands.add(Brand(7, "Brand Name", R.drawable.dji))
+//            brands.add(Brand(1, "all",null))
+//            brands.add(Brand(2, "Brand Name", R.drawable.dji))
+//            brands.add(Brand(3, "Brand Name", R.drawable.evo))
+//            brands.add(Brand(4, "Brand Name", R.drawable.sony))
+//            brands.add(Brand(5, "Brand Name", R.drawable.canon))
+//            brands.add(Brand(6, "Brand Name", R.drawable.nikon))
+//            brands.add(Brand(7, "Brand Name", R.drawable.dji))
 
             brandRecyclerView.layoutManager = LinearLayoutManager(
                 this@BrandDetailActivity,
@@ -101,15 +101,15 @@ class BrandDetailActivity : AppCompatActivity() {
             productRecyclerView.visibility = View.VISIBLE
             // filterImage.setEnabled(true)
 
-            items.add(Product("P1", resources.getDrawable(R.drawable.product_image_test), 9.9f))
-            items.add(Product("P2", resources.getDrawable(R.drawable.product_image_test), 22.9f))
-            items.add(Product("P3", resources.getDrawable(R.drawable.product_image_test), 43.9f))
-            items.add(Product("P4", resources.getDrawable(R.drawable.product_image_test), 45.22f))
-            items.add(Product("P5", resources.getDrawable(R.drawable.product_image_test), 93.9f))
-            items.add(Product("P6", resources.getDrawable(R.drawable.product_image_test), 49.9f))
-            items.add(Product("P7", resources.getDrawable(R.drawable.product_image_test), 19.9f))
-            items.add(Product("P8", resources.getDrawable(R.drawable.product_image_test), 59.9f))
-            items.add(Product("P9", resources.getDrawable(R.drawable.product_image_test), 69.9f))
+            items.add(Product("P1",  9.9))
+            items.add(Product("P2", 22.9))
+            items.add(Product("P3", 43.9))
+            items.add(Product("P4", 45.22))
+            items.add(Product("P5", 93.9))
+            items.add(Product("P6",  49.9))
+            items.add(Product("P7",  19.9))
+            items.add(Product("P8",  59.9))
+            items.add(Product("P9",  69.9))
 
             productRecyclerView.layoutManager = GridLayoutManager(this@BrandDetailActivity, 2)
             productRecyclerView.setItemAnimator(DefaultItemAnimator())

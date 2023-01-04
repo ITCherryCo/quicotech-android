@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide
 import com.quico.tech.R
 
 class ProductImageAdapter(
-    var images: Array<Int>
+    var images: ArrayList<String>
 ) :
     RecyclerView.Adapter<ProductImageAdapter.SliderViewHolder>() {
     var imageView: ImageView? = null
@@ -48,13 +48,11 @@ class ProductImageAdapter(
 
         images?.let {  images->
 
-           imageView!!.setBackgroundResource(images[position])
-
-//            Glide
-//                .with(holder.itemView.context)
-//                .load(images.get(position))
-//                .fitCenter()
-//                .into(imageView!!)
+            Glide
+                .with(holder.itemView.context)
+                .load(images.get(position))
+                .fitCenter()
+                .into(imageView!!)
         }
 
     }

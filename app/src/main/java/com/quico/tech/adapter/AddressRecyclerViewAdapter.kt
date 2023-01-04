@@ -18,10 +18,20 @@ import com.quico.tech.model.IDBodyParameters
 import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 
-class AddressRecyclerViewAdapter(val viewModel: SharedViewModel) :
+class AddressRecyclerViewAdapter(
+    val withSelection: Boolean,
+    val onAddressSelect: OnAddressSelect?,
+    val viewModel: SharedViewModel
+) :
     RecyclerView.Adapter<AddressRecyclerViewAdapter.ItemViewHolder>() {
     private var lastSelectedPosition = -1
     private var defaultSelectedPosition = -1
+
+    interface OnAddressSelect {
+        fun onAddressSelect(id:Int)
+        fun OnEditAddress(address: Address?)
+    }
+
 
     inner class ItemViewHolder(private var binding: AddressItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -41,11 +51,32 @@ class AddressRecyclerViewAdapter(val viewModel: SharedViewModel) :
                 delete.text = viewModel.getLangResources().getString(R.string.delete)
                 addressText.text = addressValue
 
-                edit.setOnClickListener {
-                    Constant.TEMPORAR_ADDRESS = address
-                    itemView.context.startActivity(
-                        Intent(itemView.context, AddressActivity::class.java)
-                            .putExtra(Constant.ADDRESS, address))
+                if (withSelection) {
+                    cardView.setOnClickListener {
+                        lastSelectedPosition = absoluteAdapterPosition
+                        notifyDataSetChanged()
+                    }
+
+                    if (lastSelectedPosition == absoluteAdapterPosition) {
+                        setSelectedForm()
+                       // onAddressSelect!!.onAddressSelect(address)
+                    }
+
+                    if (lastSelectedPosition != absoluteAdapterPosition) {
+                        setUnselectedForm()
+                    }
+
+                    edit.setOnClickListener {
+                        Constant.TEMPORAR_ADDRESS = address
+                    }
+                } else {
+                    edit.setOnClickListener {
+                        Constant.TEMPORAR_ADDRESS = address
+                        itemView.context.startActivity(
+                            Intent(itemView.context, AddressActivity::class.java)
+                                .putExtra(Constant.ADDRESS, address)
+                        )
+                    }
                 }
 
                 delete.setOnClickListener {
@@ -71,6 +102,7 @@ class AddressRecyclerViewAdapter(val viewModel: SharedViewModel) :
                                             message: String
                                         ) {
                                             // later add progress bar to view
+
                                             progressBar.visibility = View.GONE
                                             Toast.makeText(
                                                 itemView.context,
@@ -103,6 +135,21 @@ class AddressRecyclerViewAdapter(val viewModel: SharedViewModel) :
 
                         })
                 }
+            }
+        }
+
+        fun setSelectedForm() {
+            binding.apply {
+                cardView.strokeColor = itemView.resources.getColor(R.color.color_primary_purple)
+                cardView.strokeWidth = 5
+            }
+        }
+
+        fun setUnselectedForm() {
+            binding.apply {
+                cardView.strokeColor = itemView.resources.getColor(R.color.input_field_hint)
+                cardView.strokeWidth = 0
+                //cardView.strokeWidth = 0
             }
         }
     }

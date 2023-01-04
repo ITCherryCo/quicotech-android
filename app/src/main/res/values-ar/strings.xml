@@ -250,5 +250,8 @@ efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifen
     >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sapien lorem, consectetur et turpis id, blandit interdum metus. Morbi sed ligula id elit mollis
 efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifend a tortor.</string>
     <string name="vip_terms_conditions">VIP Terms and Conditions</string>
+    <string name="no_brands">No Brands found</string>
+    <string name="no_items">No Items are not found</string>
+    <string name="empty_search">Enter few word to find your needed product</string>
 
 </resources>

@@ -9,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.quico.tech.R
 import com.quico.tech.data.Constant.ADDRESS_TAG
 import com.quico.tech.data.Constant.ALL
+import com.quico.tech.data.Constant.BRAND_TAG
+import com.quico.tech.data.Constant.CATEGORY_TAG
 import com.quico.tech.data.Constant.CONNECTION
 
 import com.quico.tech.data.Constant.EN
@@ -85,6 +87,18 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private val _product: MutableStateFlow<Resource<ProductResponse>> =
         MutableStateFlow(Resource.Nothing())
     val product: StateFlow<Resource<ProductResponse>> get() = _product
+
+    private val _search_products: MutableStateFlow<Resource<SearchResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val search_products: StateFlow<Resource<SearchResponse>> get() = _search_products
+
+    private val _categories: MutableStateFlow<Resource<CategoryResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val categories: StateFlow<Resource<CategoryResponse>> get() = _categories
+
+    private val _brands: MutableStateFlow<Resource<BrandResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val brands: StateFlow<Resource<BrandResponse>> get() = _brands
 
     init {
         context = getApplication<Application>().applicationContext
@@ -817,6 +831,36 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    fun searchProducts(searchBodyParameters:SearchBodyParameters) {
+        viewModelScope.launch {
+
+            _search_products.emit(Resource.Loading())
+
+            if (checkInternet(context)) {
+                try {
+                    val response = repository.search(searchBodyParameters)
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            Log.d(PRODUCT_TAG, "SUCCESS ${resultResponse.result?.size}}")
+                            _search_products.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        Log.d(PRODUCT_TAG, "ERROR ${response}}")
+
+                        _search_products.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d(PRODUCT_TAG, "EXCEPTION ${e.message}}}")
+                    _search_products.emit(Resource.Error(ERROR))
+                }
+            } else {
+                Log.d(PRODUCT_TAG, "$CONNECTION}")
+                _search_products.emit(Resource.Connection())
+            }
+        }
+    }
+
     fun getOrders(customer_id: Int, orders_type: String) {
         viewModelScope.launch {
             _orders.emit(Resource.Loading())
@@ -923,6 +967,69 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                 }
             } else {
                 _general_web_info.emit(Resource.Connection())
+            }
+        }
+    }
+
+
+    fun getAllCategories() {
+        viewModelScope.launch {
+
+            _categories.emit(Resource.Loading())
+
+            if (checkInternet(context)) {
+                try {
+                    Log.d("SESSION_ID", "${user?.session_id}")
+                    val response = repository.getAllCategories()
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            Log.d(CATEGORY_TAG, "SUCCESS ${resultResponse.result?.size}}")
+                            _categories.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        Log.d(CATEGORY_TAG, "ERROR ${response}}")
+
+                        _categories.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d(CATEGORY_TAG, "EXCEPTION ${e.message}}}")
+                    _categories.emit(Resource.Error(ERROR))
+                }
+            } else {
+                Log.d(CATEGORY_TAG, "$CONNECTION}")
+                _categories.emit(Resource.Connection())
+            }
+        }
+    }
+
+    fun getAllBrands() {
+        viewModelScope.launch {
+
+            _brands.emit(Resource.Loading())
+
+            if (checkInternet(context)) {
+                try {
+                    Log.d("SESSION_ID", "${user?.session_id}")
+                    val response = repository.getAllBrands()
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            Log.d(BRAND_TAG, "SUCCESS ${resultResponse.result?.size}}")
+                            _brands.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        Log.d(BRAND_TAG, "ERROR ${response}}")
+
+                        _brands.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d(BRAND_TAG, "EXCEPTION ${e.message}}}")
+                    _brands.emit(Resource.Error(ERROR))
+                }
+            } else {
+                Log.d(BRAND_TAG, "$CONNECTION}")
+                _brands.emit(Resource.Connection())
             }
         }
     }

@@ -14,8 +14,9 @@ import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ServiceItemListBinding
 import com.quico.tech.model.Service
 import com.quico.tech.model.ServiceType
+import com.quico.tech.viewmodel.SharedViewModel
 
-class ServiceRecyclerViewAdapter() :
+class ServiceRecyclerViewAdapter(val viewModel: SharedViewModel) :
     RecyclerView.Adapter<ServiceRecyclerViewAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(private var binding: ServiceItemListBinding) :
@@ -27,11 +28,16 @@ class ServiceRecyclerViewAdapter() :
                 name.text = serviceType.type
                 name.text = serviceType.type
                 itemView.setOnClickListener {
-                    if (serviceType.have_sub_service)
+                    if (serviceType.have_sub_service) {
+                        if (viewModel.user!=null)
                         itemView.context.startActivity(
                             Intent(itemView.context, ServiceListActivity::class.java)
                                 .putExtra(Constant.SERVICE_ID, serviceType.id)
                         )
+                        else{
+
+                        }
+                    }
                     else
                         itemView.context.startActivity(
                             Intent(

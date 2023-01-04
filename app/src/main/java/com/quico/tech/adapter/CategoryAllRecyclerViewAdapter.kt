@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.quico.tech.R
 import com.quico.tech.activity.CategoryDetailActivity
 import com.quico.tech.activity.RequestActivity
@@ -23,8 +24,12 @@ class CategoryAllRecyclerViewAdapter() : RecyclerView.Adapter<CategoryAllRecycle
         fun bind(category: Category) {
             binding.apply {
                 name.text = category.name
-                image.setImageDrawable(category.image)
-
+                //image.setImageDrawable(category.image)
+                Glide.with(itemView.context)
+                    .load(category.image)
+                    //.placeholder(R.drawable.placeholder)
+                    .error(R.drawable.profile_user)
+                    .into(image)
 
                 itemView.setOnClickListener {
                     itemView.context.startActivity(Intent(itemView.context, CategoryDetailActivity::class.java).putExtra(Constant.CATEGORY_ID, 1))

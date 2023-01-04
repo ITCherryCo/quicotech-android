@@ -30,7 +30,10 @@ interface API {
     suspend fun updateUserInfo(@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
 
     @PUT("updateEmail")
-    suspend fun updateEmail(@Header("Cookie") session_id: String, @Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
+    suspend fun updateEmail(
+        @Header("Cookie") session_id: String,
+        @Body updateUserBody: UpdateUserBodyParameters
+    ): Response<RegisterResponse>
 
     @PUT("updateMobile")
     suspend fun updateMobile(@Body updateUserBody: RegisterBodyParameters): Response<RegisterResponse>
@@ -40,7 +43,10 @@ interface API {
     suspend fun addAddress(@Body updateUserBody: AddressBodyParameters): Response<RegisterResponse>
 
     @PUT("updateDeliveryAddress/{address_id}")
-    suspend fun editAddress(@Path("address_id") address_id: Int, @Body updateUserBody: AddressBodyParameters): Response<RegisterResponse>
+    suspend fun editAddress(
+        @Path("address_id") address_id: Int,
+        @Body updateUserBody: AddressBodyParameters
+    ): Response<RegisterResponse>
 
     @GET("getServiceTypes/{service_id}")
     suspend fun getServiceTypes(@Path("service_id") service_id: Int): Response<ServiceTypeResponse>
@@ -60,7 +66,7 @@ interface API {
         @Body idBodyParameters: IDBodyParameters
     ): Response<RegisterResponse>
 
-    @PUT("getProduct/{product_id}")
+    @GET("getProduct/{product_id}")
     suspend fun getProduct(
         @Path("product_id") product_id: Int
     ): Response<ProductResponse>
@@ -90,6 +96,12 @@ interface API {
     ): Response<CartResponse>
 
 
+    @POST("search")
+    @Headers("Content-Type: application/json")
+    suspend fun search(
+        @Body searchBodyParameters: SearchBodyParameters
+    ): Response<SearchResponse>
+
     /*   @PUT("updateDeliveryAddress/{address_id}")
    suspend fun editAddress(
        @Header("Cookie") session_id: String,
@@ -103,5 +115,12 @@ interface API {
           @Url updateAddressURL: String,
           @Body updateUserBody: AddressBodyParameters
       ): Response<RegisterResponse> */
+    @GET("getCategories")
+    // @Headers("Content-Type: application/json")
+    suspend fun getAllCategories(): Response<CategoryResponse>
+
+    @GET("getBrands")
+    // @Headers("Content-Type: application/json")
+    suspend fun getAllBrands(): Response<BrandResponse>
 
 }

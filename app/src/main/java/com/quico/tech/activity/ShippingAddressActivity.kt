@@ -115,7 +115,7 @@ class ShippingAddressActivity : AppCompatActivity() {
 
     fun setUpAddressAdapter() {
         binding.apply {
-            addressRecyclerViewAdapter = AddressRecyclerViewAdapter(viewModel)
+            addressRecyclerViewAdapter = AddressRecyclerViewAdapter(false,null,viewModel)
 
             var addresses = ArrayList<Address>()
          /*   addresses.add(Address(1))

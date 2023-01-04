@@ -1,34 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="3dp">
 
     <RelativeLayout
         android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="2dp"
-        android:layoutDirection="locale"
-        android:background="@drawable/ripple_white_gray_border_8"
-        android:elevation="3dp">
+        android:layoutDirection="locale">
 
-        <TextView
-            android:id="@+id/defaultAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/container_right_bottom_corner_8"
-            android:maxHeight="20dp"
-            android:paddingHorizontal="6dp"
-            android:paddingVertical="3dp"
-            android:text="@string/default_address"
-            android:textDirection="locale"
-            android:layoutDirection="locale"
-            android:textColor="@color/white"
-            android:textSize="10sp"
-            android:fontFamily="@font/medium"
-            android:visibility="gone" />
+<!--        <TextView-->
+<!--            android:id="@+id/defaultAddress"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/container_right_bottom_corner_8"-->
+<!--            android:maxHeight="20dp"-->
+<!--            android:paddingHorizontal="6dp"-->
+<!--            android:paddingVertical="3dp"-->
+<!--            android:text="@string/default_address"-->
+<!--            android:textDirection="locale"-->
+<!--            android:layoutDirection="locale"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="10sp"-->
+<!--            android:fontFamily="@font/medium"-->
+<!--            android:visibility="gone" />-->
 
 
         <RelativeLayout
@@ -44,7 +50,6 @@
                 android:layout_width="18dp"
                 android:layout_height="21dp"
                 android:layoutDirection="locale"
-                android:layout_below="@+id/defaultAddress"
                 android:src="@drawable/location" />
 
             <TextView
@@ -131,13 +136,15 @@
         </RelativeLayout>
 
     </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:visibility="gone"
-        android:layout_below="@+id/mainContainer"
+        android:layout_below="@+id/cardView"
         android:layout_marginHorizontal="25dp"
         />
 </RelativeLayout>

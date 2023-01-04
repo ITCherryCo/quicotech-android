@@ -111,7 +111,7 @@ class ServiceListActivity : AppCompatActivity() {
 
     private fun setUpServicesAdapter() {
         binding.apply {
-            serviceRecyclerViewAdapter = ServiceRecyclerViewAdapter()
+            serviceRecyclerViewAdapter = ServiceRecyclerViewAdapter(viewModel)
             var services = ArrayList<ServiceType>()
             recyclerView.visibility = View.VISIBLE
             swipeRefreshLayout.setRefreshing(false)

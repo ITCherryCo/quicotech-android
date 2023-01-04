@@ -28,7 +28,7 @@ class CategoryRecyclerViewAdapter(var withFilterSelection : Boolean) : RecyclerV
         fun bind(category: Category) {
             binding.apply {
                 catTitle.text = category.name
-                catImage.setImageDrawable(category.image)
+                //catImage.setImageDrawable(category.image)
 
                 itemView.setOnClickListener {
                     if (withFilterSelection) {
