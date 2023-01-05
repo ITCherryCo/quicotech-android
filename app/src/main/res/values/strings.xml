@@ -253,5 +253,12 @@ efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifen
     <string name="select_address">Select Address</string>
     <string name="select_address_msg">Please select an address to continue the process.</string>
     <string name="cancel">Cancel</string>
+    <string name="vip_price">VIP Price</string>
+    <string name="vip_subscription_msg">VIP Subscrtiption will be activated for free month and this will coast ( $10 ) </string>
+    <string name="regular_price">Regular Price</string>
+    <string name="item_added_successfully">Item is added successfully</string>
+    <string name="item_deleted_successfully">Item is deleted successfully</string>
+    <string name="delete_item">Delete Item</string>
+    <string name="please_login">Please signup or login to continue the process</string>
 
 </resources>

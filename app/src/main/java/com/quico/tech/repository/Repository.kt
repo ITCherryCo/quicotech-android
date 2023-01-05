@@ -23,18 +23,17 @@ class Repository() {
     suspend fun deleteAddress( idBodyParameters: IDBodyParameters) = RetrofitInstance.api.deleteAddress( idBodyParameters)
 
     suspend fun getServices() = RetrofitInstance.api.getServices()
-    suspend fun getServices(service_id:Int) = RetrofitInstance.api.getServiceTypes(service_id)
+    suspend fun getServiceTypes(service_id:Int) = RetrofitInstance.api.getServiceTypes(service_id)
 
     suspend fun getProduct(product_id: Int) = RetrofitInstance.api.getProduct(product_id)
 
     suspend fun getOngoingOrders(customer_id: Int) = RetrofitInstance.api.getOngoingOrders(customer_id)
-
     suspend fun getDoneOrders(customer_id: Int) = RetrofitInstance.api.getDoneOrders(customer_id)
-    suspend fun termsAndConditions(store_id: Int) = RetrofitInstance.api.termsAndConditions(store_id)
 
-    suspend fun services(store_id: Int, maintenance_id: Int) = RetrofitInstance.api.services(store_id, maintenance_id)
+    suspend fun addToCart( cartBody: CartBodyParameters) = RetrofitInstance.api.addToCart(cartBody)
+    suspend fun removeFromCart( cartBody: CartBodyParameters) = RetrofitInstance.api.removeFromCart(cartBody)
+    suspend fun viewCart() = RetrofitInstance.api.viewCart()
 
-    suspend fun loadCart(store_id: Int, order_id: Int) = RetrofitInstance.api.loadCart(store_id, order_id)
     suspend fun search(searchBodyParameters: SearchBodyParameters) = RetrofitInstance.api.search(searchBodyParameters)
 
     suspend fun getAllCategories() = RetrofitInstance.api.getAllCategories()
@@ -49,6 +48,5 @@ class Repository() {
      suspend fun deleteAddress(session_id: String, idBodyParameters: IDBodyParameters) = RetrofitInstance.api.deleteAddress(session_id, idBodyParameters)
      suspend fun addAddress(session_id: String, updateBody: AddressBodyParameters) = RetrofitInstance.api.addAddress(session_id, updateBody)
      suspend fun updateMobile(session_id: String, updateBody: RegisterBodyParameters) = RetrofitInstance.api.updateMobile(session_id, updateBody)
-
  */
 }

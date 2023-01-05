@@ -38,15 +38,11 @@ interface API {
     @PUT("updateMobile")
     suspend fun updateMobile(@Body updateUserBody: RegisterBodyParameters): Response<RegisterResponse>
 
-
     @POST("createDeliveryAddress")
     suspend fun addAddress(@Body updateUserBody: AddressBodyParameters): Response<RegisterResponse>
 
     @PUT("updateDeliveryAddress/{address_id}")
-    suspend fun editAddress(
-        @Path("address_id") address_id: Int,
-        @Body updateUserBody: AddressBodyParameters
-    ): Response<RegisterResponse>
+    suspend fun editAddress(@Path("address_id") address_id: Int, @Body updateUserBody: AddressBodyParameters): Response<RegisterResponse>
 
     @GET("getServiceTypes/{service_id}")
     suspend fun getServiceTypes(@Path("service_id") service_id: Int): Response<ServiceTypeResponse>
@@ -54,22 +50,14 @@ interface API {
     @GET("getServices")
     suspend fun getServices(): Response<ServiceResponse>
 
-
-    @GET("getDeliveryAddresses")
-    suspend fun getAddresses2(@Header("Cookie") session_id: String): Response<AddressResponse>
-
     @GET("getDeliveryAddresses")
     suspend fun getAddresses(): Response<AddressResponse>
 
     @POST("removeDeliveryAddress")
-    suspend fun deleteAddress(
-        @Body idBodyParameters: IDBodyParameters
-    ): Response<RegisterResponse>
+    suspend fun deleteAddress(@Body idBodyParameters: IDBodyParameters): Response<RegisterResponse>
 
     @GET("getProduct/{product_id}")
-    suspend fun getProduct(
-        @Path("product_id") product_id: Int
-    ): Response<ProductResponse>
+    suspend fun getProduct(@Path("product_id") product_id: Int): Response<ProductResponse>
 
     @GET("getSession")
     suspend fun getSession(): Response<SessionResponse>
@@ -80,21 +68,16 @@ interface API {
     @GET("getDoneOrders")
     suspend fun getDoneOrders(@Query("customer_id") customer_id: Int?): Response<OrderResponse>
 
-    @GET("termsAndConditions")
-    suspend fun termsAndConditions(@Query("store_id") store_id: Int?): Response<WebInfoResponse>
+    @POST("addToCart")
+    @Headers("Content-Type: application/json")
+    suspend fun addToCart(@Body cartBodyParameters: CartBodyParameters): Response<RegisterResponse>
 
-    @GET("services")
-    suspend fun services(
-        @Query("store_id") store_id: Int?,
-        @Query("store_id") maintenance_id: Int?
-    ): Response<ServiceResponse>
+    @POST("removeFromCart")
+    @Headers("Content-Type: application/json")
+    suspend fun removeFromCart(@Body cartBodyParameters: CartBodyParameters): Response<RegisterResponse>
 
-    @GET("loadCart")
-    suspend fun loadCart(
-        @Query("store_id") store_id: Int?,
-        @Query("order_id") maintenance_id: Int?
-    ): Response<CartResponse>
-
+    @GET("viewCart")
+    suspend fun viewCart(): Response<CartResponse>
 
     @POST("search")
     @Headers("Content-Type: application/json")
@@ -102,19 +85,6 @@ interface API {
         @Body searchBodyParameters: SearchBodyParameters
     ): Response<SearchResponse>
 
-    /*   @PUT("updateDeliveryAddress/{address_id}")
-   suspend fun editAddress(
-       @Header("Cookie") session_id: String,
-       @Path("address_id") address_id: Int,
-       @Body updateUserBody: AddressBodyParameters
-   ): Response<RegisterResponse> */
-
-    /*  @PUT
-      suspend fun editAddress2(
-          @Header("Cookie") session_id: String,
-          @Url updateAddressURL: String,
-          @Body updateUserBody: AddressBodyParameters
-      ): Response<RegisterResponse> */
     @GET("getCategories")
     // @Headers("Content-Type: application/json")
     suspend fun getAllCategories(): Response<CategoryResponse>

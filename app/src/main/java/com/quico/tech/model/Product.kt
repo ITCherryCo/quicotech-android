@@ -1,8 +1,8 @@
 package com.quico.tech.model
 
 
-class Product(val category: String,
-              val description: String,
+class Product(val category: String?,
+              val description: String?,
               val id: Int,
               val images: ArrayList<String>?,
               val image: String?,

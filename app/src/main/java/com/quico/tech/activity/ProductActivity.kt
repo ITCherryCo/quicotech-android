@@ -5,6 +5,8 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -21,10 +23,7 @@ import com.quico.tech.data.Constant
 import com.quico.tech.data.Constant.PRODUCT_ID
 import com.quico.tech.data.Constant.PRODUCT_NAME
 import com.quico.tech.databinding.ActivityProductBinding
-import com.quico.tech.model.Card
-import com.quico.tech.model.Product
-import com.quico.tech.model.ProductDetails
-import com.quico.tech.model.Specifications
+import com.quico.tech.model.*
 import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
@@ -40,6 +39,8 @@ class ProductActivity : AppCompatActivity() {
     private var product_id: Int? = 0
     private var product_name: String = ""
     private lateinit var viewModel2: SharedViewModel
+    private var is_vip_price: Boolean = false
+    private var quantity: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -150,26 +151,13 @@ class ProductActivity : AppCompatActivity() {
             bestSellerText.visibility = View.GONE
             newText.visibility = View.GONE
             vipText.visibility = View.GONE
+            selectPriceContainer.visibility = View.GONE
+            userVipContainer.visibility = View.GONE
 
+            product_id = product.id
             if (product.is_on_sale) {
                 bestSellerText.visibility = View.VISIBLE
                 bestSellerText.text = viewModel.getLangResources().getString(R.string.best_seller)
-            }
-
-            if (product.is_vip) {
-                vipText.visibility = View.VISIBLE
-                vipText.text = viewModel.getLangResources().getString(R.string.best_seller)
-            }
-            if (product.is_vip || product.is_on_sale) {
-                oldPrice.visibility = View.VISIBLE
-                newPrice.visibility = View.VISIBLE
-                oldPrice.text = "$ ${product.regular_price.toString()}"
-                newPrice.text = "$ ${product.new_price.toString()}"
-                oldPrice.setBackground(getResources().getDrawable(R.drawable.red_line))
-            }
-            else{
-                oldPrice.visibility = View.GONE
-                newPrice.text = "$ ${product.regular_price.toString()}"
             }
 
             name.text = product.name
@@ -198,25 +186,123 @@ class ProductActivity : AppCompatActivity() {
             }
 
             compareBtn.setOnClickListener {
-                //startActivity(Intent(this@ProductActivity,CompareSearchActivity::class.java))
-               // viewModel.itemId1=product.id
-             /*   viewModel2.itemId1=product.id
-                viewModel.itemId2=0
-                viewModel.itemId3=product.id
-                viewModel.updateItemId3(4)
-               // viewModel.item_id_3.value =0
-                Log.d("FRAGMENT_ITEM_ID", "item_id_1: ${viewModel.itemId1}")
-                Log.d("FRAGMENT_ITEM_ID", "item_id_2: ${viewModel.itemId2}")*/
+
                 startActivity(
                     Intent(this@ProductActivity, CompareProductActivity::class.java)
                         .putExtra(Constant.ITEM_ID, product.id)
                 )
             }
+
+
+            if (product.is_vip) {
+                salePriceContainer.visibility = View.GONE
+                vipText.visibility = View.VISIBLE
+                vipText.text = viewModel.getLangResources().getString(R.string.vip_price)
+
+                if (viewModel.user!=null){
+                    viewModel.user?.let { user->
+                        if (user.is_vip){
+                            userVipContainer.visibility = View.VISIBLE
+                            selectPriceContainer.visibility = View.GONE
+                            vipBadge.text = viewModel.getLangResources().getString(R.string.vip_price)
+                            price.text = "$ ${product.new_price.toString()}"
+                        }
+                        else{
+                            selectPriceContainer.visibility = View.VISIBLE
+                            userVipContainer.visibility = View.GONE
+                            managePriceType()
+                        }
+                    }
+                }
+            }
+           else if (product.is_on_sale) {
+                salePriceContainer.visibility = View.VISIBLE
+                userVipContainer.visibility = View.GONE
+                selectPriceContainer.visibility = View.GONE
+                bestSellerText.visibility = View.VISIBLE
+                bestSellerText.text = viewModel.getLangResources().getString(R.string.best_seller)
+
+                oldPrice.text = "$ ${product.regular_price.toString()}"
+                newPrice.text = "$ ${product.new_price.toString()}"
+                oldPrice.setBackground(getResources().getDrawable(R.drawable.red_line))
+            }
+            else{
+                oldPrice.visibility = View.GONE
+                newPrice.text = "$ ${product.regular_price.toString()}"
+            }
+            plusMinusQty()
+            addToCartBtn.setOnClickListener {
+                // if item is out of stock tell him
+                // else check if user logged in
+                checkUser()
+            }
         }
     }
 
-    private fun minusQty(){
+    private fun checkUser(){
+        if (viewModel.user==null) {
+            Common.setUpChoicesAlert(
+                this@ProductActivity,
+                viewModel.getLangResources().getString(R.string.login),
+                viewModel.getLangResources()
+                    .getString(R.string.please_login),
+                viewModel.getLangResources().getString(R.string.cancel),
+                viewModel.getLangResources().getString(R.string.login),
+                object : Common.ResponseChoices {
+                    override fun onConfirm() {
+                        startActivity(
+                            Intent(
+                                this@ProductActivity,
+                                LoginActivity::class.java
+                            )
+                        )
+                    }
 
+                    override fun onCancel() {
+                    }
+                }
+            )
+        }
+        else
+            addToCart(is_vip_price,product_id!!,quantity)
+    }
+
+    private fun managePriceType(){
+        binding.apply {
+            regularRadioBtn.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+                override fun onCheckedChanged(p0: CompoundButton?, checked: Boolean) {
+                    if (checked){
+                       is_vip_price = false
+                        vipRadioBtn.setChecked(false)
+                    }
+                }
+            })
+
+            vipRadioBtn.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+                override fun onCheckedChanged(p0: CompoundButton?, checked: Boolean) {
+                    if (checked) {
+                        is_vip_price = true
+                        regularRadioBtn.setChecked(false)
+                    }
+                }
+            })
+        }
+    }
+
+    private fun plusMinusQty(){
+        binding.apply {
+            plus.setOnClickListener {
+                quantity++
+                qty.text = quantity.toString()
+            }
+
+            minus.setOnClickListener {
+                if (quantity>1) {
+                    quantity--
+                    qty.text = quantity.toString()
+                }
+            }
+        }
     }
 
     private fun setImages(images: ArrayList<String>) {
@@ -241,6 +327,48 @@ class ProductActivity : AppCompatActivity() {
             recyclerView.setAdapter(productDetailsRecyclerViewAdapter)
             productDetailsRecyclerViewAdapter.differ.submitList(specifications)
         }
+    }
+
+    private fun addToCart(is_vip_price:Boolean, product_id:Int,quantity:Int){
+
+        var cartBodyParameters=CartBodyParameters(CartParams(is_vip_price,product_id,quantity))
+        Common.setUpProgressDialog(this)
+        viewModel.addToCart(cartBodyParameters,
+            object : SharedViewModel.ResponseStandard {
+                override fun onSuccess(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    // later add progress bar to view
+                    Common.cancelProgressDialog()
+                    Toast.makeText(
+                        this@ProductActivity,
+                        message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                override fun onFailure(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    Common.cancelProgressDialog()
+                    Common.setUpAlert(
+                       this@ProductActivity, false,
+                        viewModel.getLangResources()
+                            .getString(R.string.error),
+                        message,
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
+                }
+            })
+    }
+
+    private fun addToWishList(){
+
     }
 
     fun setLoading() {

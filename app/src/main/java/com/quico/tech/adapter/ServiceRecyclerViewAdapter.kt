@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.quico.tech.R
+import com.quico.tech.activity.LoginActivity
 import com.quico.tech.activity.RequestActivity
 import com.quico.tech.activity.ServiceListActivity
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ServiceItemListBinding
 import com.quico.tech.model.Service
 import com.quico.tech.model.ServiceType
+import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 
 class ServiceRecyclerViewAdapter(val viewModel: SharedViewModel) :
@@ -35,7 +37,22 @@ class ServiceRecyclerViewAdapter(val viewModel: SharedViewModel) :
                                 .putExtra(Constant.SERVICE_ID, serviceType.id)
                         )
                         else{
+                            Common.setUpChoicesAlert(
+                                itemView.context,
+                                viewModel.getLangResources().getString(R.string.login),
+                                viewModel.getLangResources()
+                                    .getString(R.string.please_login),
+                                viewModel.getLangResources().getString(R.string.cancel),
+                                viewModel.getLangResources().getString(R.string.login),
+                                object : Common.ResponseChoices {
+                                    override fun onConfirm() {
+                                        itemView.context.startActivity(Intent(itemView.context,LoginActivity::class.java))
+                                    }
 
+                                    override fun onCancel() {
+                                    }
+                                }
+                            )
                         }
                     }
                     else

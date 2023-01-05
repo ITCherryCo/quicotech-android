@@ -10,6 +10,7 @@ import com.quico.tech.R
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.CartItemListBinding
 import com.quico.tech.model.Item
+import com.quico.tech.model.Product
 import com.quico.tech.viewmodel.SharedViewModel
 
 class CartRecyclerViewAdapter (val viewModel: SharedViewModel): RecyclerView.Adapter<CartRecyclerViewAdapter.ItemViewHolder>() {
@@ -17,7 +18,7 @@ class CartRecyclerViewAdapter (val viewModel: SharedViewModel): RecyclerView.Ada
   inner  class ItemViewHolder(private var binding: CartItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Item) {
+        fun bind(product: Product) {
             binding.apply {
 
                 if (viewModel.getLanguage().equals(Constant.AR)){
@@ -51,13 +52,13 @@ class CartRecyclerViewAdapter (val viewModel: SharedViewModel): RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val item = differ.currentList[position]
-        holder.bind(item)
+        val product = differ.currentList[position]
+        holder.bind(product)
     }
 
-    private var onItemClickListener: ((Item) -> Unit)? = null
+    private var onItemClickListener: ((Product) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (Item) -> Unit) {
+    fun setOnItemClickListener(listener: (Product) -> Unit) {
         onItemClickListener = listener
     }
 
@@ -66,12 +67,12 @@ class CartRecyclerViewAdapter (val viewModel: SharedViewModel): RecyclerView.Ada
     }
 
 
-    private val differCallback = object : DiffUtil.ItemCallback<Item>() {
-        override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
+    private val differCallback = object : DiffUtil.ItemCallback<Product>() {
+        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
+        override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
             return oldItem == newItem
         }
     }

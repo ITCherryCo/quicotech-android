@@ -40,6 +40,7 @@ object Constant {
     var USER_REGISTER_TAG= "USER_REGISTER_TAG"
     var USER_LOGIN_TAG= "USER_LOGIN_TAG"
     val ADDRESS_TAG= "ADDRESS_TAG"
+    val CART_TAG= "CART_TAG"
     val SERVICE_TAG= "SERVICE_TAG"
     val PRODUCT_TAG= "PRODUCT_TAG"
     val ADDRESS= "address"

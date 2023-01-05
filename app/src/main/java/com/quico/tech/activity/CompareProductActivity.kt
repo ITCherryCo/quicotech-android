@@ -109,7 +109,7 @@ class CompareProductActivity : AppCompatActivity() {
         bundle2.putInt(ITEM_ID, item_id_2)
         bundle2.putInt(FRAGMENT_POSITION, 2)
         fragment2.arguments= bundle2
-        //fragment2?.let { loadFragment2(it) }
+        fragment2?.let { loadFragment2(it) }
     }
 
     private fun loadFragment1(fragment: Fragment) {

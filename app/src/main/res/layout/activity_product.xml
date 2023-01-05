@@ -232,7 +232,7 @@
                             </RelativeLayout>
 
                                 <RelativeLayout
-                                    android:id="@+id/priceContainer"
+                                    android:id="@+id/salePriceContainer"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginTop="12dp"
@@ -264,8 +264,133 @@
                                         android:textColor="@color/green"
                                         android:textDirection="locale"
                                         android:textSize="19sp" />
-
                                 </RelativeLayout>
+
+                            <LinearLayout
+                                android:id="@+id/userVipContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:textDirection="locale"
+                                android:layoutDirection="locale"
+                                android:layout_marginTop="12dp">
+
+                                <TextView
+                                    android:id="@+id/vipBadge"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingVertical="5dp"
+                                    android:fontFamily="@font/medium"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/color_secondary_black"
+                                    android:backgroundTint="@color/orange3"
+                                    android:text="@string/vip_price"
+                                    android:background="@drawable/container_purple_corner_12"
+                                    android:paddingHorizontal="10dp"/>
+
+                                <TextView
+                                    android:id="@+id/price"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/bold"
+                                    android:layoutDirection="locale"
+                                    android:paddingHorizontal="5dp"
+                                    android:text="$100.55"
+                                    android:layout_marginEnd="25dp"
+                                    android:textColor="@color/color_primary_purple"
+                                    android:textDirection="locale"
+                                    android:textSize="18sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/selectPriceContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:textDirection="locale"
+                                android:layoutDirection="locale"
+                                android:layout_marginTop="12dp">
+
+                                <RadioButton
+                                    android:id="@+id/regularRadioBtn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layoutDirection="locale"
+                                    android:textDirection="locale"
+                                    android:text="@string/regular_price"/>
+
+                                <TextView
+                                    android:id="@+id/regularPrice"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_centerVertical="true"
+                                    android:fontFamily="@font/bold"
+                                    android:layoutDirection="locale"
+                                    android:paddingStart="25dp"
+                                    android:text="$100.55"
+                                    android:textColor="@color/color_primary_purple"
+                                    android:textDirection="locale"
+                                    android:textSize="18sp" />
+
+
+                                <RadioButton
+                                    android:id="@+id/vipRadioBtn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layoutDirection="locale"
+                                    android:textDirection="locale"
+                                    android:text="@string/vip_price"/>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/vipPrice"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/bold"
+                                    android:layoutDirection="locale"
+                                    android:paddingStart="25dp"
+                                    android:text="$100.55"
+                                    android:textColor="@color/color_primary_purple"
+                                    android:textDirection="locale"
+                                    android:textSize="18sp" />
+
+                                    <TextView
+                                        android:id="@+id/discount"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingVertical="4dp"
+                                        android:fontFamily="@font/bold"
+                                        android:textSize="10sp"
+                                        android:layout_toEndOf="@+id/vipPrice"
+                                        android:textColor="@color/color_secondary_black"
+                                        android:backgroundTint="@color/orange3"
+                                        android:text="-27%"
+                                        android:layout_marginStart="13dp"
+                                        android:background="@drawable/container_purple_corner_12"
+                                        android:paddingHorizontal="6dp"/>
+
+                                    <TextView
+                                        android:id="@+id/vipMsg"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="5dp"
+                                        android:paddingStart="25dp"
+                                        android:fontFamily="@font/regular"
+                                        android:layoutDirection="locale"
+                                        android:layout_below="@id/vipPrice"
+                                        android:text="@string/vip_subscription_msg"
+                                        android:textColor="@color/gray_dark"
+                                        android:textDirection="locale"
+                                        android:textSize="12sp" />
+                                </RelativeLayout>
+
+                            </LinearLayout>
 
                             <TextView
                                 android:id="@+id/description"
