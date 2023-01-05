@@ -23,17 +23,17 @@
 
         <SearchView
             android:id="@+id/searchView"
+            style="@style/AppTheme.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:layoutDirection="locale"
-            android:queryHint="@string/search_hint"
-            android:iconifiedByDefault="false"
-            android:textDirection="locale"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
-            style="@style/AppTheme.Toolbar"
-            android:layout_toStartOf="@+id/filterImage"/>
+            android:layout_toStartOf="@+id/filterImage"
+            android:background="@color/white"
+            android:iconifiedByDefault="false"
+            android:layoutDirection="locale"
+            android:queryHint="@string/search_hint"
+            android:textDirection="locale" />
 
         <ImageView
             android:id="@+id/filterImage"

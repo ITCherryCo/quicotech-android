@@ -2,6 +2,7 @@ package com.quico.tech.activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import com.quico.tech.R
 import com.quico.tech.databinding.ActivityHomeBinding
 import com.quico.tech.fragment.*
 import com.quico.tech.utils.Common
+import com.quico.tech.viewmodel.SharedViewModel
 
 
 class HomeActivity : AppCompatActivity() {

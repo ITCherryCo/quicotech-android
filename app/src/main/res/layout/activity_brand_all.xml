@@ -76,6 +76,7 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_margin="6dp"
                     android:padding="8dp" />
 
                 <include
@@ -87,7 +88,6 @@
                     android:id="@+id/shimmer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_above="@+id/totalContainer"
                     android:layout_gravity="center"
                     android:layoutDirection="locale"
                     android:padding="5dp"

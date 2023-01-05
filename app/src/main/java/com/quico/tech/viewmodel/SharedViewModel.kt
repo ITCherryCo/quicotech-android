@@ -15,6 +15,7 @@ import com.quico.tech.data.Constant.CONNECTION
 
 import com.quico.tech.data.Constant.EN
 import com.quico.tech.data.Constant.ERROR
+import com.quico.tech.data.Constant.HOME_TAG
 import com.quico.tech.data.Constant.ONGOING_ORDERS
 import com.quico.tech.data.Constant.PRODUCT_TAG
 import com.quico.tech.data.Constant.SERVICE_TAG
@@ -99,6 +100,11 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private val _brands: MutableStateFlow<Resource<BrandResponse>> =
         MutableStateFlow(Resource.Nothing())
     val brands: StateFlow<Resource<BrandResponse>> get() = _brands
+
+    private val _homeData: MutableStateFlow<Resource<HomeDataResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val homeData: StateFlow<Resource<HomeDataResponse>> get() = _homeData
+
 
     init {
         context = getApplication<Application>().applicationContext
@@ -1029,6 +1035,37 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             } else {
                 Log.d(BRAND_TAG, "$CONNECTION}")
                 _brands.emit(Resource.Connection())
+            }
+        }
+    }
+
+    fun getHomeData() {
+        viewModelScope.launch {
+
+            _homeData.emit(Resource.Loading())
+
+            if (checkInternet(context)) {
+                try {
+                    Log.d("SESSION_ID", "${user?.session_id}")
+                    val response = repository.getHomeData()
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            //Log.d(HOME_TAG, "SUCCESS ${resultResponse.result?.size}}")
+                            _homeData.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        Log.d(HOME_TAG, "ERROR ${response}}")
+
+                        _homeData.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d(HOME_TAG, "EXCEPTION ${e.message}}}")
+                    _homeData.emit(Resource.Error(ERROR))
+                }
+            } else {
+                Log.d(HOME_TAG, "$CONNECTION}")
+                _homeData.emit(Resource.Connection())
             }
         }
     }
