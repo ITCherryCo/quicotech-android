@@ -4,9 +4,10 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.quico.tech.MyApplication
 import com.quico.tech.R
+import com.quico.tech.data.Constant
 import com.quico.tech.data.Constant.ADDRESS_TAG
 import com.quico.tech.data.Constant.ALL
 import com.quico.tech.data.Constant.BRAND_TAG
@@ -345,8 +346,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                         if (response.isSuccessful) {
                             if (response.body()?.result?.status != null) {
                                 Log.d(USER_LOGOUT_TAG, "$SUCCESS")
-                                user = null
-                                prefManager.cookies = null
+                               // user = null
+                              //  prefManager.cookies = null
                                 responseStandard?.onSuccess(
                                     true,
                                     SUCCESS,
@@ -493,7 +494,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                                     getLangResources().getString(R.string.phone_changed_successfully)
                                 )
                             } else {
-                                Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.result?.error}")
+                               // Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.result?.error}")
+                                Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.error}")
                                 // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
                                 responseStandard?.onFailure(
                                     false,
@@ -523,6 +525,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
+                    Log.d(Constant.USER_LOGIN_TAG, "EMAIL $reset ${params.params.login}  ${params.params.new_password}")
+
                     var response: Response<RegisterResponse>? = null
                     if (reset)
                         response= repository.forgetPassword(params)
@@ -540,7 +544,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                             )
                         } else {
                             Log.d(USER_LOGIN_TAG, "$ERROR ${response.body()}")
-                            responseStandard?.onFailure(false, ERROR, response.body().toString())
+                            responseStandard?.onFailure(false, ERROR, response.body()?.error.toString())
                             // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
                         }
                     } else {
@@ -1032,5 +1036,15 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
     }
+}
 
+class ViewModelFactory : ViewModelProvider.Factory {
+    private var viewModel: SharedViewModel? = null
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (viewModel == null) {
+            viewModel = SharedViewModel(MyApplication())
+        }
+        return viewModel as T
+    }
 }

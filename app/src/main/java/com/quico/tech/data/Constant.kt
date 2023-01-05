@@ -71,6 +71,7 @@ object Constant {
     val CATEGORY_ID= "category_id"
     val BRAND_ID= "BRAND_id"
     var ITEM_ID= "item_id"
+    var FRAGMENT_POSITION="fragment_position"
     var SEND_EMAIL_LINK= "SEND_EMAIL_LINK"
     var TEMPORAR_USER : RegisterParams? =null
     var TEMPORAR_ADDRESS : Address? =null

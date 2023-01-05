@@ -19,19 +19,19 @@ interface API {
     suspend fun logout(): Response<RegisterResponse>
 
     @POST("changePassword")
-    @Headers("Content-Type: application/json")
+    @Headers("Content-Type: text/html")
     suspend fun changePassword(@Body passwordBody: PasswordBodyParameters): Response<RegisterResponse>
 
-    @POST("forgetPassword")
-    @Headers("Content-Type: application/json")
+    @POST("resetPassword")
+   // @Headers("Content-Type: application/json")
     suspend fun forgetPassword(@Body passwordBody: PasswordBodyParameters): Response<RegisterResponse>
 
     @PUT("updateUserInfo")
     suspend fun updateUserInfo(@Body updateUserBody: UpdateUserBodyParameters): Response<RegisterResponse>
 
     @POST("updateEmail")
+    @Headers("Content-Type: application/json")
     suspend fun updateEmail(
-       // @Header("Cookie") session_id: String,
         @Body emailBody: EmailBodyParameters
     ): Response<RegisterResponse>
 

@@ -1,7 +1,5 @@
 package com.quico.tech.model
 
-import android.graphics.drawable.Drawable
-
 
 class Product(val category: String,
               val description: String,
@@ -13,7 +11,7 @@ class Product(val category: String,
               val name: String,
               val new_price: Double,
               val regular_price: Double,
-              val specifications: ArrayList<ArrayList<String>>?) {
+              val specifications: ArrayList<Specifications>?) {
 
     constructor(
         name: String,

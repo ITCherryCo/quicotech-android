@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,9 +24,11 @@ import com.quico.tech.databinding.ActivityProductBinding
 import com.quico.tech.model.Card
 import com.quico.tech.model.Product
 import com.quico.tech.model.ProductDetails
+import com.quico.tech.model.Specifications
 import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
+import com.quico.tech.viewmodel.ViewModelFactory
 import kotlinx.coroutines.launch
 
 
@@ -36,12 +39,16 @@ class ProductActivity : AppCompatActivity() {
     private var showText = false
     private var product_id: Int? = 0
     private var product_name: String = ""
+    private lateinit var viewModel2: SharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initToolbar()
+
+        val factory = ViewModelFactory()
+        viewModel2 = ViewModelProvider(this, factory).get(SharedViewModel::class.java)
 
         product_id = intent?.extras?.getInt(PRODUCT_ID)
         product_name = intent?.extras?.getString(PRODUCT_NAME)!!
@@ -83,13 +90,6 @@ class ProductActivity : AppCompatActivity() {
 
             // oldPrice.setPaintFlags(oldPrice.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG) // draw line on old price
 
-            compareBtn.setOnClickListener {
-                //startActivity(Intent(this@ProductActivity,CompareSearchActivity::class.java))
-                startActivity(
-                    Intent(this@ProductActivity, CompareProductActivity::class.java)
-                        .putExtra(Constant.ITEM_ID, 1)
-                )
-            }
 
             toolbarProductDetails.cartImage.setOnClickListener {
                 startActivity(Intent(this@ProductActivity, CartActivity::class.java))
@@ -196,6 +196,22 @@ class ProductActivity : AppCompatActivity() {
                 showHideText.visibility = View.VISIBLE
                 detailsContainer.visibility = View.GONE
             }
+
+            compareBtn.setOnClickListener {
+                //startActivity(Intent(this@ProductActivity,CompareSearchActivity::class.java))
+               // viewModel.itemId1=product.id
+             /*   viewModel2.itemId1=product.id
+                viewModel.itemId2=0
+                viewModel.itemId3=product.id
+                viewModel.updateItemId3(4)
+               // viewModel.item_id_3.value =0
+                Log.d("FRAGMENT_ITEM_ID", "item_id_1: ${viewModel.itemId1}")
+                Log.d("FRAGMENT_ITEM_ID", "item_id_2: ${viewModel.itemId2}")*/
+                startActivity(
+                    Intent(this@ProductActivity, CompareProductActivity::class.java)
+                        .putExtra(Constant.ITEM_ID, product.id)
+                )
+            }
         }
     }
 
@@ -215,7 +231,7 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpDetailsAdapter( details:ArrayList<ArrayList<String>>) {
+    private fun setUpDetailsAdapter( specifications:ArrayList<Specifications>) {
         binding.apply {
             productDetailsRecyclerViewAdapter = ProductDetailsRecyclerViewAdapter()
 
@@ -223,7 +239,7 @@ class ProductActivity : AppCompatActivity() {
                 LinearLayoutManager(this@ProductActivity, LinearLayoutManager.VERTICAL, false)
             recyclerView.setItemAnimator(DefaultItemAnimator())
             recyclerView.setAdapter(productDetailsRecyclerViewAdapter)
-            productDetailsRecyclerViewAdapter.differ.submitList(details)
+            productDetailsRecyclerViewAdapter.differ.submitList(specifications)
         }
     }
 
@@ -238,8 +254,8 @@ class ProductActivity : AppCompatActivity() {
     fun onRefresh() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
-                    setLoading()
-                    viewModel.getProduct(product_id!!) // get User id
+                setLoading()
+                viewModel.getProduct(product_id!!) // get User id
             })
         }
     }

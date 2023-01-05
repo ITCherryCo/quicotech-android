@@ -42,6 +42,7 @@ import com.quico.tech.utils.Common.isProgressIsLoading
 import com.quico.tech.utils.Common.setUpProgressDialog
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -156,25 +157,32 @@ class VerificationCodeActivity : AppCompatActivity() {
                      }*/
                             pinview.visibility = View.GONE
                             verifyBtn.visibility = View.GONE
-                            try {
-                                if (emailLink == null) {
-                                    startTimer()
-                                    sendEmailLink(TEMPORAR_USER!!.login!!)
-                                    resendText.setOnClickListener {
-                                        // MUST RESEND AN EMAIL
-                                        sendEmailLink(TEMPORAR_USER!!.login!!)
-                                    }
-                                } else {
-                                    // must verify email link
-                                    verifyBtn.visibility = View.VISIBLE
-                                    verifyBtn.setOnClickListener {
-                                        if (viewModel.sendOtpPhoneNumber.isEmpty())
-                                            verifyEmail(TEMPORAR_USER!!.login!!, emailLink!!)
-                                    }
-                                }
-                            } catch (e: Exception) {
-                                Log.d(SEND_EMAIL_LINK, "EXCEPTION ${e.message}")
-                            }
+
+                            // must remove it
+                           // updateEmail(EmailBodyParameters(EmailParams(TEMPORAR_USER!!.login!!)))
+                          /*  startActivity(
+                                Intent(this@VerificationCodeActivity, EditCredentialsActivity::class.java)
+                                    .putExtra(Constant.PROFILE_EDIT_TYPE, Constant.FORGET_PASSWORD)
+                            )*/
+                             try {
+                                 if (emailLink == null) {
+                                     startTimer()
+                                     sendEmailLink(TEMPORAR_USER!!.login!!)
+                                     resendText.setOnClickListener {
+                                         // MUST RESEND AN EMAIL
+                                         sendEmailLink(TEMPORAR_USER!!.login!!)
+                                     }
+                                 } else {
+                                     // must verify email link
+                                     verifyBtn.visibility = View.VISIBLE
+                                     verifyBtn.setOnClickListener {
+                                         if (viewModel.sendOtpPhoneNumber.isEmpty())
+                                             verifyEmail(TEMPORAR_USER!!.login!!, emailLink!!)
+                                     }
+                                 }
+                             } catch (e: Exception) {
+                                 Log.d(SEND_EMAIL_LINK, "EXCEPTION ${e.message}")
+                             }
                         }
 
                         PHONE_NUMBER -> {
@@ -648,13 +656,16 @@ class VerificationCodeActivity : AppCompatActivity() {
                         message,
                         Toast.LENGTH_LONG
                     )
-                    startActivity(
-                        Intent(
-                            this@VerificationCodeActivity,
-                            LoginActivity::class.java
+                    lifecycleScope.launch {
+                        delay(300)
+                        startActivity(
+                            Intent(
+                                this@VerificationCodeActivity,
+                                LoginActivity::class.java
+                            )
+                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         )
-                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    )
+                    }
                 }
 
                 override fun onFailure(

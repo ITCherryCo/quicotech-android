@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.quico.tech.R
 import com.quico.tech.data.Constant
 import com.quico.tech.data.Constant.CHANGE_PASSWORD
@@ -20,6 +21,8 @@ import com.quico.tech.model.PasswordParams
 import com.quico.tech.model.RegisterParams
 import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class EditCredentialsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditCredentialsBinding
@@ -271,13 +274,17 @@ class EditCredentialsActivity : AppCompatActivity() {
                         message,
                         Toast.LENGTH_LONG
                     )
-                    startActivity(
-                        Intent(
-                            this@EditCredentialsActivity,
-                            LoginActivity::class.java
+                    lifecycleScope.launch {
+                        delay(300)
+
+                        startActivity(
+                            Intent(
+                                this@EditCredentialsActivity,
+                                LoginActivity::class.java
+                            )
+                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         )
-                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    )
+                    }
                 }
 
                 override fun onFailure(
@@ -288,7 +295,8 @@ class EditCredentialsActivity : AppCompatActivity() {
                     Common.cancelProgressDialog()
                     Common.setUpAlert(
                         this@EditCredentialsActivity, false,
-                        viewModel.getLangResources().getString(R.string.error),
+                        resultTitle,
+                       // viewModel.getLangResources().getString(R.string.error),
                         message,
                         viewModel.getLangResources().getString(R.string.ok),
                         null
