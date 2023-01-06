@@ -1,6 +1,5 @@
 package com.quico.tech.activity
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,16 +12,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
 import com.quico.tech.adapter.CategoryAllRecyclerViewAdapter
-import com.quico.tech.adapter.ServiceRecyclerViewAdapter
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityCategoryAllBinding
 import com.quico.tech.model.Category
-import com.quico.tech.model.Product
-import com.quico.tech.model.Service
 import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CategoryAllActivity : AppCompatActivity() {
@@ -79,7 +74,7 @@ class CategoryAllActivity : AppCompatActivity() {
                         stopShimmer()
                         response.data?.let { categoriesResponse ->
                             if (categoriesResponse.result!!.isNullOrEmpty())
-                                setUpErrorForm(Constant.NO_Categories)
+                                setUpErrorForm(Constant.NO_CATEGORIES)
                             else {
                                 categoryAllRecyclerViewAdapter.differ.submitList(categoriesResponse.result!!)
                                 binding.recyclerView.setVisibility(View.VISIBLE)
@@ -169,7 +164,7 @@ class CategoryAllActivity : AppCompatActivity() {
                             viewModel.getLangResources().getString(R.string.check_connection)
                         )
                     }
-                    Constant.NO_Categories -> {
+                    Constant.NO_CATEGORIES -> {
                         errorMsg2.text =
                             viewModel.getLangResources().getString(R.string.no_categories)
                         errorImage.setImageResource(R.drawable.empty_item)

@@ -93,4 +93,8 @@ interface API {
     // @Headers("Content-Type: application/json")
     suspend fun getAllBrands(): Response<BrandResponse>
 
+    @GET("homepage")
+    // @Headers("Content-Type: application/json")
+    suspend fun getHomeData(): Response<HomeDataResponse>
+
 }

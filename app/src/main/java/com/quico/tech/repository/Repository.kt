@@ -38,7 +38,9 @@ class Repository() {
 
     suspend fun getAllCategories() = RetrofitInstance.api.getAllCategories()
 
+
     suspend fun getAllBrands() = RetrofitInstance.api.getAllBrands()
+    suspend fun getHomeData() = RetrofitInstance.api.getHomeData()
 
     /* suspend fun getSession() = RetrofitInstance.newRetrofit(context).getSession()
      suspend fun getAddresses(session_id: String) = RetrofitInstance.newRetrofit(context).getAddresses(session_id)

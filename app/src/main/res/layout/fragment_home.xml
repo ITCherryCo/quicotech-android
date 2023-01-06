@@ -6,46 +6,419 @@
         android:layout_height="match_parent"
         android:layoutDirection="locale">
 
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:layout_alignParentTop="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="0dp">
+
+        <include
+            android:id="@+id/toolbarHomeInclude"
+            layout="@layout/home_toolbar" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <View
+        android:id="@+id/grey_line"
+        android:layout_below="@+id/appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_line_corner_12"
+        />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/grey_line">
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:layoutDirection="locale"
-        android:scrollbars="none"
-        android:scrollingCache="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/homeContent"
-            layout="@layout/fragment_home_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="locale"
+                android:layout_marginTop="0dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+                
+                <SearchView
+                    android:id="@+id/searchView"
+                    style="@style/AppTheme.Toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@color/white"
+                    android:iconifiedByDefault="false"
+                    android:layoutDirection="locale"
+                    android:queryHint="@string/search_hint"
+                    android:textDirection="locale" />
+
+                <RelativeLayout
+                    android:id="@+id/home_image_vip"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layoutDirection="locale"
+                    android:background="@drawable/image_vip_home">
+
+                    <TextView
+                        android:id="@+id/becomeAVip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/become_a_vip"
+                        android:textSize="42sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="42dp"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:fontFamily="@font/regular" />
+
+                    <TextView
+                        android:id="@+id/test"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="test test test test test test test test \n test test test"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:layout_below="@+id/becomeAVip"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="6dp"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:fontFamily="@font/regular" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/test"
+                        android:layout_centerHorizontal="true"
+                        android:paddingStart="26dp"
+                        android:paddingEnd="26dp"
+                        android:paddingBottom="4dp"
+                        android:paddingTop="4dp"
+                        android:textSize="13sp"
+                        android:letterSpacing="0.1"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/bold"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/container_stroke_white"
+                        android:text="@string/subscribe" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnyCategoryCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="locale"
+                android:elevation="3dp"
+                android:layout_marginTop="0dp"
+                android:background="@color/white"
+                android:layout_marginBottom="6dp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:id="@+id/lnyCategoryHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:layoutDirection="locale"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Categories"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/viewAllCategoriesLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:text="View All"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewCategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:clipToPadding="false"
+                    android:layoutDirection="locale"
+                    android:scrollbars="none" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="locale"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/lnyBrandHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:layoutDirection="locale"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Brands"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/viewAllBrandsLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:text="View All"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="@color/color_primary_purple"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewBrands"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:clipToPadding="false"
+                    android:layoutDirection="locale"
+                    android:scrollbars="none" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnyHotDealsheader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="locale"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:layoutDirection="locale"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Hot Deals"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:text="View All"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="@color/color_primary_purple"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewHotDeals"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:clipToPadding="false"
+                    android:layoutDirection="locale"
+                    android:scrollbars="none" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnyBestSellingsheader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="locale"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:layoutDirection="locale"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Best selling"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:text="View All"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="@color/color_primary_purple"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewBestSelling"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:clipToPadding="false"
+                    android:layoutDirection="locale"
+                    android:scrollbars="none" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnyOfferssheader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="locale"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:layoutDirection="locale"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Offers and Sales"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:text="View All"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="@color/color_primary_purple"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewOffers"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:clipToPadding="false"
+                    android:layoutDirection="locale"
+                    android:scrollbars="none" />
+
+            </LinearLayout>
+
+            <include
+                android:id="@+id/homeErrorContainer"
+                layout="@layout/error_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="150dp"
+                android:visibility="gone" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layoutDirection="locale"
+                android:padding="5dp"
+                android:visibility="gone"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                app:shimmer_auto_start="false"
+                app:shimmer_duration="1000">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/shimmer_loading_fragment_home" />
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:shimmer_auto_start="false"
-            android:layoutDirection="locale"
-            app:shimmer_duration="800">
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-            <include layout="@layout/shimmer_loading_fragment_home" />
 
-        </com.facebook.shimmer.ShimmerFrameLayout>
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/lyt_failed"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_centerInParent="true"-->
-<!--            android:paddingBottom="?attr/actionBarSize"-->
-<!--            android:visibility="gone">-->
-
-<!--            <include layout="@layout/include_empty_state" />-->
-
-<!--        </LinearLayout>-->
 
 </RelativeLayout>
