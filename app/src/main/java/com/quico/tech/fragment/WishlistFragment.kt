@@ -17,6 +17,7 @@ import com.quico.tech.data.Constant
 import com.quico.tech.databinding.FragmentSearchBinding
 import com.quico.tech.databinding.FragmentWishlistBinding
 import com.quico.tech.model.Product
+import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -53,6 +54,7 @@ class WishlistFragment : Fragment() {
             wishlistToolbar.cartImage.setOnClickListener {
                 startActivity(Intent(requireContext(), CompareSearchActivity::class.java))
             }
+            Common.setSystemBarColor(requireActivity(), R.color.home_background_grey)
         }
     }
 

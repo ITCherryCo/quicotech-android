@@ -23,4 +23,13 @@ data class CartParams(
         product_id,
         null,
     )
+
+    constructor(
+        product_id: Int,
+        quantity: Int,
+    ) : this(
+        false,
+        product_id,
+        quantity,
+    )
 }

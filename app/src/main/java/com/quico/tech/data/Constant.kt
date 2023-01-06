@@ -83,7 +83,7 @@ object Constant {
     var ACTIVITY_TYPE ="activity_type"
     var TERMS_OF_USE ="terms_of_use"
     var VIP_BENEFITS ="vip_benefits"
-
+    var SEARCH_TEXT =""
 
 
 }

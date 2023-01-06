@@ -10,6 +10,7 @@ import com.quico.tech.R
 import com.quico.tech.data.Constant.ADDRESS_TAG
 import com.quico.tech.data.Constant.ALL
 import com.quico.tech.data.Constant.BRAND_TAG
+import com.quico.tech.data.Constant.CART_TAG
 import com.quico.tech.data.Constant.CATEGORY_TAG
 import com.quico.tech.data.Constant.CONNECTION
 
@@ -160,6 +161,12 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             viewModelScope.launch {
                 _send_otp.emit(value)
             }
+        }
+
+    var vip_subsription: Boolean
+        get() = prefManager.vip_subsription
+        set(value) {
+            prefManager.vip_subsription=value
         }
 
     /*   var current_session_id:String?
@@ -784,7 +791,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
             if (checkInternet(context)) {
                 try {
-                    val response = repository.getServices(service_id)
+                    val response = repository.getServiceTypes(service_id)
 
                     if (response.isSuccessful) {
                         response.body()?.let { resultResponse ->
@@ -894,46 +901,86 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun getServices(
-        maintenance_id: Int
+    fun addToCart(
+        params: CartBodyParameters,
+        responseStandard: ResponseStandard?
     ) {
         viewModelScope.launch {
-            _services.emit(Resource.Loading())
             if (checkInternet(context)) {
                 try {
-                    val response =
-                        repository.services(getStoreId(), maintenance_id) //_subcategories
+                    user?.session_id?.let { session_id ->
+                        var response = repository.addToCart(params)
 
-                    if (response.isSuccessful) {
-                        response.body()?.let { resultResponse ->
-                            _services.emit(Resource.Success(resultResponse))
+                        if (response.isSuccessful) {
+                            if (response.body()?.result?.status != null) {
+                                Log.d(CART_TAG, "Success")
+                                responseStandard?.onSuccess(
+                                    true,
+                                    SUCCESS,
+                                    getLangResources().getString(R.string.item_added_successfully)
+                                )
+                            } else {
+                                Log.d(CART_TAG, "$ERROR ${response.body()}")
+                                /*  responseStandard?.onFailure(
+                                      false,
+                                      ERROR,
+                                      getLangResources().getString(R.string.error_msg)
+                                  )*/
+
+                                responseStandard?.onFailure(
+                                    false,
+                                    ERROR,
+                                    response.body().toString()
+                                )
+                            }
+                            //  getUser(session_id)
+                        } else {
+                            Log.d(CART_TAG, "FAILUER ${response.body()}")
+                            /*  responseStandard?.onFailure(
+                                  false,
+                                  ERROR,
+                                  getLangResources().getString(R.string.error_msg)
+                              )*/
+                            responseStandard?.onFailure(
+                                false,
+                                "FAILUER",
+                                response.body().toString()
+                            )
                         }
-                    } else {
-                        _services.emit(Resource.Error(response.message()))
                     }
                 } catch (e: Exception) {
-                    _services.emit(Resource.Error(ERROR))
+                    Log.d(CART_TAG, "EXCEPTION ${e.message.toString()}")
+                    /* responseStandard?.onFailure(
+                         false,
+                         ERROR,
+                         getLangResources().getString(R.string.error_msg)
+                     )*/
+                    responseStandard?.onFailure(
+                        false,
+                        "EXCEPTION",
+                        "${e.message.toString()}"
+                    )
                 }
             } else {
-                _services.emit(Resource.Connection())
+                Log.d(CART_TAG, "$CONNECTION}")
+                responseStandard?.onFailure(false, CONNECTION, CONNECTION)
             }
         }
     }
-
-    fun loadCart(reloadWithoutSwipe: Boolean, order_id: Int) {
+    fun loadCart(reloadWithoutSwipe: Boolean) {
         viewModelScope.launch {
 
             if (!reloadWithoutSwipe)
                 _cart_items.emit(Resource.Loading())
             if (checkInternet(context)) {
                 try {
-                    var response = repository.loadCart(getStoreId(), order_id)
+                    var response = repository.viewCart()
                     if (response!!.isSuccessful) {
                         response?.body()?.let { resultResponse ->
                             if (resultResponse.result.equals(SUCCESS)) {
                                 _cart_items.emit(Resource.Success(resultResponse))
                             } else {
-                                _cart_items.emit(Resource.Error(resultResponse.message))
+                                _cart_items.emit(Resource.Error(resultResponse.error.message))
                                 Log.d("CART_RESPONSE", "no")
                             }
                         }
@@ -951,31 +998,72 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-
-    fun generalWebInfo(
+    fun subscribeToVip(
+        params: CartBodyParameters,
+        responseStandard: ResponseStandard?
     ) {
         viewModelScope.launch {
-            _general_web_info.emit(Resource.Loading())
             if (checkInternet(context)) {
                 try {
-                    val response = repository.termsAndConditions(getStoreId()) //_subcategories
+                    user?.session_id?.let { session_id ->
+                        var response = repository.subscribeToVip(params)
 
-                    if (response.isSuccessful) {
-                        response.body()?.let { resultResponse ->
-                            _general_web_info.emit(Resource.Success(resultResponse))
+                        if (response.isSuccessful) {
+                            if (response.body()?.result?.status != null) {
+                                Log.d(CART_TAG, "Success")
+                                responseStandard?.onSuccess(
+                                    true,
+                                    SUCCESS,
+                                    getLangResources().getString(R.string.item_added_successfully)
+                                )
+                            } else {
+                                Log.d(CART_TAG, "$ERROR ${response.body()}")
+                                /*  responseStandard?.onFailure(
+                                      false,
+                                      ERROR,
+                                      getLangResources().getString(R.string.error_msg)
+                                  )*/
+
+                                responseStandard?.onFailure(
+                                    false,
+                                    ERROR,
+                                    response.body().toString()
+                                )
+                            }
+                            //  getUser(session_id)
+                        } else {
+                            Log.d(CART_TAG, "FAILUER ${response.body()}")
+                            /*  responseStandard?.onFailure(
+                                  false,
+                                  ERROR,
+                                  getLangResources().getString(R.string.error_msg)
+                              )*/
+                            responseStandard?.onFailure(
+                                false,
+                                "FAILUER",
+                                response.body().toString()
+                            )
                         }
-                    } else {
-                        _general_web_info.emit(Resource.Error(response.message()))
                     }
                 } catch (e: Exception) {
-                    _general_web_info.emit(Resource.Error(ERROR))
+                    Log.d(CART_TAG, "EXCEPTION ${e.message.toString()}")
+                    /* responseStandard?.onFailure(
+                         false,
+                         ERROR,
+                         getLangResources().getString(R.string.error_msg)
+                     )*/
+                    responseStandard?.onFailure(
+                        false,
+                        "EXCEPTION",
+                        "${e.message.toString()}"
+                    )
                 }
             } else {
-                _general_web_info.emit(Resource.Connection())
+                Log.d(CART_TAG, "$CONNECTION}")
+                responseStandard?.onFailure(false, CONNECTION, CONNECTION)
             }
         }
     }
-
 
     fun getAllCategories() {
         viewModelScope.launch {

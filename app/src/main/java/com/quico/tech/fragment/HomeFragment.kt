@@ -3,9 +3,11 @@ package com.quico.tech.fragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.*
 import androidx.activity.viewModels
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,10 +18,9 @@ import com.quico.tech.R
 import com.quico.tech.activity.*
 import com.quico.tech.adapter.*
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.SEARCH_TEXT
 import com.quico.tech.databinding.FragmentHomeBinding
-import com.quico.tech.model.Brand
-import com.quico.tech.model.Category
-import com.quico.tech.model.Product
+import com.quico.tech.model.*
 import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
@@ -35,6 +36,7 @@ class HomeFragment : Fragment() {
     private lateinit var brandHomeRecyclerViewAdapter: BrandHomeRecyclerViewAdapter
     private val viewModel: SharedViewModel by viewModels()
     var TAG = "HOME_RESPONSE"
+    private var search_text = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +48,7 @@ class HomeFragment : Fragment() {
         setUpHomeAdapter()
         subscribeHomeList()
         viewModel.getHomeData()
+        setUpSearchView()
         return binding.getRoot()
     }
 
@@ -87,6 +90,29 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun setUpSearchView(){
+        binding.apply {
+
+            searchView.setQueryHint(Html.fromHtml("<font color = #5F5F5F>" + viewModel.getLangResources().getString(R.string.search_hint) + "</font>"));
+
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+                android.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    query?.let { query->
+                        if (query.trim { it<=' '  }.length>0){
+                            SEARCH_TEXT=query!!
+                            startActivity(Intent(requireActivity(),SearchHomeActivity::class.java))
+                        }
+                    }
+                    return false
+                }
+
+                override fun onQueryTextChange(searchText: String): Boolean {
+                    return false
+                }
+            })
+        }
+    }
 
     fun setUpHomeAdapter(){
         lifecycleScope.launch {

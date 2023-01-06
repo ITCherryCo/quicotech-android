@@ -8,7 +8,6 @@
     android:orientation="vertical"
     tools:context=".fragment.SearchFragment">
 
-
     <include
         android:id="@+id/searchToolbar"
         layout="@layout/wish_toolbar" />

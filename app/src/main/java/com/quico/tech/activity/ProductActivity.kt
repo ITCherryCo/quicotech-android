@@ -27,7 +27,6 @@ import com.quico.tech.model.*
 import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
-import com.quico.tech.viewmodel.ViewModelFactory
 import kotlinx.coroutines.launch
 
 
@@ -47,9 +46,6 @@ class ProductActivity : AppCompatActivity() {
         binding = ActivityProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initToolbar()
-
-        val factory = ViewModelFactory()
-        viewModel2 = ViewModelProvider(this, factory).get(SharedViewModel::class.java)
 
         product_id = intent?.extras?.getInt(PRODUCT_ID)
         product_name = intent?.extras?.getString(PRODUCT_NAME)!!
@@ -89,6 +85,9 @@ class ProductActivity : AppCompatActivity() {
             if (viewModel.getLanguage().equals(Constant.AR))
                 toolbarProductDetails.backArrow.scaleX = -1f
 
+            toolbarProductDetails.backArrow.setOnClickListener {
+                onBackPressed()
+            }
             // oldPrice.setPaintFlags(oldPrice.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG) // draw line on old price
 
 
@@ -163,7 +162,7 @@ class ProductActivity : AppCompatActivity() {
             name.text = product.name
             description.text = product.description
 
-            if (!product.specifications.isNullOrEmpty()){
+            if (!product.specifications.isNullOrEmpty()) {
                 showHideText.visibility = View.VISIBLE
                 setUpDetailsAdapter(product.specifications)
                 showHideText.setOnClickListener {
@@ -171,16 +170,17 @@ class ProductActivity : AppCompatActivity() {
 
                     if (showText) {
                         detailsContainer.visibility = View.VISIBLE
-                        showHideText.text = viewModel.getLangResources().getString(R.string.see_less)
+                        showHideText.text =
+                            viewModel.getLangResources().getString(R.string.see_less)
 
                     } else {
                         detailsContainer.visibility = View.GONE
-                        showHideText.text = viewModel.getLangResources().getString(R.string.show_more)
+                        showHideText.text =
+                            viewModel.getLangResources().getString(R.string.show_more)
 
                     }
                 }
-            }
-            else {
+            } else {
                 showHideText.visibility = View.VISIBLE
                 detailsContainer.visibility = View.GONE
             }
@@ -199,23 +199,22 @@ class ProductActivity : AppCompatActivity() {
                 vipText.visibility = View.VISIBLE
                 vipText.text = viewModel.getLangResources().getString(R.string.vip_price)
 
-                if (viewModel.user!=null){
-                    viewModel.user?.let { user->
-                        if (user.is_vip){
+                if (viewModel.user != null) {
+                    viewModel.user?.let { user ->
+                        if (user.is_vip) {
                             userVipContainer.visibility = View.VISIBLE
                             selectPriceContainer.visibility = View.GONE
-                            vipBadge.text = viewModel.getLangResources().getString(R.string.vip_price)
+                            vipBadge.text =
+                                viewModel.getLangResources().getString(R.string.vip_price)
                             price.text = "$ ${product.new_price.toString()}"
-                        }
-                        else{
+                        } else {
                             selectPriceContainer.visibility = View.VISIBLE
                             userVipContainer.visibility = View.GONE
                             managePriceType()
                         }
                     }
                 }
-            }
-           else if (product.is_on_sale) {
+            } else if (product.is_on_sale) {
                 salePriceContainer.visibility = View.VISIBLE
                 userVipContainer.visibility = View.GONE
                 selectPriceContainer.visibility = View.GONE
@@ -225,8 +224,7 @@ class ProductActivity : AppCompatActivity() {
                 oldPrice.text = "$ ${product.regular_price.toString()}"
                 newPrice.text = "$ ${product.new_price.toString()}"
                 oldPrice.setBackground(getResources().getDrawable(R.drawable.red_line))
-            }
-            else{
+            } else {
                 oldPrice.visibility = View.GONE
                 newPrice.text = "$ ${product.regular_price.toString()}"
             }
@@ -239,8 +237,8 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkUser(){
-        if (viewModel.user==null) {
+    private fun checkUser() {
+        if (viewModel.user == null) {
             Common.setUpChoicesAlert(
                 this@ProductActivity,
                 viewModel.getLangResources().getString(R.string.login),
@@ -262,17 +260,23 @@ class ProductActivity : AppCompatActivity() {
                     }
                 }
             )
+        } else {
+            if (!viewModel.vip_subsription) {
+                //subscribe
+                // then add to cart
+            } else {
+                addToCart(is_vip_price, product_id!!, quantity)
+            }
         }
-        else
-            addToCart(is_vip_price,product_id!!,quantity)
     }
 
-    private fun managePriceType(){
+    private fun managePriceType() {
         binding.apply {
-            regularRadioBtn.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+            regularRadioBtn.setOnCheckedChangeListener(object :
+                CompoundButton.OnCheckedChangeListener {
                 override fun onCheckedChanged(p0: CompoundButton?, checked: Boolean) {
-                    if (checked){
-                       is_vip_price = false
+                    if (checked) {
+                        is_vip_price = false
                         vipRadioBtn.setChecked(false)
                     }
                 }
@@ -289,7 +293,7 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
-    private fun plusMinusQty(){
+    private fun plusMinusQty() {
         binding.apply {
             plus.setOnClickListener {
                 quantity++
@@ -297,7 +301,7 @@ class ProductActivity : AppCompatActivity() {
             }
 
             minus.setOnClickListener {
-                if (quantity>1) {
+                if (quantity > 1) {
                     quantity--
                     qty.text = quantity.toString()
                 }
@@ -317,7 +321,7 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpDetailsAdapter( specifications:ArrayList<Specifications>) {
+    private fun setUpDetailsAdapter(specifications: ArrayList<Specifications>) {
         binding.apply {
             productDetailsRecyclerViewAdapter = ProductDetailsRecyclerViewAdapter()
 
@@ -329,9 +333,14 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
-    private fun addToCart(is_vip_price:Boolean, product_id:Int,quantity:Int){
+    private fun addToCart(is_vip_price: Boolean, product_id: Int, quantity: Int) {
 
-        var cartBodyParameters=CartBodyParameters(CartParams(is_vip_price,product_id,quantity))
+        var cartBodyParameters: CartBodyParameters? = null
+        if (viewModel.user!!.is_vip)
+            cartBodyParameters = CartBodyParameters(CartParams(product_id, quantity))
+        else
+            cartBodyParameters = CartBodyParameters(CartParams(is_vip_price, product_id, quantity))
+
         Common.setUpProgressDialog(this)
         viewModel.addToCart(cartBodyParameters,
             object : SharedViewModel.ResponseStandard {
@@ -356,7 +365,7 @@ class ProductActivity : AppCompatActivity() {
                 ) {
                     Common.cancelProgressDialog()
                     Common.setUpAlert(
-                       this@ProductActivity, false,
+                        this@ProductActivity, false,
                         viewModel.getLangResources()
                             .getString(R.string.error),
                         message,
@@ -367,7 +376,48 @@ class ProductActivity : AppCompatActivity() {
             })
     }
 
-    private fun addToWishList(){
+    private fun subscribeToVip(vip_id: Int) {
+
+        var cartBodyParameters = CartBodyParameters(CartParams(vip_id))
+
+        Common.setUpProgressDialog(this)
+        viewModel.subscribeToVip(cartBodyParameters,
+            object : SharedViewModel.ResponseStandard {
+                override fun onSuccess(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    // later add progress bar to view
+                    Common.cancelProgressDialog()
+                    Toast.makeText(
+                        this@ProductActivity,
+                        message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    addToCart(is_vip_price,product_id!!,quantity)
+                }
+
+                override fun onFailure(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    Common.cancelProgressDialog()
+                    Common.setUpAlert(
+                        this@ProductActivity, false,
+                        viewModel.getLangResources()
+                            .getString(R.string.error),
+                        message,
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
+                }
+            })
+    }
+
+
+    private fun addToWishList() {
 
     }
 

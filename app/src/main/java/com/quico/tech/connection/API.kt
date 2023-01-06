@@ -79,6 +79,10 @@ interface API {
     @GET("viewCart")
     suspend fun viewCart(): Response<CartResponse>
 
+    @POST("subscribeToVip")
+    @Headers("Content-Type: application/json")
+    suspend fun subscribeToVip(@Body cartBodyParameters: CartBodyParameters): Response<RegisterResponse>
+
     @POST("search")
     @Headers("Content-Type: application/json")
     suspend fun search(

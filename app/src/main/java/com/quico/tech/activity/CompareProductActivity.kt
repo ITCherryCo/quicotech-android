@@ -19,7 +19,6 @@ import com.quico.tech.databinding.ActivityCompareProductBinding
 import com.quico.tech.fragment.CompareProductFragment
 import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
-import com.quico.tech.viewmodel.ViewModelFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onEmpty
@@ -29,8 +28,6 @@ class CompareProductActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCompareProductBinding
     private val viewModel: SharedViewModel by viewModels()
     private var item_id:Int=0
-    private var item_id_2222:Int=2
-    private lateinit var viewModel2: SharedViewModel
 
     companion object{
          val _item_id_1: MutableStateFlow<Int> = MutableStateFlow(0)

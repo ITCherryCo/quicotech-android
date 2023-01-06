@@ -14,12 +14,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
 import com.quico.tech.adapter.MaintenanceRecyclerViewAdapter
 import com.quico.tech.data.Constant
-import com.quico.tech.data.Maintenance
 import com.quico.tech.databinding.FragmentServiceBinding
 import com.quico.tech.model.Service
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 

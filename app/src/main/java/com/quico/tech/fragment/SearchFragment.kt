@@ -26,6 +26,7 @@ import com.quico.tech.data.Constant.PRODUCT_TAG
 import com.quico.tech.databinding.FilterBottomSheetBinding
 import com.quico.tech.databinding.FragmentSearchBinding
 import com.quico.tech.model.*
+import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.delay
@@ -79,6 +80,10 @@ class SearchFragment : Fragment() {
             filterImage.setOnClickListener {
                 setUpFilerBottomSheet()
             }
+
+            searchToolbar.backArrow.visibility=View.GONE
+            Common.setSystemBarColor(requireActivity(), R.color.home_background_grey)
+
         }
     }
 
@@ -96,7 +101,6 @@ class SearchFragment : Fragment() {
                         setUpErrorForm(EMPTY_SEARCH)
                     }
                     else if(searchText.trim { it<=' ' }.length>2) {
-                        setProductsLoading()
                         productRecyclerView.visibility = View.VISIBLE
                         viewModel.searchProducts(SearchBodyParameters(NameParams(search_text)))
                     }
@@ -403,6 +407,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun onRefresh(){
+        setProductsLoading()
         binding.apply {
             viewModel.searchProducts(SearchBodyParameters(NameParams( search_text)))
         }

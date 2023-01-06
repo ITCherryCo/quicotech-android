@@ -28,6 +28,7 @@ class PrefManager(var context: Context) {
         private const val PREF_NAME = "my-intro-slider"
         private const val IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch"
         private const val LANGUAGE = "language"
+        private const val VIP_SUBSCRIPTION = "vip_subscription"
     }
 
     init {
@@ -72,4 +73,10 @@ class PrefManager(var context: Context) {
             editor.apply()
         }
 
+    var vip_subsription: Boolean
+        get() = sharedPreferences.getBoolean(VIP_SUBSCRIPTION, false)
+        set(vip_subsription) {
+            editor.putBoolean(VIP_SUBSCRIPTION, vip_subsription)
+            editor.apply()
+        }
 }

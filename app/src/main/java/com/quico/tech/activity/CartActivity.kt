@@ -26,6 +26,7 @@ class CartActivity : AppCompatActivity() {
     private lateinit var binding : ActivityCartBinding
     private lateinit var cartRecyclerViewAdapter : CartRecyclerViewAdapter
     private val viewModel: SharedViewModel by viewModels()
+    private var products= ArrayList<Product>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
