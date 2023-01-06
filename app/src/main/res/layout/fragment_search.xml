@@ -56,7 +56,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
             <include
                 android:id="@+id/category_error_container"
                 layout="@layout/error_container"

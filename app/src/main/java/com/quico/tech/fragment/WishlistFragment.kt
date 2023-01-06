@@ -2,6 +2,7 @@ package com.quico.tech.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +12,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.quico.tech.R
+import com.quico.tech.activity.CartActivity
 import com.quico.tech.activity.CompareSearchActivity
 import com.quico.tech.adapter.ProductRecyclerViewAdapter
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.EMPTY_CART
+import com.quico.tech.data.Constant.NO_ITEMS
 import com.quico.tech.databinding.FragmentSearchBinding
 import com.quico.tech.databinding.FragmentWishlistBinding
+import com.quico.tech.model.NameParams
 import com.quico.tech.model.Product
+import com.quico.tech.model.SearchBodyParameters
 import com.quico.tech.utils.Common
+import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -41,7 +48,13 @@ class WishlistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setUpText()
-        setLoading()
+        setUpItemsAdapter()
+        subscribeWishlist()
+        viewModel.user?.let {
+            viewModel.viewWishlist(false)
+        }
+        if (viewModel.user == null)
+            setUpErrorForm(Constant.NO_ITEMS)
     }
 
     private fun setUpText() {
@@ -52,29 +65,58 @@ class WishlistFragment : Fragment() {
             wishlistToolbar.backArrow.visibility = View.GONE
 
             wishlistToolbar.cartImage.setOnClickListener {
-                startActivity(Intent(requireContext(), CompareSearchActivity::class.java))
+                startActivity(Intent(requireContext(), CartActivity::class.java))
             }
             Common.setSystemBarColor(requireActivity(), R.color.home_background_grey)
         }
     }
 
+    private fun subscribeWishlist() {
+        lifecycleScope.launch {
+            viewModel.wishlist.collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        binding.apply {
+                            stopShimmer()
+                            recyclerView.visibility = View.VISIBLE
+                        }
+
+                        response.data?.let { itemsResponse ->
+                            if (itemsResponse.result.isNullOrEmpty()) {
+                                 setUpErrorForm(Constant.NO_ITEMS)
+                            } else {
+
+                                productRecyclerViewAdapter.differ.submitList(itemsResponse.result)
+                            }
+                        }
+                        Log.d(Constant.PRODUCT_TAG, "SUCCESS")
+                    }
+
+                    is Resource.Error -> {
+                        response.message?.let { message ->
+                            Log.d(Constant.PRODUCT_TAG, "ERROR $message")
+                            setUpErrorForm(Constant.ERROR)
+                        }
+                    }
+
+                    is Resource.Connection -> {
+                        Log.d(Constant.PRODUCT_TAG, "ERROR CONNECTION")
+                        setUpErrorForm(Constant.CONNECTION)
+                    }
+
+                    is Resource.Loading -> {
+                        setLoading()
+                        Log.d(Constant.PRODUCT_TAG, "LOADING")
+                    }
+                }
+            }
+        }
+    }
+
     fun setUpItemsAdapter() {
         binding.apply {
-            productRecyclerViewAdapter = ProductRecyclerViewAdapter(false, false, null)
+            productRecyclerViewAdapter = ProductRecyclerViewAdapter(false, false, true,viewModel,null)
             val items = ArrayList<Product>()
-            stopShimmer()
-            recyclerView.visibility = View.VISIBLE
-            // filterImage.setEnabled(true)
-
-            items.add(Product("P1",  9.9))
-            items.add(Product("P2", 22.9))
-            items.add(Product("P3", 43.9))
-            items.add(Product("P4", 45.22))
-            items.add(Product("P5", 93.9))
-            items.add(Product("P6",  49.9))
-            items.add(Product("P7",  19.9))
-            items.add(Product("P8",  59.9))
-            items.add(Product("P9",  69.9))
 
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
             recyclerView.setItemAnimator(DefaultItemAnimator())
@@ -90,35 +132,42 @@ class WishlistFragment : Fragment() {
         }
     }
 
-    fun setLoading() {
+    private fun setLoading() {
         binding.apply {
             recyclerView.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
-            // filterImage.setEnabled(false)
-
-            lifecycleScope.launch {
-                delay(2000)
-                setUpItemsAdapter()
-                setUpItemsAdapter()
-            }
         }
     }
 
-    fun setUpErrorForm(error_type: String) {
+    private fun onRefresh() {
+        setLoading()
+        binding.apply {
+            if (viewModel.user == null)
+                setUpErrorForm(NO_ITEMS)
+            else
+                viewModel.viewWishlist(false)
+        }
+    }
+
+    private fun setUpErrorForm(error_type: String) {
         binding.apply {
             recyclerView.visibility = View.GONE
             stopShimmer()
             favoriteErrorContainer.apply {
-                errorContainer.visibility = View.VISIBLE
-                tryAgain.visibility = View.VISIBLE
+                root.visibility = View.VISIBLE
+                tryAgain.visibility = View.GONE
                 errorImage.visibility = View.VISIBLE
                 errorImage.setImageResource(android.R.color.transparent)
+                errorImage.setImageResource(R.drawable.empty_item)
+
                 errorBtn.text = viewModel.getLangResources().getString(R.string.start_shopping)
                 tryAgain.setText(
                     viewModel.getLangResources().getString(R.string.try_again)
                 )
-                tryAgain.setOnClickListener {  }
+                tryAgain.setOnClickListener {
+                    onRefresh()
+                }
 
                 when (error_type) {
                     Constant.CONNECTION -> {
@@ -127,14 +176,17 @@ class WishlistFragment : Fragment() {
 
                         errorMsg2.text =
                             viewModel.getLangResources().getString(R.string.check_connection)
+                        errorImage.setImageResource(R.drawable.empty_item)
+                        tryAgain.visibility = View.VISIBLE
 
                     }
+
                     Constant.NO_ITEMS -> {
                         errorMsg1.text =
-                            viewModel.getLangResources().getString(R.string.no_search_result)
+                            viewModel.getLangResources().getString(R.string.no_items_in_list)
 
                         errorMsg2.text =
-                            viewModel.getLangResources().getString(R.string.no_search_result_msg)
+                            viewModel.getLangResources().getString(R.string.dont_have_shop_item)
                         errorImage.setImageResource(R.drawable.no_favorite)
 
                     }
@@ -145,6 +197,8 @@ class WishlistFragment : Fragment() {
 
                         errorMsg2.text =
                             viewModel.getLangResources().getString(R.string.error_msg)
+                        tryAgain.visibility = View.VISIBLE
+
                     }
                 }
             }

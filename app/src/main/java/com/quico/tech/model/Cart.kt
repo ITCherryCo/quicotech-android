@@ -1,17 +1,11 @@
 package com.quico.tech.model
 
-data class CartResponse(
-    val id: Any,
-    val jsonrpc: String,
-    val error: ErrorData,
-    val result: ArrayList<Product>
+
+class ProductBodyParameters(
+    val params: ProductParams
 )
 
-class CartBodyParameters(
-    val params: CartParams
-)
-
-data class CartParams(
+data class ProductParams(
     val is_vip_price: Boolean?,
     val product_id: Int,
     val quantity: Int?

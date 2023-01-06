@@ -9,14 +9,11 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
-import com.quico.tech.adapter.CardRecyclerViewAdapter
-import com.quico.tech.adapter.MaintenanceRecyclerViewAdapter
 import com.quico.tech.adapter.ProductDetailsRecyclerViewAdapter
 import com.quico.tech.adapter.ProductImageAdapter
 import com.quico.tech.data.Constant
@@ -90,7 +87,7 @@ class ProductActivity : AppCompatActivity() {
             }
             // oldPrice.setPaintFlags(oldPrice.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG) // draw line on old price
 
-
+            toolbarProductDetails.heartImage.setImageResource(R.drawable.heart_icon)
             toolbarProductDetails.cartImage.setOnClickListener {
                 startActivity(Intent(this@ProductActivity, CartActivity::class.java))
             }
@@ -234,6 +231,12 @@ class ProductActivity : AppCompatActivity() {
                 // else check if user logged in
                 checkUser()
             }
+
+            viewModel.user?.let {
+                toolbarProductDetails.heartImage.setOnClickListener {
+                    addToWishlist(product.id)
+                }
+            }
         }
     }
 
@@ -335,14 +338,14 @@ class ProductActivity : AppCompatActivity() {
 
     private fun addToCart(is_vip_price: Boolean, product_id: Int, quantity: Int) {
 
-        var cartBodyParameters: CartBodyParameters? = null
+        var productBodyParameters: ProductBodyParameters? = null
         if (viewModel.user!!.is_vip)
-            cartBodyParameters = CartBodyParameters(CartParams(product_id, quantity))
+            productBodyParameters = ProductBodyParameters(ProductParams(product_id, quantity))
         else
-            cartBodyParameters = CartBodyParameters(CartParams(is_vip_price, product_id, quantity))
+            productBodyParameters = ProductBodyParameters(ProductParams(is_vip_price, product_id, quantity))
 
         Common.setUpProgressDialog(this)
-        viewModel.addToCart(cartBodyParameters,
+        viewModel.addToCart(false,productBodyParameters,
             object : SharedViewModel.ResponseStandard {
                 override fun onSuccess(
                     success: Boolean,
@@ -376,12 +379,48 @@ class ProductActivity : AppCompatActivity() {
             })
     }
 
-    private fun subscribeToVip(vip_id: Int) {
+    private fun addToWishlist(product_id: Int) {
 
-        var cartBodyParameters = CartBodyParameters(CartParams(vip_id))
+        var productBodyParameters = ProductBodyParameters(ProductParams(product_id))
 
         Common.setUpProgressDialog(this)
-        viewModel.subscribeToVip(cartBodyParameters,
+        viewModel.addToWishlist(productBodyParameters,
+            object : SharedViewModel.ResponseStandard {
+                override fun onSuccess(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    // later add progress bar to view
+                    Common.cancelProgressDialog()
+
+                    binding.toolbarProductDetails.heartImage.setImageResource(R.drawable.filled_heart)
+                }
+
+                override fun onFailure(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    Common.cancelProgressDialog()
+                    Common.setUpAlert(
+                        this@ProductActivity, false,
+                        viewModel.getLangResources()
+                            .getString(R.string.error),
+                        message,
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
+                }
+            })
+    }
+
+    private fun subscribeToVip(vip_id: Int) {
+
+        var productBodyParameters = ProductBodyParameters(ProductParams(vip_id))
+
+        Common.setUpProgressDialog(this)
+        viewModel.subscribeToVip(productBodyParameters,
             object : SharedViewModel.ResponseStandard {
                 override fun onSuccess(
                     success: Boolean,

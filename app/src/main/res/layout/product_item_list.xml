@@ -104,6 +104,18 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="3dp">
 
+            <ImageView
+                android:id="@+id/heartImage"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:elevation="1dp"
+                android:layout_gravity="end"
+                android:layout_margin="3dp"
+                android:visibility="gone"
+                android:src="@drawable/filled_heart" />
+
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

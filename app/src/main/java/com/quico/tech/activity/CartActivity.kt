@@ -13,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
 import com.quico.tech.adapter.CartRecyclerViewAdapter
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.EMPTY_CART
 import com.quico.tech.databinding.ActivityCartBinding
 import com.quico.tech.model.Item
 import com.quico.tech.model.Product
@@ -42,6 +43,8 @@ class CartActivity : AppCompatActivity() {
         viewModel.user?.let {
             viewModel.loadCart(false)
         }
+        if (viewModel.user==null)
+            setUpErrorForm(Constant.EMPTY_CART)
 
         binding.apply {
             checkoutBtn.setOnClickListener {
@@ -82,8 +85,9 @@ class CartActivity : AppCompatActivity() {
 
                         response.data?.let { itemsResponse ->
                             if (itemsResponse.result.isNullOrEmpty()) {
-                                 setUpErrorForm(Constant.NO_ITEMS)
+                                 setUpErrorForm(Constant.EMPTY_CART)
                             } else {
+                                binding.checkoutBtn.setEnabled(true)
                                 binding.recyclerView.visibility = View.VISIBLE
                                 cartRecyclerViewAdapter.differ.submitList(itemsResponse.result!!)
                             }
@@ -120,7 +124,6 @@ class CartActivity : AppCompatActivity() {
             stopShimmer()
             recyclerView.visibility=View.VISIBLE
             checkoutBtn.setEnabled(true)
-            swipeRefreshLayout.setRefreshing(false)
 
             var items = ArrayList<Product>()
 
@@ -155,9 +158,13 @@ class CartActivity : AppCompatActivity() {
    private fun onRefresh() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
-                setLoading() // later we will remove it because the observable will call it
-                viewModel.user?.let {
-                    viewModel.loadCart(false)
+                if (viewModel.user==null)
+                    setUpErrorForm(EMPTY_CART)
+                else {
+                    setLoading() // later we will remove it because the observable will call it
+                    viewModel.user?.let {
+                        viewModel.loadCart(false)
+                    }
                 }
             })
         }
@@ -177,36 +184,38 @@ class CartActivity : AppCompatActivity() {
             stopShimmer()
             recyclerView.visibility = View.GONE
             totalContainer.visibility = View.GONE
+            checkoutBtn.visibility = View.GONE
+
             checkoutBtn.setEnabled(false)
-            swipeRefreshLayout.setEnabled(true)
+
             cartErrorContainer.apply {
                 root.visibility = View.VISIBLE
                 errorMsg1.visibility = View.GONE
                 tryAgain.visibility = View.GONE
+                errorMsg2.text = viewModel.getLangResources().getString(R.string.try_again)
                 errorImage.setImageResource(android.R.color.transparent)
+                errorImage.setImageResource(R.drawable.empty_item)
 
                 when (error_type) {
                     Constant.CONNECTION -> {
-                        errorMsg2.setText(
-                            viewModel.getLangResources().getString(R.string.check_connection)
-                        )
+                        errorMsg2.text= viewModel.getLangResources().getString(R.string.check_connection)
                     }
+
                     Constant.EMPTY_CART -> {
                         errorMsg1.visibility = View.VISIBLE
-                        errorMsg1.text =
-                            viewModel.getLangResources().getString(R.string.no_items_in_list)
-                        errorMsg2.text =
-                            viewModel.getLangResources().getString(R.string.dont_have_shop_item)
+                        errorMsg1.text = viewModel.getLangResources().getString(R.string.no_items_in_list)
+                        errorMsg2.text = viewModel.getLangResources().getString(R.string.dont_have_shop_item)
                         errorImage.setImageResource(R.drawable.empty_item)
                         errorBtn.visibility = View.VISIBLE
+
                         errorBtn.setOnClickListener {
                             onBackPressed()
                         }
                     }
+
                     Constant.ERROR -> {
-                        errorMsg2.setText(
-                            viewModel.getLangResources().getString(R.string.error_msg)
-                        )
+                        errorBtn.visibility = View.GONE
+                        errorMsg2.text=viewModel.getLangResources().getString(R.string.error_msg)
                     }
                 }
             }

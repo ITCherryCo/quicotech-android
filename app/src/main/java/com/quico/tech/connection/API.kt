@@ -70,24 +70,39 @@ interface API {
 
     @POST("addToCart")
     @Headers("Content-Type: application/json")
-    suspend fun addToCart(@Body cartBodyParameters: CartBodyParameters): Response<RegisterResponse>
+    suspend fun addToCart(@Body productBodyParameters: ProductBodyParameters): Response<RegisterResponse>
+
+    @POST("updateItemCart")
+    @Headers("Content-Type: application/json")
+    suspend fun updateItemCart(@Body productBodyParameters: ProductBodyParameters): Response<RegisterResponse>
 
     @POST("removeFromCart")
     @Headers("Content-Type: application/json")
-    suspend fun removeFromCart(@Body cartBodyParameters: CartBodyParameters): Response<RegisterResponse>
+    suspend fun removeFromCart(@Body productBodyParameters: ProductBodyParameters): Response<RegisterResponse>
 
     @GET("viewCart")
-    suspend fun viewCart(): Response<CartResponse>
+    suspend fun viewCart(): Response<ProductsResponse>
+
+    @POST("addToWishlist")
+    @Headers("Content-Type: application/json")
+    suspend fun addToWishlist(@Body productBodyParameters: ProductBodyParameters): Response<RegisterResponse>
+
+    @POST("removeFromWishlist")
+    @Headers("Content-Type: application/json")
+    suspend fun removeFromWishlist(@Body productBodyParameters: ProductBodyParameters): Response<RegisterResponse>
+
+    @GET("viewWishlist")
+    suspend fun viewWishlist(): Response<ProductsResponse>
 
     @POST("subscribeToVip")
     @Headers("Content-Type: application/json")
-    suspend fun subscribeToVip(@Body cartBodyParameters: CartBodyParameters): Response<RegisterResponse>
+    suspend fun subscribeToVip(@Body productBodyParameters: ProductBodyParameters): Response<RegisterResponse>
 
     @POST("search")
     @Headers("Content-Type: application/json")
     suspend fun search(
         @Body searchBodyParameters: SearchBodyParameters
-    ): Response<SearchResponse>
+    ): Response<ProductsResponse>
 
     @GET("getCategories")
     // @Headers("Content-Type: application/json")

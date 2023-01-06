@@ -1,6 +1,5 @@
 package com.quico.tech.repository
 
-import android.content.Context
 import com.quico.tech.connection.RetrofitInstance
 import com.quico.tech.model.*
 
@@ -30,18 +29,20 @@ class Repository() {
     suspend fun getOngoingOrders(customer_id: Int) = RetrofitInstance.api.getOngoingOrders(customer_id)
     suspend fun getDoneOrders(customer_id: Int) = RetrofitInstance.api.getDoneOrders(customer_id)
 
-    suspend fun addToCart( cartBody: CartBodyParameters) = RetrofitInstance.api.addToCart(cartBody)
-    suspend fun removeFromCart( cartBody: CartBodyParameters) = RetrofitInstance.api.removeFromCart(cartBody)
+    suspend fun addToCart( productBody: ProductBodyParameters) = RetrofitInstance.api.addToCart(productBody)
+    suspend fun updateItemCart( productBody: ProductBodyParameters) = RetrofitInstance.api.updateItemCart(productBody)
+    suspend fun removeFromCart( productBody: ProductBodyParameters) = RetrofitInstance.api.removeFromCart(productBody)
     suspend fun viewCart() = RetrofitInstance.api.viewCart()
-    suspend fun subscribeToVip( cartBody: CartBodyParameters) = RetrofitInstance.api.subscribeToVip(cartBody)
+    suspend fun subscribeToVip( productBody: ProductBodyParameters) = RetrofitInstance.api.subscribeToVip(productBody)
 
     suspend fun search(searchBodyParameters: SearchBodyParameters) = RetrofitInstance.api.search(searchBodyParameters)
-
     suspend fun getAllCategories() = RetrofitInstance.api.getAllCategories()
-
-
     suspend fun getAllBrands() = RetrofitInstance.api.getAllBrands()
     suspend fun getHomeData() = RetrofitInstance.api.getHomeData()
+
+    suspend fun addToWishlist( productBody: ProductBodyParameters) = RetrofitInstance.api.addToWishlist(productBody)
+    suspend fun removeFromWishlist(productBody: ProductBodyParameters) = RetrofitInstance.api.removeFromWishlist(productBody)
+    suspend fun viewWishlist() = RetrofitInstance.api.viewWishlist()
 
     /* suspend fun getSession() = RetrofitInstance.newRetrofit(context).getSession()
      suspend fun getAddresses(session_id: String) = RetrofitInstance.newRetrofit(context).getAddresses(session_id)

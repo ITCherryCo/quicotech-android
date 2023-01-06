@@ -156,7 +156,7 @@ class SearchHomeActivity : AppCompatActivity() {
 
     fun setUpProductsAdapter() {
         binding.apply {
-            productRecyclerViewAdapter = ProductRecyclerViewAdapter(false,false,null)
+            productRecyclerViewAdapter = ProductRecyclerViewAdapter(false,false,false,viewModel,null)
 
             productRecyclerView.layoutManager = GridLayoutManager(this@SearchHomeActivity, 2)
             productRecyclerView.setItemAnimator(DefaultItemAnimator())

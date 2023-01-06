@@ -156,7 +156,8 @@ class SearchFragment : Fragment() {
 
     fun setUpProductsAdapter() {
         binding.apply {
-            productRecyclerViewAdapter = ProductRecyclerViewAdapter(false,false,null)
+            productRecyclerViewAdapter = ProductRecyclerViewAdapter(false,false,
+                false,viewModel,null)
             //stopProductShimmer()
             // filterImage.setEnabled(true)
 

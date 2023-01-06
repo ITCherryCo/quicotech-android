@@ -90,7 +90,7 @@ class CompareSearchActivity : AppCompatActivity() {
     }
     fun setUpItemsAdapter() {
         binding.apply {
-            productRecyclerViewAdapter = ProductRecyclerViewAdapter(false,true,object :ProductRecyclerViewAdapter.OnProductSelect{
+            productRecyclerViewAdapter = ProductRecyclerViewAdapter(false,true,false,viewModel,object :ProductRecyclerViewAdapter.OnProductSelect{
                 override fun onProductSelect(product: Product?) {
                     product?.let {
                         compareProductBtn.setEnabled(true)

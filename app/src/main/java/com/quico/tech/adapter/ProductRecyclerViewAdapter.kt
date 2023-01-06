@@ -4,21 +4,29 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.quico.tech.R
 import com.quico.tech.activity.ProductActivity
 import com.quico.tech.data.Constant.PRODUCT_ID
 import com.quico.tech.data.Constant.PRODUCT_NAME
 import com.quico.tech.databinding.ProductItemListBinding
 import com.quico.tech.model.Product
+import com.quico.tech.model.ProductBodyParameters
+import com.quico.tech.model.ProductParams
+import com.quico.tech.utils.Common
+import com.quico.tech.viewmodel.SharedViewModel
 
 
 class ProductRecyclerViewAdapter(
     val small: Boolean,
     val withSelection: Boolean,
+    val withinWishlist: Boolean,
+    val viewModel: SharedViewModel,
     onProductSelect: OnProductSelect?
 ) : RecyclerView.Adapter<ProductRecyclerViewAdapter.ItemViewHolder>() {
     private var lastSelectedPosition = -1
@@ -37,14 +45,21 @@ class ProductRecyclerViewAdapter(
                     largeContainer.visibility = View.GONE
                     smallContainer.visibility = View.VISIBLE
                     productName.text = product.name
-                    productImage.setImageDrawable(itemView.resources.getDrawable(R.drawable.product_image_test))
                     productPrice.text = product.new_price.toString()
+                   product.image?.let {
+                      if (it.isNotEmpty())
+                          loadImage(it, productImage)
+                   }
+
                 } else {
                     largeContainer.visibility = View.VISIBLE
                     smallContainer.visibility = View.GONE
-                  /*  largeProductName.text = product.name
-                    largeProductImage.setImageDrawable(product.image)
-                    largeProductPrice.text = product.new_price.toString()*/
+                    largeProductName.text = product.name
+                    largeProductPrice.text = product.new_price.toString()
+                    product.image?.let {
+                        if (it.isNotEmpty())
+                            loadImage(it, largeProductImage)
+                    }
                 }
 
                 if (withSelection) {
@@ -63,20 +78,66 @@ class ProductRecyclerViewAdapter(
                 } else {
                     cardView.setOnClickListener {
                         itemView.context.startActivity(
-                            Intent(itemView.context, ProductActivity::class.java).putExtra(PRODUCT_ID, 4)
-                                .putExtra(PRODUCT_NAME,product.name)
+                            Intent(itemView.context, ProductActivity::class.java).putExtra(
+                                PRODUCT_ID,
+                                product.id
+                            )
+                                .putExtra(PRODUCT_NAME, product.name)
                         )
                     }
 
                     cardViewSmall.setOnClickListener {
                         itemView.context.startActivity(
-                            Intent(itemView.context, ProductActivity::class.java).putExtra(PRODUCT_ID, 4)
-                                .putExtra(PRODUCT_NAME,product.name)
-
+                            Intent(itemView.context, ProductActivity::class.java).putExtra(
+                                PRODUCT_ID,
+                                product.id
+                            )
+                                .putExtra(PRODUCT_NAME, product.name)
                         )
                     }
                 }
+                if (withSelection){
+                    heartImage.visibility=View.VISIBLE
+                    val params = ProductBodyParameters(
+                        ProductParams(
+                            product.id
+                        )
+                    )
+
+                    viewModel.removeFromWishlist(params,
+                        object : SharedViewModel.ResponseStandard {
+                            override fun onSuccess(
+                                success: Boolean,
+                                resultTitle: String,
+                                message: String
+                            ) {
+                                // later add progress bar to view
+
+                            }
+
+                            override fun onFailure(
+                                success: Boolean,
+                                resultTitle: String,
+                                message: String
+                            ) {
+                                Toast.makeText(
+                                    itemView.context,
+                                    message,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        })
+                }
             }
+        }
+
+          fun loadImage(image_url: String, imageView: ImageView) {
+            Glide.with(itemView.context)
+                .load(image_url)
+                //.placeholder(R.drawable.placeholder)
+                .error(R.drawable.empty_item)
+                .fitCenter()
+                .into(imageView)
         }
 
         fun setSelectedForm() {

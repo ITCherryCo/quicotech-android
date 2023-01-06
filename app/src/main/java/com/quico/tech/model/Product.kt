@@ -9,6 +9,7 @@ class Product(val category: String?,
               val is_on_sale: Boolean,
               val is_vip: Boolean,
               val name: String,
+              val status: String?,
               val new_price: Double,
               val regular_price: Double,
               val specifications: ArrayList<Specifications>?) {
@@ -25,6 +26,7 @@ class Product(val category: String?,
         false,
         false,
         name,
+        "",
         new_price,
         0.0,
         null
@@ -59,7 +61,7 @@ data class SearchBodyParameters(
 data class NameParams(
     val name: String
 )
-data class SearchResponse(
+data class ProductsResponse(
     val id: Any,
     val jsonrpc: String,
     val result: ArrayList<Product>,
