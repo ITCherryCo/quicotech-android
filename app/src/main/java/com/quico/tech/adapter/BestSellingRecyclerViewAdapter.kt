@@ -27,6 +27,7 @@ class BestSellingRecyclerViewAdapter() : RecyclerView.Adapter<BestSellingRecycle
 
                 largeContainer.visibility = View.GONE
                 smallContainer.visibility = View.VISIBLE
+
                 productName.text = product.name
                 Glide.with(itemView.context)
                     .load(product.image)
