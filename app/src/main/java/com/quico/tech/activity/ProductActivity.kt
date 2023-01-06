@@ -204,8 +204,12 @@ class ProductActivity : AppCompatActivity() {
                             vipBadge.text =
                                 viewModel.getLangResources().getString(R.string.vip_price)
                             price.text = "$ ${product.new_price.toString()}"
+                            discount.text = "- ${(product.regular_price*100)/product.new_price}%"
                         } else {
                             selectPriceContainer.visibility = View.VISIBLE
+                            regularPrice.text = "$ ${product.regular_price.toString()}"
+                            vipText.text = "$ ${product.new_price.toString()}"
+
                             userVipContainer.visibility = View.GONE
                             managePriceType()
                         }
@@ -223,8 +227,11 @@ class ProductActivity : AppCompatActivity() {
                 oldPrice.setBackground(getResources().getDrawable(R.drawable.red_line))
             } else {
                 oldPrice.visibility = View.GONE
-                newPrice.text = "$ ${product.regular_price.toString()}"
+               // newPrice.text = "$ ${product.regular_price.toString()}"
+                oldPrice.text = "$ ${product.regular_price.toString()}"
+                newPrice.visibility = View.GONE
             }
+
             plusMinusQty()
             addToCartBtn.setOnClickListener {
                 // if item is out of stock tell him
@@ -264,7 +271,8 @@ class ProductActivity : AppCompatActivity() {
                 }
             )
         } else {
-            if (!viewModel.vip_subsription) {
+            if (!viewModel.vip_subsription && is_vip_price) {
+                Toast.makeText(this,"Add subscription to cart then add to cart",Toast.LENGTH_LONG).show()
                 //subscribe
                 // then add to cart
             } else {

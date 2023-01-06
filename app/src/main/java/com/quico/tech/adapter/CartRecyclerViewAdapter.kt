@@ -15,16 +15,37 @@ import com.quico.tech.model.*
 import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 
-class CartRecyclerViewAdapter (val viewModel: SharedViewModel): RecyclerView.Adapter<CartRecyclerViewAdapter.ItemViewHolder>() {
+class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
+    RecyclerView.Adapter<CartRecyclerViewAdapter.ItemViewHolder>() {
 
-  inner  class ItemViewHolder(private var binding: CartItemListBinding) :
+    inner class ItemViewHolder(private var binding: CartItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
+            var quantity =1 //product quantity
             binding.apply {
 
                 name.text = product.name
-                price.text = "$ ${product.new_price}"
+                var final_price=0.0
+                //var total_price=0.0
+
+                viewModel.user?.let { user->
+                    if (user.is_vip || viewModel.vip_subsription){
+                        if (product.is_vip || product.is_on_sale)
+                            final_price = product.new_price
+                        else
+                            final_price = product.regular_price
+                    }
+                    else{
+                        if (product.is_on_sale)
+                            final_price = product.new_price
+                        else
+                            final_price = product.regular_price
+                    }
+                }
+
+                price.text = "$ ${final_price}"
+                totalPrice.text = "${viewModel.getLangResources().getString(R.string.total)}: $${final_price*quantity}"
 
                 if (viewModel.getLanguage().equals(Constant.AR)) {
                     plus.scaleX = -1f
@@ -50,66 +71,128 @@ class CartRecyclerViewAdapter (val viewModel: SharedViewModel): RecyclerView.Ada
                         .into(coverImage)
                 }
 
+                plus.setOnClickListener {
+                    // check for available qty
+                    quantity++
+                    qty.text="$quantity"
+                    updateQty(product.id,quantity)
+                }
+
+                minus.setOnClickListener {
+                    // check for available qty
+                    if (quantity>1) {
+                        quantity--
+                        updateQty(product.id, quantity)
+                    }
+                    else
+                        deleteItem(product.id)
+                    qty.text="$quantity"
+                }
 
                 deleteImage.setOnClickListener {
-                    Common.setUpChoicesAlert(itemView.context,
-                        viewModel.getLangResources().getString(R.string.delete_item),
-                        viewModel.getLangResources().getString(R.string.sure_delete_item),
-                        viewModel.getLangResources().getString(R.string.no),
-                        viewModel.getLangResources().getString(R.string.yes),
-                        object : Common.ResponseChoices {
-                            override fun onConfirm() {
-                                val params = ProductBodyParameters(
-                                    ProductParams(
-                                        product.id
-                                    )
-                                )
-
-                                progressBar.visibility = View.VISIBLE
-                                viewModel.removeFromCart(params,
-                                    object : SharedViewModel.ResponseStandard {
-                                        override fun onSuccess(
-                                            success: Boolean,
-                                            resultTitle: String,
-                                            message: String
-                                        ) {
-                                            // later add progress bar to view
-                                            progressBar.visibility = View.GONE
-                                            Toast.makeText(
-                                                itemView.context,
-                                                message,
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        }
-
-                                        override fun onFailure(
-                                            success: Boolean,
-                                            resultTitle: String,
-                                            message: String
-                                        ) {
-                                            progressBar.visibility = View.GONE
-                                            Common.setUpAlert(
-                                                itemView.context, false,
-                                                viewModel.getLangResources()
-                                                    .getString(R.string.error),
-                                                message,
-                                                viewModel.getLangResources().getString(R.string.ok),
-                                                null
-                                            )
-                                        }
-                                    })
-                            }
-
-                            override fun onCancel() {
-
-                            }
-
-                        })
+                    deleteItem(product.id)
                 }
             }
         }
 
+       private fun updateQty(product_id:Int,quantity:Int){
 
+            val params = ProductBodyParameters(
+                ProductParams(
+                    product_id,
+                    quantity
+                )
+            )
+
+            Common.setUpProgressDialog(itemView.context)
+            viewModel.addToCart(true, params,
+                object : SharedViewModel.ResponseStandard {
+                    override fun onSuccess(
+                        success: Boolean,
+                        resultTitle: String,
+                        message: String
+                    ) {
+                        // later add progress bar to view
+                        Common.cancelProgressDialog()
+
+                    }
+
+                    override fun onFailure(
+                        success: Boolean,
+                        resultTitle: String,
+                        message: String
+                    ) {
+                        Common.cancelProgressDialog()
+                        Common.setUpAlert(
+                            itemView.context, false,
+                            viewModel.getLangResources()
+                                .getString(R.string.error),
+                            message,
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
+                    }
+                })
+        }
+
+
+        private fun deleteItem(product_id: Int) {
+            binding.apply {
+                Common.setUpChoicesAlert(itemView.context,
+                    viewModel.getLangResources().getString(R.string.delete_item),
+                    viewModel.getLangResources().getString(R.string.sure_delete_item),
+                    viewModel.getLangResources().getString(R.string.no),
+                    viewModel.getLangResources().getString(R.string.yes),
+                    object : Common.ResponseChoices {
+                        override fun onConfirm() {
+                            val params = ProductBodyParameters(
+                                ProductParams(
+                                    product_id,
+                                )
+                            )
+
+                            progressBar.visibility = View.VISIBLE
+                            viewModel.removeFromCart(params,
+                                object : SharedViewModel.ResponseStandard {
+                                    override fun onSuccess(
+                                        success: Boolean,
+                                        resultTitle: String,
+                                        message: String
+                                    ) {
+                                        // later add progress bar to view
+                                        progressBar.visibility = View.GONE
+                                        /*     Toast.makeText(
+                                             itemView.context,
+                                             message,
+                                             Toast.LENGTH_LONG
+                                         ).show()*/
+                                    }
+
+                                    override fun onFailure(
+                                        success: Boolean,
+                                        resultTitle: String,
+                                        message: String
+                                    ) {
+                                        progressBar.visibility = View.GONE
+                                        Common.setUpAlert(
+                                            itemView.context, false,
+                                            viewModel.getLangResources()
+                                                .getString(R.string.error),
+                                            message,
+                                            viewModel.getLangResources().getString(R.string.ok),
+                                            null
+                                        )
+                                    }
+                                })
+                        }
+
+                        override fun onCancel() {
+
+                        }
+
+                    })
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {

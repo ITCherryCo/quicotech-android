@@ -320,6 +320,7 @@
                                     android:layout_height="wrap_content"
                                     android:layoutDirection="locale"
                                     android:textDirection="locale"
+                                    android:buttonTint="@color/color_primary_purple"
                                     android:text="@string/regular_price"/>
 
                                 <TextView
@@ -335,13 +336,13 @@
                                     android:textDirection="locale"
                                     android:textSize="18sp" />
 
-
                                 <RadioButton
                                     android:id="@+id/vipRadioBtn"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layoutDirection="locale"
                                     android:textDirection="locale"
+                                    android:buttonTint="@color/color_primary_purple"
                                     android:text="@string/vip_price"/>
 
                                 <RelativeLayout

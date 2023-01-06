@@ -1,6 +1,7 @@
 package com.quico.tech.adapter
 
 import android.content.Intent
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,25 +41,48 @@ class ProductRecyclerViewAdapter(
     inner class ItemViewHolder(private var binding: ProductItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product) {
+
             binding.apply {
                 if (small) {
                     largeContainer.visibility = View.GONE
                     smallContainer.visibility = View.VISIBLE
                     productName.text = product.name
                     productPrice.text = product.new_price.toString()
-                   product.image?.let {
-                      if (it.isNotEmpty())
-                          loadImage(it, productImage)
-                   }
+                    product.image?.let {
+                        if (it.isNotEmpty())
+                            loadImage(it, productImage)
+                    }
 
                 } else {
                     largeContainer.visibility = View.VISIBLE
                     smallContainer.visibility = View.GONE
                     largeProductName.text = product.name
-                    largeProductPrice.text = product.new_price.toString()
+                    // largeProductPrice.text = product.new_price.toString()
                     product.image?.let {
                         if (it.isNotEmpty())
                             loadImage(it, largeProductImage)
+                    }
+
+
+                    if (product.is_vip || product.is_on_sale) {
+                        largeOldPrice.text = "$ ${product.regular_price.toString()}"
+                        largeNewPrice.text = "$ ${product.new_price.toString()}"
+                        largeOldPrice.setBackground(itemView.resources.getDrawable(R.drawable.red_line))
+                    }
+
+                    if (product.is_vip) {
+                        largeVipText.visibility = View.VISIBLE
+                        largeSaleText.visibility = View.GONE
+                    } else if (product.is_on_sale) {
+                        largeVipText.visibility = View.GONE
+                        largeSaleText.visibility = View.VISIBLE
+                    }
+
+                    else{
+                        largeVipText.visibility = View.INVISIBLE
+                        largeSaleText.visibility = View.GONE
+                        largeNewPrice.visibility = View.GONE
+                        largeOldPrice.text = "$ ${product.regular_price.toString()}"
                     }
                 }
 
@@ -96,8 +120,8 @@ class ProductRecyclerViewAdapter(
                         )
                     }
                 }
-                if (withSelection){
-                    heartImage.visibility=View.VISIBLE
+                if (withSelection) {
+                    heartImage.visibility = View.VISIBLE
                     val params = ProductBodyParameters(
                         ProductParams(
                             product.id
@@ -131,7 +155,7 @@ class ProductRecyclerViewAdapter(
             }
         }
 
-          fun loadImage(image_url: String, imageView: ImageView) {
+        fun loadImage(image_url: String, imageView: ImageView) {
             Glide.with(itemView.context)
                 .load(image_url)
                 //.placeholder(R.drawable.placeholder)

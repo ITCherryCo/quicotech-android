@@ -193,30 +193,30 @@
             android:id="@+id/alertMsg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layoutDirection="locale"
-            android:layout_marginTop="15dp"
             android:layout_below="@+id/infoContainer"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/medium"
+            android:gravity="center"
+            android:layoutDirection="locale"
             android:text="@string/out_of_stock_msg"
             android:textColor="@color/red_dark"
             android:textDirection="locale"
-            android:gravity="center"
-            android:visibility="gone"
-            android:fontFamily="@font/medium"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone" />
 
     </RelativeLayout>
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="6dp"
-            android:layout_below="@+id/grayLine"
-            android:indeterminate="true"
-            android:visibility="gone"
-            android:layout_marginHorizontal="15dp"
-            android:indeterminateBehavior="repeat"
-            android:indeterminateDrawable="@drawable/custom_progressbar"
-            android:indeterminateDuration="800"
-             />
 
-    </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_below="@+id/grayLine"
+        android:layout_marginHorizontal="15dp"
+        android:indeterminate="true"
+        android:indeterminateBehavior="repeat"
+        android:indeterminateDrawable="@drawable/custom_progressbar"
+        android:indeterminateDuration="800"
+        android:visibility="gone" />
+
+</RelativeLayout>

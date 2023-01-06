@@ -128,12 +128,42 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/product_image_test" />
 
+                <TextView
+                    android:id="@+id/largeVipText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/orange_best_seller"
+                    android:fontFamily="@font/bold"
+                    android:layoutDirection="locale"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="5dp"
+                    android:text="@string/vip"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/home_background_grey"
+                    android:textDirection="locale"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/largeSaleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/red_brick"
+                    android:fontFamily="@font/bold"
+                    android:layoutDirection="locale"
+                    android:paddingHorizontal="8dp"
+                    android:visibility="gone"
+                    android:paddingVertical="5dp"
+                    android:text="@string/sale"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/home_background_grey"
+                    android:textDirection="locale"
+                    android:textSize="12sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="12dp"
-                    android:layout_marginVertical="15dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_margin="10dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -148,9 +178,16 @@
                         android:lines="1"
                         android:textSize="13sp" />
 
-                    <TextView
-                        android:id="@+id/largeProductPrice"
+                    <LinearLayout
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layoutDirection="locale">
+
+                    <TextView
+                        android:id="@+id/largeOldPrice"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="$60"
                         android:lines="1"
@@ -159,6 +196,21 @@
                         android:textDirection="locale"
                         android:layoutDirection="locale"
                         android:textColor="@color/color_primary_purple" />
+
+                        <TextView
+                            android:id="@+id/largeNewPrice"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="$60"
+                            android:lines="1"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/regular"
+                            android:textDirection="locale"
+                            android:layoutDirection="locale"
+                            android:gravity="end"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>

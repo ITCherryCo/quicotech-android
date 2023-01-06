@@ -77,6 +77,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/regular"
                 android:layout_marginHorizontal="30dp"
+                android:buttonTint="@color/color_primary_purple"
                 android:text="@string/door_to_door" />
 
             <include
@@ -130,6 +131,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/regular"
                 android:layout_marginHorizontal="30dp"
+                android:buttonTint="@color/color_primary_purple"
                 android:text="@string/drop_repair_center" />
 
         </LinearLayout>

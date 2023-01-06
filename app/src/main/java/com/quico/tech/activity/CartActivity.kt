@@ -87,6 +87,28 @@ class CartActivity : AppCompatActivity() {
                             if (itemsResponse.result.isNullOrEmpty()) {
                                  setUpErrorForm(Constant.EMPTY_CART)
                             } else {
+
+                                var total_price2=0.0
+
+                               var total_price= itemsResponse.result.map { it.new_price }.sum()
+
+                                viewModel.user?.let { user ->
+                                    total_price = itemsResponse.result.map { product->
+                                        if (user.is_vip || viewModel.vip_subsription) {
+                                            if (product.is_vip || product.is_on_sale)
+                                                 product.new_price
+                                            else
+                                                 product.regular_price
+                                        } else {
+                                            if (product.is_on_sale)
+                                                 product.new_price
+                                            else
+                                                product.regular_price
+                                        }
+                                    }.sum()
+                                }
+                                Log.d("TOTAL_SUM_PRICE",total_price2.toString())
+                                setUpCartInfo(total_price)
                                 binding.checkoutBtn.setEnabled(true)
                                 binding.recyclerView.visibility = View.VISIBLE
                                 cartRecyclerViewAdapter.differ.submitList(itemsResponse.result!!)
@@ -170,9 +192,10 @@ class CartActivity : AppCompatActivity() {
         }
     }
 
-   private fun setUpCartInfo(){
+   private fun setUpCartInfo(total_price:Double){
         binding.apply {
             totalContainer.visibility = View.VISIBLE
+            total.text="$ ${total_price}"
             // set total
         }
     }
