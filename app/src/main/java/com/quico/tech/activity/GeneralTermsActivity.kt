@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.quico.tech.R
 import com.quico.tech.data.Constant
@@ -14,6 +15,8 @@ import com.quico.tech.data.Constant.TERMS_OF_USE
 import com.quico.tech.data.Constant.VIP_BENEFITS
 import com.quico.tech.databinding.ActivityGeneralTermsBinding
 import com.quico.tech.databinding.TermsAlertDialogBinding
+import com.quico.tech.model.ProductBodyParameters
+import com.quico.tech.model.ProductParams
 import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 
@@ -21,7 +24,7 @@ class GeneralTermsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGeneralTermsBinding
     private val viewModel: SharedViewModel by viewModels()
 
-    private var activity_type:String =""
+    private var activity_type: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGeneralTermsBinding.inflate(layoutInflater)
@@ -44,7 +47,7 @@ class GeneralTermsActivity : AppCompatActivity() {
         // viewModel.generalWebInfo()
     }
 
-    fun initStatusBar(){
+    fun initStatusBar() {
         Common.setSystemBarColor(this, R.color.white)
         Common.setSystemBarLight(this)
     }
@@ -52,21 +55,25 @@ class GeneralTermsActivity : AppCompatActivity() {
     private fun setUpText() {
         binding.apply {
 
-            when(activity_type){
-                VIP_BENEFITS->{
+            when (activity_type) {
+                VIP_BENEFITS -> {
                     title.text = viewModel.getLangResources().getString(R.string.vip_benefits)
                     infoTitle.text = viewModel.getLangResources().getString(R.string.vip_benefits)
-                    description.text = viewModel.getLangResources().getString(R.string.vip_benefits_description)
+                    description.text =
+                        viewModel.getLangResources().getString(R.string.vip_benefits_description)
                     subscribeBtn.visibility = View.VISIBLE
                     subscribeBtn.setOnClickListener {
                         setSubscribeDialog()
                     }
                 }
 
-                TERMS_OF_USE->{
-                    title.text = viewModel.getLangResources().getString(R.string.terms_and_conditions)
-                    infoTitle.text = viewModel.getLangResources().getString(R.string.terms_and_conditions)
-                    description.text = viewModel.getLangResources().getString(R.string.terms_description)
+                TERMS_OF_USE -> {
+                    title.text =
+                        viewModel.getLangResources().getString(R.string.terms_and_conditions)
+                    infoTitle.text =
+                        viewModel.getLangResources().getString(R.string.terms_and_conditions)
+                    description.text =
+                        viewModel.getLangResources().getString(R.string.terms_description)
                     subscribeBtn.visibility = View.GONE
                 }
             }
@@ -75,32 +82,93 @@ class GeneralTermsActivity : AppCompatActivity() {
         }
     }
 
-    private fun setSubscribeDialog(){
+    private fun setSubscribeDialog() {
 
-            val dialog = Dialog(this)
-            dialog.setContentView(R.layout.terms_alert_dialog)
-            val binding: TermsAlertDialogBinding =
-                TermsAlertDialogBinding.inflate(LayoutInflater.from(this))
-            dialog.setContentView(binding.getRoot())
-            dialog.setCancelable(true)
-            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.terms_alert_dialog)
+        val binding: TermsAlertDialogBinding =
+            TermsAlertDialogBinding.inflate(LayoutInflater.from(this))
+        dialog.setContentView(binding.getRoot())
+        dialog.setCancelable(true)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-            binding.apply {
+        binding.apply {
 
-                termsCheckBox.text = viewModel.getLangResources().getString(R.string.terms_and_conditions)
-                acceptBtn.text = viewModel.getLangResources().getString(R.string.accept)
-                rejectBtn.text = viewModel.getLangResources().getString(R.string.reject)
+            termsCheckBox.text =
+                viewModel.getLangResources().getString(R.string.terms_and_conditions)
+            acceptBtn.text = viewModel.getLangResources().getString(R.string.accept)
+            rejectBtn.text = viewModel.getLangResources().getString(R.string.reject)
 
-                dialog.show()
-                acceptBtn.setOnClickListener {
-                    if (termsCheckBox.isChecked)
-                        dialog.dismiss()
-                }
-
-                rejectBtn.setOnClickListener {
+            dialog.show()
+            acceptBtn.setOnClickListener {
+                if (termsCheckBox.isChecked) {
                     dialog.dismiss()
+                    // we can check for saved vip subscription if its true we could not call the api
+                    subscribeToVip()
                 }
             }
-        }
 
+            rejectBtn.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
     }
+
+    private fun subscribeToVip() {
+
+        Common.setUpProgressDialog(this)
+        viewModel.subscribeToVip(
+            object : SharedViewModel.ResponseStandard {
+                override fun onSuccess(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    // later add progress bar to view
+                    Common.cancelProgressDialog()
+                    viewModel.vip_subsription = true
+                    setSuccessAlert()
+                    /*  Toast.makeText(
+                          this@GeneralTermsActivity,
+                          message,
+                          Toast.LENGTH_LONG
+                      ).show()*/
+                }
+
+                override fun onFailure(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    Common.cancelProgressDialog()
+                    if (message.equals(getString(R.string.session_expired))) {
+                        viewModel.resetSession()
+                        Common.setUpSessionProgressDialog(this@GeneralTermsActivity)
+
+                    } else
+                        if (message.trim().equals("Subscription Charge Already in Cart")) {
+                            setSuccessAlert()
+                        } else
+                            Common.setUpAlert(
+                                this@GeneralTermsActivity, false,
+                                viewModel.getLangResources()
+                                    .getString(R.string.error),
+                                message,
+                                viewModel.getLangResources().getString(R.string.ok),
+                                null
+                            )
+                }
+            })
+    }
+
+    private fun setSuccessAlert(){
+        Common.setUpAlert(
+            this@GeneralTermsActivity,
+            true,
+            viewModel.getLangResources().getString(R.string.success),
+            viewModel.getLangResources().getString(R.string.subscribe_successfully),
+            viewModel.getLangResources().getString(R.string.ok),
+            null
+        )
+    }
+}

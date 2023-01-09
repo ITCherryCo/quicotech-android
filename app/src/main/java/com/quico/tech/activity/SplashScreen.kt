@@ -37,7 +37,7 @@ class SplashScreen : AppCompatActivity() {
             if (prefManager!!.isFirstTimeLaunch) {
                 prefManager.isFirstTimeLaunch = false
                 startActivity(
-                    Intent(this, LoginActivity::class.java)
+                    Intent(this, IntroActivity::class.java)
                 )
             }
 

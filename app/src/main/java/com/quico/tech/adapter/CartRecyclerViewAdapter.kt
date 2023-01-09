@@ -29,88 +29,96 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                 qty.text = product.quantity.toString()
                 var final_price = 0.0
                 //var total_price=0.0
-                if (!product.in_stock!!) {
-                    outOfStock.visibility = View.VISIBLE
-                    outOfStock.text = viewModel.getLangResources().getString(R.string.out_of_stock_msg)
-                } else if (product.quantity>product.quantity_available!! ) {
-                    outOfStock.visibility = View.VISIBLE
-                    outOfStock.text = viewModel.getLangResources().getString(R.string.available_qty_msg,product.quantity_available.toString())
-                }
-
-                viewModel.user?.let { user ->
-                    if (user.is_vip || viewModel.vip_subsription) {
-                        if (product.is_vip || product.is_on_sale)
-                            final_price = product.new_price
-                        else
-                            final_price = product.regular_price
-                    } else {
-                        if (product.is_on_sale)
-                            final_price = product.new_price
-                        else
-                            final_price = product.regular_price
-                    }
-                }
-
-                price.text = "$ ${final_price}"
-                totalPrice.text = "${
-                    viewModel.getLangResources().getString(R.string.total)
-                }: $${final_price * quantity}"
-
-                if (viewModel.getLanguage().equals(Constant.AR)) {
-                    plus.scaleX = -1f
-                    minus.scaleX = -1f
-                }
-
-                if (absoluteAdapterPosition == 2) {
-                    price.visibility = View.GONE
-                    outOfStock.visibility = View.VISIBLE
-                    totalPrice.setTextColor(itemView.resources.getColor(R.color.gray_dark))
-                    totalPrice.alpha = 0.5f
-                }
-
-                if (absoluteAdapterPosition == 4)
-                    grayLine.visibility = View.INVISIBLE
-
-                product?.image.let {
-                    Glide.with(itemView.context)
-                        .load(it)
-                        //.placeholder(R.drawable.placeholder)
-                        .error(R.drawable.empty_item)
-                        .fitCenter()
-                        .into(coverImage)
-                }
-
-                plus.setOnClickListener {
-                    // check for available qty
-                    if (quantity + 1 > product.quantity_available!!) {
-                        Common.setUpAlert(
-                            itemView.context, false,
-                            viewModel.getLangResources()
-                                .getString(R.string.quantity),
-                            viewModel.getLangResources()
-                                .getString(R.string.available_qty_msg),
-                            viewModel.getLangResources().getString(R.string.ok),
-                            null
+                if (product.is_vip_charge_product) {
+                    qtyContainer.visibility = View.GONE
+                    price.text = "$ ${product.regular_price}"
+                    totalPrice.text = "${viewModel.getLangResources().getString(R.string.total)}: $${product.regular_price}"
+                    coverImage.setImageResource(R.drawable.subscription)
+                } else {
+                    if (!product.in_stock!!) {
+                        outOfStock.visibility = View.VISIBLE
+                        outOfStock.text =
+                            viewModel.getLangResources().getString(R.string.out_of_stock_msg)
+                        price.visibility = View.GONE
+                        totalPrice.setTextColor(itemView.resources.getColor(R.color.gray_dark))
+                        totalPrice.alpha = 0.5f
+                    } else if (product.quantity > product.quantity_available!!) {
+                        outOfStock.visibility = View.VISIBLE
+                        outOfStock.text = viewModel.getLangResources().getString(
+                            R.string.available_qty_msg,
+                            product.quantity_available.toString()
                         )
-                    } else {
-                        quantity++
-                        qty.text = "$quantity"
-                        updateQty(product.id, quantity)
+                        price.visibility = View.GONE
+                        totalPrice.setTextColor(itemView.resources.getColor(R.color.gray_dark))
+                        totalPrice.alpha = 0.5f
                     }
-                }
 
-                minus.setOnClickListener {
-                    // check for available qty
-                    if (quantity > 1) {
-                        quantity--
-                        updateQty(product.id, quantity)
-                    } else
-                        deleteItem(product.id)
-                    // qty.text = "$quantity"
+                    viewModel.user?.let { user ->
+                        if (user.is_vip || viewModel.vip_subsription) {
+                            if (product.is_vip || product.is_on_sale)
+                                final_price = product.new_price
+                            else
+                                final_price = product.regular_price
+                        } else {
+                            if (product.is_on_sale)
+                                final_price = product.new_price
+                            else
+                                final_price = product.regular_price
+                        }
+                    }
+
+                    price.text = "$ ${final_price}"
+                    totalPrice.text = "${
+                        viewModel.getLangResources().getString(R.string.total)
+                    }: $${final_price * quantity}"
+
+                    if (viewModel.getLanguage().equals(Constant.AR)) {
+                        plus.scaleX = -1f
+                        minus.scaleX = -1f
+                    }
+
+
+                    product?.image.let {
+                        Glide.with(itemView.context)
+                            .load(it)
+                            //.placeholder(R.drawable.placeholder)
+                            .error(R.drawable.empty_item)
+                            .fitCenter()
+                            .into(coverImage)
+                    }
+
+                    plus.setOnClickListener {
+                        // check for available qty
+                        if (quantity + 1 > product.quantity_available!!) {
+                            Common.setUpAlert(
+                                itemView.context, false,
+                                viewModel.getLangResources()
+                                    .getString(R.string.quantity),
+                                viewModel.getLangResources()
+                                    .getString(R.string.available_qty_msg),
+                                viewModel.getLangResources().getString(R.string.ok),
+                                null
+                            )
+                        } else {
+                            quantity++
+                            qty.text = "$quantity"
+                            updateQty(product.id, quantity)
+                        }
+                    }
+
+                    minus.setOnClickListener {
+                        // check for available qty
+                        if (quantity > 1) {
+                            quantity--
+                            updateQty(product.id, quantity)
+                        } else
+                            deleteItem(product.is_vip_charge_product,product.id)
+                        // qty.text = "$quantity"
+                    }
                 }
 
                 deleteImage.setOnClickListener {
-                    deleteItem(product.id)
+                    deleteItem(product.is_vip_charge_product,product.id)
                 }
             }
         }
@@ -161,7 +169,7 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
         }
 
 
-        private fun deleteItem(product_id: Int) {
+        private fun deleteItem(is_vip_charge_product:Boolean, product_id: Int) {
             binding.apply {
                 Common.setUpChoicesAlert(itemView.context,
                     viewModel.getLangResources().getString(R.string.delete_item),
@@ -177,7 +185,7 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                             )
 
                             progressBar.visibility = View.VISIBLE
-                            viewModel.removeFromCart(params,
+                            viewModel.removeFromCart(is_vip_charge_product,params,
                                 object : SharedViewModel.ResponseStandard {
                                     override fun onSuccess(
                                         success: Boolean,
@@ -186,6 +194,7 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                                     ) {
                                         // later add progress bar to view
                                         progressBar.visibility = View.GONE
+
                                         /*     Toast.makeText(
                                              itemView.context,
                                              message,

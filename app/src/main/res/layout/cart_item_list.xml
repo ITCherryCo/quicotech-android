@@ -45,11 +45,12 @@
                     <ImageView
                         android:id="@+id/coverImage"
                         android:layout_width="match_parent"
-                        android:layout_height="65dp"
+                        android:layout_height="match_parent"
                         android:scaleType="fitXY"
                         android:src="@drawable/laptop" />
 
                     <RelativeLayout
+                        android:id="@+id/qtyContainer"
                         android:layout_width="match_parent"
                         android:layout_height="25dp"
                         android:layout_alignParentBottom="true"

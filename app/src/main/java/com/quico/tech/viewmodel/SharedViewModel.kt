@@ -361,7 +361,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                                 responseStandard?.onSuccess(
                                     true,
                                     SUCCESS,
-                                    response.body().toString()
+                                    getLangResources().getString(R.string.logged_out)
                                 )
                             } else {
                                 Log.d(USER_LOGOUT_TAG, "FAILURE  ${response.body()?.error}")
@@ -1036,6 +1036,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
 
     fun removeFromCart(
+        is_vip_charge_product:Boolean,
         params: ProductBodyParameters,
         responseStandard: ResponseStandard?
     ) {
@@ -1052,6 +1053,9 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                                     SUCCESS,
                                     getLangResources().getString(R.string.item_deleted_successfully)
                                 )
+                                if (is_vip_charge_product)
+                                    vip_subsription =false
+
                                 loadCart(true)
                             } else {
                                 Log.d(CART_TAG, "ERROR ${response.body()?.error}")
@@ -1078,8 +1082,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                             responseStandard?.onFailure(
                                 false,
                                 "FAILURE",
-                                response.body().toString()
-                            )
+                                "${response.body()?.error}")
+
                         }
 
                 } catch (e: Exception) {
@@ -1146,7 +1150,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                             responseStandard?.onFailure(
                                 false,
                                 "FAILURE",
-                                response.body().toString()
+                                "${response.body()?.error}"
                             )
 
                     }
@@ -1199,7 +1203,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                                 responseStandard?.onFailure(
                                     false,
                                     ERROR,
-                                    response.body().toString()
+                                    "${response.body()?.error}"
                                 )
                             }
                             //  getUser(session_id)
@@ -1213,7 +1217,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                             responseStandard?.onFailure(
                                 false,
                                 "FAILURE",
-                                response.body().toString()
+                                "${response.body()?.error}"
                             )
                         }
 
@@ -1265,13 +1269,12 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun subscribeToVip(
-        params: ProductBodyParameters,
         responseStandard: ResponseStandard?
     ) {
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                        var response = repository.subscribeToVip(params)
+                        var response = repository.subscribeToVip()
 
                         if (response.isSuccessful) {
                             if (response.body()?.result?.status != null) {
@@ -1292,7 +1295,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                                 responseStandard?.onFailure(
                                     false,
                                     ERROR,
-                                    response.body().toString()
+                                    "${response.body()?.error}"
                                 )
                             }
                             //  getUser(session_id)
@@ -1306,8 +1309,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                             responseStandard?.onFailure(
                                 false,
                                 "FAILURE",
-                                response.body().toString()
-                            )
+                                "${response.body()?.error}")
+
                         }
 
                 } catch (e: Exception) {

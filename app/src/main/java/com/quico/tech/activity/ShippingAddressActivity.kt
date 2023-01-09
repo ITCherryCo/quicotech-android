@@ -86,7 +86,7 @@ class ShippingAddressActivity : AppCompatActivity() {
                             if (addressesResponse.result.isNullOrEmpty()) {
                                 setUpErrorForm(Constant.NO_ADDRESSES)
                             } else {
-                                if (addressesResponse.result.size<3)
+                               // if (addressesResponse.result.size<3)
                                     binding.includedFragment.addAddressContainer.setEnabled(true)
 
                                 addressRecyclerViewAdapter.differ.submitList(addressesResponse.result)

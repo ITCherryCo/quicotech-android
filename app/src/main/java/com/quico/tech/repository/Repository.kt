@@ -33,7 +33,7 @@ class Repository() {
     suspend fun updateCartQuantity( productBody: ProductBodyParameters) = RetrofitInstance.api.updateCartQuantity(productBody)
     suspend fun removeFromCart( productBody: ProductBodyParameters) = RetrofitInstance.api.removeFromCart(productBody)
     suspend fun viewCart() = RetrofitInstance.api.viewCart()
-    suspend fun subscribeToVip( productBody: ProductBodyParameters) = RetrofitInstance.api.subscribeToVip(productBody)
+    suspend fun subscribeToVip() = RetrofitInstance.api.subscribeToVip()
 
     suspend fun search(searchBodyParameters: SearchBodyParameters) = RetrofitInstance.api.search(searchBodyParameters)
     suspend fun searchCompare(searchBodyParameters: SearchBodyParameters) = RetrofitInstance.api.searchCompare(searchBodyParameters)

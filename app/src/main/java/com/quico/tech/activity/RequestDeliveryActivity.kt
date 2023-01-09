@@ -186,10 +186,10 @@ class RequestDeliveryActivity : AppCompatActivity() {
                             if (addressesResponse.result.isNullOrEmpty()) {
                                 setUpAddressErrorForm(Constant.NO_ADDRESSES)
                             } else {
-                                if (addressesResponse.result.size < 3)
+                                //if (addressesResponse.result.size < 3)
                                     binding.addressListFragment.addAddressContainer.setEnabled(true)
-                                else
-                                    binding.addressListFragment.addAddressContainer.setEnabled(false)
+                                //else
+                                  //  binding.addressListFragment.addAddressContainer.setEnabled(false)
 
                                 addressRecyclerViewAdapter.differ.submitList(addressesResponse.result)
                                 binding.addressListFragment.recyclerView.visibility = View.VISIBLE
@@ -290,7 +290,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
                 tryAgain.setOnClickListener {
                     onRefresh()
                 }
-                if (viewModel.addresses.value.data?.result?.size!! < 3)
+               // if (viewModel.addresses.value.data?.result?.size!! < 3)
                     binding.addressListFragment.addAddressContainer.setEnabled(true)
 
                 when (error_type) {
@@ -355,7 +355,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
                 addressListFragment.addNewAddressText.text =
                     viewModel.getLangResources().getString(R.string.add_new_address)
                 addressListFragment.addImage.visibility = View.VISIBLE
-                if (viewModel.addresses.value.data?.result?.size == 3)
+                //if (viewModel.addresses.value.data?.result?.size == 3)
                     binding.addressListFragment.addAddressContainer.setEnabled(false)
 
             }

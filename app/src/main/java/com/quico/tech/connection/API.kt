@@ -107,10 +107,10 @@ interface API {
     @GET("viewWishlist")
     suspend fun viewWishlist(): Response<ProductsResponse>
 
-    @POST("subscribeToVip")
+    @POST("subscribe")
    // @Headers("Content-Type: application/json")
-    @Headers("Content-Type: text/html")
-    suspend fun subscribeToVip(@Body productBodyParameters: ProductBodyParameters): Response<RegisterResponse>
+   // @Headers("Content-Type: text/html")
+    suspend fun subscribeToVip(): Response<RegisterResponse>
 
     @POST("search")
    // @Headers("Content-Type: application/json")
