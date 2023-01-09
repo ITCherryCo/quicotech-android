@@ -40,6 +40,7 @@ object Constant {
     var USER_REGISTER_TAG= "USER_REGISTER_TAG"
     var USER_LOGIN_TAG= "USER_LOGIN_TAG"
     val ADDRESS_TAG= "ADDRESS_TAG"
+    val CART_TAG= "CART_TAG"
     val SERVICE_TAG= "SERVICE_TAG"
     val PRODUCT_TAG= "PRODUCT_TAG"
     val ADDRESS= "address"
@@ -73,6 +74,7 @@ object Constant {
     val CATEGORY_ID= "category_id"
     val BRAND_ID= "BRAND_id"
     var ITEM_ID= "item_id"
+    var FRAGMENT_POSITION="fragment_position"
     var SEND_EMAIL_LINK= "SEND_EMAIL_LINK"
     var TEMPORAR_USER : RegisterParams? =null
     var TEMPORAR_ADDRESS : Address? =null
@@ -81,7 +83,7 @@ object Constant {
     var ACTIVITY_TYPE ="activity_type"
     var TERMS_OF_USE ="terms_of_use"
     var VIP_BENEFITS ="vip_benefits"
-
+    var SEARCH_TEXT =""
 
 
 }

@@ -91,7 +91,7 @@ class BrandDetailActivity : AppCompatActivity() {
     }
     fun setUpItemsAdapter() {
         binding.apply {
-            productRecyclerViewAdapter = ProductRecyclerViewAdapter(false,false,object :ProductRecyclerViewAdapter.OnProductSelect{
+            productRecyclerViewAdapter = ProductRecyclerViewAdapter(false,false,false,viewModel,object :ProductRecyclerViewAdapter.OnProductSelect{
                 override fun onProductSelect(product: Product?) {
 
                 }

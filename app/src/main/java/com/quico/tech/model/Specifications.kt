@@ -1,5 +1,4 @@
 package com.quico.tech.model
 
-data class Specifications(
-    val Brand: String
-)
+class Specifications(val name:String, val value:String) {
+}

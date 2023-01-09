@@ -3,16 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.CompareProductFragment">
 
 
-    <include
-        android:id="@+id/compareErrorContainer"
-        layout="@layout/error_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="150dp"
-        android:visibility="gone" />
+
 
     <RelativeLayout
         android:id="@+id/mainContainer"
@@ -56,6 +51,8 @@
                     android:background="@color/white"
                     android:layoutDirection="locale"
                     android:queryHint="@string/search_hint"
+                    android:iconifiedByDefault="false"
+                    style="@style/AppTheme.Toolbar"
                     android:textDirection="locale" />
             </RelativeLayout>
 
@@ -82,15 +79,33 @@
             android:layout_below="@+id/header"
             android:visibility="gone"
             android:elevation="1dp"
-            android:layout_marginTop="-30dp"/>
-
+            android:layout_marginTop="-27dp"/>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/header">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_centerInParent="true"/>
+                <include
+                    android:id="@+id/compareErrorContainer"
+                    layout="@layout/error_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="150dp"
+                    android:visibility="gone"/>
+
             <LinearLayout
+                android:id="@+id/productContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -103,6 +118,7 @@
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/bold"
                     android:gravity="center"
+                    android:lines="3"
                     android:layoutDirection="locale"
                     android:text="EVO Handheld Gimbal"
                     android:textColor="@color/black"
@@ -110,12 +126,26 @@
                     android:textSize="13sp" />
 
                 <ImageView
-                    android:id="@+id/image"
+                    android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
                     android:layout_marginHorizontal="25dp"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/gimble" />
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="25dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/bold"
+                    android:gravity="center"
+                    android:layoutDirection="locale"
+                    android:text="$ 300"
+                    android:textColor="@color/black"
+                    android:textDirection="locale"
+                    android:textSize="14sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -124,11 +154,14 @@
                     android:background="@color/shimmer_placeholder" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                    android:id="@+id/specificationRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     tools:listitem="@layout/specification_item_list" />
             </LinearLayout>
+            </RelativeLayout>
+
         </androidx.core.widget.NestedScrollView>
     </RelativeLayout>
 

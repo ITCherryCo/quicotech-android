@@ -6,15 +6,16 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.databinding.SpecificationItemListBinding
-import com.quico.tech.model.Specification
+import com.quico.tech.model.Specifications
 
 class SpecificationRecyclerViewAdapter : RecyclerView.Adapter<SpecificationRecyclerViewAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(private var binding: SpecificationItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(specification: Specification) {
+        fun bind(specifications: Specifications) {
             binding.apply {
-
+                name.text =  specifications.name
+                value.text =  specifications.value
             }
         }
 
@@ -35,9 +36,9 @@ class SpecificationRecyclerViewAdapter : RecyclerView.Adapter<SpecificationRecyc
         holder.bind(specification)
     }
 
-    private var onItemClickListener: ((Specification) -> Unit)? = null
+    private var onItemClickListener: ((Specifications) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (Specification) -> Unit) {
+    fun setOnItemClickListener(listener: (Specifications) -> Unit) {
         onItemClickListener = listener
     }
 
@@ -45,12 +46,12 @@ class SpecificationRecyclerViewAdapter : RecyclerView.Adapter<SpecificationRecyc
         return differ.currentList.size
     }
 
-    private val differCallback = object : DiffUtil.ItemCallback<Specification>() {
-        override fun areItemsTheSame(oldItem: Specification, newItem: Specification): Boolean {
-            return oldItem.id == newItem.id
+    private val differCallback = object : DiffUtil.ItemCallback<Specifications>() {
+        override fun areItemsTheSame(oldItem: Specifications, newItem: Specifications): Boolean {
+            return oldItem.name == newItem.name
         }
 
-        override fun areContentsTheSame(oldItem: Specification, newItem: Specification): Boolean {
+        override fun areContentsTheSame(oldItem: Specifications, newItem: Specifications): Boolean {
             return oldItem == newItem
         }
     }

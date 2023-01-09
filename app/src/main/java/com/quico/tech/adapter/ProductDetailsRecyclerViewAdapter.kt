@@ -9,18 +9,18 @@ import com.quico.tech.databinding.ProductDetailsItemListBinding
 import com.quico.tech.databinding.SearchItemListBinding
 import com.quico.tech.model.Product
 import com.quico.tech.model.ProductDetails
+import com.quico.tech.model.Specifications
 
 class ProductDetailsRecyclerViewAdapter : RecyclerView.Adapter<ProductDetailsRecyclerViewAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(private var binding: ProductDetailsItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(productDetails: ArrayList<String>) {
+        fun bind(specification: Specifications) {
             binding.apply {
-                name.text = productDetails[0]
-                value.text = productDetails[1]
+                name.text = specification.name
+                value.text = specification.value
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -34,21 +34,20 @@ class ProductDetailsRecyclerViewAdapter : RecyclerView.Adapter<ProductDetailsRec
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val item = differ.currentList[position]
-        holder.bind(item)
+        val specification = differ.currentList[position]
+        holder.bind(specification)
     }
-
 
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
 
-    private val differCallback = object : DiffUtil.ItemCallback<ArrayList<String>>() {
-        override fun areItemsTheSame(oldItem: ArrayList<String>, newItem: ArrayList<String>): Boolean {
-            return oldItem[0] == newItem[0]
+    private val differCallback = object : DiffUtil.ItemCallback<Specifications>() {
+        override fun areItemsTheSame(oldItem: Specifications, newItem: Specifications): Boolean {
+            return oldItem.name == newItem.name
         }
 
-        override fun areContentsTheSame(oldItem: ArrayList<String>, newItem: ArrayList<String>): Boolean {
+        override fun areContentsTheSame(oldItem: Specifications, newItem: Specifications): Boolean {
             return oldItem == newItem
         }
     }

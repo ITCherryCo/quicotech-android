@@ -5,6 +5,8 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -12,17 +14,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
-import com.quico.tech.adapter.CardRecyclerViewAdapter
-import com.quico.tech.adapter.MaintenanceRecyclerViewAdapter
 import com.quico.tech.adapter.ProductDetailsRecyclerViewAdapter
 import com.quico.tech.adapter.ProductImageAdapter
 import com.quico.tech.data.Constant
 import com.quico.tech.data.Constant.PRODUCT_ID
 import com.quico.tech.data.Constant.PRODUCT_NAME
 import com.quico.tech.databinding.ActivityProductBinding
-import com.quico.tech.model.Card
-import com.quico.tech.model.Product
-import com.quico.tech.model.ProductDetails
+import com.quico.tech.model.*
 import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
@@ -36,6 +34,9 @@ class ProductActivity : AppCompatActivity() {
     private var showText = false
     private var product_id: Int? = 0
     private var product_name: String = ""
+    private lateinit var viewModel2: SharedViewModel
+    private var is_vip_price: Boolean = false
+    private var quantity: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,16 +82,12 @@ class ProductActivity : AppCompatActivity() {
             if (viewModel.getLanguage().equals(Constant.AR))
                 toolbarProductDetails.backArrow.scaleX = -1f
 
+            toolbarProductDetails.backArrow.setOnClickListener {
+                onBackPressed()
+            }
             // oldPrice.setPaintFlags(oldPrice.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG) // draw line on old price
 
-            compareBtn.setOnClickListener {
-                //startActivity(Intent(this@ProductActivity,CompareSearchActivity::class.java))
-                startActivity(
-                    Intent(this@ProductActivity, CompareProductActivity::class.java)
-                        .putExtra(Constant.ITEM_ID, 1)
-                )
-            }
-
+            toolbarProductDetails.heartImage.setImageResource(R.drawable.heart_icon)
             toolbarProductDetails.cartImage.setOnClickListener {
                 startActivity(Intent(this@ProductActivity, CartActivity::class.java))
             }
@@ -150,32 +147,19 @@ class ProductActivity : AppCompatActivity() {
             bestSellerText.visibility = View.GONE
             newText.visibility = View.GONE
             vipText.visibility = View.GONE
+            selectPriceContainer.visibility = View.GONE
+            userVipContainer.visibility = View.GONE
 
+            product_id = product.id
             if (product.is_on_sale) {
                 bestSellerText.visibility = View.VISIBLE
                 bestSellerText.text = viewModel.getLangResources().getString(R.string.best_seller)
             }
 
-            if (product.is_vip) {
-                vipText.visibility = View.VISIBLE
-                vipText.text = viewModel.getLangResources().getString(R.string.best_seller)
-            }
-            if (product.is_vip || product.is_on_sale) {
-                oldPrice.visibility = View.VISIBLE
-                newPrice.visibility = View.VISIBLE
-                oldPrice.text = "$ ${product.regular_price.toString()}"
-                newPrice.text = "$ ${product.new_price.toString()}"
-                oldPrice.setBackground(getResources().getDrawable(R.drawable.red_line))
-            }
-            else{
-                oldPrice.visibility = View.GONE
-                newPrice.text = "$ ${product.regular_price.toString()}"
-            }
-
             name.text = product.name
             description.text = product.description
 
-            if (!product.specifications.isNullOrEmpty()){
+            if (!product.specifications.isNullOrEmpty()) {
                 showHideText.visibility = View.VISIBLE
                 setUpDetailsAdapter(product.specifications)
                 showHideText.setOnClickListener {
@@ -183,24 +167,157 @@ class ProductActivity : AppCompatActivity() {
 
                     if (showText) {
                         detailsContainer.visibility = View.VISIBLE
-                        showHideText.text = viewModel.getLangResources().getString(R.string.see_less)
+                        showHideText.text =
+                            viewModel.getLangResources().getString(R.string.see_less)
 
                     } else {
                         detailsContainer.visibility = View.GONE
-                        showHideText.text = viewModel.getLangResources().getString(R.string.show_more)
+                        showHideText.text =
+                            viewModel.getLangResources().getString(R.string.show_more)
 
                     }
                 }
-            }
-            else {
+            } else {
                 showHideText.visibility = View.VISIBLE
                 detailsContainer.visibility = View.GONE
+            }
+
+            compareBtn.setOnClickListener {
+
+                startActivity(
+                    Intent(this@ProductActivity, CompareProductActivity::class.java)
+                        .putExtra(Constant.ITEM_ID, product.id)
+                )
+            }
+
+
+            if (product.is_vip) {
+                salePriceContainer.visibility = View.GONE
+                vipText.visibility = View.VISIBLE
+                vipText.text = viewModel.getLangResources().getString(R.string.vip_price)
+
+                if (viewModel.user != null) {
+                    viewModel.user?.let { user ->
+                        if (user.is_vip) {
+                            userVipContainer.visibility = View.VISIBLE
+                            selectPriceContainer.visibility = View.GONE
+                            vipBadge.text =
+                                viewModel.getLangResources().getString(R.string.vip_price)
+                            price.text = "$ ${product.new_price.toString()}"
+                            discount.text = "- ${(product.regular_price*100)/product.new_price}%"
+                        } else {
+                            selectPriceContainer.visibility = View.VISIBLE
+                            regularPrice.text = "$ ${product.regular_price.toString()}"
+                            vipText.text = "$ ${product.new_price.toString()}"
+
+                            userVipContainer.visibility = View.GONE
+                            managePriceType()
+                        }
+                    }
+                }
+            } else if (product.is_on_sale) {
+                salePriceContainer.visibility = View.VISIBLE
+                userVipContainer.visibility = View.GONE
+                selectPriceContainer.visibility = View.GONE
+                bestSellerText.visibility = View.VISIBLE
+                bestSellerText.text = viewModel.getLangResources().getString(R.string.best_seller)
+
+                oldPrice.text = "$ ${product.regular_price.toString()}"
+                newPrice.text = "$ ${product.new_price.toString()}"
+                oldPrice.setBackground(getResources().getDrawable(R.drawable.red_line))
+            } else {
+                oldPrice.visibility = View.GONE
+               // newPrice.text = "$ ${product.regular_price.toString()}"
+                oldPrice.text = "$ ${product.regular_price.toString()}"
+                newPrice.visibility = View.GONE
+            }
+
+            plusMinusQty()
+            addToCartBtn.setOnClickListener {
+                // if item is out of stock tell him
+                // else check if user logged in
+                checkUser()
+            }
+
+            viewModel.user?.let {
+                toolbarProductDetails.heartImage.setOnClickListener {
+                    addToWishlist(product.id)
+                }
             }
         }
     }
 
-    private fun minusQty(){
+    private fun checkUser() {
+        if (viewModel.user == null) {
+            Common.setUpChoicesAlert(
+                this@ProductActivity,
+                viewModel.getLangResources().getString(R.string.login),
+                viewModel.getLangResources()
+                    .getString(R.string.please_login),
+                viewModel.getLangResources().getString(R.string.cancel),
+                viewModel.getLangResources().getString(R.string.login),
+                object : Common.ResponseChoices {
+                    override fun onConfirm() {
+                        startActivity(
+                            Intent(
+                                this@ProductActivity,
+                                LoginActivity::class.java
+                            )
+                        )
+                    }
 
+                    override fun onCancel() {
+                    }
+                }
+            )
+        } else {
+            if (!viewModel.vip_subsription && is_vip_price) {
+                Toast.makeText(this,"Add subscription to cart then add to cart",Toast.LENGTH_LONG).show()
+                //subscribe
+                // then add to cart
+            } else {
+                addToCart(is_vip_price, product_id!!, quantity)
+            }
+        }
+    }
+
+    private fun managePriceType() {
+        binding.apply {
+            regularRadioBtn.setOnCheckedChangeListener(object :
+                CompoundButton.OnCheckedChangeListener {
+                override fun onCheckedChanged(p0: CompoundButton?, checked: Boolean) {
+                    if (checked) {
+                        is_vip_price = false
+                        vipRadioBtn.setChecked(false)
+                    }
+                }
+            })
+
+            vipRadioBtn.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+                override fun onCheckedChanged(p0: CompoundButton?, checked: Boolean) {
+                    if (checked) {
+                        is_vip_price = true
+                        regularRadioBtn.setChecked(false)
+                    }
+                }
+            })
+        }
+    }
+
+    private fun plusMinusQty() {
+        binding.apply {
+            plus.setOnClickListener {
+                quantity++
+                qty.text = quantity.toString()
+            }
+
+            minus.setOnClickListener {
+                if (quantity > 1) {
+                    quantity--
+                    qty.text = quantity.toString()
+                }
+            }
+        }
     }
 
     private fun setImages(images: ArrayList<String>) {
@@ -215,7 +332,7 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpDetailsAdapter( details:ArrayList<ArrayList<String>>) {
+    private fun setUpDetailsAdapter(specifications: ArrayList<Specifications>) {
         binding.apply {
             productDetailsRecyclerViewAdapter = ProductDetailsRecyclerViewAdapter()
 
@@ -223,8 +340,132 @@ class ProductActivity : AppCompatActivity() {
                 LinearLayoutManager(this@ProductActivity, LinearLayoutManager.VERTICAL, false)
             recyclerView.setItemAnimator(DefaultItemAnimator())
             recyclerView.setAdapter(productDetailsRecyclerViewAdapter)
-            productDetailsRecyclerViewAdapter.differ.submitList(details)
+            productDetailsRecyclerViewAdapter.differ.submitList(specifications)
         }
+    }
+
+    private fun addToCart(is_vip_price: Boolean, product_id: Int, quantity: Int) {
+
+        var productBodyParameters: ProductBodyParameters? = null
+        if (viewModel.user!!.is_vip)
+            productBodyParameters = ProductBodyParameters(ProductParams(product_id, quantity))
+        else
+            productBodyParameters = ProductBodyParameters(ProductParams(is_vip_price, product_id, quantity))
+
+        Common.setUpProgressDialog(this)
+        viewModel.addToCart(false,productBodyParameters,
+            object : SharedViewModel.ResponseStandard {
+                override fun onSuccess(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    // later add progress bar to view
+                    Common.cancelProgressDialog()
+                    Toast.makeText(
+                        this@ProductActivity,
+                        message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                override fun onFailure(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    Common.cancelProgressDialog()
+                    Common.setUpAlert(
+                        this@ProductActivity, false,
+                        viewModel.getLangResources()
+                            .getString(R.string.error),
+                        message,
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
+                }
+            })
+    }
+
+    private fun addToWishlist(product_id: Int) {
+
+        var productBodyParameters = ProductBodyParameters(ProductParams(product_id))
+
+        Common.setUpProgressDialog(this)
+        viewModel.addToWishlist(productBodyParameters,
+            object : SharedViewModel.ResponseStandard {
+                override fun onSuccess(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    // later add progress bar to view
+                    Common.cancelProgressDialog()
+
+                    binding.toolbarProductDetails.heartImage.setImageResource(R.drawable.filled_heart)
+                }
+
+                override fun onFailure(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    Common.cancelProgressDialog()
+                    Common.setUpAlert(
+                        this@ProductActivity, false,
+                        viewModel.getLangResources()
+                            .getString(R.string.error),
+                        message,
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
+                }
+            })
+    }
+
+    private fun subscribeToVip(vip_id: Int) {
+
+        var productBodyParameters = ProductBodyParameters(ProductParams(vip_id))
+
+        Common.setUpProgressDialog(this)
+        viewModel.subscribeToVip(productBodyParameters,
+            object : SharedViewModel.ResponseStandard {
+                override fun onSuccess(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    // later add progress bar to view
+                    Common.cancelProgressDialog()
+                    Toast.makeText(
+                        this@ProductActivity,
+                        message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    addToCart(is_vip_price,product_id!!,quantity)
+                }
+
+                override fun onFailure(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    Common.cancelProgressDialog()
+                    Common.setUpAlert(
+                        this@ProductActivity, false,
+                        viewModel.getLangResources()
+                            .getString(R.string.error),
+                        message,
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
+                }
+            })
+    }
+
+
+    private fun addToWishList() {
+
     }
 
     fun setLoading() {
@@ -238,8 +479,8 @@ class ProductActivity : AppCompatActivity() {
     fun onRefresh() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
-                    setLoading()
-                    viewModel.getProduct(product_id!!) // get User id
+                setLoading()
+                viewModel.getProduct(product_id!!) // get User id
             })
         }
     }

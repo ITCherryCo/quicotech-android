@@ -45,7 +45,8 @@ data class RegisterResponse(
     val id: Any,
     val jsonrpc: String,
     val result: Result,
-    val error: ErrorData?
+    val error: String
+   // val error: ErrorData?
 )
 
 data class SessionResponse(

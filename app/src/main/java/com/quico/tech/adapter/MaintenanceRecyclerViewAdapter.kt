@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
 import com.quico.tech.activity.ServiceListActivity
 import com.quico.tech.data.Constant.SERVICE_ID
-import com.quico.tech.data.Maintenance
 import com.quico.tech.databinding.MaintenaceItemListBinding
 import com.quico.tech.model.Service
 

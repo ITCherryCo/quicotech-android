@@ -10,177 +10,213 @@
         android:layout_height="0.4dp"
         android:layout_alignBottom="@+id/mainContainer"
         android:layout_marginHorizontal="15dp"
-        android:background="@color/gray_dark"
         android:alpha="0.3"
+        android:background="@color/gray_dark"
         android:elevation="0.1dp" />
-
 
     <RelativeLayout
         android:id="@+id/mainContainer"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:paddingHorizontal="22dp"
         android:layoutDirection="locale"
+        android:paddingHorizontal="22dp"
         android:paddingVertical="15dp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="92dp"
+        <RelativeLayout
+            android:id="@+id/infoContainer"
+            android:layout_width="match_parent"
             android:layout_height="95dp"
-            android:elevation="0dp"
-            app:cardCornerRadius="8dp">
+            android:layoutDirection="locale">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layoutDirection="locale">
-
-                <ImageView
-                    android:id="@+id/coverImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="65dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/laptop" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="92dp"
+                android:layout_height="95dp"
+                android:elevation="0dp"
+                app:cardCornerRadius="8dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/container_cart_qty_black">
+                    android:layout_height="wrap_content"
+                    android:layoutDirection="locale">
 
-                    <TextView
-                        android:id="@+id/minus"
-                        android:layout_width="30dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/ripple_minus_white_gray_container"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:layoutDirection="locale"
-                        android:text="-"
-                        android:textColor="@color/black"
-                        android:textDirection="locale"
-                        android:textSize="15sp" />
+                    <ImageView
+                        android:id="@+id/coverImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="65dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/laptop" />
 
-                    <TextView
-                        android:id="@+id/qty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_toStartOf="@+id/plus"
-                        android:layout_toEndOf="@+id/minus"
-                        android:gravity="center"
-                        android:text="2"
-                        android:textDirection="locale"
-                        android:layoutDirection="locale"
-                        android:textColor="@color/black"
-                        android:textSize="12sp" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/container_cart_qty_black">
+
+                        <TextView
+                            android:id="@+id/minus"
+                            android:layout_width="30dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/ripple_minus_white_gray_container"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:layoutDirection="locale"
+                            android:text="-"
+                            android:textColor="@color/black"
+                            android:textDirection="locale"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/qty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_toStartOf="@+id/plus"
+                            android:layout_toEndOf="@+id/minus"
+                            android:gravity="center"
+                            android:layoutDirection="locale"
+                            android:text="2"
+                            android:textColor="@color/black"
+                            android:textDirection="locale"
+                            android:textSize="12sp" />
 
 
-                    <TextView
-                        android:id="@+id/plus"
-                        android:layout_width="30dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentEnd="true"
-                        android:background="@drawable/ripple_plus_white_to_gray_container"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:text="+"
-                        android:textDirection="locale"
-                        android:layoutDirection="locale"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
+                        <TextView
+                            android:id="@+id/plus"
+                            android:layout_width="30dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:background="@drawable/ripple_plus_white_to_gray_container"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:layoutDirection="locale"
+                            android:text="+"
+                            android:textColor="@color/black"
+                            android:textDirection="locale"
+                            android:textSize="15sp" />
 
+                    </RelativeLayout>
                 </RelativeLayout>
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
-
-        <RelativeLayout
-            android:id="@+id/infoRel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="15dp"
-
-            android:layout_toEndOf="@+id/cardView">
+            </androidx.cardview.widget.CardView>
 
             <RelativeLayout
-                android:id="@+id/nameContainer"
+                android:id="@+id/infoRel"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+
+                android:layout_toEndOf="@+id/cardView">
+
+                <RelativeLayout
+                    android:id="@+id/nameContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toStartOf="@+id/deleteImage"
+                        android:fontFamily="@font/regular"
+                        android:layoutDirection="locale"
+                        android:lines="2"
+                        android:text="Acer 14 2021 iCore 7 High End"
+                        android:textColor="@color/black"
+                        android:textDirection="locale"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/deleteImage"
+                        android:layout_width="15dp"
+                        android:layout_height="17dp"
+                        android:layout_alignParentEnd="true"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:layoutDirection="locale"
+                        android:src="@drawable/delete"
+                        android:textDirection="locale" />
+
+                </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/name"
+                    android:id="@+id/price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:layout_marginEnd="10dp"
-                    android:layout_toStartOf="@+id/deleteImage"
+                    android:layout_toStartOf="@+id/totalPrice"
+                    android:fontFamily="@font/bold"
                     android:layoutDirection="locale"
-                    android:lines="2"
-                    android:text="Acer 14 2021 iCore 7 High End"
-                    android:textColor="@color/black"
+                    android:maxLines="1"
+                    android:paddingEnd="10dp"
+                    android:text="$40"
+                    android:textColor="@color/green"
                     android:textDirection="locale"
-                    android:fontFamily="@font/regular"
                     android:textSize="16sp" />
 
-                <ImageView
-                    android:id="@+id/deleteImage"
-                    android:layout_width="15dp"
-                    android:layout_height="17dp"
+                <TextView
+                    android:id="@+id/outOfStock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@+id/totalPrice"
+                    android:maxLines="1"
+                    android:paddingEnd="10dp"
+                    android:text="@string/out_of_stock"
+                    android:textColor="@color/red"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/totalPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:clickable="true"
+                    android:layout_alignParentBottom="true"
+                    android:fontFamily="@font/bold"
                     android:layoutDirection="locale"
-                    android:src="@drawable/delete"
-                    android:textDirection="locale" />
+                    android:maxLines="1"
+                    android:paddingEnd="10dp"
+                    android:text="Total: $80"
+                    android:textColor="@color/color_primary_purple"
+                    android:textDirection="locale"
+                    android:textSize="16sp" />
 
             </RelativeLayout>
-
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="10dp"
-                android:layout_toStartOf="@+id/totalPrice"
-                android:fontFamily="@font/bold"
-                android:layoutDirection="locale"
-                android:maxLines="1"
-                android:paddingEnd="10dp"
-                android:text="$40"
-                android:textColor="@color/green"
-                android:textDirection="locale"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/outOfStock"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="10dp"
-                android:layout_toStartOf="@+id/totalPrice"
-                android:maxLines="1"
-                android:paddingEnd="10dp"
-                android:text="@string/out_of_stock"
-                android:textColor="@color/red"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/totalPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layoutDirection="locale"
-                android:maxLines="1"
-                android:paddingEnd="10dp"
-                android:text="Total: $80"
-                android:textColor="@color/color_primary_purple"
-                android:textDirection="locale"
-                android:textSize="16sp"
-                android:fontFamily="@font/bold"/>
 
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/alertMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/infoContainer"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/medium"
+            android:gravity="center"
+            android:layoutDirection="locale"
+            android:text="@string/out_of_stock_msg"
+            android:textColor="@color/red_dark"
+            android:textDirection="locale"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_below="@+id/grayLine"
+        android:layout_marginHorizontal="15dp"
+        android:indeterminate="true"
+        android:indeterminateBehavior="repeat"
+        android:indeterminateDrawable="@drawable/custom_progressbar"
+        android:indeterminateDuration="800"
+        android:visibility="gone" />
+
 </RelativeLayout>

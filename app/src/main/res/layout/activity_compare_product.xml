@@ -49,52 +49,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:background="@color/gray_light">
+        android:background="@color/gray_light"
+        android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="0dp"
+
+        <FrameLayout
+            android:id="@+id/CompareFrame1"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1">
+            android:layout_weight="1" />
 
-            <include
-                android:id="@+id/firstContainer"
-                layout="@layout/fragment_compare_product"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:layout_weight="1" />
-
-            <FrameLayout
-                android:id="@+id/CompareFrame1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-        </RelativeLayout>
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/shimmer_placeholder"/>
-        <RelativeLayout
-            android:layout_width="0dp"
+            android:background="@color/shimmer_placeholder" />
+
+        <FrameLayout
+            android:id="@+id/CompareFrame2"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <include
-                android:id="@+id/secondContainer"
-                layout="@layout/fragment_compare_product"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <FrameLayout
-                android:id="@+id/CompareFrame2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-        </RelativeLayout>
+            android:layout_weight="1" />
 
 
     </LinearLayout>

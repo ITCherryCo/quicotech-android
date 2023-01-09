@@ -3,6 +3,7 @@ package com.quico.tech.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -12,9 +13,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
 import com.quico.tech.adapter.CartRecyclerViewAdapter
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.EMPTY_CART
 import com.quico.tech.databinding.ActivityCartBinding
 import com.quico.tech.model.Item
+import com.quico.tech.model.Product
 import com.quico.tech.utils.Common
+import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -23,6 +27,7 @@ class CartActivity : AppCompatActivity() {
     private lateinit var binding : ActivityCartBinding
     private lateinit var cartRecyclerViewAdapter : CartRecyclerViewAdapter
     private val viewModel: SharedViewModel by viewModels()
+    private var products= ArrayList<Product>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +35,17 @@ class CartActivity : AppCompatActivity() {
          binding = ActivityCartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setLoading()
-       // setUpCartAdapter()
+        setUpCartAdapter()
         setUpText()
+        onRefresh()
         initStatusBar()
+        subscribeProducts()
+        viewModel.user?.let {
+            viewModel.loadCart(false)
+        }
+        if (viewModel.user==null)
+            setUpErrorForm(Constant.EMPTY_CART)
+
         binding.apply {
             checkoutBtn.setOnClickListener {
                 startActivity(Intent(this@CartActivity, PaymentMethodActivity::class.java))
@@ -61,21 +73,81 @@ class CartActivity : AppCompatActivity() {
         }
     }
 
-   private fun setUpCartAdapter() {
+    private fun subscribeProducts() {
+        lifecycleScope.launch {
+            viewModel.cart_items.collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        binding.apply {
+                            stopShimmer()
+                            cartErrorContainer.root.visibility = View.GONE
+                        }
+
+                        response.data?.let { itemsResponse ->
+                            if (itemsResponse.result.isNullOrEmpty()) {
+                                 setUpErrorForm(Constant.EMPTY_CART)
+                            } else {
+
+                                var total_price2=0.0
+
+                               var total_price= itemsResponse.result.map { it.new_price }.sum()
+
+                                viewModel.user?.let { user ->
+                                    total_price = itemsResponse.result.map { product->
+                                        if (user.is_vip || viewModel.vip_subsription) {
+                                            if (product.is_vip || product.is_on_sale)
+                                                 product.new_price
+                                            else
+                                                 product.regular_price
+                                        } else {
+                                            if (product.is_on_sale)
+                                                 product.new_price
+                                            else
+                                                product.regular_price
+                                        }
+                                    }.sum()
+                                }
+                                Log.d("TOTAL_SUM_PRICE",total_price2.toString())
+                                setUpCartInfo(total_price)
+                                binding.checkoutBtn.setEnabled(true)
+                                binding.recyclerView.visibility = View.VISIBLE
+                                cartRecyclerViewAdapter.differ.submitList(itemsResponse.result!!)
+                            }
+                        }
+                        Log.d(Constant.CART_TAG, "SUCCESS")
+                    }
+
+                    is Resource.Error -> {
+                        response.message?.let { message ->
+                            Log.d(Constant.CART_TAG, "ERROR $message")
+                            setUpErrorForm(Constant.ERROR)
+                        }
+                    }
+
+                    is Resource.Connection -> {
+                        Log.d(Constant.CART_TAG, "ERROR CONNECTION")
+                        setUpErrorForm(Constant.CONNECTION)
+                    }
+
+                    is Resource.Loading -> {
+                       setLoading()
+                        Log.d(Constant.CART_TAG, "LOADING")
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun setUpCartAdapter() {
         // call the adapter for item list
         binding.apply {
             cartRecyclerViewAdapter = CartRecyclerViewAdapter(viewModel)
             stopShimmer()
             recyclerView.visibility=View.VISIBLE
             checkoutBtn.setEnabled(true)
-            swipeRefreshLayout.setRefreshing(false)
 
-            var items = ArrayList<Item>()
-            items.add(Item(1, ""))
-            items.add(Item(1, ""))
-            items.add(Item(1, ""))
-            items.add(Item(1, ""))
-            items.add(Item(1, ""))
+            var items = ArrayList<Product>()
 
                 recyclerView.layoutManager =
                     LinearLayoutManager(this@CartActivity, LinearLayoutManager.VERTICAL, false)
@@ -102,26 +174,28 @@ class CartActivity : AppCompatActivity() {
             shimmer.visibility = View.VISIBLE
             shimmer.startShimmer()
            // swipeRefreshLayout.setRefreshing(true)
-
-            lifecycleScope.launch {
-                delay(3000)
-                setUpCartAdapter()
-            }
         }
     }
 
    private fun onRefresh() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
-                setLoading() // later we will remove it because the observable will call it
-               // viewModel.carts()
+                if (viewModel.user==null)
+                    setUpErrorForm(EMPTY_CART)
+                else {
+                    setLoading() // later we will remove it because the observable will call it
+                    viewModel.user?.let {
+                        viewModel.loadCart(false)
+                    }
+                }
             })
         }
     }
 
-   private fun setUpCartInfo(){
+   private fun setUpCartInfo(total_price:Double){
         binding.apply {
             totalContainer.visibility = View.VISIBLE
+            total.text="$ ${total_price}"
             // set total
         }
     }
@@ -133,35 +207,38 @@ class CartActivity : AppCompatActivity() {
             stopShimmer()
             recyclerView.visibility = View.GONE
             totalContainer.visibility = View.GONE
+            checkoutBtn.visibility = View.GONE
+
             checkoutBtn.setEnabled(false)
-            swipeRefreshLayout.setEnabled(true)
+
             cartErrorContainer.apply {
                 root.visibility = View.VISIBLE
                 errorMsg1.visibility = View.GONE
+                tryAgain.visibility = View.GONE
+                errorMsg2.text = viewModel.getLangResources().getString(R.string.try_again)
                 errorImage.setImageResource(android.R.color.transparent)
+                errorImage.setImageResource(R.drawable.empty_item)
 
                 when (error_type) {
                     Constant.CONNECTION -> {
-                        errorMsg2.setText(
-                            viewModel.getLangResources().getString(R.string.check_connection)
-                        )
+                        errorMsg2.text= viewModel.getLangResources().getString(R.string.check_connection)
                     }
+
                     Constant.EMPTY_CART -> {
                         errorMsg1.visibility = View.VISIBLE
-                        errorMsg1.text =
-                            viewModel.getLangResources().getString(R.string.no_items_in_list)
-                        errorMsg2.text =
-                            viewModel.getLangResources().getString(R.string.dont_have_shop_item)
+                        errorMsg1.text = viewModel.getLangResources().getString(R.string.no_items_in_list)
+                        errorMsg2.text = viewModel.getLangResources().getString(R.string.dont_have_shop_item)
                         errorImage.setImageResource(R.drawable.empty_item)
                         errorBtn.visibility = View.VISIBLE
+
                         errorBtn.setOnClickListener {
                             onBackPressed()
                         }
                     }
+
                     Constant.ERROR -> {
-                        errorMsg2.setText(
-                            viewModel.getLangResources().getString(R.string.error_msg)
-                        )
+                        errorBtn.visibility = View.GONE
+                        errorMsg2.text=viewModel.getLangResources().getString(R.string.error_msg)
                     }
                 }
             }
