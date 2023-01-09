@@ -175,6 +175,7 @@ class VerificationCodeActivity : AppCompatActivity() {
                                 } else {
                                     // must verify email link
                                     verifyBtn.visibility = View.VISIBLE
+                                    verifyBtn.text = viewModel.getLangResources().getString(R.string.continue_process)
                                     verifyBtn.setOnClickListener {
                                         if (viewModel.sendOtpPhoneNumber.isEmpty())
                                             verifyEmail(TEMPORAR_USER!!.login!!, emailLink!!)
@@ -236,6 +237,7 @@ class VerificationCodeActivity : AppCompatActivity() {
                         //  finish_everything(code);
                         Log.d(SMS_TAG, "onVerificationCompleted: $sms_code")
                         binding.pinview.setText(sms_code)
+                        binding.verifyBtn.setEnabled(true)
                         check_code()
                     } else
                         Log.d(SMS_TAG, "null")
@@ -453,6 +455,7 @@ class VerificationCodeActivity : AppCompatActivity() {
                 )
             )
 
+            verifyBtn.setEnabled(true)
             Common.setUpProgressDialog(this@VerificationCodeActivity)
             viewModel.updateMobile(params, object : SharedViewModel.ResponseStandard {
 
@@ -466,6 +469,8 @@ class VerificationCodeActivity : AppCompatActivity() {
 
                 override fun onFailure(success: Boolean, resultTitle: String, message: String) {
                     Common.cancelProgressDialog()
+                    verifyBtn.setEnabled(true)
+
                     if (message.equals(getString(R.string.session_expired))) {
                         viewModel.resetSession()
                         Common.setUpSessionProgressDialog(this@VerificationCodeActivity)
@@ -631,6 +636,7 @@ class VerificationCodeActivity : AppCompatActivity() {
                                     message: String
                                 ) {
                                     Common.cancelProgressDialog()
+                                    binding.verifyBtn.setEnabled(true)
                                     if (message.equals(getString(R.string.session_expired))) {
                                         viewModel.resetSession()
                                         Common.setUpSessionProgressDialog(this@VerificationCodeActivity)

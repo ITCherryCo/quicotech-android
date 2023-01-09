@@ -49,7 +49,8 @@ class CartActivity : AppCompatActivity() {
 
         binding.apply {
             checkoutBtn.setOnClickListener {
-                startActivity(Intent(this@CartActivity, PaymentMethodActivity::class.java))
+                //startActivity(Intent(this@CartActivity, PaymentMethodActivity::class.java))
+                startActivity(Intent(this@CartActivity, AddressListActivity::class.java))
             }
 
             backArrow.setOnClickListener {

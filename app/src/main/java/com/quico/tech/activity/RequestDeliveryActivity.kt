@@ -356,7 +356,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
                     viewModel.getLangResources().getString(R.string.add_new_address)
                 addressListFragment.addImage.visibility = View.VISIBLE
                 //if (viewModel.addresses.value.data?.result?.size == 3)
-                    binding.addressListFragment.addAddressContainer.setEnabled(false)
+                  //  binding.addressListFragment.addAddressContainer.setEnabled(false)
 
             }
         }

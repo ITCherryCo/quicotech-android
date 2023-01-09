@@ -41,6 +41,7 @@ interface API {
     ): Response<RegisterResponse>
 
     @PUT("updateMobile")
+    @Headers("Content-Type: text/html")
     suspend fun updateMobile(@Body updateUserBody: RegisterBodyParameters): Response<RegisterResponse>
 
     @POST("createDeliveryAddress")
