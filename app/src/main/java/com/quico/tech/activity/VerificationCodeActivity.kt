@@ -103,7 +103,7 @@ class VerificationCodeActivity : AppCompatActivity() {
         Constant.can_register = false
     }
 
-    fun initStatusBar(){
+    fun initStatusBar() {
         Common.setSystemBarColor(this, R.color.white)
         Common.setSystemBarLight(this)
     }
@@ -159,30 +159,30 @@ class VerificationCodeActivity : AppCompatActivity() {
                             verifyBtn.visibility = View.GONE
 
                             // must remove it
-                           // updateEmail(EmailBodyParameters(EmailParams(TEMPORAR_USER!!.login!!)))
-                          /*  startActivity(
-                                Intent(this@VerificationCodeActivity, EditCredentialsActivity::class.java)
-                                    .putExtra(Constant.PROFILE_EDIT_TYPE, Constant.FORGET_PASSWORD)
-                            )*/
-                             try {
-                                 if (emailLink == null) {
-                                     startTimer()
-                                     sendEmailLink(TEMPORAR_USER!!.login!!)
-                                     resendText.setOnClickListener {
-                                         // MUST RESEND AN EMAIL
-                                         sendEmailLink(TEMPORAR_USER!!.login!!)
-                                     }
-                                 } else {
-                                     // must verify email link
-                                     verifyBtn.visibility = View.VISIBLE
-                                     verifyBtn.setOnClickListener {
-                                         if (viewModel.sendOtpPhoneNumber.isEmpty())
-                                             verifyEmail(TEMPORAR_USER!!.login!!, emailLink!!)
-                                     }
-                                 }
-                             } catch (e: Exception) {
-                                 Log.d(SEND_EMAIL_LINK, "EXCEPTION ${e.message}")
-                             }
+                            // updateEmail(EmailBodyParameters(EmailParams(TEMPORAR_USER!!.login!!)))
+                            /*  startActivity(
+                                  Intent(this@VerificationCodeActivity, EditCredentialsActivity::class.java)
+                                      .putExtra(Constant.PROFILE_EDIT_TYPE, Constant.FORGET_PASSWORD)
+                              )*/
+                            try {
+                                if (emailLink == null) {
+                                    startTimer()
+                                    sendEmailLink(TEMPORAR_USER!!.login!!)
+                                    resendText.setOnClickListener {
+                                        // MUST RESEND AN EMAIL
+                                        sendEmailLink(TEMPORAR_USER!!.login!!)
+                                    }
+                                } else {
+                                    // must verify email link
+                                    verifyBtn.visibility = View.VISIBLE
+                                    verifyBtn.setOnClickListener {
+                                        if (viewModel.sendOtpPhoneNumber.isEmpty())
+                                            verifyEmail(TEMPORAR_USER!!.login!!, emailLink!!)
+                                    }
+                                }
+                            } catch (e: Exception) {
+                                Log.d(SEND_EMAIL_LINK, "EXCEPTION ${e.message}")
+                            }
                         }
 
                         PHONE_NUMBER -> {
@@ -458,7 +458,7 @@ class VerificationCodeActivity : AppCompatActivity() {
 
                 override fun onSuccess(success: Boolean, resultTitle: String, message: String) {
                     Common.cancelProgressDialog()
-                    viewModel.user = viewModel.user!!.copy(mobile ="+961${phone_number}")
+                    viewModel.user = viewModel.user!!.copy(mobile = "+961${phone_number}")
                     Toast.makeText(this@VerificationCodeActivity, message, Toast.LENGTH_LONG).show()
                     onBackPressed()
                     // on back press twice see something similar to popup stack
@@ -466,13 +466,17 @@ class VerificationCodeActivity : AppCompatActivity() {
 
                 override fun onFailure(success: Boolean, resultTitle: String, message: String) {
                     Common.cancelProgressDialog()
-                    Common.setUpAlert(
-                        this@VerificationCodeActivity, false,
-                        viewModel.getLangResources().getString(R.string.error),
-                        message,
-                        viewModel.getLangResources().getString(R.string.ok),
-                        null
-                    )
+                    if (message.equals(getString(R.string.session_expired))) {
+                        viewModel.resetSession()
+                        Common.setUpSessionProgressDialog(this@VerificationCodeActivity)
+                    } else
+                        Common.setUpAlert(
+                            this@VerificationCodeActivity, false,
+                            viewModel.getLangResources().getString(R.string.error),
+                            message,
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
                 }
             })
         }
@@ -528,22 +532,25 @@ class VerificationCodeActivity : AppCompatActivity() {
                         // result.getAdditionalUserInfo().isNewUser()
                         // reloadPageWithPhone()
                         //lifecycleScope.launch {
-                           // viewModel.sendOtpPhoneNumber = TEMPORAR_USER!!.mobile
+                        // viewModel.sendOtpPhoneNumber = TEMPORAR_USER!!.mobile
                         //}
 
-                        when (operation_type){
-                       // when (CREDENTIAL_OPERATION_TYPE){
-                            REGISTER->{
+                        when (operation_type) {
+                            // when (CREDENTIAL_OPERATION_TYPE){
+                            REGISTER -> {
                                 loadPage(TEMPORAR_USER!!.mobile!!)
                             }
-                            FORGET_PASSWORD->{
+                            FORGET_PASSWORD -> {
                                 startActivity(
                                     Intent(this, EditCredentialsActivity::class.java)
-                                        .putExtra(Constant.PROFILE_EDIT_TYPE, Constant.FORGET_PASSWORD)
+                                        .putExtra(
+                                            Constant.PROFILE_EDIT_TYPE,
+                                            Constant.FORGET_PASSWORD
+                                        )
                                 )
                             }
-                            CHANGE_EMAIL->{
-                               // startActivity(Intent(this, EditCredentialsActivity::class.java).putExtra(Constant.PROFILE_EDIT_TYPE, Constant.CHANGE_EMAIL))
+                            CHANGE_EMAIL -> {
+                                // startActivity(Intent(this, EditCredentialsActivity::class.java).putExtra(Constant.PROFILE_EDIT_TYPE, Constant.CHANGE_EMAIL))
                                 // must call change email api
                                 updateEmail(EmailBodyParameters(EmailParams(TEMPORAR_USER!!.login!!)))
                             }
@@ -556,9 +563,9 @@ class VerificationCodeActivity : AppCompatActivity() {
         }
     }
 
-    private fun monitorPhoneNumber(){
+    private fun monitorPhoneNumber() {
         lifecycleScope.launch {
-            viewModel.send_otp.collect{ phone_number->
+            viewModel.send_otp.collect { phone_number ->
                 if (phone_number.isNotEmpty()) {
                     verification_type = PHONE_NUMBER
                     OPERATION_TYPE = REGISTER
@@ -572,7 +579,7 @@ class VerificationCodeActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadPage(phone_number:String){
+    private fun loadPage(phone_number: String) {
         startActivity(
             Intent(this, VerificationCodeActivity::class.java)
                 .putExtra(Constant.VERIFICATION_TYPE, Constant.PHONE_NUMBER)
@@ -586,60 +593,73 @@ class VerificationCodeActivity : AppCompatActivity() {
 
             TEMPORAR_USER?.let { registerParams ->
 
-            val params = RegisterBodyParameters(
-                TEMPORAR_USER!!
-            )
+                val params = RegisterBodyParameters(
+                    TEMPORAR_USER!!
+                )
 
-            Common.setUpProgressDialog(this@VerificationCodeActivity)
-            viewModel.register(params, object : SharedViewModel.ResponseStandard {
+                Common.setUpProgressDialog(this@VerificationCodeActivity)
+                viewModel.register(params, object : SharedViewModel.ResponseStandard {
 
-                override fun onSuccess(success: Boolean, resultTitle: String, message: String) {
-                    if (message != null)
-                        viewModel.login(RegisterBodyParameters(
-                            RegisterParams(
-                                registerParams.login!!,
-                                registerParams.password!!)
-                        ), object : SharedViewModel.ResponseStandard {
-                            override fun onSuccess(
-                                success: Boolean,
-                                resultTitle: String,
-                                message: String
-                            ) {
-                                Common.cancelProgressDialog()
-                                TEMPORAR_USER = null
-                                startActivity(
-                                    Intent(this@VerificationCodeActivity, HomeActivity::class.java)
-                                        .setFlags (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
-                                viewModel.canRegister = false
-                            }
+                    override fun onSuccess(success: Boolean, resultTitle: String, message: String) {
+                        if (message != null)
+                            viewModel.login(RegisterBodyParameters(
+                                RegisterParams(
+                                    registerParams.login!!,
+                                    registerParams.password!!
+                                )
+                            ), object : SharedViewModel.ResponseStandard {
+                                override fun onSuccess(
+                                    success: Boolean,
+                                    resultTitle: String,
+                                    message: String
+                                ) {
+                                    Common.cancelProgressDialog()
+                                    TEMPORAR_USER = null
+                                    startActivity(
+                                        Intent(
+                                            this@VerificationCodeActivity,
+                                            HomeActivity::class.java
+                                        )
+                                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    )
+                                    viewModel.canRegister = false
+                                }
 
-                            override fun onFailure(
-                                success: Boolean,
-                                resultTitle: String,
-                                message: String
-                            ) {
-                                Common.cancelProgressDialog()
-                            }
-                        })
-                }
+                                override fun onFailure(
+                                    success: Boolean,
+                                    resultTitle: String,
+                                    message: String
+                                ) {
+                                    Common.cancelProgressDialog()
+                                    if (message.equals(getString(R.string.session_expired))) {
+                                        viewModel.resetSession()
+                                        Common.setUpSessionProgressDialog(this@VerificationCodeActivity)
+                                    }
+                                }
+                            })
+                    }
 
-                override fun onFailure(success: Boolean, resultTitle: String, message: String) {
-                    Common.cancelProgressDialog()
-                    Common.setUpAlert(
-                        this@VerificationCodeActivity, false,
-                        viewModel.getLangResources().getString(R.string.error),
-                        message,
-                        viewModel.getLangResources().getString(R.string.ok),
-                        null
-                    )
-                }
-            })
-        }
+                    override fun onFailure(success: Boolean, resultTitle: String, message: String) {
+                        Common.cancelProgressDialog()
+                        if (message.equals(getString(R.string.session_expired))) {
+                            viewModel.resetSession()
+                            Common.setUpSessionProgressDialog(this@VerificationCodeActivity)
+                        } else
+                            Common.setUpAlert(
+                                this@VerificationCodeActivity, false,
+                                viewModel.getLangResources().getString(R.string.error),
+                                message,
+                                viewModel.getLangResources().getString(R.string.ok),
+                                null
+                            )
+                    }
+                })
+            }
         }
     }
 
 
-    private fun updateEmail( emailParams: EmailBodyParameters) {
+    private fun updateEmail(emailParams: EmailBodyParameters) {
         Common.setUpProgressDialog(this)
 
         viewModel.updateEmail(
@@ -674,13 +694,17 @@ class VerificationCodeActivity : AppCompatActivity() {
                     message: String
                 ) {
                     Common.cancelProgressDialog()
-                    Common.setUpAlert(
-                        this@VerificationCodeActivity, false,
-                        viewModel.getLangResources().getString(R.string.error),
-                        message,
-                        viewModel.getLangResources().getString(R.string.ok),
-                        null
-                    )
+                    if (message.equals(getString(R.string.session_expired))) {
+                        viewModel.resetSession()
+                        Common.setUpSessionProgressDialog(this@VerificationCodeActivity)
+                    } else
+                        Common.setUpAlert(
+                            this@VerificationCodeActivity, false,
+                            viewModel.getLangResources().getString(R.string.error),
+                            message,
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
                 }
             })
     }

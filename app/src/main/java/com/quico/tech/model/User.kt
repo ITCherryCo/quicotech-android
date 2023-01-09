@@ -45,7 +45,7 @@ data class RegisterResponse(
     val id: Any,
     val jsonrpc: String,
     val result: Result,
-    val error: String
+    val error: String?
    // val error: ErrorData?
 )
 
@@ -55,27 +55,26 @@ data class SessionResponse(
 
 data class Result(
     val status: String?,
-    val error: String?
 ) {
 }
 
 data class UserResponse(
     val id: Any,
     val jsonrpc: String,
-    val result: User
+    val result: User,
+    val error: String?
+    //val error: ErrorData?
 )
 
 data class User(
     val session_id: String?,
     val is_vip: Boolean,
-    val email_verified: Boolean,
     val partner_id: Int,
-    val user_id: Int,
     val name: String,
     val email: String,
     val mobile: String,
+    val dob: String,
     val image: String,
-    val error: String?
 ) {
     // this is for login successfully
     constructor(
@@ -84,14 +83,12 @@ data class User(
     ) : this(
         null,
         false,
-        false,
-        0,
         0,
         "",
         email,
         mobile,
         "",
-        null
+        ""
     )
 
     // to update user info: phone
@@ -100,14 +97,12 @@ data class User(
     ) : this(
         null,
         false,
-        false,
-        0,
         0,
         "",
         "",
         mobile,
         "",
-        null
+        ""
     )
 }
 

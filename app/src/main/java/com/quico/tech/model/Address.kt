@@ -19,7 +19,9 @@ data class AddressResponse(
     val id: Any,
     val jsonrpc: String,
     val result: List<Address>?,
-    val error: ErrorData?
+    val error: String?
+    //val error: ErrorData?
+
 )
 
 data class Address(

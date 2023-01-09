@@ -37,6 +37,7 @@ class ProductActivity : AppCompatActivity() {
     private lateinit var viewModel2: SharedViewModel
     private var is_vip_price: Boolean = false
     private var quantity: Int = 1
+    private var is_favorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -199,18 +200,18 @@ class ProductActivity : AppCompatActivity() {
                 if (viewModel.user != null) {
                     viewModel.user?.let { user ->
                         if (user.is_vip) {
+                            vipBadge.visibility = View.VISIBLE
                             userVipContainer.visibility = View.VISIBLE
                             selectPriceContainer.visibility = View.GONE
                             vipBadge.text =
                                 viewModel.getLangResources().getString(R.string.vip_price)
                             price.text = "$ ${product.new_price.toString()}"
-                            discount.text = "- ${(product.regular_price*100)/product.new_price}%"
                         } else {
                             selectPriceContainer.visibility = View.VISIBLE
                             regularPrice.text = "$ ${product.regular_price.toString()}"
-                            vipText.text = "$ ${product.new_price.toString()}"
-
                             userVipContainer.visibility = View.GONE
+                            discount.text =
+                                "- ${((product.new_price * 100) / product.regular_price)}%"
                             managePriceType()
                         }
                     }
@@ -227,7 +228,7 @@ class ProductActivity : AppCompatActivity() {
                 oldPrice.setBackground(getResources().getDrawable(R.drawable.red_line))
             } else {
                 oldPrice.visibility = View.GONE
-               // newPrice.text = "$ ${product.regular_price.toString()}"
+                // newPrice.text = "$ ${product.regular_price.toString()}"
                 oldPrice.text = "$ ${product.regular_price.toString()}"
                 newPrice.visibility = View.GONE
             }
@@ -236,12 +237,38 @@ class ProductActivity : AppCompatActivity() {
             addToCartBtn.setOnClickListener {
                 // if item is out of stock tell him
                 // else check if user logged in
-                checkUser()
+                if (!product.in_stock!!) {
+                    Common.setUpAlert(
+                        this@ProductActivity, false,
+                        viewModel.getLangResources()
+                            .getString(R.string.out_of_stock),
+                        viewModel.getLangResources()
+                            .getString(R.string.out_of_stock_msg)
+                        ,
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
+                } else if (quantity>product.quantity_available!!) {
+                    Common.setUpAlert(
+                        this@ProductActivity, false,
+                        viewModel.getLangResources()
+                            .getString(R.string.quantity),
+                        viewModel.getLangResources()
+                            .getString(R.string.available_qty_msg,product.quantity_available.toString())
+                        ,
+                        viewModel.getLangResources().getString(R.string.ok),
+                        null
+                    )
+                } else
+                    checkUser()
             }
 
             viewModel.user?.let {
                 toolbarProductDetails.heartImage.setOnClickListener {
-                    addToWishlist(product.id)
+                    if (is_favorite)
+                        removeFromWishlist(product.id)
+                    else
+                        addToWishlist(product.id)
                 }
             }
         }
@@ -272,7 +299,8 @@ class ProductActivity : AppCompatActivity() {
             )
         } else {
             if (!viewModel.vip_subsription && is_vip_price) {
-                Toast.makeText(this,"Add subscription to cart then add to cart",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Add subscription to cart then add to cart", Toast.LENGTH_LONG)
+                    .show()
                 //subscribe
                 // then add to cart
             } else {
@@ -350,10 +378,11 @@ class ProductActivity : AppCompatActivity() {
         if (viewModel.user!!.is_vip)
             productBodyParameters = ProductBodyParameters(ProductParams(product_id, quantity))
         else
-            productBodyParameters = ProductBodyParameters(ProductParams(is_vip_price, product_id, quantity))
+            productBodyParameters =
+                ProductBodyParameters(ProductParams(is_vip_price, product_id, quantity))
 
         Common.setUpProgressDialog(this)
-        viewModel.addToCart(false,productBodyParameters,
+        viewModel.addToCart(false, productBodyParameters,
             object : SharedViewModel.ResponseStandard {
                 override fun onSuccess(
                     success: Boolean,
@@ -375,14 +404,19 @@ class ProductActivity : AppCompatActivity() {
                     message: String
                 ) {
                     Common.cancelProgressDialog()
-                    Common.setUpAlert(
-                        this@ProductActivity, false,
-                        viewModel.getLangResources()
-                            .getString(R.string.error),
-                        message,
-                        viewModel.getLangResources().getString(R.string.ok),
-                        null
-                    )
+                    if (message.equals(getString(R.string.session_expired))) {
+                        viewModel.resetSession()
+                        Common.setUpSessionProgressDialog(this@ProductActivity)
+
+                    } else
+                        Common.setUpAlert(
+                            this@ProductActivity, false,
+                            viewModel.getLangResources()
+                                .getString(R.string.error),
+                            message,
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
                 }
             })
     }
@@ -401,7 +435,7 @@ class ProductActivity : AppCompatActivity() {
                 ) {
                     // later add progress bar to view
                     Common.cancelProgressDialog()
-
+                    is_favorite = true
                     binding.toolbarProductDetails.heartImage.setImageResource(R.drawable.filled_heart)
                 }
 
@@ -411,14 +445,61 @@ class ProductActivity : AppCompatActivity() {
                     message: String
                 ) {
                     Common.cancelProgressDialog()
-                    Common.setUpAlert(
-                        this@ProductActivity, false,
-                        viewModel.getLangResources()
-                            .getString(R.string.error),
-                        message,
-                        viewModel.getLangResources().getString(R.string.ok),
-                        null
-                    )
+                    if (message.equals(getString(R.string.session_expired))) {
+                        viewModel.resetSession()
+                        Common.setUpSessionProgressDialog(this@ProductActivity)
+
+                    } else
+                        Common.setUpAlert(
+                            this@ProductActivity, false,
+                            viewModel.getLangResources()
+                                .getString(R.string.error),
+                            message,
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
+                }
+            })
+    }
+
+
+    private fun removeFromWishlist(product_id: Int) {
+
+        var productBodyParameters = ProductBodyParameters(ProductParams(product_id))
+
+        Common.setUpProgressDialog(this)
+        viewModel.removeFromWishlist(productBodyParameters,
+            object : SharedViewModel.ResponseStandard {
+                override fun onSuccess(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    // later add progress bar to view
+                    Common.cancelProgressDialog()
+                    is_favorite = false
+                    binding.toolbarProductDetails.heartImage.setImageResource(R.drawable.heart_icon)
+                }
+
+                override fun onFailure(
+                    success: Boolean,
+                    resultTitle: String,
+                    message: String
+                ) {
+                    Common.cancelProgressDialog()
+                    if (message.equals(getString(R.string.session_expired))) {
+                        viewModel.resetSession()
+                        Common.setUpSessionProgressDialog(this@ProductActivity)
+
+                    } else
+                        Common.setUpAlert(
+                            this@ProductActivity, false,
+                            viewModel.getLangResources()
+                                .getString(R.string.error),
+                            message,
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
                 }
             })
     }
@@ -442,7 +523,7 @@ class ProductActivity : AppCompatActivity() {
                         message,
                         Toast.LENGTH_LONG
                     ).show()
-                    addToCart(is_vip_price,product_id!!,quantity)
+                    addToCart(is_vip_price, product_id!!, quantity)
                 }
 
                 override fun onFailure(
@@ -451,22 +532,23 @@ class ProductActivity : AppCompatActivity() {
                     message: String
                 ) {
                     Common.cancelProgressDialog()
-                    Common.setUpAlert(
-                        this@ProductActivity, false,
-                        viewModel.getLangResources()
-                            .getString(R.string.error),
-                        message,
-                        viewModel.getLangResources().getString(R.string.ok),
-                        null
-                    )
+                    if (message.equals(getString(R.string.session_expired))) {
+                        viewModel.resetSession()
+                        Common.setUpSessionProgressDialog(this@ProductActivity)
+
+                    } else
+                        Common.setUpAlert(
+                            this@ProductActivity, false,
+                            viewModel.getLangResources()
+                                .getString(R.string.error),
+                            message,
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
                 }
             })
     }
 
-
-    private fun addToWishList() {
-
-    }
 
     fun setLoading() {
         binding.apply {

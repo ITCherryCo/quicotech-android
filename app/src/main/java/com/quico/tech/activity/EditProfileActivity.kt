@@ -94,7 +94,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    fun initStatusBar(){
+    fun initStatusBar() {
         Common.setSystemBarColor(this, R.color.white)
         Common.setSystemBarLight(this)
     }
@@ -112,7 +112,8 @@ class EditProfileActivity : AppCompatActivity() {
                         .into(profileImage)
                 }
             }
-        }catch (e:Exception){}
+        } catch (e: Exception) {
+        }
     }
 
     fun chooseDate() {
@@ -166,7 +167,11 @@ class EditProfileActivity : AppCompatActivity() {
                     nameField.hint = viewModel.getLangResources().getString(R.string.full_name)
                 else
                     nameField.setText(user.name)
+
+                if (!user.dob.isNullOrEmpty())
+                    birthdayField.setText(user.dob)
             }
+
         }
     }
 
@@ -217,7 +222,7 @@ class EditProfileActivity : AppCompatActivity() {
                         imageUri = result.data!!.data
                         val bytes = contentResolver.openInputStream(imageUri!!)?.readBytes()
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            imageEncoded= Base64.getEncoder().encodeToString(bytes)
+                            imageEncoded = Base64.getEncoder().encodeToString(bytes)
                         }
 
                         binding.profileImage.setImageURI(imageUri)
@@ -235,16 +240,20 @@ class EditProfileActivity : AppCompatActivity() {
                 birthdayField.error =
                     viewModel.getLangResources().getString(R.string.required_field)
             }*/ else {
-                updateUserInfo(nameField.text.toString(), birthdayField.text.toString(), imageEncoded)
+                updateUserInfo(
+                    nameField.text.toString(),
+                    birthdayField.text.toString(),
+                    imageEncoded
+                )
             }
         }
     }
 
-    private fun updateUserInfo(name:String, dob:String, image:String) {
+    private fun updateUserInfo(name: String, dob: String, image: String) {
         binding.apply {
             Common.setUpProgressDialog(this@EditProfileActivity)
 
-            var userParams= UpdateUserParams(name)
+            var userParams = UpdateUserParams(name)
 
             if (dob.isNotEmpty())
                 userParams = userParams.copy(dob = dob)
@@ -266,7 +275,7 @@ class EditProfileActivity : AppCompatActivity() {
                         message: String
                     ) {
                         Common.cancelProgressDialog()
-                        Toast.makeText(this@EditProfileActivity,message,Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@EditProfileActivity, message, Toast.LENGTH_LONG).show()
 
                     }
 
@@ -276,14 +285,17 @@ class EditProfileActivity : AppCompatActivity() {
                         message: String
                     ) {
                         Common.cancelProgressDialog()
-
-                        Common.setUpAlert(
-                            this@EditProfileActivity, false,
-                            viewModel.getLangResources().getString(R.string.error),
-                            message,
-                            viewModel.getLangResources().getString(R.string.ok),
-                            null
-                        )
+                        if (message.equals(getString(R.string.session_expired))) {
+                            viewModel.resetSession()
+                            Common.setUpSessionProgressDialog(this@EditProfileActivity)
+                        } else
+                            Common.setUpAlert(
+                                this@EditProfileActivity, false,
+                                viewModel.getLangResources().getString(R.string.error),
+                                message,
+                                viewModel.getLangResources().getString(R.string.ok),
+                                null
+                            )
                     }
                 })
         }

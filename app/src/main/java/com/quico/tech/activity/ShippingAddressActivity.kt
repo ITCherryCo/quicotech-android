@@ -98,6 +98,10 @@ class ShippingAddressActivity : AppCompatActivity() {
                     is Resource.Error -> {
                         response.message?.let { message ->
                             setUpErrorForm(Constant.ERROR)
+                            if (message.equals(resources.getString(R.string.session_expired))) {
+                                viewModel.resetSession()
+                                Common.setUpSessionProgressDialog(this@ShippingAddressActivity)
+                            }
                         }
                     }
 

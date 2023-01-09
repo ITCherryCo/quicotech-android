@@ -13,20 +13,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.quico.tech.R
 import com.quico.tech.activity.CartActivity
-import com.quico.tech.activity.CompareSearchActivity
 import com.quico.tech.adapter.ProductRecyclerViewAdapter
 import com.quico.tech.data.Constant
-import com.quico.tech.data.Constant.EMPTY_CART
 import com.quico.tech.data.Constant.NO_ITEMS
-import com.quico.tech.databinding.FragmentSearchBinding
 import com.quico.tech.databinding.FragmentWishlistBinding
-import com.quico.tech.model.NameParams
 import com.quico.tech.model.Product
-import com.quico.tech.model.SearchBodyParameters
 import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class WishlistFragment : Fragment() {
@@ -96,6 +90,10 @@ class WishlistFragment : Fragment() {
                         response.message?.let { message ->
                             Log.d(Constant.PRODUCT_TAG, "ERROR $message")
                             setUpErrorForm(Constant.ERROR)
+                            if (message.equals(getString(R.string.session_expired))) {
+                                viewModel.resetSession()
+                                Common.setUpSessionProgressDialog(requireContext())
+                            }
                         }
                     }
 

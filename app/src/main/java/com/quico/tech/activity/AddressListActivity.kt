@@ -130,6 +130,10 @@ class AddressListActivity : AppCompatActivity() {
                         response.message?.let { message ->
                             Log.d(ADDRESS_TAG, "ERROR $message")
                             setUpErrorForm(ERROR)
+                            if (message.equals(getString(R.string.session_expired))) {
+                                viewModel.resetSession()
+                                Common.setUpSessionProgressDialog(this@AddressListActivity)
+                            }
                         }
                     }
 

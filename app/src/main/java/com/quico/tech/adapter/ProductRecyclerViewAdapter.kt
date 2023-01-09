@@ -76,9 +76,7 @@ class ProductRecyclerViewAdapter(
                     } else if (product.is_on_sale) {
                         largeVipText.visibility = View.GONE
                         largeSaleText.visibility = View.VISIBLE
-                    }
-
-                    else{
+                    } else {
                         largeVipText.visibility = View.INVISIBLE
                         largeSaleText.visibility = View.GONE
                         largeNewPrice.visibility = View.GONE
@@ -120,7 +118,7 @@ class ProductRecyclerViewAdapter(
                         )
                     }
                 }
-                if (withSelection) {
+                if (withinWishlist) {
                     heartImage.visibility = View.VISIBLE
                     val params = ProductBodyParameters(
                         ProductParams(
@@ -128,29 +126,35 @@ class ProductRecyclerViewAdapter(
                         )
                     )
 
-                    viewModel.removeFromWishlist(params,
-                        object : SharedViewModel.ResponseStandard {
-                            override fun onSuccess(
-                                success: Boolean,
-                                resultTitle: String,
-                                message: String
-                            ) {
-                                // later add progress bar to view
+                    heartImage.setOnClickListener {
+                        viewModel.removeFromWishlist(params,
+                            object : SharedViewModel.ResponseStandard {
+                                override fun onSuccess(
+                                    success: Boolean,
+                                    resultTitle: String,
+                                    message: String
+                                ) {
+                                    // later add progress bar to view
 
-                            }
+                                }
 
-                            override fun onFailure(
-                                success: Boolean,
-                                resultTitle: String,
-                                message: String
-                            ) {
-                                Toast.makeText(
-                                    itemView.context,
-                                    message,
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        })
+                                override fun onFailure(
+                                    success: Boolean,
+                                    resultTitle: String,
+                                    message: String
+                                ) {
+                                    if (message.equals(itemView.resources.getString(R.string.session_expired))) {
+                                        viewModel.resetSession()
+                                        Common.setUpSessionProgressDialog(itemView.context)
+                                    } else
+                                        Toast.makeText(
+                                            itemView.context,
+                                            message,
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                }
+                            })
+                    }
                 }
             }
         }
@@ -207,7 +211,7 @@ class ProductRecyclerViewAdapter(
 
     private val differCallback = object : DiffUtil.ItemCallback<Product>() {
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {

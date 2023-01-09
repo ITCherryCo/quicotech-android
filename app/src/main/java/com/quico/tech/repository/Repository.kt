@@ -30,12 +30,13 @@ class Repository() {
     suspend fun getDoneOrders(customer_id: Int) = RetrofitInstance.api.getDoneOrders(customer_id)
 
     suspend fun addToCart( productBody: ProductBodyParameters) = RetrofitInstance.api.addToCart(productBody)
-    suspend fun updateItemCart( productBody: ProductBodyParameters) = RetrofitInstance.api.updateItemCart(productBody)
+    suspend fun updateCartQuantity( productBody: ProductBodyParameters) = RetrofitInstance.api.updateCartQuantity(productBody)
     suspend fun removeFromCart( productBody: ProductBodyParameters) = RetrofitInstance.api.removeFromCart(productBody)
     suspend fun viewCart() = RetrofitInstance.api.viewCart()
     suspend fun subscribeToVip( productBody: ProductBodyParameters) = RetrofitInstance.api.subscribeToVip(productBody)
 
     suspend fun search(searchBodyParameters: SearchBodyParameters) = RetrofitInstance.api.search(searchBodyParameters)
+    suspend fun searchCompare(searchBodyParameters: SearchBodyParameters) = RetrofitInstance.api.searchCompare(searchBodyParameters)
     suspend fun getAllCategories() = RetrofitInstance.api.getAllCategories()
     suspend fun getAllBrands() = RetrofitInstance.api.getAllBrands()
     suspend fun getHomeData() = RetrofitInstance.api.getHomeData()

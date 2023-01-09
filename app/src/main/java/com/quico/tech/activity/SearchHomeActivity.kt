@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,9 +15,8 @@ import com.quico.tech.R
 import com.quico.tech.adapter.ProductRecyclerViewAdapter
 import com.quico.tech.data.Constant
 import com.quico.tech.data.Constant.SEARCH_TEXT
-import com.quico.tech.databinding.ActivityLoginBinding
 import com.quico.tech.databinding.ActivitySearchHomeBinding
-import com.quico.tech.model.NameParams
+import com.quico.tech.model.SearchParams
 import com.quico.tech.model.Product
 import com.quico.tech.model.SearchBodyParameters
 import com.quico.tech.utils.Common
@@ -44,7 +42,9 @@ class SearchHomeActivity : AppCompatActivity() {
         setUpProductsAdapter()
         subscribeProducts()
         setUpSearchView()
+        products.clear()
         if (!SEARCH_TEXT.isNullOrEmpty()) {
+
             binding.searchView.setQuery(SEARCH_TEXT,true)
            // viewModel.searchProducts(SearchBodyParameters(NameParams(search_text)))
         }
@@ -91,14 +91,28 @@ class SearchHomeActivity : AppCompatActivity() {
                 }
 
                 override fun onQueryTextChange(searchText: String): Boolean {
+
                     search_text = searchText
                     if (searchText.isEmpty()){
                         setUpErrorForm(Constant.EMPTY_SEARCH)
                         SEARCH_TEXT=""
+                        products.clear()
                     }
-                    else if(searchText.trim { it<=' ' }.length>2) {
-                        productRecyclerView.visibility = View.VISIBLE
-                        viewModel.searchProducts(SearchBodyParameters(NameParams(search_text)))
+                    else if(searchText.trim().length>2) {
+                      //  search_text = searchText.trim()
+                        search_text = searchText.trim()
+
+                        lifecycleScope.launch {
+                          //  delay(100)
+                            viewModel.searchProducts(
+                                SearchBodyParameters(
+                                    SearchParams(
+                                        1,
+                                        search_text
+                                    )
+                                )
+                            )
+                        }
                     }
                     return false
                 }
@@ -118,16 +132,18 @@ class SearchHomeActivity : AppCompatActivity() {
                     is Resource.Success -> {
                         binding.apply {
                             stopShimmer()
-                            productRecyclerView.visibility = View.VISIBLE
                         }
 
                         response.data?.let { itemsResponse ->
-                            if (itemsResponse.result.isNullOrEmpty()) {
-                                // setUpErrorForm(Constant.NO_ITEMS)
+                            if (itemsResponse.result?.products.isNullOrEmpty()) {
+                                 setUpErrorForm(Constant.NO_ITEMS)
                             } else {
                                 products.clear()
-                                products.addAll(itemsResponse.result)
-                                productRecyclerViewAdapter.differ.submitList(products)
+                                products.addAll(itemsResponse.result.products)
+                                delay(200)
+                                productRecyclerViewAdapter.differ.submitList(itemsResponse.result.products)
+                             //   productRecyclerViewAdapter.differ.submitList(products)
+                                binding.productRecyclerView.visibility = View.VISIBLE
                             }
                         }
                         Log.d(Constant.PRODUCT_TAG, "SUCCESS")
@@ -188,7 +204,10 @@ class SearchHomeActivity : AppCompatActivity() {
     private fun onRefresh(){
         setLoading()
         binding.apply {
-            viewModel.searchProducts(SearchBodyParameters(NameParams( search_text)))
+            lifecycleScope.launch {
+                delay(100)
+                viewModel.searchProducts(SearchBodyParameters(SearchParams(search_text)))
+            }
         }
     }
 

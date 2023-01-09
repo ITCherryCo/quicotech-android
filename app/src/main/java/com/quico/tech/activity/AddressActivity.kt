@@ -19,8 +19,8 @@ import com.quico.tech.viewmodel.SharedViewModel
 class AddressActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddressBinding
     private val viewModel: SharedViewModel by viewModels()
-    private var address :Address? = null
-    private var address_id :Int = 0
+    private var address: Address? = null
+    private var address_id: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -28,14 +28,14 @@ class AddressActivity : AppCompatActivity() {
         binding = ActivityAddressBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-      //  address =  intent.extras?.getParcelable(ADDRESS)
+        //  address =  intent.extras?.getParcelable(ADDRESS)
 
         //address = intent.getParcelableExtra(ADDRESS)!! as(Address)
         address = intent.getParcelableExtra<Address>(ADDRESS)
-       // Toast.makeText(this,address.toString(),Toast.LENGTH_LONG).show()
+        // Toast.makeText(this,address.toString(),Toast.LENGTH_LONG).show()
         Log.d("ADDRESS", address.toString())
 
-        address=TEMPORAR_ADDRESS
+        address = TEMPORAR_ADDRESS
         setUpText()
         initStatusBar()
 
@@ -72,11 +72,11 @@ class AddressActivity : AppCompatActivity() {
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.edit_address)
             includedAddressFragment.apply {
-                nameField.setText( address.name)
-                streetField.setText( address.street)
-                apartmentField.setText( address.street2)
-                cityField.setText( address.city)
-                postalCodeField.setText( address.zip)
+                nameField.setText(address.name)
+                streetField.setText(address.street)
+                apartmentField.setText(address.street2)
+                cityField.setText(address.city)
+                postalCodeField.setText(address.zip)
             }
         }
     }
@@ -88,15 +88,12 @@ class AddressActivity : AppCompatActivity() {
                 if (nameField.text.toString().isEmpty())
                     nameField.error =
                         viewModel.getLangResources().getString(R.string.required_field)
-
-               else if (streetField.text.toString().isEmpty())
+                else if (streetField.text.toString().isEmpty())
                     streetField.error =
                         viewModel.getLangResources().getString(R.string.required_field)
-
                 else if (apartmentField.text.toString().isEmpty())
                     apartmentField.error =
                         viewModel.getLangResources().getString(R.string.required_field)
-
                 else if (cityField.text.toString().isEmpty())
                     cityField.error =
                         viewModel.getLangResources().getString(R.string.required_field)
@@ -105,7 +102,7 @@ class AddressActivity : AppCompatActivity() {
                         viewModel.getLangResources().getString(R.string.required_field)
                 else {
 
-                    viewModel.user?.let {user->
+                    viewModel.user?.let { user ->
                         var address = Address(
                             cityField.text.toString(),
                             user.name,
@@ -130,26 +127,33 @@ class AddressActivity : AppCompatActivity() {
 
         Common.setUpProgressDialog(this)
 
-        viewModel.addEditAddress(if (address==null) 0 else address_id, addressParams,object :SharedViewModel.ResponseStandard{
-            override fun onSuccess(success: Boolean, resultTitle: String, message: String) {
-                Common.cancelProgressDialog()
-                Toast.makeText(this@AddressActivity,message,Toast.LENGTH_LONG).show()
-                Constant.TEMPORAR_ADDRESS = null
-                onBackPressed()
-            }
+        viewModel.addEditAddress(
+            if (address == null) 0 else address_id,
+            addressParams,
+            object : SharedViewModel.ResponseStandard {
+                override fun onSuccess(success: Boolean, resultTitle: String, message: String) {
+                    Common.cancelProgressDialog()
+                    Toast.makeText(this@AddressActivity, message, Toast.LENGTH_LONG).show()
+                    Constant.TEMPORAR_ADDRESS = null
+                    onBackPressed()
+                }
 
-            override fun onFailure(success: Boolean, resultTitle: String, message: String) {
-                Common.cancelProgressDialog()
-                Constant.TEMPORAR_ADDRESS = null
+                override fun onFailure(success: Boolean, resultTitle: String, message: String) {
+                    Common.cancelProgressDialog()
+                    Constant.TEMPORAR_ADDRESS = null
+                    if (message.equals(getString(R.string.session_expired))) {
+                        viewModel.resetSession()
+                        Common.setUpSessionProgressDialog(this@AddressActivity)
 
-                Common.setUpAlert(
-                    this@AddressActivity, false,
-                    viewModel.getLangResources().getString(R.string.error),
-                    message,
-                    viewModel.getLangResources().getString(R.string.ok),
-                    null
-                )
-            }
-        })
+                    } else
+                        Common.setUpAlert(
+                            this@AddressActivity, false,
+                            viewModel.getLangResources().getString(R.string.error),
+                            message,
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
+                }
+            })
     }
 }

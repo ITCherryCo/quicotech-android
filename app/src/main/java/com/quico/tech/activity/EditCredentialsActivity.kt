@@ -201,7 +201,7 @@ class EditCredentialsActivity : AppCompatActivity() {
                         emailField.error =
                             viewModel.getLangResources().getString(R.string.wrong_email)
                     else {
-                        TEMPORAR_USER = RegisterParams(emailField.text.toString(),"")
+                        TEMPORAR_USER = RegisterParams(emailField.text.toString(), "")
                         startActivity(
                             Intent(
                                 this@EditCredentialsActivity,
@@ -293,14 +293,18 @@ class EditCredentialsActivity : AppCompatActivity() {
                     message: String
                 ) {
                     Common.cancelProgressDialog()
-                    Common.setUpAlert(
-                        this@EditCredentialsActivity, false,
-                        resultTitle,
-                       // viewModel.getLangResources().getString(R.string.error),
-                        message,
-                        viewModel.getLangResources().getString(R.string.ok),
-                        null
-                    )
+                    if (message.equals(getString(R.string.session_expired))) {
+                        viewModel.resetSession()
+                        Common.setUpSessionProgressDialog(this@EditCredentialsActivity)
+                    } else
+                        Common.setUpAlert(
+                            this@EditCredentialsActivity, false,
+                            resultTitle,
+                            // viewModel.getLangResources().getString(R.string.error),
+                            message,
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
                 }
             })
     }

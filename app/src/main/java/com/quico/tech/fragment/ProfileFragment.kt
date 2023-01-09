@@ -16,6 +16,7 @@ import com.quico.tech.data.Constant
 import com.quico.tech.data.Constant.ACTIVITY_TYPE
 import com.quico.tech.data.Constant.TERMS_OF_USE
 import com.quico.tech.databinding.FragmentProfileBinding
+import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 import java.util.*
 
@@ -38,7 +39,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        Common.setSystemBarColor(requireActivity(), R.color.white)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

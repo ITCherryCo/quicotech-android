@@ -28,41 +28,47 @@ class ServiceRecyclerViewAdapter(val viewModel: SharedViewModel) :
             binding.apply {
 
                 name.text = serviceType.type
-                name.text = serviceType.type
                 itemView.setOnClickListener {
-                    if (serviceType.have_sub_service) {
-                        if (viewModel.user!=null)
-                        itemView.context.startActivity(
-                            Intent(itemView.context, ServiceListActivity::class.java)
-                                .putExtra(Constant.SERVICE_ID, serviceType.id)
-                        )
-                        else{
-                            Common.setUpChoicesAlert(
-                                itemView.context,
-                                viewModel.getLangResources().getString(R.string.login),
-                                viewModel.getLangResources()
-                                    .getString(R.string.please_login),
-                                viewModel.getLangResources().getString(R.string.cancel),
-                                viewModel.getLangResources().getString(R.string.login),
-                                object : Common.ResponseChoices {
-                                    override fun onConfirm() {
-                                        itemView.context.startActivity(Intent(itemView.context,LoginActivity::class.java))
-                                    }
+                    if (viewModel.user != null) {
+                        if (serviceType.have_sub_service) {
+                            itemView.context.startActivity(
+                                Intent(itemView.context, ServiceListActivity::class.java)
+                                    .putExtra(Constant.SERVICE_ID, serviceType.id)
+                            )
+                        } else {
 
-                                    override fun onCancel() {
-                                    }
-                                }
+                            itemView.context.startActivity(
+                                Intent(
+                                    itemView.context,
+                                    RequestActivity::class.java
+                                )
                             )
                         }
-                    }
-                    else
-                        itemView.context.startActivity(
-                            Intent(
-                                itemView.context,
-                                RequestActivity::class.java
-                            )
+                    } else {
+                        Common.setUpChoicesAlert(
+                            itemView.context,
+                            viewModel.getLangResources().getString(R.string.login),
+                            viewModel.getLangResources()
+                                .getString(R.string.please_login),
+                            viewModel.getLangResources().getString(R.string.cancel),
+                            viewModel.getLangResources().getString(R.string.login),
+                            object : Common.ResponseChoices {
+                                override fun onConfirm() {
+                                    itemView.context.startActivity(
+                                        Intent(
+                                            itemView.context,
+                                            LoginActivity::class.java
+                                        )
+                                    )
+                                }
+
+                                override fun onCancel() {
+                                }
+                            }
                         )
+                    }
                 }
+
                 if (serviceType.image.isNullOrEmpty()) {
                     Glide.with(itemView)
                         .load(serviceType.image)

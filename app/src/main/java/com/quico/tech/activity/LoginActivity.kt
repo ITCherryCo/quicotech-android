@@ -66,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
                 else {
                     Constant.CREDENTIAL_OPERATION_TYPE = Constant.FORGET_PASSWORD
 
-                    Constant.TEMPORAR_USER = RegisterParams(emailField.text.toString(),"")
+                    Constant.TEMPORAR_USER = RegisterParams(emailField.text.toString(), "")
                     startActivity(
                         Intent(this@LoginActivity, VerificationCodeActivity::class.java)
                             .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
@@ -172,13 +172,19 @@ class LoginActivity : AppCompatActivity() {
 
                     override fun onFailure(success: Boolean, resultTitle: String, message: String) {
                         Common.cancelProgressDialog()
-                        Common.setUpAlert(
-                            this@LoginActivity, false,
-                            viewModel.getLangResources().getString(R.string.error),
-                            message,
-                            viewModel.getLangResources().getString(R.string.ok),
-                            null
-                        )
+                        if (message.equals(getString(R.string.session_expired))) {
+                            viewModel.resetSession()
+                            Common.setUpSessionProgressDialog(this@LoginActivity)
+
+                        } else {
+                            Common.setUpAlert(
+                                this@LoginActivity, false,
+                                viewModel.getLangResources().getString(R.string.error),
+                                message,
+                                viewModel.getLangResources().getString(R.string.ok),
+                                null
+                            )
+                        }
                     }
                 })
             }

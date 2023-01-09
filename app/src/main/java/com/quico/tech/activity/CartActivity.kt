@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -88,26 +89,30 @@ class CartActivity : AppCompatActivity() {
                                  setUpErrorForm(Constant.EMPTY_CART)
                             } else {
 
-                                var total_price2=0.0
-
-                               var total_price= itemsResponse.result.map { it.new_price }.sum()
+                                var total_price=0.0
+                                itemsResponse.result.forEach { product->
+                                    if (!product.in_stock!! || product.quantity!!> product.quantity_available!!){
+                                        binding.checkoutBtn.setEnabled(false)
+                                    }
+                                }
+                               //var total_price= itemsResponse.result.map { it.new_price }.sum()
 
                                 viewModel.user?.let { user ->
                                     total_price = itemsResponse.result.map { product->
                                         if (user.is_vip || viewModel.vip_subsription) {
                                             if (product.is_vip || product.is_on_sale)
-                                                 product.new_price
+                                                 product.new_price* product.quantity!!
                                             else
-                                                 product.regular_price
+                                                 product.regular_price* product.quantity!!
                                         } else {
                                             if (product.is_on_sale)
-                                                 product.new_price
+                                                 product.new_price* product.quantity!!
                                             else
-                                                product.regular_price
+                                                product.regular_price* product.quantity!!
                                         }
                                     }.sum()
                                 }
-                                Log.d("TOTAL_SUM_PRICE",total_price2.toString())
+                                Log.d("TOTAL_SUM_PRICE",total_price.toString())
                                 setUpCartInfo(total_price)
                                 binding.checkoutBtn.setEnabled(true)
                                 binding.recyclerView.visibility = View.VISIBLE
@@ -121,6 +126,11 @@ class CartActivity : AppCompatActivity() {
                         response.message?.let { message ->
                             Log.d(Constant.CART_TAG, "ERROR $message")
                             setUpErrorForm(Constant.ERROR)
+                            if (message.equals(getString(R.string.session_expired))) {
+                                viewModel.resetSession()
+                                Common.setUpSessionProgressDialog(this@CartActivity)
+
+                            }
                         }
                     }
 

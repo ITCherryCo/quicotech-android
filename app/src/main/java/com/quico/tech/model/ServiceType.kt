@@ -4,7 +4,8 @@ data class ServiceTypeResponse(
     val id: Any,
     val jsonrpc: String,
     val result: List<ServiceType>?,
-    val error: ErrorData?
+    val error: String?
+    //val error: ErrorData?
 )
 
 data class ServiceType(

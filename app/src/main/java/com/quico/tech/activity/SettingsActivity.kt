@@ -26,7 +26,7 @@ class SettingsActivity : AppCompatActivity() {
             backArrow.setOnClickListener {
                 onBackPressed()
             }
-            if (viewModel.user==null)
+            if (viewModel.user == null)
                 logoutContainer.visibility = View.GONE
 
             viewModel.user?.session_id?.let {
@@ -42,12 +42,12 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    fun initStatusBar(){
+    fun initStatusBar() {
         Common.setSystemBarColor(this, R.color.white)
         Common.setSystemBarLight(this)
     }
 
-    private fun setUpText(){
+    private fun setUpText() {
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.settings)
             languageText.text = viewModel.getLangResources().getString(R.string.language)
@@ -65,7 +65,7 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkLanguage(){
+    private fun checkLanguage() {
         binding.apply {
             englishRadioBtn.setOnClickListener {
                 if (!viewModel.getLanguage().equals(EN)) {
@@ -86,16 +86,16 @@ class SettingsActivity : AppCompatActivity() {
     private fun logoutAlert() {
         Common.setUpChoicesAlert(
             this,
-            viewModel.getLangResources().getString(R.string.logout), viewModel.getLangResources().getString(R.string.sure_logout),
+            viewModel.getLangResources().getString(R.string.logout),
+            viewModel.getLangResources().getString(R.string.sure_logout),
             viewModel.getLangResources().getString(R.string.no),
             viewModel.getLangResources().getString(R.string.yes),
-            object : Common.ResponseChoices{
+            object : Common.ResponseChoices {
                 override fun onConfirm() {
-                    viewModel.user?.session_id?.let { session_id->
+                    viewModel.user?.session_id?.let { session_id ->
 
                         Common.setUpProgressDialog(this@SettingsActivity)
                         viewModel.logout(
-                            session_id,
                             object : SharedViewModel.ResponseStandard {
                                 override fun onSuccess(
                                     success: Boolean,
@@ -117,14 +117,18 @@ class SettingsActivity : AppCompatActivity() {
                                     message: String
                                 ) {
                                     Common.cancelProgressDialog()
+                                    if (message.equals(getString(R.string.session_expired))) {
+                                        viewModel.resetSession()
+                                        Common.setUpSessionProgressDialog(this@SettingsActivity)
 
-                                    Common.setUpAlert(
-                                        this@SettingsActivity, false,
-                                        viewModel.getLangResources().getString(R.string.error),
-                                        message,
-                                        viewModel.getLangResources().getString(R.string.ok),
-                                        null
-                                    )
+                                    } else
+                                        Common.setUpAlert(
+                                            this@SettingsActivity, false,
+                                            viewModel.getLangResources().getString(R.string.error),
+                                            message,
+                                            viewModel.getLangResources().getString(R.string.ok),
+                                            null
+                                        )
                                 }
                             })
                     }

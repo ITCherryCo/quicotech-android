@@ -12,7 +12,8 @@ data class BrandResponse(
     val id: Any,
     val jsonrpc: String,
     val result: List<Brand>?,
-    val error: ErrorData?
+    val error: String?
+    //val error: ErrorData?
 )
 
 data class Brand(

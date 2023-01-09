@@ -22,21 +22,28 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
-            var quantity =1 //product quantity
+            var quantity = product.quantity!! //product quantity
             binding.apply {
 
                 name.text = product.name
-                var final_price=0.0
+                qty.text = product.quantity.toString()
+                var final_price = 0.0
                 //var total_price=0.0
+                if (!product.in_stock!!) {
+                    outOfStock.visibility = View.VISIBLE
+                    outOfStock.text = viewModel.getLangResources().getString(R.string.out_of_stock_msg)
+                } else if (product.quantity>product.quantity_available!! ) {
+                    outOfStock.visibility = View.VISIBLE
+                    outOfStock.text = viewModel.getLangResources().getString(R.string.available_qty_msg,product.quantity_available.toString())
+                }
 
-                viewModel.user?.let { user->
-                    if (user.is_vip || viewModel.vip_subsription){
+                viewModel.user?.let { user ->
+                    if (user.is_vip || viewModel.vip_subsription) {
                         if (product.is_vip || product.is_on_sale)
                             final_price = product.new_price
                         else
                             final_price = product.regular_price
-                    }
-                    else{
+                    } else {
                         if (product.is_on_sale)
                             final_price = product.new_price
                         else
@@ -45,7 +52,9 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                 }
 
                 price.text = "$ ${final_price}"
-                totalPrice.text = "${viewModel.getLangResources().getString(R.string.total)}: $${final_price*quantity}"
+                totalPrice.text = "${
+                    viewModel.getLangResources().getString(R.string.total)
+                }: $${final_price * quantity}"
 
                 if (viewModel.getLanguage().equals(Constant.AR)) {
                     plus.scaleX = -1f
@@ -73,20 +82,31 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
 
                 plus.setOnClickListener {
                     // check for available qty
-                    quantity++
-                    qty.text="$quantity"
-                    updateQty(product.id,quantity)
+                    if (quantity + 1 > product.quantity_available!!) {
+                        Common.setUpAlert(
+                            itemView.context, false,
+                            viewModel.getLangResources()
+                                .getString(R.string.quantity),
+                            viewModel.getLangResources()
+                                .getString(R.string.available_qty_msg),
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
+                    } else {
+                        quantity++
+                        qty.text = "$quantity"
+                        updateQty(product.id, quantity)
+                    }
                 }
 
                 minus.setOnClickListener {
                     // check for available qty
-                    if (quantity>1) {
+                    if (quantity > 1) {
                         quantity--
                         updateQty(product.id, quantity)
-                    }
-                    else
+                    } else
                         deleteItem(product.id)
-                    qty.text="$quantity"
+                    // qty.text = "$quantity"
                 }
 
                 deleteImage.setOnClickListener {
@@ -95,7 +115,7 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
             }
         }
 
-       private fun updateQty(product_id:Int,quantity:Int){
+        private fun updateQty(product_id: Int, quantity: Int) {
 
             val params = ProductBodyParameters(
                 ProductParams(
@@ -113,6 +133,7 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                         message: String
                     ) {
                         // later add progress bar to view
+                        binding.qty.text = "${params.params.quantity}"
                         Common.cancelProgressDialog()
 
                     }
@@ -123,14 +144,18 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                         message: String
                     ) {
                         Common.cancelProgressDialog()
-                        Common.setUpAlert(
-                            itemView.context, false,
-                            viewModel.getLangResources()
-                                .getString(R.string.error),
-                            message,
-                            viewModel.getLangResources().getString(R.string.ok),
-                            null
-                        )
+                        if (message.equals(itemView.resources.getString(R.string.session_expired))) {
+                            viewModel.resetSession()
+                            Common.setUpSessionProgressDialog(itemView.context)
+                        } else
+                            Common.setUpAlert(
+                                itemView.context, false,
+                                viewModel.getLangResources()
+                                    .getString(R.string.error),
+                                message,
+                                viewModel.getLangResources().getString(R.string.ok),
+                                null
+                            )
                     }
                 })
         }
@@ -174,14 +199,18 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                                         message: String
                                     ) {
                                         progressBar.visibility = View.GONE
-                                        Common.setUpAlert(
-                                            itemView.context, false,
-                                            viewModel.getLangResources()
-                                                .getString(R.string.error),
-                                            message,
-                                            viewModel.getLangResources().getString(R.string.ok),
-                                            null
-                                        )
+                                        if (message.equals(itemView.resources.getString(R.string.session_expired))) {
+                                            viewModel.resetSession()
+                                            Common.setUpSessionProgressDialog(itemView.context)
+                                        } else
+                                            Common.setUpAlert(
+                                                itemView.context, false,
+                                                viewModel.getLangResources()
+                                                    .getString(R.string.error),
+                                                message,
+                                                viewModel.getLangResources().getString(R.string.ok),
+                                                null
+                                            )
                                     }
                                 })
                         }

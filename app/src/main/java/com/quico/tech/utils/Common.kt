@@ -3,7 +3,9 @@ package com.quico.tech.utils
 import android.Manifest
 import android.app.Activity
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -15,13 +17,19 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.WindowManager
+import android.widget.ProgressBar
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import com.quico.tech.R
+import com.quico.tech.activity.LoginActivity
 import com.quico.tech.databinding.AlertChoicesDialogBinding
 import com.quico.tech.databinding.AlertSuccessDialogBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.regex.Pattern
@@ -255,5 +263,19 @@ object Common {
             e.printStackTrace()
         }
         return ""
+    }
+
+    fun setUpSessionProgressDialog(context: Context) {
+        CoroutineScope(Dispatchers.Main).launch {
+            var progressDialog = ProgressDialog(context)
+            progressDialog.setTitle("Session Expired")
+            progressDialog.setCancelable(false)
+            progressDialog.show()
+            delay(2000)
+            progressDialog.cancel()
+            context.startActivity(Intent(context,LoginActivity::class.java)                                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
+        }
     }
 }
