@@ -276,7 +276,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewHotDeals"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="250dp"
                     android:clipToPadding="false"
                     android:layoutDirection="locale"
                     android:scrollbars="none" />
@@ -325,7 +325,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewBestSelling"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="250dp"
                     android:clipToPadding="false"
                     android:layoutDirection="locale"
                     android:scrollbars="none" />
@@ -375,7 +375,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewOffers"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="250dp"
                     android:clipToPadding="false"
                     android:layoutDirection="locale"
                     android:scrollbars="none" />
