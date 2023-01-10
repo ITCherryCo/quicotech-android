@@ -71,6 +71,18 @@ class SearchFragment : Fragment() {
         addScrollListener()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.apply {
+            viewModel.user?.let { user ->
+                if (user.have_items_in_cart)
+                    searchToolbar.cartImage.setImageResource(R.drawable.cart_full)
+                else
+                    searchToolbar.cartImage.setImageResource(R.drawable.bag)
+            }
+        }
+    }
+
     private fun setUpText() {
         binding.apply {
 

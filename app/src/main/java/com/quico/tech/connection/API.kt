@@ -52,11 +52,14 @@ interface API {
     @Headers("Content-Type: text/html")
     suspend fun editAddress(@Path("address_id") address_id: Int, @Body updateUserBody: AddressBodyParameters): Response<RegisterResponse>
 
+    @GET("getServices")
+    suspend fun getServices(): Response<ServiceResponse>
+
     @GET("getServiceTypes/{service_id}")
     suspend fun getServiceTypes(@Path("service_id") service_id: Int): Response<ServiceTypeResponse>
 
-    @GET("getServices")
-    suspend fun getServices(): Response<ServiceResponse>
+    @GET("getSubServiceType/{service_type_id}")
+    suspend fun getSubServiceTypes(@Path("service_type_id") service_type_id: Int): Response<ServiceTypeResponse>
 
     @GET("getDeliveryAddresses")
     suspend fun getAddresses(): Response<AddressResponse>
@@ -136,5 +139,11 @@ interface API {
     @GET("homepage")
     // @Headers("Content-Type: application/json")
     suspend fun getHomeData(): Response<HomeDataResponse>
+
+    @POST("deliveryOrder")
+    // @Headers("Content-Type: application/json")
+    @Headers("Content-Type: text/html")
+    suspend fun createDeliveryOrder(@Body orderBodyParameters: OrderBodyParameters): Response<RegisterResponse>
+
 
 }

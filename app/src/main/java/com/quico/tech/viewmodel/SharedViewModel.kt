@@ -200,6 +200,13 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                prefManager.session_id = new_session_id
            }*/
 
+    var requested_serive_order: ServiceOrder?
+        get() = prefManager.requested_serive_order
+
+        set(serive_order) {
+            prefManager.requested_serive_order = serive_order
+        }
+
     fun updateOrderFilterType(order_filter: String) {
         viewModelScope.launch {
             _orders_filter_type.emit(order_filter)
@@ -810,14 +817,18 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
 
-    fun getServiceTypes(service_id: Int) {
+    fun getServiceTypes(service_id: Int,subservice:Boolean) {
         viewModelScope.launch {
 
             _service_types.emit(Resource.Loading())
 
             if (checkInternet(context)) {
                 try {
-                    val response = repository.getServiceTypes(service_id)
+                    var response : Response<ServiceTypeResponse>?=null
+                    if (subservice)
+                        response = repository.getSubServiceTypes(service_id)
+                    else
+                        response = repository.getServiceTypes(service_id)
 
                     if (response.isSuccessful) {
                         response.body()?.let { resultResponse ->
@@ -1446,6 +1457,73 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             } else {
                 Log.d(HOME_TAG, "$CONNECTION}")
                 _homeData.emit(Resource.Connection())
+            }
+        }
+    }
+
+    fun createDeliveryOrder(
+        params: OrderBodyParameters,
+        responseStandard: ResponseStandard?
+    ) {
+        viewModelScope.launch {
+            if (checkInternet(context)) {
+                try {
+                    var response = repository.createDeliveryOrder(params)
+
+                    if (response.isSuccessful) {
+                        if (response.body()?.result?.status != null) {
+                            Log.d(CART_TAG, "Success")
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.order_created_successfully)
+                            )
+
+                        } else {
+                            Log.d(CART_TAG, "ERROR ${response.body()?.error}")
+                            /*  responseStandard?.onFailure(
+                                  false,
+                                  ERROR,
+                                  getLangResources().getString(R.string.error_msg)
+                              )*/
+
+                            responseStandard?.onFailure(
+                                false,
+                                ERROR,
+                                "${response.body()?.error}"
+                            )
+                        }
+                        //  getUser(session_id)
+                    } else {
+                        Log.d(CART_TAG, "FAILUER ${response.body()?.error}")
+                        /*  responseStandard?.onFailure(
+                              false,
+                              ERROR,
+                              getLangResources().getString(R.string.error_msg)
+                          )*/
+                        responseStandard?.onFailure(
+                            false,
+                            "FAILURE",
+                            "${response.body()?.error}")
+
+                    }
+
+                } catch (e: Exception) {
+                    Log.d(CART_TAG, "EXCEPTION ${e.message.toString()}")
+                    /* responseStandard?.onFailure(
+                         false,
+                         ERROR,
+                         getLangResources().getString(R.string.error_msg)
+                     )*/
+                    responseStandard?.onFailure(
+                        false,
+                        "EXCEPTION",
+                        "${e.message.toString()}"
+                    )
+                }
+            } else {
+                Log.d(CART_TAG, "$CONNECTION}")
+                responseStandard?.onFailure(false, CONNECTION, CONNECTION)
             }
         }
     }

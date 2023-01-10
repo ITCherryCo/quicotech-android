@@ -5,11 +5,24 @@ import com.quico.tech.R
 import com.quico.tech.data.Constant
 
 data class OrderResponse(
-    val orders: List<Order>,
-    val result: String
+    val id: Any,
+    val jsonrpc: String,
+    val result: List<Order>,
+    val error: String?
 )
 
 data class Order(val id: Int)
+
+
+// to create order pass product id and qty
+data class OrderBodyParameters(
+    val params: OrderParams
+)
+
+data class OrderParams(
+    val address_id: Int,
+    val order_lines: List<ProductParams>
+)
 
 enum class OrderStatus(val orderStatus: String) {
     DELIVERED(Constant.DELIVERED),

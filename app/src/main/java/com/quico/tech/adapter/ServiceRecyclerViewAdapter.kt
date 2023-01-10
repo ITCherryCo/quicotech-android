@@ -29,14 +29,42 @@ class ServiceRecyclerViewAdapter(val viewModel: SharedViewModel) :
 
                 name.text = serviceType.type
                 itemView.setOnClickListener {
-                    if (viewModel.user != null) {
-                        if (serviceType.have_sub_service) {
+                    if (serviceType.have_sub_service==null ||(serviceType.have_sub_service!=null && !serviceType.have_sub_service)) {
+                        // go to RequestActivity
+                        if (viewModel.user != null) {
+                            itemView.context.startActivity(
+                                Intent(
+                                    itemView.context,
+                                    RequestActivity::class.java
+                                )
+                            )
+                        }
+                        else
+                            loginAlert()
+                    }
+
+                    if (serviceType.have_sub_service!=null && serviceType.have_sub_service) {
+                        if (viewModel.user != null) {
+
+                            itemView.context.startActivity(
+                                Intent(itemView.context, ServiceListActivity::class.java)
+                                    .putExtra(Constant.SERVICE_TYPE_ID, serviceType.id)
+                            )
+                        }
+                        else
+                            loginAlert()
+                    }
+
+
+                      /*  if (viewModel.user != null) {
+                        if (serviceType.have_sub_service!=null) {
                             itemView.context.startActivity(
                                 Intent(itemView.context, ServiceListActivity::class.java)
                                     .putExtra(Constant.SERVICE_ID, serviceType.id)
                             )
                         } else {
 
+                            viewModel.requested_serive_order= viewModel.requested_serive_order?.copy()
                             itemView.context.startActivity(
                                 Intent(
                                     itemView.context,
@@ -66,7 +94,7 @@ class ServiceRecyclerViewAdapter(val viewModel: SharedViewModel) :
                                 }
                             }
                         )
-                    }
+                    }*/
                 }
 
                 if (serviceType.image.isNullOrEmpty()) {
@@ -77,6 +105,29 @@ class ServiceRecyclerViewAdapter(val viewModel: SharedViewModel) :
                         .into(image)
                 }
             }
+        }
+        fun loginAlert(){
+            Common.setUpChoicesAlert(
+                itemView.context,
+                viewModel.getLangResources().getString(R.string.login),
+                viewModel.getLangResources()
+                    .getString(R.string.please_login),
+                viewModel.getLangResources().getString(R.string.cancel),
+                viewModel.getLangResources().getString(R.string.login),
+                object : Common.ResponseChoices {
+                    override fun onConfirm() {
+                        itemView.context.startActivity(
+                            Intent(
+                                itemView.context,
+                                LoginActivity::class.java
+                            )
+                        )
+                    }
+
+                    override fun onCancel() {
+                    }
+                }
+            )
         }
     }
 

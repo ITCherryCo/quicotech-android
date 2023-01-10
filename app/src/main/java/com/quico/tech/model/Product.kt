@@ -4,7 +4,6 @@ package com.quico.tech.model
 class Product(
     val category: String?,
     val description: String?,
-
     val id: Int,
     val images: ArrayList<String>?,
     val image: String?,
@@ -36,6 +35,29 @@ class Product(
         new_price,
         0.0,
         1,
+        1,
+        true,
+        null
+    )
+
+    constructor(
+        id:Int,
+        name: String,
+        quantity: Int,
+        new_price: Double
+    ) : this(
+        "",
+        "",
+        id,
+        null,
+        "",
+        false,
+        false,
+        false,
+        name,
+        new_price,
+        0.0,
+        quantity,
         1,
         true,
         null

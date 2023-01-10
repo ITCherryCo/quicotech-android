@@ -1,6 +1,7 @@
 package com.quico.tech.data
 
 import com.quico.tech.model.Address
+import com.quico.tech.model.Product
 import com.quico.tech.model.RegisterParams
 import com.quico.tech.model.User
 
@@ -51,6 +52,7 @@ object Constant {
     val NO_HOME_DATA= "no_home_data"
     val NO_ORDERS= "no_orders"
     val SERVICE_ID= "service_id"
+    val SERVICE_TYPE_ID= "service_type_id"
     val NO_SERVICES= "no_services"
     val NO_ITEMS= "no_items"
     val EMPTY_SEARCH= "empty_search"
@@ -76,7 +78,6 @@ object Constant {
     var ITEM_ID= "item_id"
     var FRAGMENT_POSITION="fragment_position"
     var SEND_EMAIL_LINK= "SEND_EMAIL_LINK"
-  //  var TEMPORAR_USER : RegisterParams? =null
     var TEMPORAR_ADDRESS : Address? =null
     var COOKIES_KEY ="cookiesKey"
   //  var CREDENTIAL_OPERATION_TYPE =""
@@ -84,6 +85,7 @@ object Constant {
     var TERMS_OF_USE ="terms_of_use"
     var VIP_BENEFITS ="vip_benefits"
     var SEARCH_TEXT =""
+    var PRODUCT_LIST :ArrayList<Product>? = null
 
 
 }

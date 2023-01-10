@@ -36,6 +36,9 @@ class CartActivity : AppCompatActivity() {
         binding = ActivityCartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Constant.PRODUCT_LIST = null
+        Constant.TEMPORAR_ADDRESS = null
+
         setUpCartAdapter()
         setUpText()
         onRefresh()
@@ -50,6 +53,7 @@ class CartActivity : AppCompatActivity() {
         binding.apply {
             checkoutBtn.setOnClickListener {
                 //startActivity(Intent(this@CartActivity, PaymentMethodActivity::class.java))
+                Constant.PRODUCT_LIST = cartRecyclerViewAdapter.getSelectedProduct()
                 startActivity(Intent(this@CartActivity, AddressListActivity::class.java))
             }
 
@@ -85,13 +89,16 @@ class CartActivity : AppCompatActivity() {
                         binding.apply {
                             stopShimmer()
                             cartErrorContainer.root.visibility = View.GONE
+                            swipeRefreshLayout.setRefreshing(false)
+                            checkoutBtn.visibility = View.VISIBLE
                         }
 
                         response.data?.let { itemsResponse ->
                             if (itemsResponse.result.isNullOrEmpty()) {
+                                viewModel.user = viewModel.user?.copy(have_items_in_cart = false)
                                 setUpErrorForm(Constant.EMPTY_CART)
                             } else {
-
+                                viewModel.user = viewModel.user?.copy(have_items_in_cart = true)
                                 var total_price = 0.0
                                 /*  itemsResponse.result.forEach { product ->
                                       if (!product.in_stock!! || product.quantity!! > product.quantity_available!!) {
@@ -115,6 +122,8 @@ class CartActivity : AppCompatActivity() {
                                         }
                                     }.sum()
                                 }
+
+
                                 var total_unavailable_product =
                                     itemsResponse.result.filter { product -> !product.is_vip_charge_product && (!product.in_stock!! || product.quantity!! > product.quantity_available!!) }
                                         .count()
@@ -216,7 +225,6 @@ class CartActivity : AppCompatActivity() {
                 if (viewModel.user == null)
                     setUpErrorForm(EMPTY_CART)
                 else {
-                    setLoading() // later we will remove it because the observable will call it
                     viewModel.user?.let {
                         viewModel.loadCart(false)
                     }

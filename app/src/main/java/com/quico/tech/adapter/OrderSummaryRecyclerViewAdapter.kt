@@ -8,16 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.quico.tech.databinding.OrderSummaryListBinding
 import com.quico.tech.model.Item
+import com.quico.tech.model.Product
 
 class OrderSummaryRecyclerViewAdapter : RecyclerView.Adapter<OrderSummaryRecyclerViewAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(private var binding: OrderSummaryListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Item) {
+        fun bind(product: Product) {
             binding.apply {
-
-
+                name.text="${product.quantity}x${product.name}"
+                totalPrice.text="$ ${product.quantity!!*product.new_price}"
             }
         }
     }
@@ -37,9 +38,9 @@ class OrderSummaryRecyclerViewAdapter : RecyclerView.Adapter<OrderSummaryRecycle
         holder.bind(item)
     }
 
-    private var onItemClickListener: ((Item) -> Unit)? = null
+    private var onItemClickListener: ((Product) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (Item) -> Unit) {
+    fun setOnItemClickListener(listener: (Product) -> Unit) {
         onItemClickListener = listener
     }
 
@@ -48,12 +49,12 @@ class OrderSummaryRecyclerViewAdapter : RecyclerView.Adapter<OrderSummaryRecycle
     }
 
 
-    private val differCallback = object : DiffUtil.ItemCallback<Item>() {
-        override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
+    private val differCallback = object : DiffUtil.ItemCallback<Product>() {
+        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
+        override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
             return oldItem == newItem
         }
     }

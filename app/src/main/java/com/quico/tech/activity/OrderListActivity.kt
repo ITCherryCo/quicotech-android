@@ -104,12 +104,12 @@ class OrderListActivity : AppCompatActivity() {
 
                         response.data?.let { ordersResponse ->
 
-                            if (ordersResponse.result.equals(ERROR) || ordersResponse.orders.isEmpty()) {
+                           /* if (ordersResponse.result.equals(ERROR) || ordersResponse.orders.isEmpty()) {
                                 setUpErrorForm(NO_ORDERS)
                             } else {
                                 orderRecyclerViewAdapter.differ.submitList(ordersResponse.orders)
                                 binding.recyclerView.visibility = View.VISIBLE
-                            }
+                            }*/
                         }
                     }
 

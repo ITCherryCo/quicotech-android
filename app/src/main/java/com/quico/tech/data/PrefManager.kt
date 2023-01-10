@@ -7,6 +7,7 @@ import com.quico.tech.data.Constant.COOKIE
 import com.quico.tech.data.Constant.EN
 import com.quico.tech.data.Constant.SESSION_ID
 import com.quico.tech.model.RegisterParams
+import com.quico.tech.model.ServiceOrder
 import com.quico.tech.model.User
 
 class PrefManager(var context: Context) {
@@ -19,6 +20,7 @@ class PrefManager(var context: Context) {
     var PRIVATE_MODE = 0
     val VERIFICATION_TYPE = "verification_type"
     var OPERATION_TYPE = "operation_type"
+    var REQUESTED_SERVICE_ORDER = "service_order"
 
     var isFirstTimeLaunch: Boolean
         get() = sharedPreferences.getBoolean(IS_FIRST_TIME_LAUNCH, true)
@@ -114,4 +116,19 @@ class PrefManager(var context: Context) {
             editor.apply()
         }
 
+    var requested_serive_order: ServiceOrder?
+        get() {
+            val gson = Gson()
+            val json: String = sharedPreferences.getString(REQUESTED_SERVICE_ORDER, null).toString()
+            var serviceOrder: ServiceOrder? = null
+            serviceOrder = gson.fromJson(json, ServiceOrder::class.java)
+            return serviceOrder
+        }
+
+        set(serviceOrder) {
+            val gson = Gson()
+            val json: String = gson.toJson(serviceOrder)
+            editor.putString(REQUESTED_SERVICE_ORDER, json)
+            editor.apply()
+        }
 }

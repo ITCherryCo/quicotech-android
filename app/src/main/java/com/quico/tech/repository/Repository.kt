@@ -23,6 +23,7 @@ class Repository() {
 
     suspend fun getServices() = RetrofitInstance.api.getServices()
     suspend fun getServiceTypes(service_id:Int) = RetrofitInstance.api.getServiceTypes(service_id)
+    suspend fun getSubServiceTypes(service_type_id:Int) = RetrofitInstance.api.getSubServiceTypes(service_type_id)
 
     suspend fun getProduct(product_id: Int) = RetrofitInstance.api.getProduct(product_id)
 
@@ -44,6 +45,8 @@ class Repository() {
     suspend fun addToWishlist( productBody: ProductBodyParameters) = RetrofitInstance.api.addToWishlist(productBody)
     suspend fun removeFromWishlist(productBody: ProductBodyParameters) = RetrofitInstance.api.removeFromWishlist(productBody)
     suspend fun viewWishlist() = RetrofitInstance.api.viewWishlist()
+
+    suspend fun createDeliveryOrder( orderBody: OrderBodyParameters) = RetrofitInstance.api.createDeliveryOrder(orderBody)
 
     /* suspend fun getSession() = RetrofitInstance.newRetrofit(context).getSession()
      suspend fun getAddresses(session_id: String) = RetrofitInstance.newRetrofit(context).getAddresses(session_id)

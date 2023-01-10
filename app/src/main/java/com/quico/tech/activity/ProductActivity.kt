@@ -66,7 +66,17 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        binding.apply {
+            viewModel.user?.let { user ->
+                if (user.have_items_in_cart)
+                    toolbarProductDetails.cartImage.setImageResource(R.drawable.cart_full)
+                else
+                    toolbarProductDetails.cartImage.setImageResource(R.drawable.bag)
+            }
+        }
+    }
     private fun setUpText() {
         binding.apply {
             newText.text = viewModel.getLangResources().getString(R.string.new_text)

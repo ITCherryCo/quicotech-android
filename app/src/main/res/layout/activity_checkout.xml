@@ -293,6 +293,36 @@
                 android:textDirection="locale"
                 android:textSize="16sp" />
 
+            <RelativeLayout
+                android:id="@+id/cashContainer"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/container_black_stroke_1"
+                android:layoutDirection="locale"
+                android:padding="10dp">
+                <ImageView
+                    android:id="@+id/cashImage"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:scaleType="fitCenter"
+                    android:layoutDirection="locale"
+                    android:src="@drawable/cash_on_delivery1" />
+
+                <TextView
+                    android:id="@+id/cashText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/cashImage"
+                    android:layoutDirection="locale"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/gray_dark"
+                    android:fontFamily="@font/medium"
+                    android:text="@string/cash_with_delivery"
+                    android:textDirection="locale" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/visaContainer"
@@ -301,6 +331,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/container_black_stroke_1"
                 android:layoutDirection="locale"
+                android:visibility="gone"
                 android:padding="15dp">
 
                 <ImageView
@@ -498,6 +529,7 @@
                 android:text="$45.2"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
+
         </RelativeLayout>
 
     <com.google.android.material.button.MaterialButton

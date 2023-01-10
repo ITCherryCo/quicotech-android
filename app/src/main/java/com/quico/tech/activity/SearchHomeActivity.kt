@@ -62,6 +62,18 @@ class SearchHomeActivity : AppCompatActivity() {
         Common.setSystemBarLight(this@SearchHomeActivity)
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.apply {
+            viewModel.user?.let { user ->
+                if (user.have_items_in_cart)
+                    searchHomeToolbar.cartImage.setImageResource(R.drawable.cart_full)
+                else
+                    searchHomeToolbar.cartImage.setImageResource(R.drawable.bag)
+            }
+        }
+    }
+
     private fun setUpText() {
         binding.apply {
 

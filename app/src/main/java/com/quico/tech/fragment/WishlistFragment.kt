@@ -51,6 +51,18 @@ class WishlistFragment : Fragment() {
             setUpErrorForm(Constant.NO_ITEMS)
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.apply {
+            viewModel.user?.let { user ->
+                if (user.have_items_in_cart)
+                    wishlistToolbar.cartImage.setImageResource(R.drawable.cart_full)
+                else
+                    wishlistToolbar.cartImage.setImageResource(R.drawable.bag)
+            }
+        }
+    }
+
     private fun setUpText() {
         binding.apply {
 

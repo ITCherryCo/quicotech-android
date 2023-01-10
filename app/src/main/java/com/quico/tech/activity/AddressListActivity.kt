@@ -112,10 +112,11 @@ class AddressListActivity : AppCompatActivity() {
                                 setUpErrorForm(Constant.NO_ADDRESSES)
                             } else {
 
-                                if (addressesResponse.result.size < 3)
+                                //if (addressesResponse.result.size < 3)
                                     binding.newAddressContainer.setEnabled(true)
-                                else
-                                    binding.newAddressContainer.setEnabled(false)
+                                    binding.nextBtn.setEnabled(true)
+                              //  else
+                                   // binding.newAddressContainer.setEnabled(false)
 
                                 addressSelectionRecyclerViewAdapter.differ.submitList(
                                     addressesResponse.result

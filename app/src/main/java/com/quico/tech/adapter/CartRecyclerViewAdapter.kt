@@ -32,7 +32,9 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                 if (product.is_vip_charge_product) {
                     qtyContainer.visibility = View.GONE
                     price.text = "$ ${product.regular_price}"
-                    totalPrice.text = "${viewModel.getLangResources().getString(R.string.total)}: $${product.regular_price}"
+                    totalPrice.text = "${
+                        viewModel.getLangResources().getString(R.string.total)
+                    }: $${product.regular_price}"
                     coverImage.setImageResource(R.drawable.subscription)
                 } else {
                     if (!product.in_stock!!) {
@@ -112,13 +114,13 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                             quantity--
                             updateQty(product.id, quantity)
                         } else
-                            deleteItem(product.is_vip_charge_product,product.id)
+                            deleteItem(product.is_vip_charge_product, product.id)
                         // qty.text = "$quantity"
                     }
                 }
 
                 deleteImage.setOnClickListener {
-                    deleteItem(product.is_vip_charge_product,product.id)
+                    deleteItem(product.is_vip_charge_product, product.id)
                 }
             }
         }
@@ -169,7 +171,7 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
         }
 
 
-        private fun deleteItem(is_vip_charge_product:Boolean, product_id: Int) {
+        private fun deleteItem(is_vip_charge_product: Boolean, product_id: Int) {
             binding.apply {
                 Common.setUpChoicesAlert(itemView.context,
                     viewModel.getLangResources().getString(R.string.delete_item),
@@ -185,7 +187,7 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                             )
 
                             progressBar.visibility = View.VISIBLE
-                            viewModel.removeFromCart(is_vip_charge_product,params,
+                            viewModel.removeFromCart(is_vip_charge_product, params,
                                 object : SharedViewModel.ResponseStandard {
                                     override fun onSuccess(
                                         success: Boolean,
@@ -258,6 +260,26 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
         return differ.currentList.size
     }
 
+    fun getSelectedProduct():ArrayList<Product> {
+        var selectedProducts = ArrayList<Product>()
+        viewModel.user?.let { user ->
+            differ.currentList.forEach { product ->
+
+                if (user.is_vip || viewModel.vip_subsription) {
+                    if (product.is_vip || product.is_on_sale)
+                        selectedProducts.add(Product(product.id,product.name,product.quantity!!,product.new_price))
+                    else
+                        selectedProducts.add(Product(product.id,product.name,product.quantity!!,product.regular_price))
+                } else {
+                    if (product.is_on_sale)
+                        selectedProducts.add(Product(product.id,product.name,product.quantity!!,product.new_price))
+                    else
+                        selectedProducts.add(Product(product.id,product.name,product.quantity!!,product.regular_price))
+                }
+            }
+        }
+        return selectedProducts
+    }
 
     private val differCallback = object : DiffUtil.ItemCallback<Product>() {
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {

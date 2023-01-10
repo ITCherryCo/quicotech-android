@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
+import com.quico.tech.data.Constant
 import com.quico.tech.databinding.AddressItemSelectionBinding
 import com.quico.tech.model.Address
 
@@ -40,6 +41,7 @@ class AddressSelectionRecyclerViewAdapter(val onAddressSelect: OnAddressSelect) 
 
                 if (lastSelectedPosition == absoluteAdapterPosition) {
                     setSelectedForm()
+                    Constant.TEMPORAR_ADDRESS = address
                     onAddressSelect.onAddressSelect(address.id)
                 }
                 if (lastSelectedPosition != absoluteAdapterPosition) {

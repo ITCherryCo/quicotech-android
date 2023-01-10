@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -13,19 +14,19 @@ import com.quico.tech.R
 import com.quico.tech.adapter.ServiceRecyclerViewAdapter
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityServiceListBinding
-import com.quico.tech.model.Service
+import com.quico.tech.model.ServiceOrder
 import com.quico.tech.model.ServiceType
 import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ServiceListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityServiceListBinding
     private lateinit var serviceRecyclerViewAdapter: ServiceRecyclerViewAdapter
     private val viewModel: SharedViewModel by viewModels()
-    private var service_type_id:Int=0
+    private  var service_id:Int? = 0
+    private  var service_type_id:Int? = 0
 
     var TAG = "SERVICES_RESPONSE"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,6 @@ class ServiceListActivity : AppCompatActivity() {
         binding = ActivityServiceListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        service_type_id = intent.extras!!.getInt(Constant.SERVICE_ID)
 
         binding.apply {
 
@@ -42,13 +42,41 @@ class ServiceListActivity : AppCompatActivity() {
                 onBackPressed()
             }
         }
+        service_id = intent.extras?.getInt(Constant.SERVICE_ID)
+        service_type_id = intent.extras?.getInt(Constant.SERVICE_TYPE_ID)
 
         initStatusBar()
         setUpText()
         subscribeServices()
         setUpServicesAdapter()
         onRefresh()
-        viewModel.getServiceTypes(service_type_id)
+
+        if (service_id!=0 && service_type_id==0){
+            viewModel.getServiceTypes(service_id!!,false)
+            viewModel.requested_serive_order=null
+
+            viewModel.requested_serive_order= ServiceOrder(service_id!!)
+        }
+
+        else if (service_id==0 && service_type_id!=0){
+            viewModel.getServiceTypes(service_type_id!!,true)
+            viewModel.requested_serive_order= viewModel.requested_serive_order?.copy(service_type_id=service_type_id!!)
+        }
+
+      /*  service_id?.let { id->
+            viewModel.getServiceTypes(id,false)
+            viewModel.requested_serive_order=null
+            Toast.makeText(this,"SERVICE ID: ${id}",Toast.LENGTH_LONG).show()
+           // viewModel.requested_serive_order = ServiceOrder()
+        }
+        service_type_id?.let { id->
+            viewModel.getServiceTypes(id,true)
+            Toast.makeText(this,"SERVICE TYPE ID: ${id}",Toast.LENGTH_LONG).show()
+
+            /*  viewModel.requested_serive_order?.let {service_order->
+                  viewModel.requested_serive_order = service_order.copy()
+              }*/
+        }*/
     }
 
     fun initStatusBar(){
@@ -73,7 +101,6 @@ class ServiceListActivity : AppCompatActivity() {
                             swipeRefreshLayout.setRefreshing(false)
                             swipeRefreshLayout.setEnabled(false)
                             serviceErrorContainer.root.visibility=View.GONE
-                            recyclerView.visibility = View.VISIBLE
                         }
                         stopShimmer()
 
@@ -82,7 +109,7 @@ class ServiceListActivity : AppCompatActivity() {
                                 setUpErrorForm(Constant.NO_SERVICES)
                             else {
                                 serviceRecyclerViewAdapter.differ.submitList(servicesTypeResponse.result)
-                                binding.recyclerView.setVisibility(View.VISIBLE)
+                                binding. recyclerView.visibility = View.VISIBLE
                             }
                         }
                         Log.d(TAG, "SUCCESS")
@@ -159,7 +186,12 @@ class ServiceListActivity : AppCompatActivity() {
         binding.apply {
             swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
                 setLoading() // later we will remove it because the observable will call it
-                 viewModel.getServiceTypes(service_type_id) // get User id
+                service_id?.let { id->
+                    viewModel.getServiceTypes(id,false)
+                }
+                service_type_id?.let { id->
+                    viewModel.getServiceTypes(id,true)
+                }
             })
         }
     }
