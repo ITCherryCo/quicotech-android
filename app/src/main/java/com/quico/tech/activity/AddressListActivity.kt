@@ -19,7 +19,6 @@ import com.quico.tech.data.Constant.ERROR
 import com.quico.tech.data.Constant.NO_ADDRESSES
 import com.quico.tech.data.Constant.ORDERS
 import com.quico.tech.data.Constant.TRACKING_ON
-import com.quico.tech.data.Constant.VERIFICATION_TYPE
 import com.quico.tech.databinding.ActivityAddressListBinding
 import com.quico.tech.model.Address
 import com.quico.tech.utils.Common

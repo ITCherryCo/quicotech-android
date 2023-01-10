@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import com.quico.tech.R
 import com.quico.tech.data.Constant.ADDRESS_TAG
 import com.quico.tech.data.Constant.ALL
@@ -172,6 +173,26 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         set(value) {
             prefManager.vip_subsription = value
         }
+
+    var temporar_user: RegisterParams?
+        get() = prefManager.temporar_user
+
+        set(temporar_user) {
+            prefManager.temporar_user = temporar_user
+        }
+
+    var operation_type: String
+        get() = prefManager.operation_type
+        set(operation_type) {
+            prefManager.operation_type = operation_type
+        }
+
+    var verification_type: String
+        get() = prefManager.verification_type
+        set(verification_type) {
+            prefManager.verification_type = verification_type
+        }
+
 
     /*   var current_session_id:String?
            get() = prefManager.session_id
@@ -473,7 +494,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                                 responseStandard?.onFailure(
                                     false,
                                     ERROR,
-                                    getLangResources().getString(R.string.error_msg)
+                                   // getLangResources().getString(R.string.error_msg)
+                                   "${response.body()?.error}"
                                 )
                             }
                             //  getUser(session_id)
@@ -482,7 +504,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                             responseStandard?.onFailure(
                                 false,
                                 ERROR,
-                                getLangResources().getString(R.string.error_msg)
+                               // getLangResources().getString(R.string.error_msg)
+                                "${response.body()?.error}"
                             )
                         }
 
@@ -490,8 +513,9 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     Log.d(USER_UPDATE_TAG, "EXCEPTION ${e.message.toString()}")
                     responseStandard?.onFailure(
                         false,
-                        ERROR,
-                        getLangResources().getString(R.string.error_msg)
+                        "EXCEPTION",
+                       // getLangResources().getString(R.string.error_msg)
+                        "${e.message.toString()}"
                     )
                 }
             } else {

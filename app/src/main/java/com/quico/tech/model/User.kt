@@ -67,6 +67,7 @@ data class UserResponse(
 )
 
 data class User(
+    val have_items_in_cart:Boolean,
     val session_id: String?,
     val is_vip: Boolean,
     val partner_id: Int,
@@ -81,6 +82,7 @@ data class User(
         email: String,
         mobile: String,
     ) : this(
+        false,
         null,
         false,
         0,
@@ -95,6 +97,7 @@ data class User(
     constructor(
         mobile: String,
     ) : this(
+        false,
         null,
         false,
         0,
@@ -179,5 +182,5 @@ data class EmailBodyParameters(
 )
 
 data class EmailParams(
-    val login: String
+    val email: String
 )

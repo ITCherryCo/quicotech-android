@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.quico.tech.R
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.EMAIL
 import com.quico.tech.data.Constant.REGISTER
 import com.quico.tech.databinding.ActivityRegisterBinding
 import com.quico.tech.model.RegisterBodyParameters
@@ -152,19 +153,22 @@ class RegisterActivity : AppCompatActivity() {
                 // verify email
                 // save user temporary
                 viewModel.sendOtpPhoneNumber = ""
-                Constant.TEMPORAR_USER = RegisterParams(
+               // Constant.TEMPORAR_USER = RegisterParams(
+                viewModel.temporar_user = RegisterParams(
                     emailField.text.toString(),
                     phoneValue,
                     fullNameField.text.toString(),
                     Common.encryptPassword(passwordField.text.toString())
                 )
-                Constant.CREDENTIAL_OPERATION_TYPE = REGISTER
+                viewModel.operation_type = REGISTER
+                viewModel.verification_type = EMAIL
+               // Constant.CREDENTIAL_OPERATION_TYPE = REGISTER
                 startActivity(
                     Intent(this@RegisterActivity, VerificationCodeActivity::class.java)
-                        .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
+                        //.putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
                         // .putExtra(Constant.VERIFICATION_TYPE, Constant.PHONE_NUMBER)
-                        .putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
-                        .putExtra(Constant.PHONE_NUMBER, phoneValue)
+                       // .putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
+                        //.putExtra(Constant.PHONE_NUMBER, phoneValue)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                 )
                 // registerUser()

@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.quico.tech.data.Constant.COOKIE
 import com.quico.tech.data.Constant.EN
 import com.quico.tech.data.Constant.SESSION_ID
+import com.quico.tech.model.RegisterParams
 import com.quico.tech.model.User
 
 class PrefManager(var context: Context) {
@@ -14,7 +15,10 @@ class PrefManager(var context: Context) {
 
     // shared pref mode
     var USER = "user"
+    var TEMPORAR_USER = "temporar_user"
     var PRIVATE_MODE = 0
+    val VERIFICATION_TYPE = "verification_type"
+    var OPERATION_TYPE = "operation_type"
 
     var isFirstTimeLaunch: Boolean
         get() = sharedPreferences.getBoolean(IS_FIRST_TIME_LAUNCH, true)
@@ -79,4 +83,35 @@ class PrefManager(var context: Context) {
             editor.putBoolean(VIP_SUBSCRIPTION, vip_subsription)
             editor.apply()
         }
+
+    var temporar_user: RegisterParams?
+        get() {
+            val gson = Gson()
+            val json: String = sharedPreferences.getString(TEMPORAR_USER, null).toString()
+            var user: RegisterParams? = null
+            user = gson.fromJson(json, RegisterParams::class.java)
+            return user
+        }
+
+        set(temporar_user) {
+            val gson = Gson()
+            val json: String = gson.toJson(temporar_user)
+            editor.putString(TEMPORAR_USER, json)
+            editor.apply()
+        }
+
+    var operation_type: String
+        get() = sharedPreferences.getString(OPERATION_TYPE, "")!!
+        set(operation_type) {
+            editor.putString(OPERATION_TYPE, operation_type)
+            editor.apply()
+        }
+
+    var verification_type: String
+        get() = sharedPreferences.getString(VERIFICATION_TYPE, "")!!
+        set(verification_type) {
+            editor.putString(VERIFICATION_TYPE, verification_type)
+            editor.apply()
+        }
+
 }

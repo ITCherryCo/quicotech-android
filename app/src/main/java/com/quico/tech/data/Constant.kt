@@ -9,8 +9,8 @@ object Constant {
     var ERROR = "error"
     var EXCEPTION = "EXCEPTION"
     var PHONE_NUMBER = "phone_number"
-    val VERIFICATION_TYPE = "verification_type" // email link or phone number verification
-    var OPERATION_TYPE = "operation_type"       // register new account or change phone number
+//    val VERIFICATION_TYPE = "verification_type" // email link or phone number verification
+ //   var OPERATION_TYPE = "operation_type"       // register new account or change phone number
     val EMAIL_LINK = "email_link"       // register new account or change phone number
     val ORDERS_TAG = "ORDERS_RESPONSE"
     val ORDERS_TYPE= "orders_type"
@@ -76,10 +76,10 @@ object Constant {
     var ITEM_ID= "item_id"
     var FRAGMENT_POSITION="fragment_position"
     var SEND_EMAIL_LINK= "SEND_EMAIL_LINK"
-    var TEMPORAR_USER : RegisterParams? =null
+  //  var TEMPORAR_USER : RegisterParams? =null
     var TEMPORAR_ADDRESS : Address? =null
     var COOKIES_KEY ="cookiesKey"
-    var CREDENTIAL_OPERATION_TYPE =""
+  //  var CREDENTIAL_OPERATION_TYPE =""
     var ACTIVITY_TYPE ="activity_type"
     var TERMS_OF_USE ="terms_of_use"
     var VIP_BENEFITS ="vip_benefits"
