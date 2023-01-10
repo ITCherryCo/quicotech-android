@@ -12,9 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.quico.tech.R
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.CHANGE_EMAIL
 import com.quico.tech.data.Constant.CHANGE_PASSWORD
+import com.quico.tech.data.Constant.CHANGE_PHONE_NUMBER
+import com.quico.tech.data.Constant.EMAIL
 import com.quico.tech.data.Constant.FORGET_PASSWORD
-import com.quico.tech.data.Constant.TEMPORAR_USER
+import com.quico.tech.data.Constant.PHONE_NUMBER
 import com.quico.tech.databinding.ActivityEditCredentialsBinding
 import com.quico.tech.model.PasswordBodyParameters
 import com.quico.tech.model.PasswordParams
@@ -183,15 +186,19 @@ class EditCredentialsActivity : AppCompatActivity() {
                         phoneField.error =
                             viewModel.getLangResources().getString(R.string.same_phone_number)
                     } else {
+                        viewModel.operation_type = CHANGE_PHONE_NUMBER
+                        viewModel.verification_type = PHONE_NUMBER
+                        viewModel.temporar_user =  RegisterParams(mobile = phoneValue)
                         // go to verification
                         startActivity(
                             Intent(
                                 this@EditCredentialsActivity,
                                 VerificationCodeActivity::class.java
                             )
-                                .putExtra(Constant.VERIFICATION_TYPE, Constant.PHONE_NUMBER)
-                                .putExtra(Constant.OPERATION_TYPE, Constant.CHANGE_PHONE_NUMBER)
-                                .putExtra(Constant.PHONE_NUMBER, phoneValue)
+
+                                //.putExtra(Constant.VERIFICATION_TYPE, Constant.PHONE_NUMBER)
+                                //.putExtra(Constant.OPERATION_TYPE, Constant.CHANGE_PHONE_NUMBER)
+                               // .putExtra(Constant.PHONE_NUMBER, phoneValue)
                         )
                     }
                 }
@@ -201,14 +208,17 @@ class EditCredentialsActivity : AppCompatActivity() {
                         emailField.error =
                             viewModel.getLangResources().getString(R.string.wrong_email)
                     else {
-                        TEMPORAR_USER = RegisterParams(emailField.text.toString(),"")
+                        //TEMPORAR_USER = RegisterParams(emailField.text.toString(), "")
+                        viewModel.temporar_user = RegisterParams(emailField.text.toString(), "")
+                        viewModel.operation_type = CHANGE_EMAIL
+                        viewModel.verification_type = EMAIL
                         startActivity(
                             Intent(
                                 this@EditCredentialsActivity,
                                 VerificationCodeActivity::class.java
                             )
-                                .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
-                                .putExtra(Constant.OPERATION_TYPE, Constant.CHANGE_EMAIL)
+                               // .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
+                               // .putExtra(Constant.OPERATION_TYPE, Constant.CHANGE_EMAIL)
                         )
                     }
                 }
@@ -245,7 +255,8 @@ class EditCredentialsActivity : AppCompatActivity() {
                             reset = true
                             passwordParams = PasswordBodyParameters(
                                 PasswordParams(
-                                    TEMPORAR_USER!!.login,
+                                    viewModel.temporar_user!!.login,
+                                    //TEMPORAR_USER!!.login,
                                     Common.encryptPassword(passwordField.text.toString())
                                 )
                             )
@@ -293,14 +304,18 @@ class EditCredentialsActivity : AppCompatActivity() {
                     message: String
                 ) {
                     Common.cancelProgressDialog()
-                    Common.setUpAlert(
-                        this@EditCredentialsActivity, false,
-                        resultTitle,
-                       // viewModel.getLangResources().getString(R.string.error),
-                        message,
-                        viewModel.getLangResources().getString(R.string.ok),
-                        null
-                    )
+                    if (message.equals(getString(R.string.session_expired))) {
+                        viewModel.resetSession()
+                        Common.setUpSessionProgressDialog(this@EditCredentialsActivity)
+                    } else
+                        Common.setUpAlert(
+                            this@EditCredentialsActivity, false,
+                            resultTitle,
+                            // viewModel.getLangResources().getString(R.string.error),
+                            message,
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
                 }
             })
     }

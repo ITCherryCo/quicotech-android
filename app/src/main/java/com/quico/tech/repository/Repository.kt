@@ -23,6 +23,7 @@ class Repository() {
 
     suspend fun getServices() = RetrofitInstance.api.getServices()
     suspend fun getServiceTypes(service_id:Int) = RetrofitInstance.api.getServiceTypes(service_id)
+    suspend fun getSubServiceTypes(service_type_id:Int) = RetrofitInstance.api.getSubServiceTypes(service_type_id)
 
     suspend fun getProduct(product_id: Int) = RetrofitInstance.api.getProduct(product_id)
 
@@ -30,12 +31,13 @@ class Repository() {
     suspend fun getDoneOrders(customer_id: Int) = RetrofitInstance.api.getDoneOrders(customer_id)
 
     suspend fun addToCart( productBody: ProductBodyParameters) = RetrofitInstance.api.addToCart(productBody)
-    suspend fun updateItemCart( productBody: ProductBodyParameters) = RetrofitInstance.api.updateItemCart(productBody)
+    suspend fun updateCartQuantity( productBody: ProductBodyParameters) = RetrofitInstance.api.updateCartQuantity(productBody)
     suspend fun removeFromCart( productBody: ProductBodyParameters) = RetrofitInstance.api.removeFromCart(productBody)
     suspend fun viewCart() = RetrofitInstance.api.viewCart()
-    suspend fun subscribeToVip( productBody: ProductBodyParameters) = RetrofitInstance.api.subscribeToVip(productBody)
+    suspend fun subscribeToVip() = RetrofitInstance.api.subscribeToVip()
 
     suspend fun search(searchBodyParameters: SearchBodyParameters) = RetrofitInstance.api.search(searchBodyParameters)
+    suspend fun searchCompare(searchBodyParameters: SearchBodyParameters) = RetrofitInstance.api.searchCompare(searchBodyParameters)
     suspend fun getAllCategories() = RetrofitInstance.api.getAllCategories()
     suspend fun getAllBrands() = RetrofitInstance.api.getAllBrands()
     suspend fun getHomeData() = RetrofitInstance.api.getHomeData()
@@ -43,6 +45,8 @@ class Repository() {
     suspend fun addToWishlist( productBody: ProductBodyParameters) = RetrofitInstance.api.addToWishlist(productBody)
     suspend fun removeFromWishlist(productBody: ProductBodyParameters) = RetrofitInstance.api.removeFromWishlist(productBody)
     suspend fun viewWishlist() = RetrofitInstance.api.viewWishlist()
+
+    suspend fun createDeliveryOrder( orderBody: OrderBodyParameters) = RetrofitInstance.api.createDeliveryOrder(orderBody)
 
     /* suspend fun getSession() = RetrofitInstance.newRetrofit(context).getSession()
      suspend fun getAddresses(session_id: String) = RetrofitInstance.newRetrofit(context).getAddresses(session_id)

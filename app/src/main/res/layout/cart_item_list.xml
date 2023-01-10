@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layoutDirection="locale"
-        android:paddingHorizontal="22dp"
+        android:paddingHorizontal="20dp"
         android:paddingVertical="15dp">
 
         <RelativeLayout
@@ -34,6 +34,7 @@
                 android:layout_width="92dp"
                 android:layout_height="95dp"
                 android:elevation="0dp"
+                android:layout_margin="3dp"
                 app:cardCornerRadius="8dp">
 
                 <RelativeLayout
@@ -44,11 +45,12 @@
                     <ImageView
                         android:id="@+id/coverImage"
                         android:layout_width="match_parent"
-                        android:layout_height="65dp"
+                        android:layout_height="match_parent"
                         android:scaleType="fitXY"
                         android:src="@drawable/laptop" />
 
                     <RelativeLayout
+                        android:id="@+id/qtyContainer"
                         android:layout_width="match_parent"
                         android:layout_height="25dp"
                         android:layout_alignParentBottom="true"
@@ -110,6 +112,7 @@
                 <RelativeLayout
                     android:id="@+id/nameContainer"
                     android:layout_width="match_parent"
+                    android:layout_margin="3dp"
                     android:layout_height="match_parent">
 
                     <TextView
@@ -155,20 +158,7 @@
                     android:textDirection="locale"
                     android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/outOfStock"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="10dp"
-                    android:layout_toStartOf="@+id/totalPrice"
-                    android:maxLines="1"
-                    android:paddingEnd="10dp"
-                    android:text="@string/out_of_stock"
-                    android:textColor="@color/red"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
+
 
                 <TextView
                     android:id="@+id/totalPrice"
@@ -204,6 +194,23 @@
             android:textSize="14sp"
             android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/outOfStock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:layout_below="@+id/infoContainer"
+            android:maxLines="1"
+            android:visibility="gone"
+            android:paddingEnd="10dp"
+            android:layoutDirection="locale"
+            android:textDirection="locale"
+            android:fontFamily="@font/medium"
+            android:text="@string/out_of_stock_msg"
+            android:textColor="@color/red"
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <ProgressBar

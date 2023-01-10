@@ -21,12 +21,13 @@ import com.quico.tech.data.Constant
 import com.quico.tech.data.Constant.FRAGMENT_POSITION
 import com.quico.tech.data.Constant.ITEM_ID
 import com.quico.tech.databinding.FragmentCompareProductBinding
-import com.quico.tech.model.NameParams
+import com.quico.tech.model.SearchParams
 import com.quico.tech.model.Product
 import com.quico.tech.model.SearchBodyParameters
 import com.quico.tech.model.Specifications
 import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -109,11 +110,22 @@ class CompareProductFragment : Fragment() {
                 }
 
                 override fun onQueryTextChange(searchText: String): Boolean {
+                    search_text = searchText
                     if (searchText.isEmpty()) {
                         searchRecyclerView.visibility = View.GONE
                     } else if (searchText.trim { it <= ' ' }.length > 2) {
-                        searchRecyclerView.visibility = View.VISIBLE
-                        viewModel.searchProducts(SearchBodyParameters(NameParams(search_text)))
+                        search_text = searchText.trim()
+
+                        lifecycleScope.launch {
+                            delay(100)
+                            viewModel.searchCompareProducts(
+                                SearchBodyParameters(
+                                    SearchParams(
+                                        search_text
+                                    )
+                                )
+                            )
+                        }
                     }
                     return false
                 }
@@ -124,16 +136,15 @@ class CompareProductFragment : Fragment() {
 
     private fun subscribeProducts() {
         lifecycleScope.launch {
-            viewModel.search_products.collect { response ->
+            viewModel.search_compare_products.collect { response ->
                 when (response) {
                     is Resource.Success -> {
                         response.data?.let { itemsResponse ->
                             if (itemsResponse.result.isNullOrEmpty()) {
-                                binding.searchRecyclerView.visibility = View.GONE
                                 // setUpErrorForm(Constant.NO_ITEMS)
                             } else {
-                                binding.searchRecyclerView.visibility = View.VISIBLE
                                 searchItemRecyclerViewAdapter.differ.submitList(itemsResponse.result)
+                                binding.searchRecyclerView.visibility = View.VISIBLE
                             }
                         }
                         Log.d(Constant.PRODUCT_TAG, "SUCCESS")
@@ -224,7 +235,6 @@ class CompareProductFragment : Fragment() {
             } else {
                 price.text = "$ ${product.regular_price.toString()}"
             }
-
 
             if (!product.specifications.isNullOrEmpty()) {
                 specificationRecyclerView.visibility = View.VISIBLE

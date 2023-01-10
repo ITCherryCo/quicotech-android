@@ -64,13 +64,15 @@ class LoginActivity : AppCompatActivity() {
                 if (!Patterns.EMAIL_ADDRESS.matcher(emailField.text).matches())
                     emailField.error = viewModel.getLangResources().getString(R.string.wrong_email)
                 else {
-                    Constant.CREDENTIAL_OPERATION_TYPE = Constant.FORGET_PASSWORD
-
-                    Constant.TEMPORAR_USER = RegisterParams(emailField.text.toString(),"")
+                    viewModel.verification_type = Constant.EMAIL
+                    viewModel.operation_type = Constant.FORGET_PASSWORD
+                   // Constant.CREDENTIAL_OPERATION_TYPE = Constant.FORGET_PASSWORD
+                   // Constant.TEMPORAR_USER = RegisterParams(emailField.text.toString(), "")
+                    viewModel.temporar_user = RegisterParams(emailField.text.toString(), "")
                     startActivity(
                         Intent(this@LoginActivity, VerificationCodeActivity::class.java)
-                            .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
-                            .putExtra(Constant.OPERATION_TYPE, Constant.FORGET_PASSWORD)
+                            //.putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
+                            //.putExtra(Constant.OPERATION_TYPE, Constant.FORGET_PASSWORD)
                     )
                 }
             }
@@ -172,13 +174,19 @@ class LoginActivity : AppCompatActivity() {
 
                     override fun onFailure(success: Boolean, resultTitle: String, message: String) {
                         Common.cancelProgressDialog()
-                        Common.setUpAlert(
-                            this@LoginActivity, false,
-                            viewModel.getLangResources().getString(R.string.error),
-                            message,
-                            viewModel.getLangResources().getString(R.string.ok),
-                            null
-                        )
+                        if (message.equals(getString(R.string.session_expired))) {
+                            viewModel.resetSession()
+                            Common.setUpSessionProgressDialog(this@LoginActivity)
+
+                        } else {
+                            Common.setUpAlert(
+                                this@LoginActivity, false,
+                                viewModel.getLangResources().getString(R.string.error),
+                                message,
+                                viewModel.getLangResources().getString(R.string.ok),
+                                null
+                            )
+                        }
                     }
                 })
             }

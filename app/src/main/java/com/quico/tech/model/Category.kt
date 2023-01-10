@@ -11,7 +11,8 @@ data class CategoryResponse(
     val id: Any,
     val jsonrpc: String,
     val result: List<Category>?,
-    val error: ErrorData?
+    val error: String?
+    //val error: ErrorData?
 )
 
 data class Category(

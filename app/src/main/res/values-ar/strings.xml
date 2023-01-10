@@ -258,7 +258,7 @@ efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifen
     <string name="select_address_msg">Please select an address to continue the process.</string>
     <string name="cancel">Cancel</string>
     <string name="vip_price">VIP Price</string>
-    <string name="vip_subscription_msg">VIP Subscrtiption will be activated for free month and this will coast ( $10 ) </string>
+    <string name="vip_subscription_msg">VIP Subscription will be activated for free month and this will coast ( $10 ) </string>
     <string name="regular_price">Regular Price</string>
     <string name="item_added_successfully">Item is added successfully</string>
     <string name="item_deleted_successfully">Item is deleted successfully</string>
@@ -268,5 +268,13 @@ efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifen
     <string name="search">Search</string>
     <string name="out_of_stock_msg">This product is out of stock.Please remove it to continue the process.</string>
     <string name="sale">Sale</string>
+    <string name="session_expired">Session expired</string>
+    <string name="quantity">Quantity</string>
+    <string name="available_qty_msg">Sorry the available quantity in stock is %1$s</string>
+    <string name="subscribe_successfully">You have successfully subscribed to VIP</string>
+    <string name="continue_process">Continue</string>
+    <string name="only_vip_charge_msg">Sorry, you must choose at least 1 product to continue the process</string>
+    <string name="order_created_successfully">Order is created successfully</string>
+    <string name="sure_to_checkout">If you want to proceed to checkout please press yes.</string>
 
 </resources>

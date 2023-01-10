@@ -22,80 +22,110 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
-            var quantity =1 //product quantity
+            var quantity = product.quantity!! //product quantity
             binding.apply {
 
                 name.text = product.name
-                var final_price=0.0
+                qty.text = product.quantity.toString()
+                var final_price = 0.0
                 //var total_price=0.0
-
-                viewModel.user?.let { user->
-                    if (user.is_vip || viewModel.vip_subsription){
-                        if (product.is_vip || product.is_on_sale)
-                            final_price = product.new_price
-                        else
-                            final_price = product.regular_price
+                if (product.is_vip_charge_product) {
+                    qtyContainer.visibility = View.GONE
+                    price.text = "$ ${product.regular_price}"
+                    totalPrice.text = "${
+                        viewModel.getLangResources().getString(R.string.total)
+                    }: $${product.regular_price}"
+                    coverImage.setImageResource(R.drawable.subscription)
+                } else {
+                    if (!product.in_stock!!) {
+                        outOfStock.visibility = View.VISIBLE
+                        outOfStock.text =
+                            viewModel.getLangResources().getString(R.string.out_of_stock_msg)
+                        price.visibility = View.GONE
+                        totalPrice.setTextColor(itemView.resources.getColor(R.color.gray_dark))
+                        totalPrice.alpha = 0.5f
+                    } else if (product.quantity > product.quantity_available!!) {
+                        outOfStock.visibility = View.VISIBLE
+                        outOfStock.text = viewModel.getLangResources().getString(
+                            R.string.available_qty_msg,
+                            product.quantity_available.toString()
+                        )
+                        price.visibility = View.GONE
+                        totalPrice.setTextColor(itemView.resources.getColor(R.color.gray_dark))
+                        totalPrice.alpha = 0.5f
                     }
-                    else{
-                        if (product.is_on_sale)
-                            final_price = product.new_price
-                        else
-                            final_price = product.regular_price
+
+                    viewModel.user?.let { user ->
+                        if (user.is_vip || viewModel.vip_subsription) {
+                            if (product.is_vip || product.is_on_sale)
+                                final_price = product.new_price
+                            else
+                                final_price = product.regular_price
+                        } else {
+                            if (product.is_on_sale)
+                                final_price = product.new_price
+                            else
+                                final_price = product.regular_price
+                        }
                     }
-                }
 
-                price.text = "$ ${final_price}"
-                totalPrice.text = "${viewModel.getLangResources().getString(R.string.total)}: $${final_price*quantity}"
+                    price.text = "$ ${final_price}"
+                    totalPrice.text = "${
+                        viewModel.getLangResources().getString(R.string.total)
+                    }: $${final_price * quantity}"
 
-                if (viewModel.getLanguage().equals(Constant.AR)) {
-                    plus.scaleX = -1f
-                    minus.scaleX = -1f
-                }
-
-                if (absoluteAdapterPosition == 2) {
-                    price.visibility = View.GONE
-                    outOfStock.visibility = View.VISIBLE
-                    totalPrice.setTextColor(itemView.resources.getColor(R.color.gray_dark))
-                    totalPrice.alpha = 0.5f
-                }
-
-                if (absoluteAdapterPosition == 4)
-                    grayLine.visibility = View.INVISIBLE
-
-                product?.image.let {
-                    Glide.with(itemView.context)
-                        .load(it)
-                        //.placeholder(R.drawable.placeholder)
-                        .error(R.drawable.empty_item)
-                        .fitCenter()
-                        .into(coverImage)
-                }
-
-                plus.setOnClickListener {
-                    // check for available qty
-                    quantity++
-                    qty.text="$quantity"
-                    updateQty(product.id,quantity)
-                }
-
-                minus.setOnClickListener {
-                    // check for available qty
-                    if (quantity>1) {
-                        quantity--
-                        updateQty(product.id, quantity)
+                    if (viewModel.getLanguage().equals(Constant.AR)) {
+                        plus.scaleX = -1f
+                        minus.scaleX = -1f
                     }
-                    else
-                        deleteItem(product.id)
-                    qty.text="$quantity"
+
+
+                    product?.image.let {
+                        Glide.with(itemView.context)
+                            .load(it)
+                            //.placeholder(R.drawable.placeholder)
+                            .error(R.drawable.empty_item)
+                            .fitCenter()
+                            .into(coverImage)
+                    }
+
+                    plus.setOnClickListener {
+                        // check for available qty
+                        if (quantity + 1 > product.quantity_available!!) {
+                            Common.setUpAlert(
+                                itemView.context, false,
+                                viewModel.getLangResources()
+                                    .getString(R.string.quantity),
+                                viewModel.getLangResources()
+                                    .getString(R.string.available_qty_msg),
+                                viewModel.getLangResources().getString(R.string.ok),
+                                null
+                            )
+                        } else {
+                            quantity++
+                            qty.text = "$quantity"
+                            updateQty(product.id, quantity)
+                        }
+                    }
+
+                    minus.setOnClickListener {
+                        // check for available qty
+                        if (quantity > 1) {
+                            quantity--
+                            updateQty(product.id, quantity)
+                        } else
+                            deleteItem(product.is_vip_charge_product, product.id)
+                        // qty.text = "$quantity"
+                    }
                 }
 
                 deleteImage.setOnClickListener {
-                    deleteItem(product.id)
+                    deleteItem(product.is_vip_charge_product, product.id)
                 }
             }
         }
 
-       private fun updateQty(product_id:Int,quantity:Int){
+        private fun updateQty(product_id: Int, quantity: Int) {
 
             val params = ProductBodyParameters(
                 ProductParams(
@@ -113,6 +143,7 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                         message: String
                     ) {
                         // later add progress bar to view
+                        binding.qty.text = "${params.params.quantity}"
                         Common.cancelProgressDialog()
 
                     }
@@ -123,20 +154,24 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                         message: String
                     ) {
                         Common.cancelProgressDialog()
-                        Common.setUpAlert(
-                            itemView.context, false,
-                            viewModel.getLangResources()
-                                .getString(R.string.error),
-                            message,
-                            viewModel.getLangResources().getString(R.string.ok),
-                            null
-                        )
+                        if (message.equals(itemView.resources.getString(R.string.session_expired))) {
+                            viewModel.resetSession()
+                            Common.setUpSessionProgressDialog(itemView.context)
+                        } else
+                            Common.setUpAlert(
+                                itemView.context, false,
+                                viewModel.getLangResources()
+                                    .getString(R.string.error),
+                                message,
+                                viewModel.getLangResources().getString(R.string.ok),
+                                null
+                            )
                     }
                 })
         }
 
 
-        private fun deleteItem(product_id: Int) {
+        private fun deleteItem(is_vip_charge_product: Boolean, product_id: Int) {
             binding.apply {
                 Common.setUpChoicesAlert(itemView.context,
                     viewModel.getLangResources().getString(R.string.delete_item),
@@ -152,7 +187,7 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                             )
 
                             progressBar.visibility = View.VISIBLE
-                            viewModel.removeFromCart(params,
+                            viewModel.removeFromCart(is_vip_charge_product, params,
                                 object : SharedViewModel.ResponseStandard {
                                     override fun onSuccess(
                                         success: Boolean,
@@ -161,6 +196,7 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                                     ) {
                                         // later add progress bar to view
                                         progressBar.visibility = View.GONE
+
                                         /*     Toast.makeText(
                                              itemView.context,
                                              message,
@@ -174,14 +210,18 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
                                         message: String
                                     ) {
                                         progressBar.visibility = View.GONE
-                                        Common.setUpAlert(
-                                            itemView.context, false,
-                                            viewModel.getLangResources()
-                                                .getString(R.string.error),
-                                            message,
-                                            viewModel.getLangResources().getString(R.string.ok),
-                                            null
-                                        )
+                                        if (message.equals(itemView.resources.getString(R.string.session_expired))) {
+                                            viewModel.resetSession()
+                                            Common.setUpSessionProgressDialog(itemView.context)
+                                        } else
+                                            Common.setUpAlert(
+                                                itemView.context, false,
+                                                viewModel.getLangResources()
+                                                    .getString(R.string.error),
+                                                message,
+                                                viewModel.getLangResources().getString(R.string.ok),
+                                                null
+                                            )
                                     }
                                 })
                         }
@@ -220,6 +260,26 @@ class CartRecyclerViewAdapter(val viewModel: SharedViewModel) :
         return differ.currentList.size
     }
 
+    fun getSelectedProduct():ArrayList<Product> {
+        var selectedProducts = ArrayList<Product>()
+        viewModel.user?.let { user ->
+            differ.currentList.forEach { product ->
+
+                if (user.is_vip || viewModel.vip_subsription) {
+                    if (product.is_vip || product.is_on_sale)
+                        selectedProducts.add(Product(product.id,product.name,product.quantity!!,product.new_price))
+                    else
+                        selectedProducts.add(Product(product.id,product.name,product.quantity!!,product.regular_price))
+                } else {
+                    if (product.is_on_sale)
+                        selectedProducts.add(Product(product.id,product.name,product.quantity!!,product.new_price))
+                    else
+                        selectedProducts.add(Product(product.id,product.name,product.quantity!!,product.regular_price))
+                }
+            }
+        }
+        return selectedProducts
+    }
 
     private val differCallback = object : DiffUtil.ItemCallback<Product>() {
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {

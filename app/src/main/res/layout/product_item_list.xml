@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layoutDirection="locale"
-    android:textDirection="locale"
-    android:layout_height="match_parent">
+    android:textDirection="locale">
 
     <com.balysv.materialripple.MaterialRippleLayout
         android:id="@+id/smallContainer"
@@ -22,9 +21,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_marginBottom="4dp"
-            app:cardCornerRadius="8dp"
             android:layoutDirection="locale"
             android:textDirection="locale"
+            app:cardCornerRadius="8dp"
             app:cardElevation="3dp">
 
             <LinearLayout
@@ -60,20 +59,20 @@
                         android:layout_marginTop="6dp"
                         android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/productPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$20.93"
-                        android:textColor="@color/color_primary_purple" />
+                        <TextView
+                            android:id="@+id/productPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$20.93"
+                            android:textColor="@color/color_primary_purple" />
 
-                    <TextView
-                        android:id="@+id/productNewPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$20.93"
-                        android:layout_marginStart="12dp"
-                        android:textColor="@color/green" />
+                        <TextView
+                            android:id="@+id/productNewPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:text="$20.93"
+                            android:textColor="@color/green" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -89,8 +88,8 @@
         style="@style/RippleStyleWhite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layoutDirection="locale"
         android:layout_margin="8dp"
+        android:layoutDirection="locale"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,12 +108,11 @@
                 android:id="@+id/heartImage"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:elevation="1dp"
                 android:layout_gravity="end"
                 android:layout_margin="3dp"
-                android:visibility="gone"
-                android:src="@drawable/filled_heart" />
-
+                android:elevation="1dp"
+                android:src="@drawable/filled_heart"
+                android:visibility="gone" />
 
 
             <LinearLayout
@@ -133,13 +131,13 @@
                     android:id="@+id/largeVipText"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
                     android:background="@color/orange_best_seller"
                     android:fontFamily="@font/bold"
                     android:layoutDirection="locale"
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="5dp"
                     android:text="@string/vip"
-                    android:layout_centerVertical="true"
                     android:textColor="@color/home_background_grey"
                     android:textDirection="locale"
                     android:textSize="12sp" />
@@ -148,35 +146,35 @@
                     android:id="@+id/largeSaleText"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
                     android:background="@color/red_brick"
                     android:fontFamily="@font/bold"
                     android:layoutDirection="locale"
                     android:paddingHorizontal="8dp"
-                    android:visibility="gone"
                     android:paddingVertical="5dp"
                     android:text="@string/sale"
-                    android:layout_centerVertical="true"
                     android:textColor="@color/home_background_grey"
                     android:textDirection="locale"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
                     android:layout_margin="10dp"
+                    android:layout_marginHorizontal="10dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/largeProductName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Drone 1.."
-                        android:textColor="@color/gray_dark"
                         android:fontFamily="@font/regular"
-                        android:textDirection="locale"
                         android:layoutDirection="locale"
                         android:lines="1"
+                        android:text="Drone 1.."
+                        android:textColor="@color/gray_dark"
+                        android:textDirection="locale"
                         android:textSize="13sp" />
 
                     <LinearLayout
@@ -185,32 +183,41 @@
                         android:layout_marginTop="5dp"
                         android:layoutDirection="locale">
 
-                    <TextView
-                        android:id="@+id/largeOldPrice"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="$60"
-                        android:lines="1"
-                        android:textSize="16sp"
-                        android:fontFamily="@font/regular"
-                        android:textDirection="locale"
-                        android:layoutDirection="locale"
-                        android:textColor="@color/color_primary_purple" />
+                        <RelativeLayout
+                            android:id="@+id/largeOldPriceContainer"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layoutDirection="locale">
+
+                            <TextView
+                                android:id="@+id/largeOldPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/regular"
+                                android:layoutDirection="locale"
+                                android:paddingHorizontal="3dp"
+                                android:lines="1"
+                                android:text="$60"
+                                android:textColor="@color/color_primary_purple"
+                                android:textDirection="locale"
+                                android:textSize="16sp" />
+                        </RelativeLayout>
+
 
                         <TextView
                             android:id="@+id/largeNewPrice"
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:text="$60"
-                            android:lines="1"
-                            android:textSize="16sp"
+                            android:layout_weight="1"
                             android:fontFamily="@font/regular"
-                            android:textDirection="locale"
-                            android:layoutDirection="locale"
                             android:gravity="end"
-                            android:textColor="@color/green" />
+                            android:layoutDirection="locale"
+                            android:lines="1"
+                            android:text="$60"
+                            android:textColor="@color/green"
+                            android:textDirection="locale"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                 </LinearLayout>

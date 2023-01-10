@@ -4,7 +4,8 @@ data class HomeDataResponse(
     val id: Any,
     val jsonrpc: String,
     val result: HomeData?,
-    val error: ErrorData?
+    val error: String?
+    //val error: ErrorData?
 )
 
 data class HomeData(

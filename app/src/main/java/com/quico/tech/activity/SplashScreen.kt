@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.quico.tech.data.Constant
-import com.quico.tech.data.Constant.CREDENTIAL_OPERATION_TYPE
 import com.quico.tech.data.PrefManager
 import com.quico.tech.viewmodel.SharedViewModel
 
@@ -17,6 +16,7 @@ class SplashScreen : AppCompatActivity() {
         val prefManager: PrefManager = PrefManager(applicationContext)
         val emailLink = intent?.data?.toString()
 
+
         if (emailLink != null) {
             Log.d(Constant.SEND_EMAIL_LINK, "Email is received well ${emailLink}")
 
@@ -24,11 +24,11 @@ class SplashScreen : AppCompatActivity() {
                  Log.d(Constant.SEND_EMAIL_LINK, "Email is received well send it to verify.")
                  startActivity(
                      Intent(this, VerificationCodeActivity::class.java)
-                         .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
+                        // .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
                          .putExtra(Constant.EMAIL_LINK, it)
-                         .putExtra(Constant.OPERATION_TYPE,CREDENTIAL_OPERATION_TYPE)
+                        // .putExtra(Constant.OPERATION_TYPE,CREDENTIAL_OPERATION_TYPE)
                          //.putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
-                         .putExtra(Constant.PHONE_NUMBER, Constant.TEMPORAR_USER?.mobile)
+                        // .putExtra(Constant.PHONE_NUMBER, Constant.TEMPORAR_USER?.mobile)
                  )
              }
         } else {
@@ -37,7 +37,7 @@ class SplashScreen : AppCompatActivity() {
             if (prefManager!!.isFirstTimeLaunch) {
                 prefManager.isFirstTimeLaunch = false
                 startActivity(
-                    Intent(this, LoginActivity::class.java)
+                    Intent(this, IntroActivity::class.java)
                 )
             }
 

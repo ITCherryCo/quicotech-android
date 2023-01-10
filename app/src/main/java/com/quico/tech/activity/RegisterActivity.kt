@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.quico.tech.R
 import com.quico.tech.data.Constant
+import com.quico.tech.data.Constant.EMAIL
 import com.quico.tech.data.Constant.REGISTER
 import com.quico.tech.databinding.ActivityRegisterBinding
 import com.quico.tech.model.RegisterBodyParameters
@@ -126,7 +127,6 @@ class RegisterActivity : AppCompatActivity() {
                     viewModel.getLangResources().getString(R.string.required_field)
             } else if (!Patterns.EMAIL_ADDRESS.matcher(emailField.text).matches())
                 emailField.error = viewModel.getLangResources().getString(R.string.wrong_email)
-
             else if (passwordField.text.toString().isEmpty())
                 passwordField.error =
                     viewModel.getLangResources().getString(R.string.required_field)
@@ -148,23 +148,30 @@ class RegisterActivity : AppCompatActivity() {
             else if (!phoneValue.isEmpty() && phoneValue.length < 8)
                 phoneNumberField.error =
                     viewModel.getLangResources().getString(R.string.invalid_phone_number)
-
             else {
                 // send sms verification code
                 // verify email
                 // save user temporary
                 viewModel.sendOtpPhoneNumber = ""
-                Constant.TEMPORAR_USER = RegisterParams(emailField.text.toString(),phoneValue,fullNameField.text.toString(),Common.encryptPassword(passwordField.text.toString()))
-                Constant.CREDENTIAL_OPERATION_TYPE = REGISTER
+               // Constant.TEMPORAR_USER = RegisterParams(
+                viewModel.temporar_user = RegisterParams(
+                    emailField.text.toString(),
+                    phoneValue,
+                    fullNameField.text.toString(),
+                    Common.encryptPassword(passwordField.text.toString())
+                )
+                viewModel.operation_type = REGISTER
+                viewModel.verification_type = EMAIL
+               // Constant.CREDENTIAL_OPERATION_TYPE = REGISTER
                 startActivity(
                     Intent(this@RegisterActivity, VerificationCodeActivity::class.java)
-                        .putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
-                       // .putExtra(Constant.VERIFICATION_TYPE, Constant.PHONE_NUMBER)
-                        .putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
-                        .putExtra(Constant.PHONE_NUMBER, phoneValue)
+                        //.putExtra(Constant.VERIFICATION_TYPE, Constant.EMAIL)
+                        // .putExtra(Constant.VERIFICATION_TYPE, Constant.PHONE_NUMBER)
+                       // .putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
+                        //.putExtra(Constant.PHONE_NUMBER, phoneValue)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                 )
-               // registerUser()
+                // registerUser()
             }
         }
     }
@@ -268,19 +275,27 @@ class RegisterActivity : AppCompatActivity() {
                                 message: String
                             ) {
                                 Common.cancelProgressDialog()
+                                if (message.equals(getString(R.string.session_expired))) {
+                                    viewModel.resetSession()
+                                    Common.setUpSessionProgressDialog(this@RegisterActivity)
+                                }
                             }
                         })
                 }
 
                 override fun onFailure(success: Boolean, resultTitle: String, message: String) {
                     Common.cancelProgressDialog()
-                    Common.setUpAlert(
-                        this@RegisterActivity, false,
-                        viewModel.getLangResources().getString(R.string.error),
-                        message,
-                        viewModel.getLangResources().getString(R.string.ok),
-                        null
-                    )
+                    if (message.equals(getString(R.string.session_expired))) {
+                        viewModel.resetSession()
+                        Common.setUpSessionProgressDialog(this@RegisterActivity)
+                    } else
+                        Common.setUpAlert(
+                            this@RegisterActivity, false,
+                            viewModel.getLangResources().getString(R.string.error),
+                            message,
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
                 }
             })
         }

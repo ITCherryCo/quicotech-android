@@ -29,8 +29,8 @@ class RequestDeliveryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRequestDeliveryBinding
     private lateinit var addressRecyclerViewAdapter: AddressRecyclerViewAdapter
     private val viewModel: SharedViewModel by viewModels()
-    private var delivery_type= ""
-    private var selected_address_id= 0
+    private var delivery_type = ""
+    private var selected_address_id = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
         initStatusBar()
     }
 
-    fun initStatusBar(){
+    fun initStatusBar() {
         Common.setSystemBarColor(this, R.color.white)
         Common.setSystemBarLight(this)
     }
@@ -54,7 +54,8 @@ class RequestDeliveryActivity : AppCompatActivity() {
         binding.apply {
             //title.text = viewModel.getLangResources().getString(R.string.shipping_addresses)
             submitBtn.text = viewModel.getLangResources().getString(R.string.submit_request)
-            addressListFragment.addNewAddressText.text = viewModel.getLangResources().getString(R.string.add_new_address)
+            addressListFragment.addNewAddressText.text =
+                viewModel.getLangResources().getString(R.string.add_new_address)
 
             if (viewModel.getLanguage().equals(Constant.AR))
                 backArrow.scaleX = -1f
@@ -64,7 +65,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
             }
 
             submitBtn.setOnClickListener {
-            setUpConfirmAlert()
+                setUpConfirmAlert()
 
             }
         }
@@ -93,8 +94,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
                     }
                 }
             )
-        }
-        else if (selected_address_id==0){
+        } else if (selected_address_id == 0) {
             Common.setUpAlert(
                 this@RequestDeliveryActivity, false, viewModel.getLangResources().getString(
                     R.string.select_address
@@ -110,8 +110,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
                     }
                 }
             )
-        }
-        else{
+        } else {
             Common.setUpAlert(
                 this@RequestDeliveryActivity, true, viewModel.getLangResources().getString(
                     R.string.thank_you
@@ -131,7 +130,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
     }
 
 
-    private fun monitorRadioBtns(){
+    private fun monitorRadioBtns() {
         binding.apply {
 
             addressFragment.root.visibility = View.GONE
@@ -142,9 +141,10 @@ class RequestDeliveryActivity : AppCompatActivity() {
                 manageAddCancelAddress()
             }
 
-            doorRadioBtn.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+            doorRadioBtn.setOnCheckedChangeListener(object :
+                CompoundButton.OnCheckedChangeListener {
                 override fun onCheckedChanged(p0: CompoundButton?, checked: Boolean) {
-                    if (checked){
+                    if (checked) {
                         addressListFragment.root.visibility = View.VISIBLE
                         viewModel.getAddresses(true)
                         centerRadioBtn.setChecked(false)
@@ -153,7 +153,8 @@ class RequestDeliveryActivity : AppCompatActivity() {
                 }
             })
 
-            centerRadioBtn.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+            centerRadioBtn.setOnCheckedChangeListener(object :
+                CompoundButton.OnCheckedChangeListener {
                 override fun onCheckedChanged(p0: CompoundButton?, checked: Boolean) {
                     if (checked) {
                         addressFragment.root.visibility = View.GONE
@@ -174,7 +175,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
                 when (response) {
 
                     is Resource.Success -> {
-                       // stopShimmer()
+                        // stopShimmer()
 
                         response.data?.let { addressesResponse ->
 
@@ -185,10 +186,10 @@ class RequestDeliveryActivity : AppCompatActivity() {
                             if (addressesResponse.result.isNullOrEmpty()) {
                                 setUpAddressErrorForm(Constant.NO_ADDRESSES)
                             } else {
-                                if (addressesResponse.result.size<3)
+                                //if (addressesResponse.result.size < 3)
                                     binding.addressListFragment.addAddressContainer.setEnabled(true)
-                                else
-                                    binding.addressListFragment.addAddressContainer.setEnabled(false)
+                                //else
+                                  //  binding.addressListFragment.addAddressContainer.setEnabled(false)
 
                                 addressRecyclerViewAdapter.differ.submitList(addressesResponse.result)
                                 binding.addressListFragment.recyclerView.visibility = View.VISIBLE
@@ -199,6 +200,10 @@ class RequestDeliveryActivity : AppCompatActivity() {
                     is Resource.Error -> {
                         response.message?.let { message ->
                             setUpAddressErrorForm(Constant.ERROR)
+                            if (message.equals(getString(R.string.session_expired))) {
+                                viewModel.resetSession()
+                                Common.setUpSessionProgressDialog(this@RequestDeliveryActivity)
+                            }
                         }
                     }
 
@@ -217,23 +222,27 @@ class RequestDeliveryActivity : AppCompatActivity() {
 
     fun setUpAdressesAdapter() {
         binding.apply {
-            addressRecyclerViewAdapter = AddressRecyclerViewAdapter(true,object :AddressRecyclerViewAdapter.OnAddressSelect{
+            addressRecyclerViewAdapter = AddressRecyclerViewAdapter(
+                true,
+                object : AddressRecyclerViewAdapter.OnAddressSelect {
 
 
-                override fun onAddressSelect(id: Int) {
-                    selected_address_id = id
-                }
-
-                override fun OnEditAddress(address: Address) {
-                    addressFragment.root.visibility = View.GONE
-                    manageAddCancelAddress()
-                    binding.addressListFragment.addAddressContainer.setEnabled(true)
-                    setUpAddress(address)
-                    saveBtn.setOnClickListener {
-                        checkFields(address!!.id)
+                    override fun onAddressSelect(id: Int) {
+                        selected_address_id = id
                     }
-                }
-            },viewModel)
+
+                    override fun OnEditAddress(address: Address) {
+                        addressFragment.root.visibility = View.GONE
+                        manageAddCancelAddress()
+                        binding.addressListFragment.addAddressContainer.setEnabled(true)
+                        setUpAddress(address)
+                        saveBtn.setOnClickListener {
+                            checkFields(address!!.id)
+                        }
+                    }
+                },
+                viewModel
+            )
 
             var addresses = ArrayList<Address>()
 
@@ -254,6 +263,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
         setLoading()
         viewModel.getAddresses(false)
     }
+
     private fun setLoading() {
         binding.apply {
             addressErrorContainer.root.visibility = View.GONE
@@ -264,8 +274,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
     }
 
 
-
-  private fun setUpAddressErrorForm(error_type: String) {
+    private fun setUpAddressErrorForm(error_type: String) {
         binding.apply {
             addressListFragment.recyclerView.visibility = View.GONE
             addressErrorContainer.apply {
@@ -281,7 +290,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
                 tryAgain.setOnClickListener {
                     onRefresh()
                 }
-                if (viewModel.addresses.value.data?.result?.size!! <3)
+               // if (viewModel.addresses.value.data?.result?.size!! < 3)
                     binding.addressListFragment.addAddressContainer.setEnabled(true)
 
                 when (error_type) {
@@ -317,42 +326,43 @@ class RequestDeliveryActivity : AppCompatActivity() {
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.edit_address)
             addressFragment.apply {
-                nameField.setText( address.name)
-                streetField.setText( address.street)
-                apartmentField.setText( address.street2)
-                cityField.setText( address.city)
-                postalCodeField.setText( address.zip)
+                nameField.setText(address.name)
+                streetField.setText(address.street)
+                apartmentField.setText(address.street2)
+                cityField.setText(address.city)
+                postalCodeField.setText(address.zip)
             }
         }
     }
 
-    private fun manageAddCancelAddress(){
+    private fun manageAddCancelAddress() {
         binding.apply {
-            if (!addressFragment.root.isVisible){
+            if (!addressFragment.root.isVisible) {
                 clearAddressFields()
                 addressFragment.root.visibility = View.VISIBLE
                 saveBtn.visibility = View.VISIBLE
 
-                addressListFragment.addNewAddressText.text = viewModel.getLangResources().getString(R.string.cancel)
+                addressListFragment.addNewAddressText.text =
+                    viewModel.getLangResources().getString(R.string.cancel)
                 addressListFragment.addImage.visibility = View.GONE
                 saveBtn.setOnClickListener {
                     checkFields(0)
                 }
-            }
-            else{
+            } else {
                 clearAddressFields()
                 addressFragment.root.visibility = View.GONE
                 saveBtn.visibility = View.GONE
-                addressListFragment.addNewAddressText.text = viewModel.getLangResources().getString(R.string.add_new_address)
+                addressListFragment.addNewAddressText.text =
+                    viewModel.getLangResources().getString(R.string.add_new_address)
                 addressListFragment.addImage.visibility = View.VISIBLE
-                if (viewModel.addresses.value.data?.result?.size==3)
-                    binding.addressListFragment.addAddressContainer.setEnabled(false)
+                //if (viewModel.addresses.value.data?.result?.size == 3)
+                  //  binding.addressListFragment.addAddressContainer.setEnabled(false)
 
             }
         }
     }
 
-    private fun clearAddressFields(){
+    private fun clearAddressFields() {
         binding.addressFragment.apply {
             nameField.setText("")
             streetField.setText("")
@@ -362,22 +372,19 @@ class RequestDeliveryActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkFields(address_id:Int) {
+    private fun checkFields(address_id: Int) {
         binding.apply {
             addressFragment.apply {
 
                 if (nameField.text.toString().isEmpty())
                     nameField.error =
                         viewModel.getLangResources().getString(R.string.required_field)
-
                 else if (streetField.text.toString().isEmpty())
                     streetField.error =
                         viewModel.getLangResources().getString(R.string.required_field)
-
                 else if (apartmentField.text.toString().isEmpty())
                     apartmentField.error =
                         viewModel.getLangResources().getString(R.string.required_field)
-
                 else if (cityField.text.toString().isEmpty())
                     cityField.error =
                         viewModel.getLangResources().getString(R.string.required_field)
@@ -386,7 +393,7 @@ class RequestDeliveryActivity : AppCompatActivity() {
                         viewModel.getLangResources().getString(R.string.required_field)
                 else {
 
-                    viewModel.user?.let {user->
+                    viewModel.user?.let { user ->
                         var address = Address(
                             cityField.text.toString(),
                             user.name,
@@ -395,18 +402,18 @@ class RequestDeliveryActivity : AppCompatActivity() {
                             cityField.text.toString(),
                             postalCodeField.text.toString(),
                         )
-                        if (address_id!=0) {
+                        if (address_id != 0) {
                             address = address.copy(id = address_id)
                         }
 
-                        addAddress(address,address_id)
+                        addAddress(address, address_id)
                     }
                 }
             }
         }
     }
 
-    private fun addAddress(address: Address,address_id: Int) {
+    private fun addAddress(address: Address, address_id: Int) {
 
         val addressParams = AddressBodyParameters(
             address
@@ -415,27 +422,34 @@ class RequestDeliveryActivity : AppCompatActivity() {
 
         Common.setUpProgressDialog(this)
 
-        viewModel.addEditAddress(if (address==null) 0 else address_id, addressParams,object :SharedViewModel.ResponseStandard{
-            override fun onSuccess(success: Boolean, resultTitle: String, message: String) {
-                Common.cancelProgressDialog()
-                Toast.makeText(this@RequestDeliveryActivity,message, Toast.LENGTH_LONG).show()
-                Constant.TEMPORAR_ADDRESS = null
-                viewModel.getAddresses(false)
-                manageAddCancelAddress()
-            }
+        viewModel.addEditAddress(
+            if (address == null) 0 else address_id,
+            addressParams,
+            object : SharedViewModel.ResponseStandard {
+                override fun onSuccess(success: Boolean, resultTitle: String, message: String) {
+                    Common.cancelProgressDialog()
+                    Toast.makeText(this@RequestDeliveryActivity, message, Toast.LENGTH_LONG).show()
+                    Constant.TEMPORAR_ADDRESS = null
+                    viewModel.getAddresses(false)
+                    manageAddCancelAddress()
+                }
 
-            override fun onFailure(success: Boolean, resultTitle: String, message: String) {
-                Common.cancelProgressDialog()
-                Constant.TEMPORAR_ADDRESS = null
+                override fun onFailure(success: Boolean, resultTitle: String, message: String) {
+                    Common.cancelProgressDialog()
+                    Constant.TEMPORAR_ADDRESS = null
+                    if (message.equals(getString(R.string.session_expired))) {
+                        viewModel.resetSession()
+                        Common.setUpSessionProgressDialog(this@RequestDeliveryActivity)
+                    } else
 
-                Common.setUpAlert(
-                    this@RequestDeliveryActivity, false,
-                    viewModel.getLangResources().getString(R.string.error),
-                    message,
-                    viewModel.getLangResources().getString(R.string.ok),
-                    null
-                )
-            }
-        })
+                        Common.setUpAlert(
+                            this@RequestDeliveryActivity, false,
+                            viewModel.getLangResources().getString(R.string.error),
+                            message,
+                            viewModel.getLangResources().getString(R.string.ok),
+                            null
+                        )
+                }
+            })
     }
 }

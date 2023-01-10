@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
-    private lateinit var binding : FragmentHomeBinding
+    private lateinit var binding: FragmentHomeBinding
     private lateinit var categoryRecyclerViewAdapter: CategoryRecyclerViewAdapter
     private lateinit var hotDealsRecyclerViewAdapter: HotDealsRecyclerViewAdapter
     private lateinit var bestSellingRecyclerViewAdapter: BestSellingRecyclerViewAdapter
@@ -52,9 +52,10 @@ class HomeFragment : Fragment() {
         return binding.getRoot()
     }
 
-    fun init(){
-        Constant.TEMPORAR_USER = null
-        initToolbar();
+    fun init() {
+        //Constant.TEMPORAR_USER = null
+        viewModel.temporar_user = null
+        initToolbar()
         binding.apply {
             viewAllCategoriesLabel.setOnClickListener {
                 startActivity(Intent(context, CategoryAllActivity::class.java))
@@ -63,10 +64,28 @@ class HomeFragment : Fragment() {
                 startActivity(Intent(context, BrandAllActivity::class.java))
             }
 
+            viewModel.user?.let { user ->
+                if (user.have_items_in_cart)
+                    toolbarHomeInclude.bagIcon.setImageResource(R.drawable.cart_full)
+                else
+                    toolbarHomeInclude.bagIcon.setImageResource(R.drawable.bag)
+            }
         }
     }
 
-    fun initToolbar(){
+    override fun onResume() {
+        super.onResume()
+        binding.apply {
+            viewModel.user?.let { user ->
+                if (user.have_items_in_cart)
+                    toolbarHomeInclude.bagIcon.setImageResource(R.drawable.cart_full)
+                else
+                    toolbarHomeInclude.bagIcon.setImageResource(R.drawable.bag)
+            }
+        }
+    }
+
+    fun initToolbar() {
         binding.apply {
             toolbarHomeInclude.toolbarHome.title = getString(R.string.app_name)
             //Common.changeOverflowMenuIconColor(homeContent.toolbarInclude.toolbarHome, resources.getColor(R.color.color_primary_purple))
@@ -90,18 +109,23 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setUpSearchView(){
+    private fun setUpSearchView() {
         binding.apply {
 
-            searchView.setQueryHint(Html.fromHtml("<font color = #5F5F5F>" + viewModel.getLangResources().getString(R.string.search_hint) + "</font>"));
+            searchView.setQueryHint(
+                Html.fromHtml(
+                    "<font color = #5F5F5F>" + viewModel.getLangResources()
+                        .getString(R.string.search_hint) + "</font>"
+                )
+            );
 
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
                 android.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    query?.let { query->
-                        if (query.trim { it<=' '  }.length>0){
-                            SEARCH_TEXT=query!!
-                            startActivity(Intent(requireActivity(),SearchHomeActivity::class.java))
+                    query?.let { query ->
+                        if (query.trim { it <= ' ' }.length > 0) {
+                            SEARCH_TEXT = query!!
+                            startActivity(Intent(requireActivity(), SearchHomeActivity::class.java))
                         }
                     }
                     return false
@@ -114,7 +138,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun setUpHomeAdapter(){
+    fun setUpHomeAdapter() {
         lifecycleScope.launch {
             viewModel.homeData.collect { response ->
                 when (response) {
@@ -211,7 +235,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun subscribeHomeList(){
+    fun subscribeHomeList() {
         setUpCategoriesAdapter()
         setUpBrandsAdapter()
         setUpHotDealsAdapter()
@@ -219,12 +243,13 @@ class HomeFragment : Fragment() {
         setOffersProductsAdapter()
     }
 
-    fun setUpCategoriesAdapter(){
+    fun setUpCategoriesAdapter() {
         binding.apply {
             categoryRecyclerViewAdapter = CategoryRecyclerViewAdapter(false)
             var categories = ArrayList<Category>()
 
-            recyclerViewCategories.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            recyclerViewCategories.layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             recyclerViewCategories.setItemAnimator(DefaultItemAnimator())
             recyclerViewCategories.setAdapter(categoryRecyclerViewAdapter)
 
@@ -232,24 +257,26 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun setUpBrandsAdapter(){
+    fun setUpBrandsAdapter() {
         binding.apply {
             brandHomeRecyclerViewAdapter = BrandHomeRecyclerViewAdapter()
             val brands = ArrayList<Brand>()
 
-            recyclerViewBrands.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            recyclerViewBrands.layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             recyclerViewBrands.setItemAnimator(DefaultItemAnimator())
             recyclerViewBrands.setAdapter(brandHomeRecyclerViewAdapter)
             brandHomeRecyclerViewAdapter.differ.submitList(brands)
         }
     }
 
-    fun setUpHotDealsAdapter(){
+    fun setUpHotDealsAdapter() {
         binding.apply {
             hotDealsRecyclerViewAdapter = HotDealsRecyclerViewAdapter()
             val hotDealsProducts = ArrayList<Product>()
 
-            recyclerViewHotDeals.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            recyclerViewHotDeals.layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             recyclerViewHotDeals.setItemAnimator(DefaultItemAnimator())
             recyclerViewHotDeals.setAdapter(hotDealsRecyclerViewAdapter)
 
@@ -257,12 +284,13 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun setBestSellingProductsAdapter(){
+    fun setBestSellingProductsAdapter() {
         binding.apply {
             bestSellingRecyclerViewAdapter = BestSellingRecyclerViewAdapter()
             val bestSellingProducts = ArrayList<Product>()
 
-            recyclerViewBestSelling.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            recyclerViewBestSelling.layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             recyclerViewBestSelling.setItemAnimator(DefaultItemAnimator())
             recyclerViewBestSelling.setAdapter(bestSellingRecyclerViewAdapter)
 
@@ -270,12 +298,13 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun setOffersProductsAdapter(){
+    fun setOffersProductsAdapter() {
         binding.apply {
             offersRecyclerViewAdapter = OffersProductsRecyclerViewAdapter()
             val offersProducts = ArrayList<Product>()
 
-            recyclerViewOffers.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            recyclerViewOffers.layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             recyclerViewOffers.setItemAnimator(DefaultItemAnimator())
             recyclerViewOffers.setAdapter(offersRecyclerViewAdapter)
 

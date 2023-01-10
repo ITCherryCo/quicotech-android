@@ -28,7 +28,7 @@ class AddressRecyclerViewAdapter(
     private var defaultSelectedPosition = -1
 
     interface OnAddressSelect {
-        fun onAddressSelect(id:Int)
+        fun onAddressSelect(id: Int)
         fun OnEditAddress(address: Address)
     }
 
@@ -103,8 +103,8 @@ class AddressRecyclerViewAdapter(
                                             message: String
                                         ) {
                                             // later add progress bar to view
-                                            if (withSelection && lastSelectedPosition == absoluteAdapterPosition){
-                                                lastSelectedPosition =-1
+                                            if (withSelection && lastSelectedPosition == absoluteAdapterPosition) {
+                                                lastSelectedPosition = -1
                                                 onAddressSelect!!.onAddressSelect(0)
                                             }
 
@@ -122,14 +122,20 @@ class AddressRecyclerViewAdapter(
                                             message: String
                                         ) {
                                             progressBar.visibility = View.GONE
-                                            Common.setUpAlert(
-                                                itemView.context, false,
-                                                viewModel.getLangResources()
-                                                    .getString(R.string.error),
-                                                message,
-                                                viewModel.getLangResources().getString(R.string.ok),
-                                                null
-                                            )
+                                            if (message.equals(itemView.resources.getString(R.string.session_expired))) {
+                                                viewModel.resetSession()
+                                                Common.setUpSessionProgressDialog(itemView.context)
+
+                                            } else
+                                                Common.setUpAlert(
+                                                    itemView.context, false,
+                                                    viewModel.getLangResources()
+                                                        .getString(R.string.error),
+                                                    message,
+                                                    viewModel.getLangResources()
+                                                        .getString(R.string.ok),
+                                                    null
+                                                )
                                         }
                                     })
                             }

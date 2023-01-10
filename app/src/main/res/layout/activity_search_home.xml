@@ -14,153 +14,92 @@
         layout="@layout/wish_toolbar" />
 
 
-        <SearchView
-            android:id="@+id/searchView"
-            style="@style/AppTheme.Toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginVertical="5dp"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
-            android:layout_toStartOf="@+id/filterImage"
-            android:background="@color/white"
-            android:iconifiedByDefault="false"
-            android:layoutDirection="locale"
-            android:queryHint="@string/search_hint"
-            android:textDirection="locale" />
-
-    <androidx.core.widget.NestedScrollView
+    <SearchView
+        android:id="@+id/searchView"
+        style="@style/AppTheme.Toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="45dp"
+        android:layout_centerVertical="true"
+        android:layout_marginVertical="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/filterImage"
+        android:background="@color/white"
+        android:iconifiedByDefault="false"
+        android:layoutDirection="locale"
+        android:queryHint="@string/search_hint"
+        android:textDirection="locale" />
 
-        <LinearLayout
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/productRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_above="@+id/progressBar"
+            android:paddingVertical="20dp" />
 
+        <include
+            android:id="@+id/items_error_container"
+            layout="@layout/error_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="30dp"
+            android:visibility="gone" />
 
-            <include
-                android:id="@+id/category_error_container"
-                layout="@layout/error_container"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="150dp"
-                android:visibility="gone" />
+                android:layout_height="match_parent">
 
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/categoryShimmer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/totalContainer"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginVertical="32dp"
-                android:layoutDirection="locale"
-                android:scrollbarAlwaysDrawVerticalTrack="true"
-                android:visibility="gone"
-                app:shimmer_auto_start="false"
-                app:shimmer_duration="1000">
-
-                <LinearLayout
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/productShimmer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center"
+                    android:layoutDirection="locale"
+                    android:padding="5dp"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    app:shimmer_auto_start="false"
+                    app:shimmer_duration="1000">
 
-                    <include layout="@layout/shimmer_loading_category_item" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                    <include layout="@layout/shimmer_loading_category_item" />
+                        <include layout="@layout/shimmer_loading_product_item" />
 
-                    <include layout="@layout/shimmer_loading_category_item" />
+                        <include layout="@layout/shimmer_loading_product_item" />
 
-                    <include layout="@layout/shimmer_loading_category_item" />
+                        <include layout="@layout/shimmer_loading_product_item" />
 
-                    <include layout="@layout/shimmer_loading_category_item" />
+                        <include layout="@layout/shimmer_loading_product_item" />
 
-                    <include layout="@layout/shimmer_loading_category_item" />
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+            </RelativeLayout>
 
-                </LinearLayout>
-            </com.facebook.shimmer.ShimmerFrameLayout>
+        </androidx.core.widget.NestedScrollView>
 
-            <!--            <LinearLayout-->
-            <!--                android:id="@+id/categoryContainer"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="10dp"-->
-            <!--                android:layoutDirection="locale"-->
-            <!--                android:orientation="vertical">-->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:theme="@style/progressBarPurple"
+            android:visibility="gone" />
 
-            <!--                <TextView-->
-            <!--                    android:id="@+id/categoriesText"-->
-            <!--                    style="@style/titleStyle"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_marginHorizontal="20dp"-->
-            <!--                    android:layout_marginVertical="10dp"-->
-            <!--                    android:gravity="start"-->
-            <!--                    android:layoutDirection="locale"-->
-            <!--                    android:text="@string/categories"-->
-            <!--                    android:textAllCaps="false"-->
-            <!--                    android:textDirection="locale" />-->
-
-            <!--                <androidx.recyclerview.widget.RecyclerView-->
-            <!--                    android:id="@+id/categoryRecyclerView"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="match_parent"-->
-            <!--                    android:layoutDirection="locale"-->
-            <!--                    android:padding="10dp" />-->
-            <!--            </LinearLayout>-->
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/productRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingVertical="20dp"/>
-
-            <include
-                android:id="@+id/items_error_container"
-                layout="@layout/error_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginVertical="30dp"
-                android:visibility="gone" />
-
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/productShimmer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/totalContainer"
-                android:layout_gravity="center"
-                android:layoutDirection="locale"
-                android:padding="5dp"
-                android:scrollbarAlwaysDrawVerticalTrack="true"
-                android:visibility="gone"
-                app:shimmer_auto_start="false"
-                app:shimmer_duration="1000">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <include layout="@layout/shimmer_loading_product_item" />
-
-                    <include layout="@layout/shimmer_loading_product_item" />
-
-                    <include layout="@layout/shimmer_loading_product_item" />
-
-                    <include layout="@layout/shimmer_loading_product_item" />
-
-                </LinearLayout>
-            </com.facebook.shimmer.ShimmerFrameLayout>
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:theme="@style/progressBarPurple"
-                android:visibility="gone" />
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
 
 </LinearLayout>

@@ -19,7 +19,6 @@ import com.quico.tech.data.Constant.ERROR
 import com.quico.tech.data.Constant.NO_ADDRESSES
 import com.quico.tech.data.Constant.ORDERS
 import com.quico.tech.data.Constant.TRACKING_ON
-import com.quico.tech.data.Constant.VERIFICATION_TYPE
 import com.quico.tech.databinding.ActivityAddressListBinding
 import com.quico.tech.model.Address
 import com.quico.tech.utils.Common
@@ -32,6 +31,7 @@ class AddressListActivity : AppCompatActivity() {
     private lateinit var addressSelectionRecyclerViewAdapter: AddressSelectionRecyclerViewAdapter
     private val viewModel: SharedViewModel by viewModels()
     private val ADDRESS_TAG = "ADDRESSES_RESPONSE"
+    private var selected_address_id = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,17 +41,13 @@ class AddressListActivity : AppCompatActivity() {
 
         binding.apply {
             nextBtn.setOnClickListener {
-              /*  startActivity(
-                    Intent(this@AddressListActivity, VerificationCodeActivity::class.java)
-                        .putExtra(VERIFICATION_TYPE, EMAIL)
-                        .putExtra(VERIFICATION_TYPE, EMAIL)
-                )*/
+                /*  startActivity(
+                      Intent(this@AddressListActivity, VerificationCodeActivity::class.java)
+                          .putExtra(VERIFICATION_TYPE, EMAIL)
+                          .putExtra(VERIFICATION_TYPE, EMAIL)
+                  )*/
 
-                startActivity(
-                    Intent(this@AddressListActivity, CheckoutActivity::class.java)
-                        .putExtra(TRACKING_ON, false)
-                        .putExtra(CHECKOUT_TYPE, ORDERS)
-                )
+              checkSelectedAddressId()
             }
             backArrow.setOnClickListener {
                 onBackPressed()
@@ -63,7 +59,9 @@ class AddressListActivity : AppCompatActivity() {
         setUpAddressesAdapter()
     }
 
-    fun initStatusBar(){
+
+
+    fun initStatusBar() {
         Common.setSystemBarColor(this, R.color.white)
         Common.setSystemBarLight(this)
     }
@@ -114,12 +112,15 @@ class AddressListActivity : AppCompatActivity() {
                                 setUpErrorForm(Constant.NO_ADDRESSES)
                             } else {
 
-                                if (addressesResponse.result.size<3)
-                                   binding.newAddressContainer.setEnabled(true)
-                                else
-                                    binding.newAddressContainer.setEnabled(false)
+                                //if (addressesResponse.result.size < 3)
+                                    binding.newAddressContainer.setEnabled(true)
+                                    binding.nextBtn.setEnabled(true)
+                              //  else
+                                   // binding.newAddressContainer.setEnabled(false)
 
-                                addressSelectionRecyclerViewAdapter.differ.submitList(addressesResponse.result)
+                                addressSelectionRecyclerViewAdapter.differ.submitList(
+                                    addressesResponse.result
+                                )
                                 binding.recyclerView.visibility = View.VISIBLE
                             }
                         }
@@ -130,6 +131,10 @@ class AddressListActivity : AppCompatActivity() {
                         response.message?.let { message ->
                             Log.d(ADDRESS_TAG, "ERROR $message")
                             setUpErrorForm(ERROR)
+                            if (message.equals(getString(R.string.session_expired))) {
+                                viewModel.resetSession()
+                                Common.setUpSessionProgressDialog(this@AddressListActivity)
+                            }
                         }
                     }
 
@@ -147,12 +152,17 @@ class AddressListActivity : AppCompatActivity() {
         }
     }
 
-
     private fun setUpAddressesAdapter() {
         // call the adapter for item list
         binding.apply {
             stopShimmer()
-            addressSelectionRecyclerViewAdapter = AddressSelectionRecyclerViewAdapter()
+            addressSelectionRecyclerViewAdapter = AddressSelectionRecyclerViewAdapter(object :
+                AddressSelectionRecyclerViewAdapter.OnAddressSelect {
+                override fun onAddressSelect(id: Int) {
+                    selected_address_id = id
+                }
+
+            })
             recyclerView.visibility = View.VISIBLE
 
             var addresses = ArrayList<Address>()
@@ -166,7 +176,31 @@ class AddressListActivity : AppCompatActivity() {
             addressSelectionRecyclerViewAdapter.differ.submitList(addresses)
         }
     }
+    private fun checkSelectedAddressId() {
+        if (selected_address_id == 0) {
+            Common.setUpAlert(
+                this@AddressListActivity, false, viewModel.getLangResources().getString(
+                    R.string.select_address
+                ),
+                viewModel.getLangResources().getString(
+                    R.string.select_address_msg
+                ),
+                viewModel.getLangResources().getString(
+                    R.string.ok
+                ), object : Common.ResponseConfirm {
+                    override fun onConfirm() {
 
+                    }
+                }
+            )
+        } else
+
+            startActivity(
+                Intent(this@AddressListActivity, CheckoutActivity::class.java)
+                    .putExtra(TRACKING_ON, false)
+                    .putExtra(CHECKOUT_TYPE, ORDERS)
+            )
+    }
     private fun stopShimmer() {
         binding.apply {
             shimmer.visibility = View.GONE
@@ -183,10 +217,10 @@ class AddressListActivity : AppCompatActivity() {
             recyclerView.visibility = View.GONE
             nextBtn.setEnabled(false)
 
-          /*  lifecycleScope.launch {
-                delay(3000)
-                setUpCartAdapter()
-            }*/
+            /*  lifecycleScope.launch {
+                  delay(3000)
+                  setUpCartAdapter()
+              }*/
         }
     }
 
