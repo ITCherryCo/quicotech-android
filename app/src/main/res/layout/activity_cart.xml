@@ -81,6 +81,11 @@
                 android:paddingHorizontal="25dp"
                 android:paddingVertical="15dp">
 
+                <RelativeLayout
+                    android:id="@+id/priceContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/totalText"
                     android:layout_width="match_parent"
@@ -103,6 +108,21 @@
                     android:textColor="@color/black"
                     android:textSize="22sp"
                     android:textStyle="bold" />
+                </RelativeLayout>
+                <TextView
+                    android:id="@+id/alertMsg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/priceContainer"
+                    android:fontFamily="@font/medium"
+                    android:gravity="center"
+                    android:layoutDirection="locale"
+                    android:visibility="gone"
+                    android:text="@string/only_vip_charge_msg"
+                    android:textColor="@color/red_dark"
+                    android:textDirection="locale"
+                    android:textSize="14sp" />
             </RelativeLayout>
 
             <com.google.android.material.button.MaterialButton

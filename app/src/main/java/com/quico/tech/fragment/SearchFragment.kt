@@ -68,7 +68,7 @@ class SearchFragment : Fragment() {
         setUpProductsAdapter()
         subscribeProducts()
         products.clear()
-
+        addScrollListener()
     }
 
     private fun setUpText() {
@@ -111,19 +111,16 @@ class SearchFragment : Fragment() {
                     } else if (searchText.trim { it <= ' ' }.length > 2) {
                         current_page = 1
                         search_text = searchText.trim()
-
-                        // productRecyclerView.scrollToPosition(0)
-                        lifecycleScope.launch {
-                            //delay(100)
-                            viewModel.searchProducts(
-                                SearchBodyParameters(
-                                    SearchParams(
-                                        current_page,
-                                        search_text
-                                    )
+                         productRecyclerView.scrollToPosition(0)
+                        viewModel.searchProducts(
+                            SearchBodyParameters(
+                                SearchParams(
+                                    current_page,
+                                    search_text
                                 )
                             )
-                        }
+                        )
+
                     }
                     return false
                 }
@@ -139,6 +136,8 @@ class SearchFragment : Fragment() {
                     is Resource.Success -> {
                         binding.apply {
                             stopProductShimmer()
+                            progressBar.visibility = View.GONE
+                            itemsErrorContainer.root.visibility = View.GONE
                         }
 
                         response.data?.let { itemsResponse ->
@@ -146,16 +145,17 @@ class SearchFragment : Fragment() {
                                 setUpErrorForm(Constant.NO_ITEMS)
                             } else {
                                 itemsResponse.result.pagination?.let {
-                                    total_pages = it.page
+                                    total_pages = it.total_pages
                                 }
-                               // if (current_page == 1)
-                                   // products.clear()
+                                if (current_page == 1) {
+                                    products.clear()
+                                }
 
-                                products.clear()
-                                delay(200)
+                                // if current page = 1 we must clear the array else we must add the new products to old array
+                                delay(100)
                                 products.addAll(itemsResponse.result.products)
-                                productRecyclerViewAdapter.differ.submitList(itemsResponse.result.products)
-                               // productRecyclerViewAdapter.differ.submitList(products)
+                                productRecyclerViewAdapter.differ.submitList(products)
+                                productRecyclerViewAdapter.notifyDataSetChanged()
                                 binding.productRecyclerView.visibility = View.VISIBLE
                                 can_scroll = true
                             }
@@ -179,6 +179,11 @@ class SearchFragment : Fragment() {
                         setProductsLoading()
                         Log.d(PRODUCT_TAG, "LOADING")
                     }
+
+                    is Resource.LoadingWithProducts -> {
+                        setLoadingWithProduct()
+                        Log.d(PRODUCT_TAG, "LOADING")
+                    }
                 }
             }
         }
@@ -199,11 +204,13 @@ class SearchFragment : Fragment() {
 
     private fun addScrollListener() {
         binding.apply {
+
             productRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+                    val layoutManager = recyclerView.layoutManager as GridLayoutManager?
                     val lastVisible = layoutManager!!.findLastVisibleItemPosition()
+                    Log.d("LAST_VISIBLE_ITEM",lastVisible.toString())
                     if (lastVisible >= products.size - 2 && current_page < total_pages) {
                         if (can_scroll) {
                             can_scroll = false
@@ -234,11 +241,9 @@ class SearchFragment : Fragment() {
 
     private fun stopProductShimmer() {
         binding.apply {
-            productShimmer.visibility = View.GONE
-            lifecycleScope.launch {
-                delay(1000)
-                productShimmer.stopShimmer()
-            }
+            productShimmer.stopShimmer()
+            nestedScrollView.visibility = View.GONE
+
         }
     }
 
@@ -264,23 +269,21 @@ class SearchFragment : Fragment() {
         binding.apply {
             itemsErrorContainer.root.visibility = View.GONE
             productRecyclerView.visibility = View.GONE
+            nestedScrollView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
-            productShimmer.visibility = View.VISIBLE
             productShimmer.startShimmer()
-            // filterImage.setEnabled(false)
-
-            /*lifecycleScope.launch {
-                delay(1500)
-                setUpItemsAdapter()
-                setUpCategoryAdapter()
-            }*/
         }
     }
 
-//    fun onRefresh() {
-//        setLoading() // later we will remove it because the observable will call it
-//        // viewModel.search(1) // get User id
-//    }
+    fun setLoadingWithProduct() {
+        binding.apply {
+            itemsErrorContainer.root.visibility = View.GONE
+            productRecyclerView.visibility = View.VISIBLE
+            progressBar.visibility = View.VISIBLE
+            nestedScrollView.visibility = View.GONE
+        }
+    }
+
 
     /*  private fun setUpCategoryAdapter() {
           binding.apply {
@@ -464,6 +467,7 @@ class SearchFragment : Fragment() {
         binding.apply {
             stopProductShimmer()
             productRecyclerView.visibility = View.GONE
+            progressBar.visibility = View.GONE
 
             itemsErrorContainer.apply {
                 root.visibility = View.VISIBLE

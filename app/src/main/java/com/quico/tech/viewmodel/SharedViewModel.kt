@@ -872,7 +872,10 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     fun searchProducts(searchBodyParameters: SearchBodyParameters) {
         viewModelScope.launch {
 
-            _search_products.emit(Resource.Loading())
+            if (searchBodyParameters.params.page==1)
+                _search_products.emit(Resource.Loading())
+            else
+                _search_products.emit(Resource.LoadingWithProducts())
 
             if (checkInternet(context)) {
                 try {

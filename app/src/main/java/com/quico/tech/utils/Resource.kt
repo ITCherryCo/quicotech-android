@@ -9,5 +9,6 @@ sealed class Resource<T>(
     class Connection<T>:Resource<T>()
     class Nothing<T>:Resource<T>()
     class Loading<T>:Resource<T>()
+    class LoadingWithProducts<T>:Resource<T>()
 }
 

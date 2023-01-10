@@ -270,5 +270,6 @@ efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifen
     <string name="available_qty_msg">Sorry the available quantity in stock is %1$s</string>
     <string name="subscribe_successfully">You have successfully subscribed to VIP</string>
     <string name="continue_process">Continue</string>
+    <string name="only_vip_charge_msg">Sorry, you must choose at least 1 product to continue the process</string>
 
 </resources>

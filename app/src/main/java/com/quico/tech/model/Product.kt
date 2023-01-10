@@ -88,6 +88,7 @@ data class SearchResult(
 data class Pagination(
     val page: Int,
     val size: Int,
+    val total_pages: Int
 )
 
 data class ProductDetails(

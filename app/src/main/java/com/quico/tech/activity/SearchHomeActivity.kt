@@ -11,6 +11,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
 import com.quico.tech.adapter.ProductRecyclerViewAdapter
 import com.quico.tech.data.Constant
@@ -30,7 +31,10 @@ class SearchHomeActivity : AppCompatActivity() {
     private val viewModel: SharedViewModel by viewModels()
     private lateinit var productRecyclerViewAdapter: ProductRecyclerViewAdapter
     private var search_text = ""
+    private var current_page = 1
+    private var total_pages = 1
     private var products = ArrayList<Product>()
+    private var can_scroll = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,10 +47,11 @@ class SearchHomeActivity : AppCompatActivity() {
         subscribeProducts()
         setUpSearchView()
         products.clear()
+        addScrollListener()
         if (!SEARCH_TEXT.isNullOrEmpty()) {
 
-            binding.searchView.setQuery(SEARCH_TEXT,true)
-           // viewModel.searchProducts(SearchBodyParameters(NameParams(search_text)))
+            binding.searchView.setQuery(SEARCH_TEXT, true)
+            // viewModel.searchProducts(SearchBodyParameters(NameParams(search_text)))
         }
 
     }
@@ -62,7 +67,12 @@ class SearchHomeActivity : AppCompatActivity() {
 
 
             //searchView.queryHint = viewModel.getLangResources().getString(R.string.search_hint)
-            searchView.setQueryHint(Html.fromHtml("<font color = #5F5F5F>" + viewModel.getLangResources().getString(R.string.search_hint) + "</font>"));
+            searchView.setQueryHint(
+                Html.fromHtml(
+                    "<font color = #5F5F5F>" + viewModel.getLangResources()
+                        .getString(R.string.search_hint) + "</font>"
+                )
+            );
 
             searchView.requestFocus()
             searchHomeToolbar.apply {
@@ -76,13 +86,13 @@ class SearchHomeActivity : AppCompatActivity() {
                 }
 
                 cartImage.setOnClickListener {
-                    startActivity(Intent(this@SearchHomeActivity,CartActivity::class.java))
+                    startActivity(Intent(this@SearchHomeActivity, CartActivity::class.java))
                 }
             }
         }
     }
 
-    private fun setUpSearchView(){
+    private fun setUpSearchView() {
         binding.apply {
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
                 android.widget.SearchView.OnQueryTextListener {
@@ -93,26 +103,22 @@ class SearchHomeActivity : AppCompatActivity() {
                 override fun onQueryTextChange(searchText: String): Boolean {
 
                     search_text = searchText
-                    if (searchText.isEmpty()){
+                    if (searchText.isEmpty()) {
                         setUpErrorForm(Constant.EMPTY_SEARCH)
-                        SEARCH_TEXT=""
+                        SEARCH_TEXT = ""
                         products.clear()
-                    }
-                    else if(searchText.trim().length>2) {
-                      //  search_text = searchText.trim()
+                    } else if (searchText.trim().length > 2) {
+                        current_page = 1
                         search_text = searchText.trim()
-
-                        lifecycleScope.launch {
-                          //  delay(100)
-                            viewModel.searchProducts(
-                                SearchBodyParameters(
-                                    SearchParams(
-                                        1,
-                                        search_text
-                                    )
+                        productRecyclerView.scrollToPosition(0)
+                        viewModel.searchProducts(
+                            SearchBodyParameters(
+                                SearchParams(
+                                    current_page,
+                                    search_text
                                 )
                             )
-                        }
+                        )
                     }
                     return false
                 }
@@ -122,7 +128,7 @@ class SearchHomeActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        SEARCH_TEXT=""
+        SEARCH_TEXT = ""
     }
 
     private fun subscribeProducts() {
@@ -132,18 +138,29 @@ class SearchHomeActivity : AppCompatActivity() {
                     is Resource.Success -> {
                         binding.apply {
                             stopShimmer()
+                            progressBar.visibility = View.GONE
+                            itemsErrorContainer.root.visibility = View.GONE
                         }
 
                         response.data?.let { itemsResponse ->
                             if (itemsResponse.result?.products.isNullOrEmpty()) {
-                                 setUpErrorForm(Constant.NO_ITEMS)
+
+                                setUpErrorForm(Constant.NO_ITEMS)
                             } else {
-                                products.clear()
+                                itemsResponse.result.pagination?.let {
+                                    total_pages = it.total_pages
+                                }
+                                if (current_page == 1) {
+                                    products.clear()
+                                }
+
+                                // if current page = 1 we must clear the array else we must add the new products to old array
+                                delay(100)
                                 products.addAll(itemsResponse.result.products)
-                                delay(200)
-                                productRecyclerViewAdapter.differ.submitList(itemsResponse.result.products)
-                             //   productRecyclerViewAdapter.differ.submitList(products)
+                                productRecyclerViewAdapter.differ.submitList(products)
+                                productRecyclerViewAdapter.notifyDataSetChanged()
                                 binding.productRecyclerView.visibility = View.VISIBLE
+                                can_scroll = true
                             }
                         }
                         Log.d(Constant.PRODUCT_TAG, "SUCCESS")
@@ -165,6 +182,11 @@ class SearchHomeActivity : AppCompatActivity() {
                         setLoading()
                         Log.d(Constant.PRODUCT_TAG, "LOADING")
                     }
+
+                    is Resource.LoadingWithProducts -> {
+                        setLoadingWithProduct()
+                        Log.d(Constant.PRODUCT_TAG, "LOADING")
+                    }
                 }
             }
         }
@@ -172,7 +194,8 @@ class SearchHomeActivity : AppCompatActivity() {
 
     fun setUpProductsAdapter() {
         binding.apply {
-            productRecyclerViewAdapter = ProductRecyclerViewAdapter(false,false,false,viewModel,null)
+            productRecyclerViewAdapter =
+                ProductRecyclerViewAdapter(false, false, false, viewModel, null)
 
             productRecyclerView.layoutManager = GridLayoutManager(this@SearchHomeActivity, 2)
             productRecyclerView.setItemAnimator(DefaultItemAnimator())
@@ -181,27 +204,63 @@ class SearchHomeActivity : AppCompatActivity() {
         }
     }
 
+    private fun addScrollListener() {
+        binding.apply {
+
+            productRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    val layoutManager = recyclerView.layoutManager as GridLayoutManager?
+                    val lastVisible = layoutManager!!.findLastVisibleItemPosition()
+                    Log.d("LAST_VISIBLE_ITEM",lastVisible.toString())
+                    if (lastVisible >= products.size - 2 && current_page < total_pages) {
+                        if (can_scroll) {
+                            can_scroll = false
+                            current_page++
+                            viewModel.searchProducts(
+                                SearchBodyParameters(
+                                    SearchParams(
+                                        current_page,
+                                        search_text
+                                    )
+                                )
+                            )
+                            productRecyclerView.smoothScrollToPosition(lastVisible + 1)
+                        }
+                    }
+                }
+            })
+        }
+    }
+
+
     fun setLoading() {
         binding.apply {
             itemsErrorContainer.root.visibility = View.GONE
             productRecyclerView.visibility = View.GONE
+            nestedScrollView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
-            productShimmer.visibility = View.VISIBLE
             productShimmer.startShimmer()
         }
     }
 
     private fun stopShimmer() {
         binding.apply {
-            productShimmer.visibility = View.GONE
-            lifecycleScope.launch {
-                delay(1000)
-                productShimmer.stopShimmer()
-            }
+            productShimmer.stopShimmer()
+            nestedScrollView.visibility = View.GONE
         }
     }
 
-    private fun onRefresh(){
+    fun setLoadingWithProduct() {
+        binding.apply {
+            itemsErrorContainer.root.visibility = View.GONE
+            productRecyclerView.visibility = View.VISIBLE
+            progressBar.visibility = View.VISIBLE
+            nestedScrollView.visibility = View.GONE
+        }
+    }
+
+    private fun onRefresh() {
         setLoading()
         binding.apply {
             lifecycleScope.launch {

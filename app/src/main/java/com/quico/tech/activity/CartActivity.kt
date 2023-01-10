@@ -115,12 +115,26 @@ class CartActivity : AppCompatActivity() {
                                         }
                                     }.sum()
                                 }
-                                var total_unavailable_product = itemsResponse.result.filter { product -> !product.is_vip_charge_product && (!product.in_stock!! || product.quantity!! > product.quantity_available!!) }.count()
+                                var total_unavailable_product =
+                                    itemsResponse.result.filter { product -> !product.is_vip_charge_product && (!product.in_stock!! || product.quantity!! > product.quantity_available!!) }
+                                        .count()
+                                var vip_charge_existence =
+                                    itemsResponse.result.filter { product -> product.is_vip_charge_product }
+                                        .count()
 
-                                if (total_unavailable_product > 0)
-                                    binding.checkoutBtn.setEnabled(false)
-                                else
-                                    binding.checkoutBtn.setEnabled(true)
+                                if (itemsResponse.result.size == 1 && vip_charge_existence == 1){
+                                    binding.apply {
+                                        checkoutBtn.setEnabled(false)
+                                        alertMsg.visibility = View.VISIBLE
+                                        alertMsg.text = viewModel.getLangResources().getString(R.string.only_vip_charge_msg)
+                                    }
+                                }
+                                else {
+                                    if (total_unavailable_product > 0)
+                                        binding.checkoutBtn.setEnabled(false)
+                                    else
+                                        binding.checkoutBtn.setEnabled(true)
+                                }
                                 Log.d("TOTAL_SUM_PRICE", total_price.toString())
                                 setUpCartInfo(total_price)
                                 // binding.checkoutBtn.setEnabled(true)
