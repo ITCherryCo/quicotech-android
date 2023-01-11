@@ -112,18 +112,14 @@ class SearchFragment : Fragment() {
         binding.apply {
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
                 android.widget.SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
-                }
-
-                override fun onQueryTextChange(searchText: String): Boolean {
-                    search_text = searchText
-                    if (searchText.isEmpty()) {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    search_text = query
+                    if (query.isEmpty()) {
                         setUpErrorForm(EMPTY_SEARCH)
-                    } else if (searchText.trim { it <= ' ' }.length > 2) {
+                    } else if (query.trim { it <= ' ' }.length > 2) {
                         current_page = 1
-                        search_text = searchText.trim()
-                         productRecyclerView.scrollToPosition(0)
+                        search_text = query.trim()
+                        productRecyclerView.scrollToPosition(0)
                         viewModel.searchProducts(
                             SearchBodyParameters(
                                 SearchParams(
@@ -134,6 +130,11 @@ class SearchFragment : Fragment() {
                         )
 
                     }
+                    return false
+                }
+
+                override fun onQueryTextChange(searchText: String): Boolean {
+
                     return false
                 }
             })

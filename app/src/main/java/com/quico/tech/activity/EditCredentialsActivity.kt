@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 class EditCredentialsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditCredentialsBinding
     private val viewModel: SharedViewModel by viewModels()
-    private var edit_profile_type: String = Constant.ORDERS
+    private var edit_profile_type: String = ""
     private var showPass = false
     private var showConfirmPass = false
 

@@ -115,8 +115,9 @@ class ProductActivity : AppCompatActivity() {
                     is Resource.Success -> {
                         response.data?.let { servicesResponse ->
                             binding.apply {
+                                stopShimmer()
                                 swipeRefreshLayout.setRefreshing(false)
-                                swipeRefreshLayout.setEnabled(false)
+                                swipeRefreshLayout.setEnabled(true)
                                 mainContainer.visibility = View.VISIBLE
                             }
 
@@ -512,11 +513,20 @@ class ProductActivity : AppCompatActivity() {
             })
     }
 
+    private fun stopShimmer() {
+        binding.apply {
+            shimmer.visibility = View.GONE
+            shimmer.stopShimmer()
+        }
+    }
+
 
     fun setLoading() {
         binding.apply {
             swipeRefreshLayout.setRefreshing(true)
             mainContainer.visibility = View.GONE
+            shimmer.visibility = View.VISIBLE
+            shimmer.startShimmer()
             productErrorContainer.root.visibility = View.GONE
         }
     }
@@ -532,6 +542,7 @@ class ProductActivity : AppCompatActivity() {
 
     fun setUpErrorForm(error_type: String) {
         binding.apply {
+            stopShimmer()
             mainContainer.visibility = View.GONE
             swipeRefreshLayout.setRefreshing(false)
             swipeRefreshLayout.setEnabled(true)

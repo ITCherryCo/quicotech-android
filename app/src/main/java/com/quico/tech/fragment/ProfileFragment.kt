@@ -84,14 +84,16 @@ class ProfileFragment : Fragment() {
             deliveryOrderImage.setOnClickListener {
                 startActivity(
                     Intent(activity, OrderListActivity::class.java)
-                        .putExtra(Constant.ORDERS_TYPE, Constant.ONGOING_ORDERS)
+                       // .putExtra(Constant.ORDERS_TYPE, Constant.ONGOING_ORDERS)
+                        .putExtra(Constant.ORDERS_TYPE, Constant.DELIVERY_ORDERS)
                 )
             }
 
             serviceOrderImage.setOnClickListener {
                 startActivity(
                     Intent(activity, OrderListActivity::class.java)
-                        .putExtra(Constant.ORDERS_TYPE, Constant.DONE_ORDERS)
+                        //.putExtra(Constant.ORDERS_TYPE, Constant.DONE_ORDERS)
+                        .putExtra(Constant.ORDERS_TYPE, Constant.SERVICE_ORDERS)
                 )
             }
 

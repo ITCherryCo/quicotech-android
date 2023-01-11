@@ -97,7 +97,7 @@
                 android:layout_toEndOf="@+id/profileImage"
                 android:fontFamily="@font/medium"
                 android:layoutDirection="locale"
-                android:text="+961 70707070"
+                android:text=""
                 android:textColor="@color/gray_dark"
                 android:textDirection="locale"
                 android:textSize="14dp" />

@@ -28,6 +28,21 @@
                 android:layout_height="match_parent"
                 android:visibility="gone" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:shimmer_auto_start="false"
+                android:visibility="gone"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:layoutDirection="locale"
+                app:shimmer_duration="1000">
+
+                <include layout="@layout/shimmer_loading_product_details" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <RelativeLayout
                 android:id="@+id/mainContainer"
                 android:layout_width="match_parent"

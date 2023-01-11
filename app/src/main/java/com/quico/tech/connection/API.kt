@@ -74,11 +74,11 @@ interface API {
     @GET("getSession")
     suspend fun getSession(): Response<SessionResponse>
 
-    @GET("getOngoingOrders")
-    suspend fun getOngoingOrders(@Query("customer_id") customer_id: Int?): Response<OrderResponse>
+    @GET("getDeliveryOrders")
+    suspend fun getDeliveryOrders(): Response<OrderResponse>
 
-    @GET("getDoneOrders")
-    suspend fun getDoneOrders(@Query("customer_id") customer_id: Int?): Response<OrderResponse>
+    @GET("getServiceOrders")
+    suspend fun getServiceOrders(): Response<OrderResponse>
 
     @POST("addToCart")
     //@Headers("Content-Type: application/json")

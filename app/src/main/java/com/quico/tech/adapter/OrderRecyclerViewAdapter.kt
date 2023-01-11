@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -11,19 +12,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.quico.tech.R
 import com.quico.tech.activity.CheckoutActivity
-import com.quico.tech.data.Constant.CANCELED
-import com.quico.tech.data.Constant.CHECKOUT_TYPE
-import com.quico.tech.data.Constant.DELIVERED
-import com.quico.tech.data.Constant.ORDERS
-import com.quico.tech.data.Constant.SERVICE
+import com.quico.tech.data.Constant.ORDER_TYPE
+import com.quico.tech.data.Constant.DELIVERY_ORDERS
+import com.quico.tech.data.Constant.ORDER_ID
+import com.quico.tech.data.Constant.SERVICE_ORDERS
 import com.quico.tech.data.Constant.TRACKING_ON
-import com.quico.tech.data.Constant.TRACK_ORDER
 import com.quico.tech.databinding.OrderItemListBinding
-import com.quico.tech.model.Address
 import com.quico.tech.model.Order
-import com.quico.tech.model.OrderStatus
+import com.quico.tech.viewmodel.SharedViewModel
 
-class OrderRecyclerViewAdapter : RecyclerView.Adapter<OrderRecyclerViewAdapter.ItemViewHolder>() {
+class OrderRecyclerViewAdapter(val is_service: Boolean, val viewModel: SharedViewModel) :
+    RecyclerView.Adapter<OrderRecyclerViewAdapter.ItemViewHolder>() {
     inner class ItemViewHolder(private var binding: OrderItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -33,11 +32,35 @@ class OrderRecyclerViewAdapter : RecyclerView.Adapter<OrderRecyclerViewAdapter.I
             binding.apply {
 
                 //orderNumber.text = itemView.resources.getString(R.string.order_number,"12")
-                orderNumber.text = itemView.resources.getString(R.string.order_number,"123")
-                total.text = "$100"
+                orderNumber.text = itemView.resources.getString(R.string.order_number, order.order_nb)
+                if (is_service)
+                    total.visibility = View.GONE
+                else {
+                    total.visibility = View.VISIBLE
+                    total.text = "$ ${order.total_price}"
+                }
 
 
-                when (absoluteAdapterPosition) {
+                container.setOnClickListener {
+                    itemView.context.startActivity(
+                        Intent(itemView.context, CheckoutActivity::class.java)
+                            //.putExtra(TRACKING_ON, if (order.status.equals(DELIVERED)||order.status.equals(CANCELED))true else false)
+                            .putExtra(TRACKING_ON,true)
+                            .putExtra(ORDER_TYPE, if (is_service) SERVICE_ORDERS else DELIVERY_ORDERS)
+                            .putExtra(ORDER_ID, order.id)
+                    )
+                }
+
+               // orderStatus.text = itemView.resources.getString(R.string.track_order)
+               // orderStatus.text = OrderStatus.getOrderStatus(viewModel.getLangResources(),order.status)
+                /*orderStatus.backgroundTintList = itemView.resources.getColorStateList(
+                    OrderStatus.getOrderStatusColor(
+                        itemView.resources,
+                        order.status
+                    )
+                )*/
+
+               /* when (absoluteAdapterPosition) {
                     0 -> {
                         orderStatus.text = itemView.resources.getString(R.string.track_order)
                         orderStatus.backgroundTintList = itemView.resources.getColorStateList(
@@ -46,66 +69,14 @@ class OrderRecyclerViewAdapter : RecyclerView.Adapter<OrderRecyclerViewAdapter.I
                                 TRACK_ORDER
                             )
                         )
-                        container.setOnClickListener {itemView.context.startActivity(
-                            Intent(itemView.context, CheckoutActivity::class.java)
-                                .putExtra(TRACKING_ON, true)
-                                .putExtra(CHECKOUT_TYPE, ORDERS)
-                        )
-                        }
-                    }
-
-                    1 -> {
-                        orderStatus.text = itemView.resources.getString(R.string.track_order)
-                        orderStatus.backgroundTintList = itemView.resources.getColorStateList(
-                            OrderStatus.getOrderStatusColor(
-                                itemView.resources,
-                                TRACK_ORDER
-                            )
-                        )
-                        container.setOnClickListener {itemView.context.startActivity(
-                            Intent(itemView.context, CheckoutActivity::class.java)
-                                .putExtra(TRACKING_ON, true)
-                                .putExtra(CHECKOUT_TYPE, ORDERS)
-                        )
-                        }
-                    }
-                    2 -> {
-                        orderStatus.text = itemView.resources.getString(R.string.canceled)
-
-                        orderStatus.backgroundTintList = itemView.resources.getColorStateList(
-                            OrderStatus.getOrderStatusColor(
-                                itemView.resources,
-                                CANCELED
-                            )
-                        )
-
                         container.setOnClickListener {
                             itemView.context.startActivity(
                                 Intent(itemView.context, CheckoutActivity::class.java)
                                     .putExtra(TRACKING_ON, true)
-                                    .putExtra(CHECKOUT_TYPE, SERVICE)
+                                    .putExtra(CHECKOUT_TYPE, DELIVERY_ORDERS)
                             )
                         }
-                    }
-                    3 -> {
-                        orderStatus.text = itemView.resources.getString(R.string.delivered)
-                        orderStatus.backgroundTintList = itemView.resources.getColorStateList(
-                            OrderStatus.getOrderStatusColor(
-                                itemView.resources,
-                                DELIVERED
-                            )
-                        )
-
-                        container.setOnClickListener{
-                            itemView.context.startActivity(
-                                Intent(itemView.context, CheckoutActivity::class.java)
-                                    .putExtra(TRACKING_ON, false)
-                                    .putExtra(CHECKOUT_TYPE, ORDERS)
-                            )
-                        }
-                    }
-                }
-
+                    }*/
 
             }
         }

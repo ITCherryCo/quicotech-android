@@ -19,7 +19,6 @@ import com.quico.tech.data.Constant.EN
 import com.quico.tech.data.Constant.ERROR
 import com.quico.tech.data.Constant.EXCEPTION
 import com.quico.tech.data.Constant.HOME_TAG
-import com.quico.tech.data.Constant.ONGOING_ORDERS
 import com.quico.tech.data.Constant.PRODUCT_TAG
 import com.quico.tech.data.Constant.SERVICE_TAG
 import com.quico.tech.data.Constant.SUCCESS
@@ -53,8 +52,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         MutableStateFlow(Resource.Nothing())
     val addresses: StateFlow<Resource<AddressResponse>> get() = _addresses
 
-    private val _orders_filter_type: MutableStateFlow<String> = MutableStateFlow(ALL)
-    val orders_filter_type: StateFlow<String> get() = _orders_filter_type
+   // private val _orders_filter_type: MutableStateFlow<String> = MutableStateFlow(ALL)
+   // val orders_filter_type: StateFlow<String> get() = _orders_filter_type
 
     private val _orders: MutableStateFlow<Resource<OrderResponse>> =
         MutableStateFlow(Resource.Nothing())
@@ -111,6 +110,11 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private val _wishlist: MutableStateFlow<Resource<ProductsResponse>> =
         MutableStateFlow(Resource.Nothing())
     val wishlist: StateFlow<Resource<ProductsResponse>> get() = _wishlist
+
+
+    private val _order: MutableStateFlow<Resource<OrderResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val order: StateFlow<Resource<OrderResponse>> get() = _order
 
     init {
         context = getApplication<Application>().applicationContext
@@ -209,7 +213,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     fun updateOrderFilterType(order_filter: String) {
         viewModelScope.launch {
-            _orders_filter_type.emit(order_filter)
+           // _orders_filter_type.emit(order_filter)
         }
     }
 
@@ -944,16 +948,40 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun getOrders(customer_id: Int, orders_type: String) {
+    fun getOrders(service: Boolean) {
         viewModelScope.launch {
             _orders.emit(Resource.Loading())
             if (checkInternet(context)) {
                 try {
                     var response: Response<OrderResponse>? = null
-                    response = if (orders_type.equals(ONGOING_ORDERS)) repository.getOngoingOrders(
-                        customer_id
-                    ) else
-                        repository.getOngoingOrders(customer_id)
+                    response = if (service) repository.getServiceOrders() else
+                        repository.getDeliveryOrders()
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            _orders.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        _orders.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d("PROJECT_RESPONSE", "EXCEPTION  " + e.message.toString())
+                    _orders.emit(Resource.Error(ERROR))
+                }
+            } else {
+                _orders.emit(Resource.Connection())
+            }
+        }
+    }
+
+    fun getOrderById(service: Boolean) {
+        viewModelScope.launch {
+            _orders.emit(Resource.Loading())
+            if (checkInternet(context)) {
+                try {
+                    var response: Response<OrderResponse>? = null
+                    response = if (service) repository.getServiceOrders() else
+                        repository.getDeliveryOrders()
 
                     if (response.isSuccessful) {
                         response.body()?.let { resultResponse ->

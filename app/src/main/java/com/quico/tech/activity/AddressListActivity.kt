@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.quico.tech.R
 import com.quico.tech.adapter.AddressSelectionRecyclerViewAdapter
 import com.quico.tech.data.Constant
-import com.quico.tech.data.Constant.CHECKOUT_TYPE
+import com.quico.tech.data.Constant.ORDER_TYPE
 import com.quico.tech.data.Constant.CONNECTION
-import com.quico.tech.data.Constant.EMAIL
+import com.quico.tech.data.Constant.CREATE_DELIVERY_ORDER
 import com.quico.tech.data.Constant.ERROR
 import com.quico.tech.data.Constant.NO_ADDRESSES
-import com.quico.tech.data.Constant.ORDERS
 import com.quico.tech.data.Constant.TRACKING_ON
 import com.quico.tech.databinding.ActivityAddressListBinding
 import com.quico.tech.model.Address
@@ -198,7 +197,7 @@ class AddressListActivity : AppCompatActivity() {
             startActivity(
                 Intent(this@AddressListActivity, CheckoutActivity::class.java)
                     .putExtra(TRACKING_ON, false)
-                    .putExtra(CHECKOUT_TYPE, ORDERS)
+                    .putExtra(ORDER_TYPE, CREATE_DELIVERY_ORDER)
             )
     }
     private fun stopShimmer() {

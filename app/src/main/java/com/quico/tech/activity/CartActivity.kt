@@ -185,9 +185,7 @@ class CartActivity : AppCompatActivity() {
         // call the adapter for item list
         binding.apply {
             cartRecyclerViewAdapter = CartRecyclerViewAdapter(viewModel)
-            stopShimmer()
-            recyclerView.visibility = View.VISIBLE
-            checkoutBtn.setEnabled(true)
+
 
             var items = ArrayList<Product>()
 

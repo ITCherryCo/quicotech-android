@@ -3,7 +3,6 @@ package com.quico.tech.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -12,9 +11,10 @@ import com.quico.tech.R
 import com.quico.tech.adapter.OrderSummaryRecyclerViewAdapter
 import com.quico.tech.adapter.ServicePhotoRecyclerViewAdapter
 import com.quico.tech.data.Constant
-import com.quico.tech.data.Constant.ORDERS
+import com.quico.tech.data.Constant.DELIVERY_ORDERS
 import com.quico.tech.data.Constant.PRODUCT_LIST
 import com.quico.tech.data.Constant.SERVICE
+import com.quico.tech.data.Constant.SERVICE_ORDERS
 import com.quico.tech.data.Constant.TEMPORAR_ADDRESS
 import com.quico.tech.databinding.ActivityCheckoutBinding
 import com.quico.tech.model.*
@@ -28,9 +28,8 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var servicePhotoRecyclerViewAdapter: ServicePhotoRecyclerViewAdapter
     private var trackOrder: Boolean? = false
     private val viewModel: SharedViewModel by viewModels()
-    private var checkout_type: String = ORDERS
-    private var delivery_order_id: Int? = null
-    private var service_order_id: Int? = null
+    private var order_type: String = DELIVERY_ORDERS
+    private var order_id: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +38,8 @@ class CheckoutActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         trackOrder = intent.extras?.getBoolean(Constant.TRACKING_ON)
-        checkout_type = intent.extras?.getString(Constant.CHECKOUT_TYPE)!!
+        order_type = intent.extras?.getString(Constant.ORDER_TYPE)!!
+        order_id = intent.extras?.getInt(Constant.ORDER_ID)
 
         setUpText()
         initStatusBar()
@@ -51,8 +51,14 @@ class CheckoutActivity : AppCompatActivity() {
             }
         }
 
-        if (delivery_order_id == null && service_order_id == null) {
+        if (order_id == null ) {
+            // that means that we have to create delivery order
             setUpPageInfo()
+        }
+        else{
+            if (order_type.equals(SERVICE_ORDERS))
+                //
+                if (order_type.equals(SERVICE_ORDERS))
         }
     }
 
@@ -60,6 +66,10 @@ class CheckoutActivity : AppCompatActivity() {
     fun initStatusBar() {
         Common.setSystemBarColor(this, R.color.white)
         Common.setSystemBarLight(this)
+    }
+
+    private fun checkOrderType(){
+
     }
 
     private fun manageTracking() {
@@ -94,8 +104,8 @@ class CheckoutActivity : AppCompatActivity() {
                 }
             }
 
-            when (checkout_type) {
-                ORDERS -> {
+            when (order_type) {
+                DELIVERY_ORDERS -> {
                     setUpItemsAdapter()
                     if (trackOrder == false) {
                         footerContainer.visibility = View.VISIBLE

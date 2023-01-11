@@ -27,8 +27,8 @@ class Repository() {
 
     suspend fun getProduct(product_id: Int) = RetrofitInstance.api.getProduct(product_id)
 
-    suspend fun getOngoingOrders(customer_id: Int) = RetrofitInstance.api.getOngoingOrders(customer_id)
-    suspend fun getDoneOrders(customer_id: Int) = RetrofitInstance.api.getDoneOrders(customer_id)
+    suspend fun getDeliveryOrders() = RetrofitInstance.api.getDeliveryOrders()
+    suspend fun getServiceOrders() = RetrofitInstance.api.getServiceOrders()
 
     suspend fun addToCart( productBody: ProductBodyParameters) = RetrofitInstance.api.addToCart(productBody)
     suspend fun updateCartQuantity( productBody: ProductBodyParameters) = RetrofitInstance.api.updateCartQuantity(productBody)

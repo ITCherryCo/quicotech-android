@@ -273,5 +273,8 @@ efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifen
     <string name="only_vip_charge_msg">Sorry, you must choose at least 1 product to continue the process</string>
     <string name="order_created_successfully">Order is created successfully</string>
     <string name="sure_to_checkout">If you want to proceed to checkout please press yes.</string>
+    <string name="order_received">Order Received</string>
+    <string name="packaging">Packaging</string>
+    <string name="on_the_way">On The Way</string>
 
 </resources>

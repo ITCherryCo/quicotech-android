@@ -2,8 +2,6 @@ package com.quico.tech.data
 
 import com.quico.tech.model.Address
 import com.quico.tech.model.Product
-import com.quico.tech.model.RegisterParams
-import com.quico.tech.model.User
 
 object Constant {
     var WEB_BASE_URL = "http://13.39.86.18:8069/api/"
@@ -14,22 +12,25 @@ object Constant {
  //   var OPERATION_TYPE = "operation_type"       // register new account or change phone number
     val EMAIL_LINK = "email_link"       // register new account or change phone number
     val ORDERS_TAG = "ORDERS_RESPONSE"
-    val ORDERS_TYPE= "orders_type"
-    val ONGOING_ORDERS= "ongoing_orders"
-    val DONE_ORDERS= "done_orders"
-    val DELIVERED= "Delivered"
     val TRACK_ORDER= "Track Order"
-    val CANCELED= "Canceled"
     val ALL= "all"
-    val ORDERS= "orders"
-    val SERVICES= "services"
+    val ORDER_RECEIVED= "Order Received"
+    val PACKAGING= "Packaging"
+    val ON_THE_WAY= "On The Way"
+    val DELIVERED= "Delivered"
+    val CANCELED= "Canceled"
+
+    val DELIVERY_ORDERS= "delivery_orders"
+    val SERVICE_ORDERS= "services_orders"
+    val CREATE_DELIVERY_ORDER= "created_delivery_order"
+    val ORDER_ID= "order_id"
     val CONNECTION= "connection"
     val NO_ITEM= "no_item"
     val EN= "en"
     val AR= "ar"
     val DOOR_TO_DOOR= "door_to_door"
     val DROP_CENTER= "drop_center"
-    var CHECKOUT_TYPE= "checkout_type"
+    var ORDER_TYPE= "order_type"
     var SERVICE= "service"
     var TRACKING_ON= "tracking_on"
     var PROFILE_EDIT_TYPE= "profile_edit_type"
