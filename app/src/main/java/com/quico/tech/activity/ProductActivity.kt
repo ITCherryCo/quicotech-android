@@ -69,11 +69,17 @@ class ProductActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         binding.apply {
+            toolbarProductDetails.starImage.visibility = View.VISIBLE
             viewModel.user?.let { user ->
                 if (user.have_items_in_cart)
                     toolbarProductDetails.cartImage.setImageResource(R.drawable.cart_full)
                 else
                     toolbarProductDetails.cartImage.setImageResource(R.drawable.bag)
+
+                if (user.is_vip)
+                    toolbarProductDetails.starImage.setImageResource(R.drawable.filled_star)
+                else
+                    toolbarProductDetails.starImage.setImageResource(R.drawable.unvip_star_icon)
             }
         }
     }

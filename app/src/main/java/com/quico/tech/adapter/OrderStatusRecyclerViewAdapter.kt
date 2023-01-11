@@ -23,7 +23,6 @@ class OrderStatusRecyclerViewAdapter(val onOrderStatusClick: OnOrderStatusClick)
         fun onOrderStatusClick(status: String)
     }
 
-
     inner class ItemViewHolder(private var binding: OrderStatusItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -39,8 +38,7 @@ class OrderStatusRecyclerViewAdapter(val onOrderStatusClick: OnOrderStatusClick)
 
                 if (lastSelectedPosition == absoluteAdapterPosition) {
                     setSelectedForm()
-                    onOrderStatusClick.onOrderStatusClick("ALL")
-                   // onOrderStatusClick.onOrderStatusClick(status[0])
+                    onOrderStatusClick.onOrderStatusClick(status[0])
                 }
                 if (lastSelectedPosition != absoluteAdapterPosition) {
                     setUnselectedForm()

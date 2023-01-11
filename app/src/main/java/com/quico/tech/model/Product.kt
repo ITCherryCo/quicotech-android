@@ -13,6 +13,7 @@ class Product(
     val name: String,
     val new_price: Double,
     val regular_price: Double,
+    val subtotal: Double,
     val quantity: Int?,
     val quantity_available: Int?,
     val in_stock: Boolean?,
@@ -34,6 +35,7 @@ class Product(
         name,
         new_price,
         0.0,
+        0.0,
         1,
         1,
         true,
@@ -44,7 +46,7 @@ class Product(
         id:Int,
         name: String,
         quantity: Int,
-        new_price: Double
+        subtotal: Double
     ) : this(
         "",
         "",
@@ -55,8 +57,9 @@ class Product(
         false,
         false,
         name,
-        new_price,
         0.0,
+        0.0,
+        subtotal,
         quantity,
         1,
         true,

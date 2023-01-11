@@ -52,8 +52,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         MutableStateFlow(Resource.Nothing())
     val addresses: StateFlow<Resource<AddressResponse>> get() = _addresses
 
-   // private val _orders_filter_type: MutableStateFlow<String> = MutableStateFlow(ALL)
-   // val orders_filter_type: StateFlow<String> get() = _orders_filter_type
+    // private val _orders_filter_type: MutableStateFlow<String> = MutableStateFlow(ALL)
+    // val orders_filter_type: StateFlow<String> get() = _orders_filter_type
 
     private val _orders: MutableStateFlow<Resource<OrderResponse>> =
         MutableStateFlow(Resource.Nothing())
@@ -81,7 +81,6 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     private val _send_otp: MutableStateFlow<String> = MutableStateFlow("")
     val send_otp: StateFlow<String> get() = _send_otp
-
 
     private val _product: MutableStateFlow<Resource<ProductResponse>> =
         MutableStateFlow(Resource.Nothing())
@@ -112,9 +111,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     val wishlist: StateFlow<Resource<ProductsResponse>> get() = _wishlist
 
 
-    private val _order: MutableStateFlow<Resource<OrderResponse>> =
-        MutableStateFlow(Resource.Nothing())
-    val order: StateFlow<Resource<OrderResponse>> get() = _order
+    private val _order: MutableStateFlow<Resource<SingleOrderResponse>> = MutableStateFlow(Resource.Nothing())
+    val order: StateFlow<Resource<SingleOrderResponse>> get() = _order
 
     init {
         context = getApplication<Application>().applicationContext
@@ -180,7 +178,6 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     var temporar_user: RegisterParams?
         get() = prefManager.temporar_user
-
         set(temporar_user) {
             prefManager.temporar_user = temporar_user
         }
@@ -206,14 +203,13 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     var requested_serive_order: ServiceOrder?
         get() = prefManager.requested_serive_order
-
         set(serive_order) {
             prefManager.requested_serive_order = serive_order
         }
 
     fun updateOrderFilterType(order_filter: String) {
         viewModelScope.launch {
-           // _orders_filter_type.emit(order_filter)
+            // _orders_filter_type.emit(order_filter)
         }
     }
 
@@ -261,10 +257,10 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun resetSession(){
-        user=null
-        prefManager.session_id=null
-        prefManager.cookies=null
+    fun resetSession() {
+        user = null
+        prefManager.session_id = null
+        prefManager.cookies = null
     }
 
     fun login(params: RegisterBodyParameters, responseStandard: ResponseStandard?) {
@@ -382,39 +378,39 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                        val response = repository.logout()
+                    val response = repository.logout()
 
 
-                        if (response.isSuccessful) {
-                            if (response.body()?.result?.status != null) {
-                                Log.d(USER_LOGOUT_TAG, "$SUCCESS")
-                                user = null
-                                prefManager.cookies = null
-                                responseStandard?.onSuccess(
-                                    true,
-                                    SUCCESS,
-                                    getLangResources().getString(R.string.logged_out)
-                                )
-                            } else {
-                                Log.d(USER_LOGOUT_TAG, "FAILURE  ${response.body()?.error}")
-                                //responseStandard?.onFailure(false, ERROR, getLangResources().getString(R.string.error_msg))
-                                responseStandard?.onFailure(
-                                    false,
-                                    ERROR,
-                                    "${response.body()?.error}"
-                                )
-                            }
-                        } else {
-                            Log.d(
-                                USER_LOGOUT_TAG,
-                                "$ERROR ${response.body()}  ${response.body()?.error}"
+                    if (response.isSuccessful) {
+                        if (response.body()?.result?.status != null) {
+                            Log.d(USER_LOGOUT_TAG, "$SUCCESS")
+                            user = null
+                            prefManager.cookies = null
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.logged_out)
                             )
-                            // responseStandard?.onFailure(false, ERROR, getLangResources().getString(R.string.error_msg))
+                        } else {
+                            Log.d(USER_LOGOUT_TAG, "FAILURE  ${response.body()?.error}")
+                            //responseStandard?.onFailure(false, ERROR, getLangResources().getString(R.string.error_msg))
                             responseStandard?.onFailure(
                                 false,
-                                "FAILURE",
+                                ERROR,
                                 "${response.body()?.error}"
                             )
+                        }
+                    } else {
+                        Log.d(
+                            USER_LOGOUT_TAG,
+                            "$ERROR ${response.body()}  ${response.body()?.error}"
+                        )
+                        // responseStandard?.onFailure(false, ERROR, getLangResources().getString(R.string.error_msg))
+                        responseStandard?.onFailure(
+                            false,
+                            "FAILURE",
+                            "${response.body()?.error}"
+                        )
 
                     }
                 } catch (e: Exception) {
@@ -435,43 +431,44 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                        val response =
-                            //repository.updateUserInfo(session_id, params)
-                            repository.updateUserInfo(params)
-                        if (response.isSuccessful) {
-                            if (response.body()?.result?.status != null) {
-                                Log.d(USER_UPDATE_TAG, "Success ${response.body()?.result?.status}")
-                                user = user!!.copy(name = params.params.name!!)
-                                // later when receiving dob with user change it
-                                if (!params.params.image.isNullOrEmpty())
-                                    user = user!!.copy(image = "data:image/jpeg;base64,${params.params.image!!}")
+                    val response =
+                        //repository.updateUserInfo(session_id, params)
+                        repository.updateUserInfo(params)
+                    if (response.isSuccessful) {
+                        if (response.body()?.result?.status != null) {
+                            Log.d(USER_UPDATE_TAG, "Success ${response.body()?.result?.status}")
+                            user = user!!.copy(name = params.params.name!!)
+                            // later when receiving dob with user change it
+                            if (!params.params.image.isNullOrEmpty())
+                                user =
+                                    user!!.copy(image = "data:image/jpeg;base64,${params.params.image!!}")
 
-                                if (!params.params.dob.isNullOrEmpty())
-                                    user = user!!.copy(dob = "${params.params.dob!!}")
+                            if (!params.params.dob.isNullOrEmpty())
+                                user = user!!.copy(dob = "${params.params.dob!!}")
 
-                                responseStandard?.onSuccess(
-                                    true,
-                                    SUCCESS,
-                                    getLangResources().getString(R.string.info_updated_successfully)
-                                )
-                            } else {
-                                Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.error}")
-                                //  responseStandard?.onFailure(false, ERROR, getLangResources().getString(R.string.error_msg))
-                                responseStandard?.onFailure(
-                                    false,
-                                    ERROR,
-                                    "${response.body()?.error}"
-                                )
-                            }
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.info_updated_successfully)
+                            )
                         } else {
-                            Log.d(USER_UPDATE_TAG, "FAILUER ${response.body()?.error}")
-                            // responseStandard?.onFailure(false, ERROR, getLangResources().getString(R.string.error_msg))
+                            Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.error}")
+                            //  responseStandard?.onFailure(false, ERROR, getLangResources().getString(R.string.error_msg))
                             responseStandard?.onFailure(
                                 false,
-                                "FAILURE",
+                                ERROR,
                                 "${response.body()?.error}"
                             )
                         }
+                    } else {
+                        Log.d(USER_UPDATE_TAG, "FAILUER ${response.body()?.error}")
+                        // responseStandard?.onFailure(false, ERROR, getLangResources().getString(R.string.error_msg))
+                        responseStandard?.onFailure(
+                            false,
+                            "FAILURE",
+                            "${response.body()?.error}"
+                        )
+                    }
 
                 } catch (e: Exception) {
                     Log.d(USER_UPDATE_TAG, "EXCEPTION ${e.message.toString()}")
@@ -491,41 +488,41 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                        val response = repository.updateEmail(params) //_subcategories
-                        if (response.isSuccessful) {
-                            if (response.body()?.result?.status != null) {
-                                Log.d(USER_LOGIN_TAG, "Success")
-                                responseStandard?.onSuccess(
-                                    true,
-                                    SUCCESS,
-                                    getLangResources().getString(R.string.info_updated_successfully)
-                                )
-                            } else {
-                                Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.error}")
-                                responseStandard?.onFailure(
-                                    false,
-                                    ERROR,
-                                   // getLangResources().getString(R.string.error_msg)
-                                   "${response.body()?.error}"
-                                )
-                            }
-                            //  getUser(session_id)
+                    val response = repository.updateEmail(params) //_subcategories
+                    if (response.isSuccessful) {
+                        if (response.body()?.result?.status != null) {
+                            Log.d(USER_LOGIN_TAG, "Success")
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.info_updated_successfully)
+                            )
                         } else {
-                            Log.d(USER_UPDATE_TAG, "FAILUER ${response.body()?.error}")
+                            Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.error}")
                             responseStandard?.onFailure(
                                 false,
                                 ERROR,
-                               // getLangResources().getString(R.string.error_msg)
+                                // getLangResources().getString(R.string.error_msg)
                                 "${response.body()?.error}"
                             )
                         }
+                        //  getUser(session_id)
+                    } else {
+                        Log.d(USER_UPDATE_TAG, "FAILUER ${response.body()?.error}")
+                        responseStandard?.onFailure(
+                            false,
+                            ERROR,
+                            // getLangResources().getString(R.string.error_msg)
+                            "${response.body()?.error}"
+                        )
+                    }
 
                 } catch (e: Exception) {
                     Log.d(USER_UPDATE_TAG, "EXCEPTION ${e.message.toString()}")
                     responseStandard?.onFailure(
                         false,
                         "EXCEPTION",
-                       // getLangResources().getString(R.string.error_msg)
+                        // getLangResources().getString(R.string.error_msg)
                         "${e.message.toString()}"
                     )
                 }
@@ -540,33 +537,33 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                        val response =
-                            repository.updateMobile(params) //_subcategories
-                        if (response.isSuccessful) {
-                            if (response.body()?.result?.status != null) {
-                                Log.d(USER_UPDATE_TAG, "Success")
-                                responseStandard?.onSuccess(
-                                    true,
-                                    SUCCESS,
-                                    getLangResources().getString(R.string.phone_changed_successfully)
-                                )
-                            } else {
-                                Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.error}")
-                                // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
-                                responseStandard?.onFailure(
-                                    false,
-                                    ERROR,
-                                    "$ERROR ${response.body()?.error}"
-                                )
-                            }
+                    val response =
+                        repository.updateMobile(params) //_subcategories
+                    if (response.isSuccessful) {
+                        if (response.body()?.result?.status != null) {
+                            Log.d(USER_UPDATE_TAG, "Success")
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.phone_changed_successfully)
+                            )
                         } else {
-                            Log.d(USER_UPDATE_TAG, "FAILUER ${response.body()?.error}")
+                            Log.d(USER_UPDATE_TAG, "$ERROR ${response.body()?.error}")
                             // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
                             responseStandard?.onFailure(
                                 false,
                                 ERROR,
-                                "${response.body()?.error}"
+                                "$ERROR ${response.body()?.error}"
                             )
+                        }
+                    } else {
+                        Log.d(USER_UPDATE_TAG, "FAILUER ${response.body()?.error}")
+                        // responseStandard?.onFailure(false, ERROR,getLangResources().getString(R.string.error_msg))
+                        responseStandard?.onFailure(
+                            false,
+                            ERROR,
+                            "${response.body()?.error}"
+                        )
 
                     }
                 } catch (e: Exception) {
@@ -637,55 +634,55 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                        Log.d(ADDRESS_TAG, "${user?.session_id}")
-                        Log.d("SESSION_ID", "${user?.session_id}")
-                        var response: Response<RegisterResponse>? = null
-                        if (address_id != 0)
-                            response = repository.editAddress(address_id, params)
-                        else
-                            response = repository.addAddress(params)
+                    Log.d(ADDRESS_TAG, "${user?.session_id}")
+                    Log.d("SESSION_ID", "${user?.session_id}")
+                    var response: Response<RegisterResponse>? = null
+                    if (address_id != 0)
+                        response = repository.editAddress(address_id, params)
+                    else
+                        response = repository.addAddress(params)
 
-                        if (response.isSuccessful) {
-                            if (response.body()?.result?.status != null) {
-                                Log.d(ADDRESS_TAG, "Success")
-                                var msg =
-                                    getLangResources().getString(R.string.address_created_successfully)
-                                if (address_id != 0)
-                                    msg =
-                                        getLangResources().getString(R.string.address_updated_successfully)
-                                responseStandard?.onSuccess(
-                                    true,
-                                    SUCCESS,
-                                    msg
-                                )
-                            } else {
-                                Log.d(ADDRESS_TAG, "$ERROR ${response.body()?.error}")
-                                /*  responseStandard?.onFailure(
-                                      false,
-                                      ERROR,
-                                      getLangResources().getString(R.string.error_msg)
-                                  )*/
-
-                                responseStandard?.onFailure(
-                                    false,
-                                    ERROR,
-                                    "${response.body()?.error}"
-                                )
-                            }
-                            //  getUser(session_id)
+                    if (response.isSuccessful) {
+                        if (response.body()?.result?.status != null) {
+                            Log.d(ADDRESS_TAG, "Success")
+                            var msg =
+                                getLangResources().getString(R.string.address_created_successfully)
+                            if (address_id != 0)
+                                msg =
+                                    getLangResources().getString(R.string.address_updated_successfully)
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                msg
+                            )
                         } else {
-                            Log.d(ADDRESS_TAG, "FAILUER ${response.body()}")
+                            Log.d(ADDRESS_TAG, "$ERROR ${response.body()?.error}")
                             /*  responseStandard?.onFailure(
                                   false,
                                   ERROR,
                                   getLangResources().getString(R.string.error_msg)
                               )*/
+
                             responseStandard?.onFailure(
                                 false,
-                                "FAILURE",
+                                ERROR,
                                 "${response.body()?.error}"
                             )
                         }
+                        //  getUser(session_id)
+                    } else {
+                        Log.d(ADDRESS_TAG, "FAILUER ${response.body()}")
+                        /*  responseStandard?.onFailure(
+                              false,
+                              ERROR,
+                              getLangResources().getString(R.string.error_msg)
+                          )*/
+                        responseStandard?.onFailure(
+                            false,
+                            "FAILURE",
+                            "${response.body()?.error}"
+                        )
+                    }
 
                 } catch (e: Exception) {
                     Log.d(ADDRESS_TAG, "EXCEPTION ${e.message.toString()}")
@@ -742,38 +739,39 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                        Log.d(ADDRESS_TAG, "${user?.session_id}")
-                        Log.d("SESSION_ID", "${user?.session_id}")
+                    Log.d(ADDRESS_TAG, "${user?.session_id}")
+                    Log.d("SESSION_ID", "${user?.session_id}")
 
-                        val response =
-                            repository.deleteAddress(params)
-                        if (response.isSuccessful) {
-                            if (response.body()?.result?.status != null) {
-                                Log.d(ADDRESS_TAG, "Success")
-                                responseStandard?.onSuccess(
-                                    true,
-                                    SUCCESS,
-                                    getLangResources().getString(R.string.address_deleted_successfully)
-                                )
-                                getAddresses(false)
-                                // must load
-                            } else {
-                                Log.d(ADDRESS_TAG, "$ERROR ${response.body()?.error}")
-                                responseStandard?.onFailure(
-                                    false,
-                                    ERROR,
-                                    getLangResources().getString(R.string.error_msg)
-                                )
-                            }
-                            //  getUser(session_id)
+                    val response =
+                        repository.deleteAddress(params)
+                    if (response.isSuccessful) {
+                        if (response.body()?.result?.status != null) {
+                            Log.d(ADDRESS_TAG, "Success")
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.address_deleted_successfully)
+                            )
+                            getAddresses(false)
+                            // must load
                         } else {
-                            Log.d(ADDRESS_TAG, "FAILURE ${response.body()?.error}")
+                            Log.d(ADDRESS_TAG, "$ERROR ${response.body()?.error}")
                             responseStandard?.onFailure(
                                 false,
                                 ERROR,
-                                getLangResources().getString(R.string.error_msg)
+                                response.body()?.error!!
+                                // getLangResources().getString(R.string.error_msg)
                             )
                         }
+                        //  getUser(session_id)
+                    } else {
+                        Log.d(ADDRESS_TAG, "FAILURE ${response.body()?.error}")
+                        responseStandard?.onFailure(
+                            false,
+                            ERROR,
+                            getLangResources().getString(R.string.error_msg)
+                        )
+                    }
 
                 } catch (e: Exception) {
                     Log.d(ADDRESS_TAG, "EXCEPTION ${e.message.toString()}")
@@ -821,14 +819,14 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
 
-    fun getServiceTypes(service_id: Int,subservice:Boolean) {
+    fun getServiceTypes(service_id: Int, subservice: Boolean) {
         viewModelScope.launch {
 
             _service_types.emit(Resource.Loading())
 
             if (checkInternet(context)) {
                 try {
-                    var response : Response<ServiceTypeResponse>?=null
+                    var response: Response<ServiceTypeResponse>? = null
                     if (subservice)
                         response = repository.getSubServiceTypes(service_id)
                     else
@@ -887,7 +885,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     fun searchProducts(searchBodyParameters: SearchBodyParameters) {
         viewModelScope.launch {
 
-            if (searchBodyParameters.params.page==1)
+            if (searchBodyParameters.params.page == 1)
                 _search_products.emit(Resource.Loading())
             else
                 _search_products.emit(Resource.LoadingWithProducts())
@@ -974,28 +972,27 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun getOrderById(service: Boolean) {
+    fun getOrderById(order_id: Int, service: Boolean) {
         viewModelScope.launch {
-            _orders.emit(Resource.Loading())
+            _order.emit(Resource.Loading())
             if (checkInternet(context)) {
                 try {
-                    var response: Response<OrderResponse>? = null
-                    response = if (service) repository.getServiceOrders() else
-                        repository.getDeliveryOrders()
-
+                    var response: Response<SingleOrderResponse>? = null
+                      response = if (service) repository.getServiceOrderById(order_id) else
+                        repository.getDeliveryOrderById(order_id)
                     if (response.isSuccessful) {
                         response.body()?.let { resultResponse ->
-                            _orders.emit(Resource.Success(resultResponse))
+                           _order.emit(Resource.Success(resultResponse))
                         }
                     } else {
-                        _orders.emit(Resource.Error(response.message()))
+                        _order.emit(Resource.Error(response.message()))
                     }
                 } catch (e: Exception) {
                     Log.d("PROJECT_RESPONSE", "EXCEPTION  " + e.message.toString())
-                    _orders.emit(Resource.Error(ERROR))
+                    _order.emit(Resource.Error(ERROR))
                 }
             } else {
-                _orders.emit(Resource.Connection())
+                _order.emit(Resource.Connection())
             }
         }
     }
@@ -1008,50 +1005,50 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                        var response: Response<RegisterResponse>
-                        if (update)
-                            response = repository.updateCartQuantity(params)
-                        else
-                            response = repository.addToCart(params)
+                    var response: Response<RegisterResponse>
+                    if (update)
+                        response = repository.updateCartQuantity(params)
+                    else
+                        response = repository.addToCart(params)
 
 
-                        if (response.isSuccessful) {
-                            if (response.body()?.result?.status != null) {
-                                Log.d(CART_TAG, "Success")
-                                responseStandard?.onSuccess(
-                                    true,
-                                    SUCCESS,
-                                    getLangResources().getString(R.string.item_added_successfully)
-                                )
-                                if (update)
-                                    loadCart(true)
-                            } else {
-                                Log.d(CART_TAG, "$ERROR ${response.body()?.error}")
-                                /*  responseStandard?.onFailure(
-                                      false,
-                                      ERROR,
-                                      getLangResources().getString(R.string.error_msg)
-                                  )*/
-
-                                responseStandard?.onFailure(
-                                    false,
-                                    ERROR,
-                                    "${response.body()?.error}"
-                                )
-                            }
-                            //  getUser(session_id)
+                    if (response.isSuccessful) {
+                        if (response.body()?.result?.status != null) {
+                            Log.d(CART_TAG, "Success")
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.item_added_successfully)
+                            )
+                            if (update)
+                                loadCart(true)
                         } else {
-                            Log.d(CART_TAG, "FAILUER ${response.body()}")
+                            Log.d(CART_TAG, "$ERROR ${response.body()?.error}")
                             /*  responseStandard?.onFailure(
                                   false,
                                   ERROR,
                                   getLangResources().getString(R.string.error_msg)
                               )*/
+
                             responseStandard?.onFailure(
                                 false,
-                                "FAILURE",
+                                ERROR,
                                 "${response.body()?.error}"
                             )
+                        }
+                        //  getUser(session_id)
+                    } else {
+                        Log.d(CART_TAG, "FAILUER ${response.body()}")
+                        /*  responseStandard?.onFailure(
+                              false,
+                              ERROR,
+                              getLangResources().getString(R.string.error_msg)
+                          )*/
+                        responseStandard?.onFailure(
+                            false,
+                            "FAILURE",
+                            "${response.body()?.error}"
+                        )
                     }
                 } catch (e: Exception) {
                     Log.d(CART_TAG, "EXCEPTION ${e.message.toString()}")
@@ -1102,55 +1099,56 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
 
     fun removeFromCart(
-        is_vip_charge_product:Boolean,
+        is_vip_charge_product: Boolean,
         params: ProductBodyParameters,
         responseStandard: ResponseStandard?
     ) {
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                        var response = repository.removeFromCart(params)
+                    var response = repository.removeFromCart(params)
 
-                        if (response.isSuccessful) {
-                            if (response.body()?.result?.status != null) {
-                                Log.d(CART_TAG, "Success")
-                                responseStandard?.onSuccess(
-                                    true,
-                                    SUCCESS,
-                                    getLangResources().getString(R.string.item_deleted_successfully)
-                                )
-                                if (is_vip_charge_product)
-                                    vip_subsription =false
+                    if (response.isSuccessful) {
+                        if (response.body()?.result?.status != null) {
+                            Log.d(CART_TAG, "Success")
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.item_deleted_successfully)
+                            )
+                            if (is_vip_charge_product)
+                                vip_subsription = false
 
-                                loadCart(true)
-                            } else {
-                                Log.d(CART_TAG, "ERROR ${response.body()?.error}")
-                                /*  responseStandard?.onFailure(
-                                      false,
-                                      ERROR,
-                                      getLangResources().getString(R.string.error_msg)
-                                  )*/
-
-                                responseStandard?.onFailure(
-                                    false,
-                                    ERROR,
-                                    "${response.body()?.error}"
-                                )
-                            }
-                            //  getUser(session_id)
+                            loadCart(true)
                         } else {
-                            Log.d(CART_TAG, "FAILUER ${response.body()?.error}")
+                            Log.d(CART_TAG, "ERROR ${response.body()?.error}")
                             /*  responseStandard?.onFailure(
                                   false,
                                   ERROR,
                                   getLangResources().getString(R.string.error_msg)
                               )*/
+
                             responseStandard?.onFailure(
                                 false,
-                                "FAILURE",
-                                "${response.body()?.error}")
-
+                                ERROR,
+                                "${response.body()?.error}"
+                            )
                         }
+                        //  getUser(session_id)
+                    } else {
+                        Log.d(CART_TAG, "FAILUER ${response.body()?.error}")
+                        /*  responseStandard?.onFailure(
+                              false,
+                              ERROR,
+                              getLangResources().getString(R.string.error_msg)
+                          )*/
+                        responseStandard?.onFailure(
+                            false,
+                            "FAILURE",
+                            "${response.body()?.error}"
+                        )
+
+                    }
 
                 } catch (e: Exception) {
                     Log.d(CART_TAG, "EXCEPTION ${e.message.toString()}")
@@ -1179,45 +1177,45 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                        var response = repository.removeFromWishlist(params)
+                    var response = repository.removeFromWishlist(params)
 
-                        if (response.isSuccessful) {
-                            if (response.body()?.result?.status != null) {
-                                Log.d(CART_TAG, "Success")
-                                responseStandard?.onSuccess(
-                                    true,
-                                    SUCCESS,
-                                    getLangResources().getString(R.string.item_added_successfully)
-                                )
-                                viewWishlist(true)
+                    if (response.isSuccessful) {
+                        if (response.body()?.result?.status != null) {
+                            Log.d(CART_TAG, "Success")
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.item_added_successfully)
+                            )
+                            viewWishlist(true)
 
-                            } else {
-                                Log.d(CART_TAG, "ERROR ${response.body()?.error}")
-                                /*  responseStandard?.onFailure(
-                                      false,
-                                      ERROR,
-                                      getLangResources().getString(R.string.error_msg)
-                                  )*/
-
-                                responseStandard?.onFailure(
-                                    false,
-                                    ERROR,
-                                    "${response.body()?.error}"
-                                )
-                            }
-                            //  getUser(session_id)
                         } else {
-                            Log.d(CART_TAG, "FAILUER ${response.body()}")
+                            Log.d(CART_TAG, "ERROR ${response.body()?.error}")
                             /*  responseStandard?.onFailure(
                                   false,
                                   ERROR,
                                   getLangResources().getString(R.string.error_msg)
                               )*/
+
                             responseStandard?.onFailure(
                                 false,
-                                "FAILURE",
+                                ERROR,
                                 "${response.body()?.error}"
                             )
+                        }
+                        //  getUser(session_id)
+                    } else {
+                        Log.d(CART_TAG, "FAILUER ${response.body()}")
+                        /*  responseStandard?.onFailure(
+                              false,
+                              ERROR,
+                              getLangResources().getString(R.string.error_msg)
+                          )*/
+                        responseStandard?.onFailure(
+                            false,
+                            "FAILURE",
+                            "${response.body()?.error}"
+                        )
 
                     }
                 } catch (e: Exception) {
@@ -1247,45 +1245,45 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                        var response = repository.addToWishlist(params)
-                        Log.d(PRODUCT_TAG, params.params.product_id.toString())
+                    var response = repository.addToWishlist(params)
+                    Log.d(PRODUCT_TAG, params.params.product_id.toString())
 
-                        if (response.isSuccessful) {
-                            if (response.body()?.result?.status != null) {
-                                Log.d(PRODUCT_TAG, "Success")
-                                responseStandard?.onSuccess(
-                                    true,
-                                    SUCCESS,
-                                    getLangResources().getString(R.string.item_added_successfully)
-                                )
-                            } else {
-                                Log.d(PRODUCT_TAG, "$ERROR ${response.body()?.error}")
-                                /*  responseStandard?.onFailure(
-                                      false,
-                                      ERROR,
-                                      getLangResources().getString(R.string.error_msg)
-                                  )*/
-
-                                responseStandard?.onFailure(
-                                    false,
-                                    ERROR,
-                                    "${response.body()?.error}"
-                                )
-                            }
-                            //  getUser(session_id)
+                    if (response.isSuccessful) {
+                        if (response.body()?.result?.status != null) {
+                            Log.d(PRODUCT_TAG, "Success")
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.item_added_successfully)
+                            )
                         } else {
-                            Log.d(PRODUCT_TAG, "FAILURE ${response.body()}")
+                            Log.d(PRODUCT_TAG, "$ERROR ${response.body()?.error}")
                             /*  responseStandard?.onFailure(
                                   false,
                                   ERROR,
                                   getLangResources().getString(R.string.error_msg)
                               )*/
+
                             responseStandard?.onFailure(
                                 false,
-                                "FAILURE",
+                                ERROR,
                                 "${response.body()?.error}"
                             )
                         }
+                        //  getUser(session_id)
+                    } else {
+                        Log.d(PRODUCT_TAG, "FAILURE ${response.body()}")
+                        /*  responseStandard?.onFailure(
+                              false,
+                              ERROR,
+                              getLangResources().getString(R.string.error_msg)
+                          )*/
+                        responseStandard?.onFailure(
+                            false,
+                            "FAILURE",
+                            "${response.body()?.error}"
+                        )
+                    }
 
                 } catch (e: Exception) {
                     Log.d(PRODUCT_TAG, "EXCEPTION ${e.message.toString()}")
@@ -1340,44 +1338,45 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             if (checkInternet(context)) {
                 try {
-                        var response = repository.subscribeToVip()
+                    var response = repository.subscribeToVip()
 
-                        if (response.isSuccessful) {
-                            if (response.body()?.result?.status != null) {
-                                Log.d(CART_TAG, "Success")
-                                responseStandard?.onSuccess(
-                                    true,
-                                    SUCCESS,
-                                    getLangResources().getString(R.string.item_added_successfully)
-                                )
-                            } else {
-                                Log.d(CART_TAG, "$ERROR ${response.body()}")
-                                /*  responseStandard?.onFailure(
-                                      false,
-                                      ERROR,
-                                      getLangResources().getString(R.string.error_msg)
-                                  )*/
-
-                                responseStandard?.onFailure(
-                                    false,
-                                    ERROR,
-                                    "${response.body()?.error}"
-                                )
-                            }
-                            //  getUser(session_id)
+                    if (response.isSuccessful) {
+                        if (response.body()?.result?.status != null) {
+                            Log.d(CART_TAG, "Success")
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.item_added_successfully)
+                            )
                         } else {
-                            Log.d(CART_TAG, "FAILUER ${response.body()}")
+                            Log.d(CART_TAG, "$ERROR ${response.body()}")
                             /*  responseStandard?.onFailure(
                                   false,
                                   ERROR,
                                   getLangResources().getString(R.string.error_msg)
                               )*/
+
                             responseStandard?.onFailure(
                                 false,
-                                "FAILURE",
-                                "${response.body()?.error}")
-
+                                ERROR,
+                                "${response.body()?.error}"
+                            )
                         }
+                        //  getUser(session_id)
+                    } else {
+                        Log.d(CART_TAG, "FAILUER ${response.body()}")
+                        /*  responseStandard?.onFailure(
+                              false,
+                              ERROR,
+                              getLangResources().getString(R.string.error_msg)
+                          )*/
+                        responseStandard?.onFailure(
+                            false,
+                            "FAILURE",
+                            "${response.body()?.error}"
+                        )
+
+                    }
 
                 } catch (e: Exception) {
                     Log.d(CART_TAG, "EXCEPTION ${e.message.toString()}")
@@ -1532,7 +1531,76 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                         responseStandard?.onFailure(
                             false,
                             "FAILURE",
-                            "${response.body()?.error}")
+                            "${response.body()?.error}"
+                        )
+
+                    }
+
+                } catch (e: Exception) {
+                    Log.d(CART_TAG, "EXCEPTION ${e.message.toString()}")
+                    /* responseStandard?.onFailure(
+                         false,
+                         ERROR,
+                         getLangResources().getString(R.string.error_msg)
+                     )*/
+                    responseStandard?.onFailure(
+                        false,
+                        "EXCEPTION",
+                        "${e.message.toString()}"
+                    )
+                }
+            } else {
+                Log.d(CART_TAG, "$CONNECTION}")
+                responseStandard?.onFailure(false, CONNECTION, CONNECTION)
+            }
+        }
+    }
+
+    fun createServiceOrder(
+        params: OrderBodyParameters,
+        responseStandard: ResponseStandard?
+    ) {
+        viewModelScope.launch {
+            if (checkInternet(context)) {
+                try {
+                    var response = repository.createServiceOrder(params)
+
+                    if (response.isSuccessful) {
+                        if (response.body()?.result?.status != null) {
+                            Log.d(CART_TAG, "Success")
+                            responseStandard?.onSuccess(
+                                true,
+                                SUCCESS,
+                                getLangResources().getString(R.string.order_created_successfully)
+                            )
+
+                        } else {
+                            Log.d(CART_TAG, "ERROR ${response.body()?.error}")
+                            /*  responseStandard?.onFailure(
+                                  false,
+                                  ERROR,
+                                  getLangResources().getString(R.string.error_msg)
+                              )*/
+
+                            responseStandard?.onFailure(
+                                false,
+                                ERROR,
+                                "${response.body()?.error}"
+                            )
+                        }
+                        //  getUser(session_id)
+                    } else {
+                        Log.d(CART_TAG, "FAILUER ${response.body()?.error}")
+                        /*  responseStandard?.onFailure(
+                              false,
+                              ERROR,
+                              getLangResources().getString(R.string.error_msg)
+                          )*/
+                        responseStandard?.onFailure(
+                            false,
+                            "FAILURE",
+                            "${response.body()?.error}"
+                        )
 
                     }
 

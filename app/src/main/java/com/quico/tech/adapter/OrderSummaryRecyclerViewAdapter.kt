@@ -18,7 +18,7 @@ class OrderSummaryRecyclerViewAdapter : RecyclerView.Adapter<OrderSummaryRecycle
         fun bind(product: Product) {
             binding.apply {
                 name.text="${product.quantity}x${product.name}"
-                totalPrice.text="$ ${product.quantity!!*product.new_price}"
+                totalPrice.text="$ ${product.quantity!!*product.subtotal}"
             }
         }
     }

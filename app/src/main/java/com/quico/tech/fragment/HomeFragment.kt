@@ -69,6 +69,11 @@ class HomeFragment : Fragment() {
                     toolbarHomeInclude.bagIcon.setImageResource(R.drawable.cart_full)
                 else
                     toolbarHomeInclude.bagIcon.setImageResource(R.drawable.bag)
+
+                if (user.is_vip)
+                    toolbarHomeInclude.vipStarIcon.setImageResource(R.drawable.filled_star)
+                else
+                    toolbarHomeInclude.vipStarIcon.setImageResource(R.drawable.unvip_star_icon)
             }
         }
     }

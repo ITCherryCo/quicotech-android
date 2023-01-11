@@ -113,28 +113,49 @@ class SearchFragment : Fragment() {
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
                 android.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    search_text = query
-                    if (query.isEmpty()) {
-                        setUpErrorForm(EMPTY_SEARCH)
-                    } else if (query.trim { it <= ' ' }.length > 2) {
-                        current_page = 1
-                        search_text = query.trim()
-                        productRecyclerView.scrollToPosition(0)
-                        viewModel.searchProducts(
-                            SearchBodyParameters(
-                                SearchParams(
-                                    current_page,
-                                    search_text
-                                )
-                            )
-                        )
+                    /*  search_text = query
+                      if (query.isEmpty()) {
+                          setUpErrorForm(EMPTY_SEARCH)
+                      } else if (query.trim { it <= ' ' }.length > 2) {
+                          current_page = 1
+                          search_text = query.trim()
+                          productRecyclerView.scrollToPosition(0)
+                          viewModel.searchProducts(
+                              SearchBodyParameters(
+                                  SearchParams(
+                                      current_page,
+                                      search_text
+                                  )
+                              )
+                          )
 
-                    }
+                      }*/
                     return false
                 }
 
                 override fun onQueryTextChange(searchText: String): Boolean {
+                    search_text = searchText
+                    lifecycleScope.launch {
+                        delay(200)
 
+                        search_text = searchText
+                        if (searchText.isEmpty()) {
+                            setUpErrorForm(EMPTY_SEARCH)
+                        } else if (searchText.trim { it <= ' ' }.length > 2) {
+                            current_page = 1
+                            search_text = searchText.trim()
+                            productRecyclerView.scrollToPosition(0)
+                            viewModel.searchProducts(
+                                SearchBodyParameters(
+                                    SearchParams(
+                                        current_page,
+                                        search_text
+                                    )
+                                )
+                            )
+
+                        }
+                    }
                     return false
                 }
             })
@@ -223,7 +244,7 @@ class SearchFragment : Fragment() {
                     super.onScrollStateChanged(recyclerView, newState)
                     val layoutManager = recyclerView.layoutManager as GridLayoutManager?
                     val lastVisible = layoutManager!!.findLastVisibleItemPosition()
-                    Log.d("LAST_VISIBLE_ITEM",lastVisible.toString())
+                    Log.d("LAST_VISIBLE_ITEM", lastVisible.toString())
                     if (lastVisible >= products.size - 2 && current_page < total_pages) {
                         if (can_scroll) {
                             can_scroll = false

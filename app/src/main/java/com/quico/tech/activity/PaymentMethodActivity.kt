@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.quico.tech.R
 import com.quico.tech.adapter.CardSelectionRecyclerViewAdapter
 import com.quico.tech.data.Constant
@@ -52,7 +51,7 @@ class PaymentMethodActivity : AppCompatActivity() {
         binding.apply {
             title.text = viewModel.getLangResources().getString(R.string.payment_method)
             selectPaymentText.text = viewModel.getLangResources().getString(R.string.select_payment_method)
-            cashOnDeliveryText.text = viewModel.getLangResources().getString(R.string.cash_with_delivery)
+            cashOnDeliveryText.text = viewModel.getLangResources().getString(R.string.cash_on_delivery)
             addNewCardText.text = viewModel.getLangResources().getString(R.string.add_new_card)
             nextBtn.text = viewModel.getLangResources().getString(R.string.next)
 

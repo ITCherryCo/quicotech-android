@@ -53,7 +53,6 @@ class SearchHomeActivity : AppCompatActivity() {
             binding.searchView.setQuery(SEARCH_TEXT, true)
             // viewModel.searchProducts(SearchBodyParameters(NameParams(search_text)))
         }
-
     }
 
     fun init() {
@@ -115,6 +114,10 @@ class SearchHomeActivity : AppCompatActivity() {
                 override fun onQueryTextChange(searchText: String): Boolean {
 
                     search_text = searchText
+                    lifecycleScope.launch {
+                        delay(200)
+
+                        search_text = searchText
                     if (searchText.isEmpty()) {
                         setUpErrorForm(Constant.EMPTY_SEARCH)
                         SEARCH_TEXT = ""
@@ -131,6 +134,7 @@ class SearchHomeActivity : AppCompatActivity() {
                                 )
                             )
                         )
+                    }
                     }
                     return false
                 }
@@ -197,7 +201,7 @@ class SearchHomeActivity : AppCompatActivity() {
 
                     is Resource.LoadingWithProducts -> {
                         setLoadingWithProduct()
-                        Log.d(Constant.PRODUCT_TAG, "LOADING")
+                        Log.d(Constant.PRODUCT_TAG, "LOADING LoadingWithProducts")
                     }
                 }
             }

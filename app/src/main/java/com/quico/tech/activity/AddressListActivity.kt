@@ -103,6 +103,7 @@ class AddressListActivity : AppCompatActivity() {
                     is Resource.Success -> {
                         binding.apply {
                             stopShimmer()
+                            addressErrorContainer.root.visibility = View.GONE
                             recyclerView.visibility = View.VISIBLE
                         }
 

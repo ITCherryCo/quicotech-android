@@ -85,7 +85,7 @@ class ProfileFragment : Fragment() {
                 startActivity(
                     Intent(activity, OrderListActivity::class.java)
                        // .putExtra(Constant.ORDERS_TYPE, Constant.ONGOING_ORDERS)
-                        .putExtra(Constant.ORDERS_TYPE, Constant.DELIVERY_ORDERS)
+                        .putExtra(Constant.ORDER_TYPE, Constant.DELIVERY_ORDERS)
                 )
             }
 
@@ -93,7 +93,7 @@ class ProfileFragment : Fragment() {
                 startActivity(
                     Intent(activity, OrderListActivity::class.java)
                         //.putExtra(Constant.ORDERS_TYPE, Constant.DONE_ORDERS)
-                        .putExtra(Constant.ORDERS_TYPE, Constant.SERVICE_ORDERS)
+                        .putExtra(Constant.ORDER_TYPE, Constant.SERVICE_ORDERS)
                 )
             }
 

@@ -31,8 +31,10 @@ class BestSellingRecyclerViewAdapter() : RecyclerView.Adapter<BestSellingRecycle
                 productName.text = product.name
                 Glide.with(itemView.context)
                     .load(product.image)
+                    .fitCenter()
                     .error(R.drawable.profile_user)
                     .into(productImage)
+
                 productPrice.text = "$"+ product.regular_price.toString()
                 //productNewPrice.text = product.new_price.toString()
 

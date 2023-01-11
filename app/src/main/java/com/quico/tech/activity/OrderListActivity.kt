@@ -19,8 +19,8 @@ import com.quico.tech.data.Constant.DELIVERED
 import com.quico.tech.data.Constant.DELIVERY_ORDERS
 import com.quico.tech.data.Constant.ERROR
 import com.quico.tech.data.Constant.ON_THE_WAY
-import com.quico.tech.data.Constant.ORDERS_TYPE
 import com.quico.tech.data.Constant.ORDER_RECEIVED
+import com.quico.tech.data.Constant.ORDER_TYPE
 import com.quico.tech.data.Constant.PACKAGING
 import com.quico.tech.data.Constant.SERVICE_ORDERS
 import com.quico.tech.data.Constant.TRACK_ORDER
@@ -50,7 +50,7 @@ class OrderListActivity : AppCompatActivity() {
             }
         }
 
-        orders_type = intent.extras?.getString(ORDERS_TYPE)!!
+        orders_type = intent.extras?.getString(ORDER_TYPE)!!
 
         initStatusBar()
         setUpText()
@@ -136,6 +136,7 @@ class OrderListActivity : AppCompatActivity() {
                             if (ordersResponse.result.isNullOrEmpty()) {
                                 setUpErrorForm(Constant.NO_ORDERS)
                             } else {
+                                 original_orders = ordersResponse.result
                                  orderRecyclerViewAdapter.differ.submitList(ordersResponse.result)
                                  binding.recyclerView.visibility = View.VISIBLE
                              }
@@ -302,12 +303,15 @@ class OrderListActivity : AppCompatActivity() {
             else -> {
 
                 var filteredOrders = original_orders.filter {
-                    it.status == order_status
+                    it.status.lowercase() == order_status.lowercase()
                 }
 
                 orderRecyclerViewAdapter.differ.submitList(filteredOrders)
             }
+
         }
+       // orderRecyclerViewAdapter.notifyDataSetChanged()
+
     }
 
     fun setLoading() {
@@ -330,12 +334,15 @@ class OrderListActivity : AppCompatActivity() {
             ordersErrorContainer.apply {
                 root.visibility = View.VISIBLE
                 tryAgain.visibility = View.VISIBLE
-                errorImage.visibility = View.GONE
+                errorImage.visibility = View.VISIBLE
                 errorBtn.visibility = View.GONE
                 tryAgain.setText(
                     viewModel.getLangResources().getString(R.string.try_again)
                 )
-                tryAgain.setOnClickListener { }
+                tryAgain.setOnClickListener {
+                    onRefresh()
+                }
+                errorImage.setImageResource(R.drawable.empty_item)
 
                 when (error_type) {
                     Constant.CONNECTION -> {

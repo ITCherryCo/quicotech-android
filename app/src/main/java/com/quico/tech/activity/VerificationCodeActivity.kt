@@ -63,10 +63,10 @@ class VerificationCodeActivity : AppCompatActivity() {
         initStatusBar()
         setUpText()
         monitorPhoneNumber()
-      /*  verification_type = intent.extras?.getString(VERIFICATION_TYPE)!!
-        operation_type = intent.extras?.getString(OPERATION_TYPE)
-        phone_number = intent.extras?.getString(PHONE_NUMBER)
-*/
+        /*  verification_type = intent.extras?.getString(VERIFICATION_TYPE)!!
+          operation_type = intent.extras?.getString(OPERATION_TYPE)
+          phone_number = intent.extras?.getString(PHONE_NUMBER)
+  */
         verification_type = viewModel.verification_type
         operation_type = viewModel.operation_type
         phone_number = viewModel.temporar_user?.mobile
@@ -139,7 +139,7 @@ class VerificationCodeActivity : AppCompatActivity() {
                                 viewModel.getLangResources().getString(
                                     R.string.email_confirmation_code,
                                     viewModel.temporar_user?.login
-                                   // TEMPORAR_USER!!.login
+                                    // TEMPORAR_USER!!.login
                                 )
 
                             /* verifyBtn.setOnClickListener {
@@ -171,10 +171,14 @@ class VerificationCodeActivity : AppCompatActivity() {
                                 } else {
                                     // must verify email link
                                     verifyBtn.visibility = View.VISIBLE
-                                    verifyBtn.text = viewModel.getLangResources().getString(R.string.continue_process)
+                                    verifyBtn.text = viewModel.getLangResources()
+                                        .getString(R.string.continue_process)
                                     verifyBtn.setOnClickListener {
-                                       // if (viewModel.sendOtpPhoneNumber.isEmpty())
-                                        Log.d(SEND_EMAIL_LINK, "BEFORE VERIFY IS CALLED ${viewModel.temporar_user?.login!!}  ${emailLink!!}")
+                                        // if (viewModel.sendOtpPhoneNumber.isEmpty())
+                                        Log.d(
+                                            SEND_EMAIL_LINK,
+                                            "BEFORE VERIFY IS CALLED ${viewModel.temporar_user?.login!!}  ${emailLink!!}"
+                                        )
                                         verifyEmail(viewModel.temporar_user?.login!!, emailLink!!)
                                     }
                                 }
@@ -498,7 +502,8 @@ class VerificationCodeActivity : AppCompatActivity() {
                         viewModel.getLangResources().getString(R.string.ok),
                         null
                     )
-                    stopTimer()
+                    // stopTimer()
+                    binding.resendText.setEnabled(true)
 
                 } else {
                     Log.d(SEND_EMAIL_LINK, "EXCEPTION ${task.exception}")
@@ -569,29 +574,29 @@ class VerificationCodeActivity : AppCompatActivity() {
     }
 
     private fun monitorPhoneNumber() {
-       /* lifecycleScope.launch {
-            viewModel.send_otp.collect { phone_number ->
-                if (phone_number.isNotEmpty()) {
-                    verification_type = PHONE_NUMBER
-                   // OPERATION_TYPE = REGISTER
-                   // PHONE_NUMBER = TEMPORAR_USER!!.mobile.toString()
-                    OPERATION_TYPE = viewModel.operation_type
-                    PHONE_NUMBER = viewModel.temporar_user?.mobile.toString()
-                    launch(Dispatchers.Main) {
-                        checkOperationType()
-                        // This code will be executed on the main thread
-                    }
-                }
-            }
-        }*/
+        /* lifecycleScope.launch {
+             viewModel.send_otp.collect { phone_number ->
+                 if (phone_number.isNotEmpty()) {
+                     verification_type = PHONE_NUMBER
+                    // OPERATION_TYPE = REGISTER
+                    // PHONE_NUMBER = TEMPORAR_USER!!.mobile.toString()
+                     OPERATION_TYPE = viewModel.operation_type
+                     PHONE_NUMBER = viewModel.temporar_user?.mobile.toString()
+                     launch(Dispatchers.Main) {
+                         checkOperationType()
+                         // This code will be executed on the main thread
+                     }
+                 }
+             }
+         }*/
     }
 
     private fun loadPage() {
         startActivity(
             Intent(this, VerificationCodeActivity::class.java)
-               /* .putExtra(Constant.VERIFICATION_TYPE, Constant.PHONE_NUMBER)
-                .putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
-                .putExtra(Constant.PHONE_NUMBER, phone_number)*/
+            /* .putExtra(Constant.VERIFICATION_TYPE, Constant.PHONE_NUMBER)
+             .putExtra(Constant.OPERATION_TYPE, Constant.REGISTER)
+             .putExtra(Constant.PHONE_NUMBER, phone_number)*/
 
         )
     }
@@ -602,7 +607,12 @@ class VerificationCodeActivity : AppCompatActivity() {
             viewModel.temporar_user?.let { registerParams ->
 
                 val params = RegisterBodyParameters(
-                    viewModel.temporar_user!!
+                    RegisterParams(
+                        registerParams.login,
+                       "+961${registerParams.mobile}",
+                        registerParams.name,
+                        registerParams.password
+                    )
                 )
 
                 Common.setUpProgressDialog(this@VerificationCodeActivity)

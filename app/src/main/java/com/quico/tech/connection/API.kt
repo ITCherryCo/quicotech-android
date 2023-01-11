@@ -74,12 +74,6 @@ interface API {
     @GET("getSession")
     suspend fun getSession(): Response<SessionResponse>
 
-    @GET("getDeliveryOrders")
-    suspend fun getDeliveryOrders(): Response<OrderResponse>
-
-    @GET("getServiceOrders")
-    suspend fun getServiceOrders(): Response<OrderResponse>
-
     @POST("addToCart")
     //@Headers("Content-Type: application/json")
     @Headers("Content-Type: text/html")
@@ -145,5 +139,21 @@ interface API {
     @Headers("Content-Type: text/html")
     suspend fun createDeliveryOrder(@Body orderBodyParameters: OrderBodyParameters): Response<RegisterResponse>
 
+    @GET("getDeliveryOrders")
+    suspend fun getDeliveryOrders(): Response<OrderResponse>
+
+    @GET("getServiceOrders")
+    suspend fun getServiceOrders(): Response<OrderResponse>
+
+    @GET("getDeliveryOrder/{order_id}")
+    suspend fun getDeliveryOrder(@Path("order_id") order_id: Int): Response<SingleOrderResponse>
+
+    @GET("getServiceOrder/{order_id}")
+    suspend fun getServiceOrder(@Path("order_id") order_id: Int): Response<SingleOrderResponse>
+
+    @POST("deliveryOrder")
+    // @Headers("Content-Type: application/json")
+    @Headers("Content-Type: text/html")
+    suspend fun createServiceOrder(@Body orderBodyParameters: OrderBodyParameters): Response<RegisterResponse>
 
 }

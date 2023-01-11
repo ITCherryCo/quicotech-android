@@ -3,10 +3,14 @@ package com.quico.tech.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.kofigyan.stateprogressbar.StateProgressBar
 import com.quico.tech.R
 import com.quico.tech.adapter.OrderSummaryRecyclerViewAdapter
 import com.quico.tech.adapter.ServicePhotoRecyclerViewAdapter
@@ -19,7 +23,9 @@ import com.quico.tech.data.Constant.TEMPORAR_ADDRESS
 import com.quico.tech.databinding.ActivityCheckoutBinding
 import com.quico.tech.model.*
 import com.quico.tech.utils.Common
+import com.quico.tech.utils.Resource
 import com.quico.tech.viewmodel.SharedViewModel
+import kotlinx.coroutines.launch
 
 
 class CheckoutActivity : AppCompatActivity() {
@@ -44,22 +50,9 @@ class CheckoutActivity : AppCompatActivity() {
         setUpText()
         initStatusBar()
         manageTracking()
-        binding.apply {
+        checkOrderType()
 
-            backArrow.setOnClickListener {
-                onBackPressed()
-            }
-        }
-
-        if (order_id == null ) {
-            // that means that we have to create delivery order
-            setUpPageInfo()
-        }
-        else{
-            if (order_type.equals(SERVICE_ORDERS))
-                //
-                if (order_type.equals(SERVICE_ORDERS))
-        }
+        onRefresh()
     }
 
 
@@ -68,8 +61,19 @@ class CheckoutActivity : AppCompatActivity() {
         Common.setSystemBarLight(this)
     }
 
-    private fun checkOrderType(){
-
+    private fun checkOrderType() {
+        if (order_type.equals(SERVICE_ORDERS)) {
+            subscribeOrder()
+            viewModel.getOrderById(order_id!!, true)
+        }
+        else if (order_type.equals(DELIVERY_ORDERS)) {
+            subscribeOrder()
+            viewModel.getOrderById(order_id!!, false)
+        }
+        else{
+            setUpCheckoutInfo()
+            binding.swipeRefreshLayout.setEnabled(false)
+        }
     }
 
     private fun manageTracking() {
@@ -90,14 +94,6 @@ class CheckoutActivity : AppCompatActivity() {
 //                        .stepsNumber(4)
 //                        .commit()
 
-//                    val descriptionData = arrayOf(
-//                        viewModel.getLangResources().getString(R.string.request_received),
-//                        viewModel.getLangResources().getString(R.string.waiting_response),
-//                        viewModel.getLangResources().getString(R.string.in_progress),
-//                        viewModel.getLangResources().getString(R.string.completed)
-//                    )
-//                    stateProgressBar.setStateDescriptionData(descriptionData)
-
                 }
                 false -> {
                     trackingContainer.visibility = View.GONE
@@ -106,7 +102,7 @@ class CheckoutActivity : AppCompatActivity() {
 
             when (order_type) {
                 DELIVERY_ORDERS -> {
-                    setUpItemsAdapter()
+                    //setUpItemsAdapter()
                     if (trackOrder == false) {
                         footerContainer.visibility = View.VISIBLE
                     }
@@ -128,33 +124,65 @@ class CheckoutActivity : AppCompatActivity() {
 
             if (viewModel.getLanguage().equals(Constant.AR))
                 backArrow.scaleX = -1f
+
+            backArrow.setOnClickListener {
+                onBackPressed()
+            }
         }
     }
 
-    fun setUpItemsAdapter() {
+    fun setUpProductsAdapter(products:List<Product>) {
         // call the adapter for item list
 
         binding.apply {
+            orderSummary.visibility = View.VISIBLE
             orderSummaryText.text = viewModel.getLangResources().getString(R.string.order_summary)
 
             orderSummaryRecyclerViewAdapter = OrderSummaryRecyclerViewAdapter()
-            var items = ArrayList<Product>()
-            // items.add(Item(1, ""))
+
             recyclerView.layoutManager =
                 LinearLayoutManager(this@CheckoutActivity, LinearLayoutManager.VERTICAL, false)
             recyclerView.setItemAnimator(DefaultItemAnimator())
             recyclerView.setAdapter(orderSummaryRecyclerViewAdapter)
 
-            orderSummaryRecyclerViewAdapter.differ.submitList(items)
+            orderSummaryRecyclerViewAdapter.differ.submitList(products)
         }
     }
 
-    private fun setUpPageInfo() {
+    private fun setUpCheckoutInfo() {
         binding.apply {
-            cashText.text = viewModel.getLangResources().getString(R.string.cash_with_delivery)
+            cashText.text = viewModel.getLangResources().getString(R.string.cash_on_delivery)
+
+            footerContainer.visibility = View.VISIBLE
+
+            setUpProductsAdapter(Constant.PRODUCT_LIST!!)
+            setUpAddressInfo(TEMPORAR_ADDRESS)
+            total.text = "$ ${
+                PRODUCT_LIST!!.map { product ->
+                    product.subtotal
+                }.sum()
+            }"
+
+            var productQtyList = ArrayList<ProductParams>()
+            PRODUCT_LIST?.let { products ->
+                products.forEach {
+                    productQtyList.add(ProductParams(it.id, it.quantity!!))
+                }
+            }
+
+            confirmBtn.setOnClickListener {
+                val params = OrderBodyParameters(OrderParams(TEMPORAR_ADDRESS!!.id, productQtyList))
+                // here must call an api to create order then make an alert to continue shopping
+                createDeliveryOrder(params)
+            }
+        }
+    }
+
+    private fun setUpAddressInfo(order_address: Address?){
+        binding.apply {
             var addressValue = ""
-            TEMPORAR_ADDRESS?.let { address ->
-                addressValue = "${address.country}, ${address.city}, ${address.street}"
+            order_address?.let { address ->
+                addressValue = "${if(address.country==null)"Lebanon" else address.country}, ${address.city}, ${address.street}"
                 if (address.street2.isNotEmpty())
                     addressValue = "${addressValue} , ${address.street2}"
 
@@ -163,27 +191,23 @@ class CheckoutActivity : AppCompatActivity() {
                 userAddress.text = addressValue
                 phoneNumber.text = viewModel.user?.mobile
             }
-
-            orderSummaryRecyclerViewAdapter.differ.submitList(Constant.PRODUCT_LIST!!)
-            total.text = "$ ${PRODUCT_LIST!!.map { product ->
-                product.new_price
-            }.sum()}"
-
-            var productQtyList = ArrayList<ProductParams>()
-            PRODUCT_LIST?.let { products->
-                products.forEach {
-                    productQtyList.add(ProductParams(it.id,it.quantity!!))
-                }
-            }
-
-            confirmBtn.setOnClickListener {
-                val params = OrderBodyParameters(OrderParams(TEMPORAR_ADDRESS!!.id,productQtyList))
-                // here must call an api to create order then make an alert to continue shopping
-                createDeliveryOrder(params)
-            }
         }
     }
 
+    private fun checkPaymentMethod(payment_method:String){
+        binding.apply {
+            when (payment_method) {
+                "cash on delivery" -> {
+                    cashContainer.visibility = View.VISIBLE
+                    visaContainer.visibility = View.GONE
+                }
+                "visa"-> {
+                    cashContainer.visibility = View.GONE
+                    visaContainer.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
 
     fun setUpServiceAdapter() {
         binding.apply {
@@ -221,7 +245,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-    private fun createDeliveryOrder(params : OrderBodyParameters) {
+    private fun createDeliveryOrder(params: OrderBodyParameters) {
         Common.setUpChoicesAlert(this,
             viewModel.getLangResources().getString(R.string.checkout),
             viewModel.getLangResources().getString(R.string.sure_to_checkout),
@@ -230,6 +254,7 @@ class CheckoutActivity : AppCompatActivity() {
             object : Common.ResponseChoices {
                 override fun onConfirm() {
                     Common.setUpProgressDialog(this@CheckoutActivity)
+                    binding.confirmBtn.setEnabled(false)
                     viewModel.createDeliveryOrder(params,
                         object : SharedViewModel.ResponseStandard {
                             override fun onSuccess(
@@ -240,10 +265,12 @@ class CheckoutActivity : AppCompatActivity() {
                                 Common.cancelProgressDialog()
                                 viewModel.user = viewModel.user?.copy(have_items_in_cart = false)
                                 // later add progress bar to view
-                                TEMPORAR_ADDRESS=null
-                                PRODUCT_LIST=null
+                                TEMPORAR_ADDRESS = null
+                                PRODUCT_LIST = null
                                 Common.setUpAlert(
-                                    this@CheckoutActivity, true, viewModel.getLangResources().getString(
+                                    this@CheckoutActivity,
+                                    true,
+                                    viewModel.getLangResources().getString(
                                         R.string.thank_you
                                     ),
                                     viewModel.getLangResources().getString(
@@ -251,10 +278,15 @@ class CheckoutActivity : AppCompatActivity() {
                                     ),
                                     viewModel.getLangResources().getString(
                                         R.string.go_home
-                                    ), object : Common.ResponseConfirm {
+                                    ),
+                                    object : Common.ResponseConfirm {
                                         override fun onConfirm() {
-                                            startActivity(Intent(this@CheckoutActivity, HomeActivity::class.java)
-                                                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                            startActivity(
+                                                Intent(
+                                                    this@CheckoutActivity,
+                                                    HomeActivity::class.java
+                                                )
+                                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                             )
                                         }
                                     }
@@ -267,6 +299,7 @@ class CheckoutActivity : AppCompatActivity() {
                                 message: String
                             ) {
                                 Common.cancelProgressDialog()
+                                binding.confirmBtn.setEnabled(true)
 
                                 if (message.equals(resources.getString(R.string.session_expired))) {
                                     viewModel.resetSession()
@@ -288,9 +321,141 @@ class CheckoutActivity : AppCompatActivity() {
                 }
 
             })
-
-
-
-
     }
-}
+
+
+    fun subscribeOrder() {
+        lifecycleScope.launch {
+            viewModel.order.collect { response ->
+                when (response) {
+
+                    is Resource.Success -> {
+
+                        binding.apply {
+                            mainContainer.visibility = View.VISIBLE
+                            orderErrorContainer.root.visibility = View.GONE
+                            swipeRefreshLayout.setRefreshing(false)
+                           // totalContainer.visibility = View.GONE
+                           //confirmBtn.visibility = View.GONE
+                        }
+
+                        response.data?.let { orderResponse ->
+
+                            if (orderResponse.result==null) {
+                                setUpErrorForm(Constant.NO_ORDERS)
+                            } else {
+                                orderResponse.result?.let { result->
+                                    when (order_type) {
+                                        DELIVERY_ORDERS -> {
+
+                                            if (result.order_lines.isNullOrEmpty()) {
+                                                binding.orderSummary.visibility = View.GONE
+                                            } else {
+                                                setUpProductsAdapter(result.order_lines)
+                                            }
+                                            if (result.address != null)
+                                                setUpAddressInfo(result.address)
+
+                                            checkPaymentMethod(result.payment_method)
+                                            binding.apply {
+                                                confirmBtn.visibility = View.GONE
+                                                total.text = "$ ${result.total_price}"
+
+                                                stateProgressBar.setCurrentStateNumber(OrderStatus.getOrderState(result.status))
+                                            }
+
+                                        }
+                                        SERVICE_ORDERS -> {
+                                            binding.totalContainer.visibility = View.GONE
+                                        }
+                                        else -> {
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        response.message?.let { message ->
+                            setUpErrorForm(Constant.ERROR)
+                        }
+                    }
+
+                    is Resource.Connection -> {
+                        setUpErrorForm(Constant.CONNECTION)
+                    }
+
+                    is Resource.Loading -> {
+                        setLoading()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setLoading() {
+        binding.apply {
+            mainContainer.visibility = View.GONE
+            orderErrorContainer.root.visibility = View.GONE
+            totalContainer.visibility = View.GONE
+            confirmBtn.visibility = View.GONE
+            swipeRefreshLayout.setRefreshing(true)
+            //shimmer.visibility = View.VISIBLE
+           // shimmer.startShimmer()
+        }
+    }
+
+
+    fun onRefresh() {
+        binding.apply {
+            swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+                checkOrderType()
+            })
+        }
+    }
+
+        fun setUpErrorForm(error_type: String) {
+            binding.apply {
+                footerContainer.visibility = View.GONE
+                mainContainer.visibility = View.GONE
+                swipeRefreshLayout.setRefreshing(false)
+                //stopShimmer()
+                orderErrorContainer.apply {
+                    root.visibility = View.VISIBLE
+                    tryAgain.visibility = View.GONE
+                    errorImage.visibility = View.VISIBLE
+                    errorBtn.visibility = View.GONE
+
+                    errorImage.setImageResource(R.drawable.empty_item)
+
+                    when (error_type) {
+                        Constant.CONNECTION -> {
+                            errorMsg1.text =
+                                viewModel.getLangResources().getString(R.string.connection)
+
+                            errorMsg2.text =
+                                viewModel.getLangResources().getString(R.string.check_connection)
+
+                        }
+                        Constant.NO_ORDERS -> {
+                            errorMsg1.text =
+                                viewModel.getLangResources().getString(R.string.orders)
+
+                            errorMsg2.text =
+                                viewModel.getLangResources().getString(R.string.no_orders)
+                        }
+
+                        Constant.ERROR -> {
+                            errorMsg1.text =
+                                viewModel.getLangResources().getString(R.string.error)
+
+                            errorMsg2.text =
+                                viewModel.getLangResources().getString(R.string.error_msg)
+                        }
+                    }
+                }
+            }
+        }
+    }

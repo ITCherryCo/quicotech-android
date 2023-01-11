@@ -13,7 +13,7 @@ object Constant {
     val EMAIL_LINK = "email_link"       // register new account or change phone number
     val ORDERS_TAG = "ORDERS_RESPONSE"
     val TRACK_ORDER= "Track Order"
-    val ALL= "all"
+    val ALL= "All"
     val ORDER_RECEIVED= "Order Received"
     val PACKAGING= "Packaging"
     val ON_THE_WAY= "On The Way"

@@ -19,6 +19,7 @@ import com.quico.tech.data.Constant.SERVICE_ORDERS
 import com.quico.tech.data.Constant.TRACKING_ON
 import com.quico.tech.databinding.OrderItemListBinding
 import com.quico.tech.model.Order
+import com.quico.tech.model.OrderStatus
 import com.quico.tech.viewmodel.SharedViewModel
 
 class OrderRecyclerViewAdapter(val is_service: Boolean, val viewModel: SharedViewModel) :
@@ -52,13 +53,13 @@ class OrderRecyclerViewAdapter(val is_service: Boolean, val viewModel: SharedVie
                 }
 
                // orderStatus.text = itemView.resources.getString(R.string.track_order)
-               // orderStatus.text = OrderStatus.getOrderStatus(viewModel.getLangResources(),order.status)
-                /*orderStatus.backgroundTintList = itemView.resources.getColorStateList(
+                orderStatus.text = OrderStatus.getOrderStatus(viewModel.getLangResources(),order.status)
+                orderStatus.backgroundTintList = itemView.resources.getColorStateList(
                     OrderStatus.getOrderStatusColor(
                         itemView.resources,
                         order.status
                     )
-                )*/
+                )
 
                /* when (absoluteAdapterPosition) {
                     0 -> {

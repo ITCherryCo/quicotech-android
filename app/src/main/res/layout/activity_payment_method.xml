@@ -177,7 +177,7 @@
                 android:layout_toStartOf="@+id/checkImage2"
                 android:fontFamily="@font/medium"
                 android:layoutDirection="locale"
-                android:text="@string/cash_with_delivery"
+                android:text="@string/cash_on_delivery"
                 android:textAllCaps="true"
                 android:textColor="@color/gray_dark"
                 android:textDirection="locale"
