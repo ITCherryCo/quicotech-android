@@ -1,7 +1,7 @@
 package com.quico.tech.model
 
-import android.graphics.drawable.Drawable
-
-class SubCategory(var name: String) {
-
-}
+data class SubCategory(
+    val id: Int,
+    val name: String,
+    val image: String,
+)

@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import com.quico.tech.R
 import com.quico.tech.data.Constant.ADDRESS_TAG
 import com.quico.tech.data.Constant.ALL
+import com.quico.tech.data.Constant.BEST_SELLING_TAG
 import com.quico.tech.data.Constant.BRAND_TAG
 import com.quico.tech.data.Constant.CART_TAG
 import com.quico.tech.data.Constant.CATEGORY_TAG
@@ -20,6 +21,7 @@ import com.quico.tech.data.Constant.ERROR
 import com.quico.tech.data.Constant.EXCEPTION
 import com.quico.tech.data.Constant.HOME_TAG
 import com.quico.tech.data.Constant.ONGOING_ORDERS
+import com.quico.tech.data.Constant.PRODUCTS_BY_CATEGORY_TAG
 import com.quico.tech.data.Constant.PRODUCT_TAG
 import com.quico.tech.data.Constant.SERVICE_TAG
 import com.quico.tech.data.Constant.SUCCESS
@@ -99,6 +101,14 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private val _categories: MutableStateFlow<Resource<CategoryResponse>> =
         MutableStateFlow(Resource.Nothing())
     val categories: StateFlow<Resource<CategoryResponse>> get() = _categories
+
+    private val _allBestSellingProducts: MutableStateFlow<Resource<ProductsResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val allBestSellingProducts: StateFlow<Resource<ProductsResponse>> get() = _allBestSellingProducts
+
+    private val _productsByCategory: MutableStateFlow<Resource<CategoryDetailResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val productsByCategory: StateFlow<Resource<CategoryDetailResponse>> get() = _productsByCategory
 
     private val _brands: MutableStateFlow<Resource<BrandResponse>> =
         MutableStateFlow(Resource.Nothing())
@@ -1397,6 +1407,69 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             } else {
                 Log.d(CATEGORY_TAG, "$CONNECTION}")
                 _categories.emit(Resource.Connection())
+            }
+        }
+    }
+
+    fun getAllBestSellingProducts() {
+        viewModelScope.launch {
+
+            _allBestSellingProducts.emit(Resource.Loading())
+
+            if (checkInternet(context)) {
+                try {
+                    val response = repository.getAllBestSellingProducts()
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            Log.d(BEST_SELLING_TAG, "SUCCESS ${resultResponse.result.size}}")
+                            _allBestSellingProducts.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        Log.d(BEST_SELLING_TAG, "ERROR ${response}}")
+
+                        _allBestSellingProducts.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d(BEST_SELLING_TAG, "EXCEPTION ${e.message}}}")
+                    _allBestSellingProducts.emit(Resource.Error(ERROR))
+                }
+            } else {
+                Log.d(BEST_SELLING_TAG, "$CONNECTION}")
+                _allBestSellingProducts.emit(Resource.Connection())
+            }
+        }
+    }
+
+    fun getProductsByCategory(category_id: Int, paginationBodyParameters: PaginationBodyParameters) {
+        viewModelScope.launch {
+
+            if (paginationBodyParameters.params.page==1)
+                _productsByCategory.emit(Resource.Loading())
+            else
+                _productsByCategory.emit(Resource.LoadingWithProducts())
+
+            if (checkInternet(context)) {
+                try {
+                    val response = repository.getProductsByCategory(category_id, paginationBodyParameters)
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            Log.d(PRODUCTS_BY_CATEGORY_TAG, "SUCCESS ${resultResponse.result?.products?.size}}")
+                            _productsByCategory.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        Log.d(PRODUCTS_BY_CATEGORY_TAG, "ERROR ${response}}")
+
+                        _productsByCategory.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d(PRODUCTS_BY_CATEGORY_TAG, "EXCEPTION ${e.message}}}")
+                    _productsByCategory.emit(Resource.Error(ERROR))
+                }
+            } else {
+                Log.d(PRODUCTS_BY_CATEGORY_TAG, "$CONNECTION}")
+                _productsByCategory.emit(Resource.Connection())
             }
         }
     }

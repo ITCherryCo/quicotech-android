@@ -64,6 +64,9 @@ class HomeFragment : Fragment() {
             viewAllBrandsLabel.setOnClickListener {
                 startActivity(Intent(context, BrandAllActivity::class.java))
             }
+            viewAllBestSellingLabel.setOnClickListener {
+                startActivity(Intent(context, BestSellingAllActivity::class.java))
+            }
 
             viewModel.user?.let { user ->
                 if (user.have_items_in_cart)

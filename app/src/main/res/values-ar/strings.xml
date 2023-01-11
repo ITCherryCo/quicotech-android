@@ -280,5 +280,8 @@ efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifen
     <string name="hot_deals">Hot Deals</string>
     <string name="best_selling">Best selling</string>
     <string name="offers_and_sales">Offers and Sales</string>
+    <string name="no_best_selling_products">No best selling products are found</string>
+    <string name="products_by_category">Products By Category</string>
+    <string name="no_products_by_category">No products  are found</string>
 
 </resources>

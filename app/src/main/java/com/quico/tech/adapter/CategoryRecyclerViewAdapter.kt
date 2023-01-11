@@ -35,7 +35,8 @@ class CategoryRecyclerViewAdapter(var withFilterSelection : Boolean) : RecyclerV
                         lastSelectedPosition = absoluteAdapterPosition
                         notifyDataSetChanged()
                     }else{
-                        itemView.context.startActivity(Intent(itemView.context, CategoryDetailActivity::class.java).putExtra(Constant.CATEGORY_ID, category.id))
+                        itemView.context.startActivity(Intent(itemView.context, CategoryDetailActivity::class.java).putExtra(Constant.CATEGORY_ID, category.id).putExtra(
+                            Constant.CATEGORY_NAME, category.name))
                     }
                 }
 

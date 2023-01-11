@@ -32,8 +32,8 @@ class CategoryAllRecyclerViewAdapter() : RecyclerView.Adapter<CategoryAllRecycle
                     .into(image)
 
                 itemView.setOnClickListener {
-                    itemView.context.startActivity(Intent(itemView.context, CategoryDetailActivity::class.java).putExtra(Constant.CATEGORY_ID, 1))
-                }
+                    itemView.context.startActivity(Intent(itemView.context, CategoryDetailActivity::class.java).putExtra(Constant.CATEGORY_ID, category.id).putExtra(
+                        Constant.CATEGORY_NAME, category.name))                }
             }
         }
     }

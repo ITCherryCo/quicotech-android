@@ -145,5 +145,12 @@ interface API {
     @Headers("Content-Type: text/html")
     suspend fun createDeliveryOrder(@Body orderBodyParameters: OrderBodyParameters): Response<RegisterResponse>
 
+    @POST("bestSelling")
+    @Headers("Content-Type: text/html")
+    suspend fun getAllBestSellingProducts(): Response<ProductsResponse>
+
+    @POST("getProductsByCategory/{category_id}")
+    @Headers("Content-Type: text/html")
+    suspend fun getProductsByCategory(@Path("category_id") category_id: Int, @Body paginationBodyParameters: PaginationBodyParameters): Response<CategoryDetailResponse>
 
 }
