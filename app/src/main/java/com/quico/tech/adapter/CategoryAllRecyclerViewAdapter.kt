@@ -27,8 +27,8 @@ class CategoryAllRecyclerViewAdapter() : RecyclerView.Adapter<CategoryAllRecycle
                 //image.setImageDrawable(category.image)
                 Glide.with(itemView.context)
                     .load(category.image)
-                    //.placeholder(R.drawable.placeholder)
-                    .error(R.drawable.profile_user)
+                    .fitCenter()
+                    .error(R.drawable.empty_item)
                     .into(image)
 
                 itemView.setOnClickListener {

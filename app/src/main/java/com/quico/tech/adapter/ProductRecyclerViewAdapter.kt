@@ -47,7 +47,7 @@ class ProductRecyclerViewAdapter(
                     largeContainer.visibility = View.GONE
                     smallContainer.visibility = View.VISIBLE
                     productName.text = product.name
-                    productPrice.text = product.new_price.toString()
+                    smallProductOldPrice.text = product.regular_price.toString()
                     product.image?.let {
                         if (it.isNotEmpty())
                             loadImage(it, productImage)

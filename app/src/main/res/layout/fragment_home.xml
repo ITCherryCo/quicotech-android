@@ -144,6 +144,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:padding="16dp"
+                    android:baselineAligned="true"
                     android:layoutDirection="locale"
                     android:orientation="horizontal">
 
@@ -151,7 +152,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Categories"
+                        android:text="@string/categories"
+                        android:fontFamily="@font/bold"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/black"
                         android:textDirection="locale"
@@ -164,7 +166,8 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:text="View All"
+                        android:fontFamily="@font/medium"
+                        android:text="@string/view_all"
                         android:textDirection="locale"
                         android:layoutDirection="locale"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -182,6 +185,57 @@
 
             </LinearLayout>
 
+
+            <LinearLayout
+                android:id="@+id/lnyVipHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="locale"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:layoutDirection="locale"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/vip"
+                        android:fontFamily="@font/bold"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:text="@string/view_all"
+                        android:fontFamily="@font/medium"
+                        android:textDirection="locale"
+                        android:layoutDirection="locale"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="@color/color_primary_purple"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewVIP"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:clipToPadding="false"
+                    android:layoutDirection="locale"
+                    android:scrollbars="none" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -203,7 +257,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Brands"
+                        android:text="@string/brands"
+                        android:fontFamily="@font/bold"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/black"
                         android:textDirection="locale"
@@ -216,7 +271,8 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:text="View All"
+                        android:fontFamily="@font/medium"
+                        android:text="@string/view_all"
                         android:textDirection="locale"
                         android:layoutDirection="locale"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -253,7 +309,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Hot Deals"
+                        android:text="@string/hot_deals"
+                        android:fontFamily="@font/bold"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/black"
                         android:textDirection="locale"
@@ -265,7 +322,8 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:text="View All"
+                        android:text="@string/view_all"
+                        android:fontFamily="@font/medium"
                         android:textDirection="locale"
                         android:layoutDirection="locale"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -302,7 +360,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Best selling"
+                        android:text="@string/best_selling"
+                        android:fontFamily="@font/bold"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/black"
                         android:textDirection="locale"
@@ -314,7 +373,8 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:text="View All"
+                        android:text="@string/view_all"
+                        android:fontFamily="@font/medium"
                         android:textDirection="locale"
                         android:layoutDirection="locale"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -352,7 +412,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Offers and Sales"
+                        android:text="@string/offers_and_sales"
+                        android:fontFamily="@font/bold"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/black"
                         android:textDirection="locale"
@@ -364,7 +425,8 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:text="View All"
+                        android:fontFamily="@font/medium"
+                        android:text="@string/view_all"
                         android:textDirection="locale"
                         android:layoutDirection="locale"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"

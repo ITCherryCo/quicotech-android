@@ -31,10 +31,14 @@ class BestSellingRecyclerViewAdapter() : RecyclerView.Adapter<BestSellingRecycle
                 productName.text = product.name
                 Glide.with(itemView.context)
                     .load(product.image)
-                    .error(R.drawable.profile_user)
+                    .fitCenter()
+                    .error(R.drawable.empty_item)
                     .into(productImage)
-                productPrice.text = "$"+ product.regular_price.toString()
-                //productNewPrice.text = product.new_price.toString()
+
+                smallProductOldPrice.text = "$ ${product.regular_price.toString()}"
+                smallProductNewPrice.visibility = View.GONE
+                smallVipText.visibility = View.GONE
+                smallSaleText.visibility = View.GONE
 
                 cardViewSmall.setOnClickListener {
                     itemView.context.startActivity(

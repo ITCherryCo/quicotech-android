@@ -77,7 +77,7 @@ class BrandAllActivity : AppCompatActivity() {
                         }
                         stopShimmer()
                         response.data?.let { brandsResponse ->
-                            if (brandsResponse.result!!.isNullOrEmpty())
+                            if (brandsResponse.result.isNullOrEmpty())
                                 setUpErrorForm(Constant.NO_BRANDS)
                             else {
                                 brandAllRecyclerViewAdapter.differ.submitList(brandsResponse.result!!)

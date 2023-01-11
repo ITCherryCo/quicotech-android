@@ -32,12 +32,15 @@ class HotDealsRecyclerViewAdapter() : RecyclerView.Adapter<HotDealsRecyclerViewA
                 productName.text = product.name
                 Glide.with(itemView.context)
                     .load(product.image)
-                    .error(R.drawable.profile_user)
+                    .fitCenter()
+                    .error(R.drawable.empty_item)
                     .into(productImage)
-                productPrice.text = "$"+product.regular_price.toString()
-                productPrice.setPaintFlags(productPrice.getPaintFlags())
-                productNewPrice.text = "$"+product.new_price.toString()
 
+                smallProductOldPrice.text = "$ ${product.regular_price.toString()}"
+                smallProductNewPrice.text ="$ ${product.new_price.toString()}"
+                smallProductOldPrice.setBackground(itemView.resources.getDrawable(R.drawable.red_line))
+                smallVipText.visibility = View.GONE
+                smallSaleText.visibility = View.VISIBLE
 
                 cardViewSmall.setOnClickListener {
                     itemView.context.startActivity(

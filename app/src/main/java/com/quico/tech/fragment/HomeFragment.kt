@@ -31,6 +31,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var categoryRecyclerViewAdapter: CategoryRecyclerViewAdapter
     private lateinit var hotDealsRecyclerViewAdapter: HotDealsRecyclerViewAdapter
+    private lateinit var vipRecyclerViewAdapter: VIPProductsHomeRecyclerViewAdapter
     private lateinit var bestSellingRecyclerViewAdapter: BestSellingRecyclerViewAdapter
     private lateinit var offersRecyclerViewAdapter: OffersProductsRecyclerViewAdapter
     private lateinit var brandHomeRecyclerViewAdapter: BrandHomeRecyclerViewAdapter
@@ -149,12 +150,14 @@ class HomeFragment : Fragment() {
                             recyclerViewBrands.visibility = View.VISIBLE
                             recyclerViewBestSelling.visibility = View.VISIBLE
                             recyclerViewHotDeals.visibility = View.VISIBLE
+                            recyclerViewVIP.visibility = View.VISIBLE
                             recyclerViewOffers.visibility = View.VISIBLE
                             lnyCategoryHeader.visibility = View.VISIBLE
                             lnyBrandHeader.visibility = View.VISIBLE
                             lnyHotDealsheader.visibility = View.VISIBLE
                             lnyBestSellingsheader.visibility = View.VISIBLE
                             lnyOfferssheader.visibility = View.VISIBLE
+                            lnyVipHeader.visibility = View.VISIBLE
                             lnyCategoryCard.visibility = View.VISIBLE
                         }
                         stopShimmer()
@@ -165,12 +168,14 @@ class HomeFragment : Fragment() {
                                 categoryRecyclerViewAdapter.differ.submitList(homeDataResponse.result.categories!!)
                                 brandHomeRecyclerViewAdapter.differ.submitList(homeDataResponse.result.brands!!)
                                 hotDealsRecyclerViewAdapter.differ.submitList(homeDataResponse.result.hot_deals!!)
+                                vipRecyclerViewAdapter.differ.submitList(homeDataResponse.result.vip_products!!)
                                 bestSellingRecyclerViewAdapter.differ.submitList(homeDataResponse.result.best_selling!!)
                                 offersRecyclerViewAdapter.differ.submitList(homeDataResponse.result.offers!!)
                                 binding.recyclerViewCategories.setVisibility(View.VISIBLE)
                                 binding.recyclerViewBrands.setVisibility(View.VISIBLE)
                                 binding.recyclerViewOffers.setVisibility(View.VISIBLE)
                                 binding.recyclerViewHotDeals.setVisibility(View.VISIBLE)
+                                binding.recyclerViewVIP.setVisibility(View.VISIBLE)
                                 binding.recyclerViewBestSelling.setVisibility(View.VISIBLE)
                             }
                         }
@@ -211,12 +216,14 @@ class HomeFragment : Fragment() {
             recyclerViewBrands.visibility = View.GONE
             recyclerViewBestSelling.visibility = View.GONE
             recyclerViewHotDeals.visibility = View.GONE
+            recyclerViewVIP.visibility = View.GONE
             recyclerViewOffers.visibility = View.GONE
             lnyCategoryHeader.visibility = View.GONE
             lnyBrandHeader.visibility = View.GONE
             lnyHotDealsheader.visibility = View.GONE
             lnyBestSellingsheader.visibility = View.GONE
             lnyOfferssheader.visibility = View.GONE
+            lnyVipHeader.visibility = View.GONE
             lnyCategoryCard.visibility = View.GONE
             homeErrorContainer.root.visibility = View.GONE
             shimmer.visibility = View.VISIBLE
@@ -237,6 +244,7 @@ class HomeFragment : Fragment() {
 
     fun subscribeHomeList() {
         setUpCategoriesAdapter()
+        setUpVIPAdapter()
         setUpBrandsAdapter()
         setUpHotDealsAdapter()
         setBestSellingProductsAdapter()
@@ -267,6 +275,20 @@ class HomeFragment : Fragment() {
             recyclerViewBrands.setItemAnimator(DefaultItemAnimator())
             recyclerViewBrands.setAdapter(brandHomeRecyclerViewAdapter)
             brandHomeRecyclerViewAdapter.differ.submitList(brands)
+        }
+    }
+
+    fun setUpVIPAdapter() {
+        binding.apply {
+            vipRecyclerViewAdapter = VIPProductsHomeRecyclerViewAdapter()
+            val vipProducts = ArrayList<Product>()
+
+            recyclerViewVIP.layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            recyclerViewVIP.setItemAnimator(DefaultItemAnimator())
+            recyclerViewVIP.setAdapter(vipRecyclerViewAdapter)
+
+            vipRecyclerViewAdapter.differ.submitList(vipProducts)
         }
     }
 
@@ -319,12 +341,14 @@ class HomeFragment : Fragment() {
             recyclerViewBrands.visibility = View.GONE
             recyclerViewBestSelling.visibility = View.GONE
             recyclerViewHotDeals.visibility = View.GONE
+            recyclerViewVIP.visibility = View.GONE
             recyclerViewOffers.visibility = View.GONE
             lnyCategoryHeader.visibility = View.GONE
             lnyBrandHeader.visibility = View.GONE
             lnyHotDealsheader.visibility = View.GONE
             lnyBestSellingsheader.visibility = View.GONE
             lnyOfferssheader.visibility = View.GONE
+            lnyVipHeader.visibility = View.GONE
             lnyCategoryCard.visibility = View.GONE
 
             stopShimmer()

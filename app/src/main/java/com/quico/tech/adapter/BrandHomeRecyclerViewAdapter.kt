@@ -29,8 +29,7 @@ class BrandHomeRecyclerViewAdapter() : RecyclerView.Adapter<BrandHomeRecyclerVie
 
                 Glide.with(itemView.context)
                     .load(brand.image)
-                    //.placeholder(R.drawable.placeholder)
-                    .error(R.drawable.profile_user)
+                    .error(R.drawable.empty_item)
                     .into(brandImage)
 
                 itemView.setOnClickListener {

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "220062952727",
+    "firebase_url": "https://quico-tech-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "quico-tech",
     "storage_bucket": "quico-tech.appspot.com"
   },
@@ -13,6 +14,30 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "220062952727-60t86dshv2fuoqvdh2a3oth0ro8f4v6n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.quico.tech",
+            "certificate_hash": "2a6cc0cc67be519f3295e5b658323f2b6a360837"
+          }
+        },
+        {
+          "client_id": "220062952727-6b09edstm9dpnrilhhno59msa4btvdc4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.quico.tech",
+            "certificate_hash": "72403a9ed9fe5d80c693759699f4dc9757353c34"
+          }
+        },
+        {
+          "client_id": "220062952727-qobiss6m2v4emok7q4gl5l9skve3o3uu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.quico.tech",
+            "certificate_hash": "ff45e89436208d7199e0916929bca9cbccba46a7"
+          }
+        },
         {
           "client_id": "220062952727-d9o9qckt6nmthein3cro000vsmaologj.apps.googleusercontent.com",
           "client_type": 3

@@ -44,6 +44,7 @@
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_compare_product.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_compare_search.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_edit_profile.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_general_terms.xml" value="0.264" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_general_web_info.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_home.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/activity_home_test.xml" value="0.36666666666666664" />
@@ -73,6 +74,7 @@
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/category_item_list.xml" value="0.253125" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/compare_product.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/error_container.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/filter_bottom_sheet.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/fragment_address.xml" value="0.18854166666666666" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/fragment_home.xml" value="0.24010416666666667" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/fragment_home_content.xml" value="0.253125" />
@@ -87,6 +89,7 @@
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/maintenace_item_list.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/order_item_list.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/order_summary_list.xml" value="0.18854166666666666" />
+        <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/product_details_item_list.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/product_image.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/product_item_list.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidStudioProjects/quicotech-android/app/src/main/res/layout/repair_photo_item_list.xml" value="0.25416666666666665" />

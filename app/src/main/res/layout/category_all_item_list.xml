@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/name"
                     android:layout_centerHorizontal="true"
-                    android:scaleType="centerInside"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/mobiles_all" />
 
                 <TextView
