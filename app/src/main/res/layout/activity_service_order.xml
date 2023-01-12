@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.CheckoutActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:elevation="1dp"
+        android:layoutDirection="locale"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/back_arrow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:padding="8dp"
+                android:src="@drawable/back_arrow" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="45dp"
+                android:layout_toEndOf="@+id/back_arrow"
+                android:gravity="center"
+                android:text="@string/service_order"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="20dp">
+
+                <include
+                    android:id="@+id/orderErrorContainer"
+                    layout="@layout/error_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="150dp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/mainContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <include
+                        android:id="@+id/orderTracking"
+                        layout="@layout/tracking_design"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/userInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/bold"
+                            android:layoutDirection="locale"
+                            android:text="Danielle"
+                            android:textColor="@color/black"
+                            android:textDirection="locale"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/regular"
+                            android:maxLines="2"
+                            android:text="example@gmail.com"
+                            android:textColor="@color/gray_dark"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/phoneNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/regular"
+                            android:gravity="center_vertical"
+                            android:layoutDirection="locale"
+                            android:text="+961 70707070"
+                            android:textColor="@color/gray_dark"
+                            android:textDirection="locale"
+                            android:textSize="14sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.4dp"
+                            android:layout_marginTop="20dp"
+                            android:alpha="0.3"
+                            android:background="@color/gray_dark"
+                            android:elevation="0.1dp" />
+                    </LinearLayout>
+
+                    <include
+                        android:id="@+id/serviceOrderAddress"
+                        layout="@layout/address_in_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"/>
+
+
+                    <RelativeLayout
+                        android:id="@+id/visaContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/container_black_stroke_1"
+                        android:layoutDirection="locale"
+                        android:padding="15dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/visaImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="10dp"
+                            android:layoutDirection="locale"
+                            android:src="@drawable/visa" />
+
+                        <TextView
+                            android:id="@+id/dottedText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="5dp"
+                            android:layout_toEndOf="@+id/visaImage"
+                            android:inputType="textPassword"
+                            android:layoutDirection="locale"
+                            android:text="1111"
+                            android:textDirection="locale" />
+
+                        <TextView
+                            android:id="@+id/lastNmb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="5dp"
+                            android:layout_toStartOf="@+id/checkImage"
+                            android:layout_toEndOf="@+id/dottedText"
+                            android:fontFamily="@font/regular"
+                            android:layoutDirection="locale"
+                            android:text="123"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textDirection="locale" />
+
+                        <ImageView
+                            android:id="@+id/checkImage"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="10dp"
+                            android:layoutDirection="locale"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/check"
+                            android:textDirection="locale" />
+                    </RelativeLayout>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.4dp"
+                        android:layout_marginTop="25dp"
+                        android:alpha="0.3"
+                        android:background="@color/gray_dark"
+                        android:elevation="0.1dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/serviceIdText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/bold"
+                            android:layoutDirection="locale"
+                            android:text="@string/service_name_id"
+                            android:textColor="@color/black"
+                            android:textDirection="locale"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/serviceDetailsText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/regular"
+                            android:layoutDirection="locale"
+                            android:textColor="@color/gray_dark"
+                            android:textDirection="locale"
+                            android:textSize="14sp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layoutDirection="locale" />
+
+                        <TextView
+                            android:id="@+id/serviceDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/regular"
+                            android:layoutDirection="locale"
+                            android:textColor="@color/gray_dark"
+                            android:textDirection="locale"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+</RelativeLayout>

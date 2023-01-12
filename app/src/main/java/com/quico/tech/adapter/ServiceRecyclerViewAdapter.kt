@@ -100,6 +100,7 @@ class ServiceRecyclerViewAdapter(val viewModel: SharedViewModel) :
                 if (serviceType.image.isNullOrEmpty()) {
                     Glide.with(itemView)
                         .load(serviceType.image)
+                        .fitCenter()
                         //.placeholder(R.drawable.placeholder)
                         .error(R.drawable.smartphone)
                         .into(image)

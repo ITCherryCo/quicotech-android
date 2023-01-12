@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -14,7 +13,7 @@ import com.quico.tech.R
 import com.quico.tech.adapter.ServiceRecyclerViewAdapter
 import com.quico.tech.data.Constant
 import com.quico.tech.databinding.ActivityServiceListBinding
-import com.quico.tech.model.ServiceOrder
+import com.quico.tech.model.ServiceOrderParams
 import com.quico.tech.model.ServiceType
 import com.quico.tech.utils.Common
 import com.quico.tech.utils.Resource
@@ -53,9 +52,9 @@ class ServiceListActivity : AppCompatActivity() {
 
         if (service_id!=0 && service_type_id==0){
             viewModel.getServiceTypes(service_id!!,false)
+            // for first maintenance hit
             viewModel.requested_serive_order=null
-
-            viewModel.requested_serive_order= ServiceOrder(service_id!!)
+            viewModel.requested_serive_order= ServiceOrderParams(service_id!!)
         }
 
         else if (service_id==0 && service_type_id!=0){

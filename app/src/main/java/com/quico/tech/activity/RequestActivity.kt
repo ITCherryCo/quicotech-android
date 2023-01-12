@@ -37,7 +37,9 @@ import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
 import java.io.File
 import java.io.IOException
+import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class RequestActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRequestBinding
@@ -55,7 +57,7 @@ class RequestActivity : AppCompatActivity() {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var mediaRecorder: MediaRecorder
     private lateinit var current_photo: PhotoService
-    private  var current_photo_position: Int=-1
+    private var current_photo_position: Int = -1
 
     class PhotoService(val id: Int, var img: Uri?)
 
@@ -72,10 +74,11 @@ class RequestActivity : AppCompatActivity() {
         initStatusBar()
     }
 
-    fun initStatusBar(){
+    fun initStatusBar() {
         Common.setSystemBarColor(this, R.color.white)
         Common.setSystemBarLight(this)
     }
+
     private fun setUpText() {
         binding.apply {
 
@@ -89,12 +92,8 @@ class RequestActivity : AppCompatActivity() {
                 backArrow.scaleX = -1f
 
             submitBtn.setOnClickListener {
-                startActivity(
-                    Intent(this@RequestActivity, RequestDeliveryActivity::class.java).putExtra(
-                        SERVICE_ID,
-                        1
-                    )
-                )
+                // get everything
+                setRepairInfo()
             }
 
             setUpVoiceRecorder()
@@ -132,9 +131,12 @@ class RequestActivity : AppCompatActivity() {
                     if (result.data != null && result.data!!.data != null) {
 
                         var imageUri = result.data!!.data
-                       // photos.set(current_photo_position,PhotoService(current_photo.id,imageUri))
-                        photos.get(current_photo_position).img=imageUri
-                        Log.d("CURRENT_PHOTO",current_photo_position.toString() + " "  +current_photo.id.toString())
+                        // photos.set(current_photo_position,PhotoService(current_photo.id,imageUri))
+                        photos.get(current_photo_position).img = imageUri
+                        Log.d(
+                            "CURRENT_PHOTO",
+                            current_photo_position.toString() + " " + current_photo.id.toString()
+                        )
 
                         requestPhotoRecyclerViewAdapter.differ.submitList(photos)
                         requestPhotoRecyclerViewAdapter.notifyDataSetChanged()
@@ -146,23 +148,22 @@ class RequestActivity : AppCompatActivity() {
     fun setUpPhotosAdapter() {
         binding.apply {
 
-            photos.add(PhotoService(1,null))
-            photos.add(PhotoService(2,null))
-            photos.add(PhotoService(3,null))
-            photos.add(PhotoService(4,null))
+            photos.add(PhotoService(1, null))
+            photos.add(PhotoService(2, null))
+            photos.add(PhotoService(3, null))
+            photos.add(PhotoService(4, null))
 
             requestPhotoRecyclerViewAdapter = RequestPhotoRecyclerViewAdapter(object :
                 RequestPhotoRecyclerViewAdapter.OnAddPhoto {
-                override fun onAddPhoto(position: Int,currentPhoto:PhotoService) {
+                override fun onAddPhoto(position: Int, currentPhoto: PhotoService) {
 
-                    if (currentPhoto.img==null){
+                    if (currentPhoto.img == null) {
                         current_photo = currentPhoto
                         current_photo_position = position
                         checkGalleryPermissions()
                     }
                 }
             })
-
 
             recyclerView.layoutManager = GridLayoutManager(this@RequestActivity, 2)
             recyclerView.setItemAnimator(DefaultItemAnimator())
@@ -185,7 +186,7 @@ class RequestActivity : AppCompatActivity() {
             recordView.setOnRecordListener(object : OnRecordListener {
                 var date: String = ""
                 override fun onStart() {
-                   // deleteAllFiles()
+                    // deleteAllFiles()
                     audioRecorder = AudioRecorder()
                     mediaRecorder = MediaRecorder()
                     recordFile = File(
@@ -196,14 +197,14 @@ class RequestActivity : AppCompatActivity() {
                         if (!recordFile!!.mkdirs()) recordFile!!.mkdirs()
                         date = System.currentTimeMillis().toString()
                         audioPath = recordFile?.getAbsolutePath() + File.separator + date + ".3gp"
-                        audioRecorder!!.start(audioPath,mediaRecorder)
+                        audioRecorder!!.start(audioPath, mediaRecorder)
                         Log.d("RecordView", audioPath)
                     } catch (e: IOException) {
                         // recordView.setBackgroundColor(resources.getColor(android.R.color.transparent))
                         e.printStackTrace()
                         Log.d("RecordView", "EXCEPTION ${e.message}")
                     }
-                   // Toast.makeText(this@RequestActivity,"start",Toast.LENGTH_LONG).show()
+                    // Toast.makeText(this@RequestActivity,"start",Toast.LENGTH_LONG).show()
                     Log.d("RecordView", "onStart")
                 }
 
@@ -234,7 +235,7 @@ class RequestActivity : AppCompatActivity() {
                             //Toast.makeText(this@RequestActivity,"failed",Toast.LENGTH_LONG).show()
                             stopRecording(true)
                         }
-                    }catch (e:java.lang.Exception){
+                    } catch (e: java.lang.Exception) {
 
                     }
                     Log.d("RecordView", "FINISH RECORD")
@@ -243,11 +244,11 @@ class RequestActivity : AppCompatActivity() {
                 override fun onLessThanSecond() {
                     try {
                         stopRecording(true)
-                    }catch (e:java.lang.Exception){
+                    } catch (e: java.lang.Exception) {
 
                     }
                     Log.d("RecordView", "onLessThanSecond")
-                   // Toast.makeText(this@RequestActivity,"less than 1",Toast.LENGTH_LONG).show()
+                    // Toast.makeText(this@RequestActivity,"less than 1",Toast.LENGTH_LONG).show()
                 }
             })
 
@@ -355,5 +356,35 @@ class RequestActivity : AppCompatActivity() {
         )
     }
 
+    private fun setRepairInfo() {
+        binding.apply {
+            viewModel.requested_serive_order?.let { service_order ->
+
+                viewModel.requested_serive_order = service_order.copy(description = problemDescription.text.toString())
+                var images = ArrayList<String>()
+
+                photos.forEach { photo_service ->
+                    var imageEncoded =""
+                    photo_service.img?.let { image ->
+                        val bytes = contentResolver.openInputStream(image)?.readBytes()
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            imageEncoded = Base64.getEncoder().encodeToString(bytes)
+                            images.add(imageEncoded)
+                        }
+                    }
+                }
+                // add images
+               // viewModel.requested_serive_order = service_order.copy(description = problemDescription.text.toString())
+
+                // add audio file
+
+               // viewModel.requested_serive_order = service_order.copy(description = problemDescription.text.toString())
+
+                startActivity(
+                    Intent(this@RequestActivity, RequestDeliveryActivity::class.java)
+                )
+            }
+        }
+    }
 
 }

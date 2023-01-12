@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/addressInfoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="105dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:layout_toStartOf="@+id/mapImage"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/addressName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bold"
+                android:layoutDirection="locale"
+                android:text="Home"
+                android:textColor="@color/black"
+                android:textDirection="locale"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/userAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/regular"
+                android:maxLines="2"
+                android:text="Lebanon, City , state - province, street, building, apartment
+, office.."
+                android:textColor="@color/gray_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/phoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/regular"
+                android:gravity="center_vertical"
+                android:layoutDirection="locale"
+                android:text="+961 70707070"
+                android:textColor="@color/gray_dark"
+                android:textDirection="locale"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/mapImage"
+            android:layout_width="105dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layoutDirection="locale"
+            android:src="@drawable/map" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.4dp"
+        android:layout_marginTop="20dp"
+        android:alpha="0.3"
+        android:background="@color/gray_dark"
+        android:elevation="0.1dp" />
+
+</LinearLayout>

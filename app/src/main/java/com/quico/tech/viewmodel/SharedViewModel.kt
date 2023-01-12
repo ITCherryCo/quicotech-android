@@ -6,10 +6,8 @@ import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import com.quico.tech.R
 import com.quico.tech.data.Constant.ADDRESS_TAG
-import com.quico.tech.data.Constant.ALL
 import com.quico.tech.data.Constant.BRAND_TAG
 import com.quico.tech.data.Constant.CART_TAG
 import com.quico.tech.data.Constant.CATEGORY_TAG
@@ -19,6 +17,7 @@ import com.quico.tech.data.Constant.EN
 import com.quico.tech.data.Constant.ERROR
 import com.quico.tech.data.Constant.EXCEPTION
 import com.quico.tech.data.Constant.HOME_TAG
+import com.quico.tech.data.Constant.ORDERS_TAG
 import com.quico.tech.data.Constant.PRODUCT_TAG
 import com.quico.tech.data.Constant.SERVICE_TAG
 import com.quico.tech.data.Constant.SUCCESS
@@ -55,9 +54,13 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     // private val _orders_filter_type: MutableStateFlow<String> = MutableStateFlow(ALL)
     // val orders_filter_type: StateFlow<String> get() = _orders_filter_type
 
-    private val _orders: MutableStateFlow<Resource<OrderResponse>> =
+    private val _delivery_orders: MutableStateFlow<Resource<OrderResponse>> =
         MutableStateFlow(Resource.Nothing())
-    val orders: StateFlow<Resource<OrderResponse>> get() = _orders
+    val delivery_orders: StateFlow<Resource<OrderResponse>> get() = _delivery_orders
+
+    private val _service_orders: MutableStateFlow<Resource<OrderResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val service_orders: StateFlow<Resource<OrderResponse>> get() = _service_orders
 
     private val _cards: MutableStateFlow<Resource<OrderResponse>> =
         MutableStateFlow(Resource.Nothing())
@@ -111,8 +114,11 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     val wishlist: StateFlow<Resource<ProductsResponse>> get() = _wishlist
 
 
-    private val _order: MutableStateFlow<Resource<SingleOrderResponse>> = MutableStateFlow(Resource.Nothing())
-    val order: StateFlow<Resource<SingleOrderResponse>> get() = _order
+    private val _delivery_order: MutableStateFlow<Resource<DeliveryOrderResponse>> = MutableStateFlow(Resource.Nothing())
+    val delivery_order: StateFlow<Resource<DeliveryOrderResponse>> get() = _delivery_order
+
+    private val _service_order: MutableStateFlow<Resource<ServiceOrderResponse>> = MutableStateFlow(Resource.Nothing())
+    val service_order: StateFlow<Resource<ServiceOrderResponse>> get() = _service_order
 
     init {
         context = getApplication<Application>().applicationContext
@@ -201,7 +207,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                prefManager.session_id = new_session_id
            }*/
 
-    var requested_serive_order: ServiceOrder?
+    var requested_serive_order: ServiceOrderParams?
         get() = prefManager.requested_serive_order
         set(serive_order) {
             prefManager.requested_serive_order = serive_order
@@ -948,7 +954,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     fun getOrders(service: Boolean) {
         viewModelScope.launch {
-            _orders.emit(Resource.Loading())
+            _delivery_orders.emit(Resource.Loading())
             if (checkInternet(context)) {
                 try {
                     var response: Response<OrderResponse>? = null
@@ -957,42 +963,63 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
                     if (response.isSuccessful) {
                         response.body()?.let { resultResponse ->
-                            _orders.emit(Resource.Success(resultResponse))
+                            _delivery_orders.emit(Resource.Success(resultResponse))
                         }
                     } else {
-                        _orders.emit(Resource.Error(response.message()))
+                        _delivery_orders.emit(Resource.Error(response.message()))
                     }
                 } catch (e: Exception) {
                     Log.d("PROJECT_RESPONSE", "EXCEPTION  " + e.message.toString())
-                    _orders.emit(Resource.Error(ERROR))
+                    _delivery_orders.emit(Resource.Error(ERROR))
                 }
             } else {
-                _orders.emit(Resource.Connection())
+                _delivery_orders.emit(Resource.Connection())
             }
         }
     }
 
-    fun getOrderById(order_id: Int, service: Boolean) {
+    fun getDeliveryOrderById(order_id: Int) {
         viewModelScope.launch {
-            _order.emit(Resource.Loading())
+            _delivery_order.emit(Resource.Loading())
             if (checkInternet(context)) {
                 try {
-                    var response: Response<SingleOrderResponse>? = null
-                      response = if (service) repository.getServiceOrderById(order_id) else
-                        repository.getDeliveryOrderById(order_id)
+                    var response
+                    =repository.getDeliveryOrderById(order_id)
                     if (response.isSuccessful) {
                         response.body()?.let { resultResponse ->
-                           _order.emit(Resource.Success(resultResponse))
+                           _delivery_order.emit(Resource.Success(resultResponse))
                         }
                     } else {
-                        _order.emit(Resource.Error(response.message()))
+                        _delivery_order.emit(Resource.Error(response.message()))
                     }
                 } catch (e: Exception) {
                     Log.d("PROJECT_RESPONSE", "EXCEPTION  " + e.message.toString())
-                    _order.emit(Resource.Error(ERROR))
+                    _delivery_order.emit(Resource.Error(ERROR))
                 }
             } else {
-                _order.emit(Resource.Connection())
+                _delivery_order.emit(Resource.Connection())
+            }
+        }
+    }
+    fun getServiceOrderById(order_id: Int) {
+        viewModelScope.launch {
+            _service_order.emit(Resource.Loading())
+            if (checkInternet(context)) {
+                try {
+                    var response=  repository.getServiceOrderById(order_id)
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            _service_order.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        _service_order.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d("PROJECT_RESPONSE", "EXCEPTION  " + e.message.toString())
+                    _delivery_order.emit(Resource.Error(ERROR))
+                }
+            } else {
+                _service_order.emit(Resource.Connection())
             }
         }
     }
@@ -1181,7 +1208,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
                     if (response.isSuccessful) {
                         if (response.body()?.result?.status != null) {
-                            Log.d(CART_TAG, "Success")
+                            Log.d(PRODUCT_TAG, "Success")
                             responseStandard?.onSuccess(
                                 true,
                                 SUCCESS,
@@ -1190,7 +1217,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                             viewWishlist(true)
 
                         } else {
-                            Log.d(CART_TAG, "ERROR ${response.body()?.error}")
+                            Log.d(PRODUCT_TAG, "ERROR ${response.body()?.error}")
                             /*  responseStandard?.onFailure(
                                   false,
                                   ERROR,
@@ -1205,7 +1232,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                         }
                         //  getUser(session_id)
                     } else {
-                        Log.d(CART_TAG, "FAILUER ${response.body()}")
+                        Log.d(PRODUCT_TAG, "FAILUER ${response.body()}")
                         /*  responseStandard?.onFailure(
                               false,
                               ERROR,
@@ -1219,7 +1246,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
                     }
                 } catch (e: Exception) {
-                    Log.d(CART_TAG, "EXCEPTION ${e.message.toString()}")
+                    Log.d(PRODUCT_TAG, "EXCEPTION ${e.message.toString()}")
                     /* responseStandard?.onFailure(
                          false,
                          ERROR,
@@ -1232,7 +1259,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     )
                 }
             } else {
-                Log.d(CART_TAG, "$CONNECTION}")
+                Log.d(PRODUCT_TAG, "$CONNECTION}")
                 responseStandard?.onFailure(false, CONNECTION, CONNECTION)
             }
         }
@@ -1342,14 +1369,14 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
                     if (response.isSuccessful) {
                         if (response.body()?.result?.status != null) {
-                            Log.d(CART_TAG, "Success")
+                            Log.d(PRODUCT_TAG, "Success")
                             responseStandard?.onSuccess(
                                 true,
                                 SUCCESS,
                                 getLangResources().getString(R.string.item_added_successfully)
                             )
                         } else {
-                            Log.d(CART_TAG, "$ERROR ${response.body()}")
+                            Log.d(PRODUCT_TAG, "$ERROR ${response.body()}")
                             /*  responseStandard?.onFailure(
                                   false,
                                   ERROR,
@@ -1364,7 +1391,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                         }
                         //  getUser(session_id)
                     } else {
-                        Log.d(CART_TAG, "FAILUER ${response.body()}")
+                        Log.d(PRODUCT_TAG, "FAILUER ${response.body()}")
                         /*  responseStandard?.onFailure(
                               false,
                               ERROR,
@@ -1379,7 +1406,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     }
 
                 } catch (e: Exception) {
-                    Log.d(CART_TAG, "EXCEPTION ${e.message.toString()}")
+                    Log.d(PRODUCT_TAG, "EXCEPTION ${e.message.toString()}")
                     /* responseStandard?.onFailure(
                          false,
                          ERROR,
@@ -1392,7 +1419,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     )
                 }
             } else {
-                Log.d(CART_TAG, "$CONNECTION}")
+                Log.d(PRODUCT_TAG, "$CONNECTION}")
                 responseStandard?.onFailure(false, CONNECTION, CONNECTION)
             }
         }
@@ -1499,7 +1526,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
                     if (response.isSuccessful) {
                         if (response.body()?.result?.status != null) {
-                            Log.d(CART_TAG, "Success")
+                            Log.d(ORDERS_TAG, "Success")
                             responseStandard?.onSuccess(
                                 true,
                                 SUCCESS,
@@ -1507,7 +1534,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                             )
 
                         } else {
-                            Log.d(CART_TAG, "ERROR ${response.body()?.error}")
+                            Log.d(ORDERS_TAG, "ERROR ${response.body()?.error}")
                             /*  responseStandard?.onFailure(
                                   false,
                                   ERROR,
@@ -1522,7 +1549,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                         }
                         //  getUser(session_id)
                     } else {
-                        Log.d(CART_TAG, "FAILUER ${response.body()?.error}")
+                        Log.d(ORDERS_TAG, "FAILUER ${response.body()?.error}")
                         /*  responseStandard?.onFailure(
                               false,
                               ERROR,
@@ -1537,7 +1564,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     }
 
                 } catch (e: Exception) {
-                    Log.d(CART_TAG, "EXCEPTION ${e.message.toString()}")
+                    Log.d(ORDERS_TAG, "EXCEPTION ${e.message.toString()}")
                     /* responseStandard?.onFailure(
                          false,
                          ERROR,
@@ -1550,14 +1577,14 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     )
                 }
             } else {
-                Log.d(CART_TAG, "$CONNECTION}")
+                Log.d(ORDERS_TAG, "$CONNECTION}")
                 responseStandard?.onFailure(false, CONNECTION, CONNECTION)
             }
         }
     }
 
     fun createServiceOrder(
-        params: OrderBodyParameters,
+        params: ServiceBodyParameters,
         responseStandard: ResponseStandard?
     ) {
         viewModelScope.launch {
@@ -1567,7 +1594,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
                     if (response.isSuccessful) {
                         if (response.body()?.result?.status != null) {
-                            Log.d(CART_TAG, "Success")
+                            Log.d(ORDERS_TAG, "Success")
                             responseStandard?.onSuccess(
                                 true,
                                 SUCCESS,
@@ -1575,7 +1602,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                             )
 
                         } else {
-                            Log.d(CART_TAG, "ERROR ${response.body()?.error}")
+                            Log.d(ORDERS_TAG, "ERROR ${response.body()?.error}")
                             /*  responseStandard?.onFailure(
                                   false,
                                   ERROR,
@@ -1590,7 +1617,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                         }
                         //  getUser(session_id)
                     } else {
-                        Log.d(CART_TAG, "FAILUER ${response.body()?.error}")
+                        Log.d(ORDERS_TAG, "FAILUER ${response.body()?.error}")
                         /*  responseStandard?.onFailure(
                               false,
                               ERROR,
@@ -1605,7 +1632,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     }
 
                 } catch (e: Exception) {
-                    Log.d(CART_TAG, "EXCEPTION ${e.message.toString()}")
+                    Log.d(ORDERS_TAG, "EXCEPTION ${e.message.toString()}")
                     /* responseStandard?.onFailure(
                          false,
                          ERROR,
@@ -1618,7 +1645,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     )
                 }
             } else {
-                Log.d(CART_TAG, "$CONNECTION}")
+                Log.d(ORDERS_TAG, "$CONNECTION}")
                 responseStandard?.onFailure(false, CONNECTION, CONNECTION)
             }
         }

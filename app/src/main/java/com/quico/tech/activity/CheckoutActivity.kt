@@ -3,14 +3,12 @@ package com.quico.tech.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.kofigyan.stateprogressbar.StateProgressBar
 import com.quico.tech.R
 import com.quico.tech.adapter.OrderSummaryRecyclerViewAdapter
 import com.quico.tech.adapter.ServicePhotoRecyclerViewAdapter
@@ -62,17 +60,16 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun checkOrderType() {
-        if (order_type.equals(SERVICE_ORDERS)) {
-            subscribeOrder()
-            viewModel.getOrderById(order_id!!, true)
-        }
-        else if (order_type.equals(DELIVERY_ORDERS)) {
-            subscribeOrder()
-            viewModel.getOrderById(order_id!!, false)
-        }
-        else{
-            setUpCheckoutInfo()
-            binding.swipeRefreshLayout.setEnabled(false)
+
+        when (order_type) {
+            DELIVERY_ORDERS -> {
+                subscribeOrder()
+                viewModel.getDeliveryOrderById(order_id!!)
+            }
+            else -> {
+                setUpCheckoutInfo()
+                binding.swipeRefreshLayout.setEnabled(false)
+            }
         }
     }
 
@@ -81,8 +78,11 @@ class CheckoutActivity : AppCompatActivity() {
             // visibility of tracking progress
             when (trackOrder) {
                 true -> {
-                    footerContainer.visibility = View.GONE
-                    trackingContainer.visibility = View.VISIBLE
+                    footerContainer.visibility = View.VISIBLE
+                    confirmBtn.visibility = View.GONE
+                    orderTracking.root.visibility = View.VISIBLE
+                    title.text = viewModel.getLangResources().getString(R.string.tracking)
+
 //                    stepView.state.steps(object : ArrayList<String?>() {
 //                        init {
 //                            add("")
@@ -96,20 +96,7 @@ class CheckoutActivity : AppCompatActivity() {
 
                 }
                 false -> {
-                    trackingContainer.visibility = View.GONE
-                }
-            }
-
-            when (order_type) {
-                DELIVERY_ORDERS -> {
-                    //setUpItemsAdapter()
-                    if (trackOrder == false) {
-                        footerContainer.visibility = View.VISIBLE
-                    }
-                }
-                SERVICE -> {
-                    footerContainer.visibility = View.GONE
-                    setUpServiceAdapter()
+                    orderTracking.root.visibility = View.GONE
                 }
             }
         }
@@ -131,7 +118,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-    fun setUpProductsAdapter(products:List<Product>) {
+    fun setUpProductsAdapter(products: List<Product>) {
         // call the adapter for item list
 
         binding.apply {
@@ -151,6 +138,8 @@ class CheckoutActivity : AppCompatActivity() {
 
     private fun setUpCheckoutInfo() {
         binding.apply {
+            title.text = viewModel.getLangResources().getString(R.string.delivery_order)
+
             cashText.text = viewModel.getLangResources().getString(R.string.cash_on_delivery)
 
             footerContainer.visibility = View.VISIBLE
@@ -178,30 +167,31 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpAddressInfo(order_address: Address?){
+    private fun setUpAddressInfo(order_address: Address?) {
         binding.apply {
             var addressValue = ""
             order_address?.let { address ->
-                addressValue = "${if(address.country==null)"Lebanon" else address.country}, ${address.city}, ${address.street}"
+                addressValue =
+                    "${if (address.country == null) "Lebanon" else address.country}, ${address.city}, ${address.street}"
                 if (address.street2.isNotEmpty())
                     addressValue = "${addressValue} , ${address.street2}"
 
                 addressValue = "${addressValue}, ${address.zip}"
 
-                userAddress.text = addressValue
-                phoneNumber.text = viewModel.user?.mobile
+                orderAddress.userAddress.text = addressValue
+                orderAddress.phoneNumber.text = viewModel.user?.mobile
             }
         }
     }
 
-    private fun checkPaymentMethod(payment_method:String){
+    private fun checkPaymentMethod(payment_method: String) {
         binding.apply {
             when (payment_method) {
                 "cash on delivery" -> {
                     cashContainer.visibility = View.VISIBLE
                     visaContainer.visibility = View.GONE
                 }
-                "visa"-> {
+                "visa" -> {
                     cashContainer.visibility = View.GONE
                     visaContainer.visibility = View.VISIBLE
                 }
@@ -326,7 +316,7 @@ class CheckoutActivity : AppCompatActivity() {
 
     fun subscribeOrder() {
         lifecycleScope.launch {
-            viewModel.order.collect { response ->
+            viewModel.delivery_order.collect { response ->
                 when (response) {
 
                     is Resource.Success -> {
@@ -335,127 +325,124 @@ class CheckoutActivity : AppCompatActivity() {
                             mainContainer.visibility = View.VISIBLE
                             orderErrorContainer.root.visibility = View.GONE
                             swipeRefreshLayout.setRefreshing(false)
-                           // totalContainer.visibility = View.GONE
-                           //confirmBtn.visibility = View.GONE
+                            // totalContainer.visibility = View.GONE
+                            //confirmBtn.visibility = View.GONE
                         }
 
                         response.data?.let { orderResponse ->
 
-                            if (orderResponse.result==null) {
+                            if (orderResponse.result == null) {
                                 setUpErrorForm(Constant.NO_ORDERS)
                             } else {
-                                orderResponse.result?.let { result->
-                                    when (order_type) {
-                                        DELIVERY_ORDERS -> {
+                                orderResponse.result?.let { result ->
+                                    binding.apply {
 
-                                            if (result.order_lines.isNullOrEmpty()) {
-                                                binding.orderSummary.visibility = View.GONE
-                                            } else {
-                                                setUpProductsAdapter(result.order_lines)
-                                            }
-                                            if (result.address != null)
-                                                setUpAddressInfo(result.address)
-
-                                            checkPaymentMethod(result.payment_method)
-                                            binding.apply {
-                                                confirmBtn.visibility = View.GONE
-                                                total.text = "$ ${result.total_price}"
-
-                                                stateProgressBar.setCurrentStateNumber(OrderStatus.getOrderState(result.status))
-                                            }
-
+                                        if (result.order_lines.isNullOrEmpty()) {
+                                            orderSummary.visibility = View.GONE
+                                        } else {
+                                            setUpProductsAdapter(result.order_lines)
                                         }
-                                        SERVICE_ORDERS -> {
-                                            binding.totalContainer.visibility = View.GONE
-                                        }
-                                        else -> {
+                                        if (result.address != null)
+                                            setUpAddressInfo(result.address)
+                                        else
+                                            orderAddress.root.visibility = View.GONE
 
+                                        checkPaymentMethod(result.payment_method)
+                                        binding.apply {
+                                            confirmBtn.visibility = View.GONE
+                                            total.text = "$ ${result.total_price}"
+
+                                            orderTracking.stateProgressBar.setCurrentStateNumber(
+                                                OrderStatus.getOrderState(
+                                                    result.status
+                                                )
+                                            )
                                         }
-                                    }
                                 }
                             }
                         }
                     }
+                }
 
-                    is Resource.Error -> {
-                        response.message?.let { message ->
-                            setUpErrorForm(Constant.ERROR)
-                        }
-                    }
+                is Resource.Error -> {
+                response.message?.let { message ->
+                    setUpErrorForm(Constant.ERROR)
+                }
+            }
 
-                    is Resource.Connection -> {
-                        setUpErrorForm(Constant.CONNECTION)
-                    }
+                is Resource.Connection -> {
+                setUpErrorForm(Constant.CONNECTION)
+            }
 
-                    is Resource.Loading -> {
-                        setLoading()
-                    }
+                is Resource.Loading -> {
+                setLoading()
+            }
+            }
+        }
+    }
+}
+
+private fun setLoading() {
+    binding.apply {
+        mainContainer.visibility = View.GONE
+        orderErrorContainer.root.visibility = View.GONE
+        totalContainer.visibility = View.GONE
+        confirmBtn.visibility = View.GONE
+        swipeRefreshLayout.setRefreshing(true)
+        //shimmer.visibility = View.VISIBLE
+        // shimmer.startShimmer()
+    }
+}
+
+
+fun onRefresh() {
+    binding.apply {
+        swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            checkOrderType()
+        })
+    }
+}
+
+fun setUpErrorForm(error_type: String) {
+    binding.apply {
+        footerContainer.visibility = View.GONE
+        mainContainer.visibility = View.GONE
+        swipeRefreshLayout.setRefreshing(false)
+        //stopShimmer()
+        orderErrorContainer.apply {
+            root.visibility = View.VISIBLE
+            tryAgain.visibility = View.GONE
+            errorImage.visibility = View.VISIBLE
+            errorBtn.visibility = View.GONE
+
+            errorImage.setImageResource(R.drawable.empty_item)
+
+            when (error_type) {
+                Constant.CONNECTION -> {
+                    errorMsg1.text =
+                        viewModel.getLangResources().getString(R.string.connection)
+
+                    errorMsg2.text =
+                        viewModel.getLangResources().getString(R.string.check_connection)
+
+                }
+                Constant.NO_ORDERS -> {
+                    errorMsg1.text =
+                        viewModel.getLangResources().getString(R.string.orders)
+
+                    errorMsg2.text =
+                        viewModel.getLangResources().getString(R.string.no_orders)
+                }
+
+                Constant.ERROR -> {
+                    errorMsg1.text =
+                        viewModel.getLangResources().getString(R.string.error)
+
+                    errorMsg2.text =
+                        viewModel.getLangResources().getString(R.string.error_msg)
                 }
             }
         }
     }
-
-    private fun setLoading() {
-        binding.apply {
-            mainContainer.visibility = View.GONE
-            orderErrorContainer.root.visibility = View.GONE
-            totalContainer.visibility = View.GONE
-            confirmBtn.visibility = View.GONE
-            swipeRefreshLayout.setRefreshing(true)
-            //shimmer.visibility = View.VISIBLE
-           // shimmer.startShimmer()
-        }
-    }
-
-
-    fun onRefresh() {
-        binding.apply {
-            swipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
-                checkOrderType()
-            })
-        }
-    }
-
-        fun setUpErrorForm(error_type: String) {
-            binding.apply {
-                footerContainer.visibility = View.GONE
-                mainContainer.visibility = View.GONE
-                swipeRefreshLayout.setRefreshing(false)
-                //stopShimmer()
-                orderErrorContainer.apply {
-                    root.visibility = View.VISIBLE
-                    tryAgain.visibility = View.GONE
-                    errorImage.visibility = View.VISIBLE
-                    errorBtn.visibility = View.GONE
-
-                    errorImage.setImageResource(R.drawable.empty_item)
-
-                    when (error_type) {
-                        Constant.CONNECTION -> {
-                            errorMsg1.text =
-                                viewModel.getLangResources().getString(R.string.connection)
-
-                            errorMsg2.text =
-                                viewModel.getLangResources().getString(R.string.check_connection)
-
-                        }
-                        Constant.NO_ORDERS -> {
-                            errorMsg1.text =
-                                viewModel.getLangResources().getString(R.string.orders)
-
-                            errorMsg2.text =
-                                viewModel.getLangResources().getString(R.string.no_orders)
-                        }
-
-                        Constant.ERROR -> {
-                            errorMsg1.text =
-                                viewModel.getLangResources().getString(R.string.error)
-
-                            errorMsg2.text =
-                                viewModel.getLangResources().getString(R.string.error_msg)
-                        }
-                    }
-                }
-            }
-        }
-    }
+}
+}

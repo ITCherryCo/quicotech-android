@@ -146,14 +146,14 @@ interface API {
     suspend fun getServiceOrders(): Response<OrderResponse>
 
     @GET("getDeliveryOrder/{order_id}")
-    suspend fun getDeliveryOrder(@Path("order_id") order_id: Int): Response<SingleOrderResponse>
+    suspend fun getDeliveryOrderById(@Path("order_id") order_id: Int): Response<DeliveryOrderResponse>
 
     @GET("getServiceOrder/{order_id}")
-    suspend fun getServiceOrder(@Path("order_id") order_id: Int): Response<SingleOrderResponse>
+    suspend fun getServiceOrderById(@Path("order_id") order_id: Int): Response<ServiceOrderResponse>
 
-    @POST("deliveryOrder")
+    @POST("createServiceOrder")
     // @Headers("Content-Type: application/json")
     @Headers("Content-Type: text/html")
-    suspend fun createServiceOrder(@Body orderBodyParameters: OrderBodyParameters): Response<RegisterResponse>
+    suspend fun createServiceOrder(@Body serviceBodyParameters: ServiceBodyParameters): Response<RegisterResponse>
 
 }

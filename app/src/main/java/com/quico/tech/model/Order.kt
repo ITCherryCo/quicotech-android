@@ -25,14 +25,14 @@ data class OrderParams(
 )
 
 
-data class SingleOrderResponse(
+data class DeliveryOrderResponse(
     val id: Any,
     val jsonrpc: String,
-    val result: SingleOrder,
+    val result: DeliveryOrder,
     val error: String?
 )
 
-data class SingleOrder(
+data class DeliveryOrder(
     val VAT_amount: Double,
     val VAT_percentage: String,
     val id: Int,

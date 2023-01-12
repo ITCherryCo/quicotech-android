@@ -276,5 +276,17 @@ efficitur ut nec ligula. Proin erat magna, pellentesque at elementum at, eleifen
     <string name="order_received">Order Received</string>
     <string name="packaging">Packaging</string>
     <string name="on_the_way">On The Way</string>
+    <string name="service_order">Service Order</string>
+    <string name="delivery_order">Delivery Order</string>
+    <string name="tracking">Tracking</string>
+    <string name="confirm_service">Confirm Service Order</string>
+    <string name="sure_create_service">If you want to confirm this service please press yes.</string>
+    <string name="service_number">Service Number: %1$s</string>
+    <string name="service_name">Service Name: %1$s</string>
+    <string name="service_type">Service Type: %1$s</string>
+    <string name="service_delivery_type">Delivery Type: %1$s</string>
+    <string name="case_problem">Case Problem: %1$s</string>
+    <string name="service_start_date">Start Date: %1$s</string>
+    <string name="service_end_date">End Date: %1$s</string>
 
 </resources>

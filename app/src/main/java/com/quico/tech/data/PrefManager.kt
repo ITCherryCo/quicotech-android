@@ -7,7 +7,7 @@ import com.quico.tech.data.Constant.COOKIE
 import com.quico.tech.data.Constant.EN
 import com.quico.tech.data.Constant.SESSION_ID
 import com.quico.tech.model.RegisterParams
-import com.quico.tech.model.ServiceOrder
+import com.quico.tech.model.ServiceOrderParams
 import com.quico.tech.model.User
 
 class PrefManager(var context: Context) {
@@ -116,13 +116,13 @@ class PrefManager(var context: Context) {
             editor.apply()
         }
 
-    var requested_serive_order: ServiceOrder?
+    var requested_serive_order: ServiceOrderParams?
         get() {
             val gson = Gson()
             val json: String = sharedPreferences.getString(REQUESTED_SERVICE_ORDER, null).toString()
-            var serviceOrder: ServiceOrder? = null
-            serviceOrder = gson.fromJson(json, ServiceOrder::class.java)
-            return serviceOrder
+            var serviceOrderParams: ServiceOrderParams? = null
+            serviceOrderParams = gson.fromJson(json, ServiceOrderParams::class.java)
+            return serviceOrderParams
         }
 
         set(serviceOrder) {

@@ -124,7 +124,7 @@ class OrderListActivity : AppCompatActivity() {
 
     fun subscribeOrders() {
         lifecycleScope.launch {
-            viewModel.orders.collect { response ->
+            viewModel.delivery_orders.collect { response ->
                 when (response) {
 
                     is Resource.Success -> {

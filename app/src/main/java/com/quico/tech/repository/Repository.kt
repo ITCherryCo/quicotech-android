@@ -46,9 +46,9 @@ class Repository() {
     suspend fun createDeliveryOrder( orderBody: OrderBodyParameters) = RetrofitInstance.api.createDeliveryOrder(orderBody)
     suspend fun getDeliveryOrders() = RetrofitInstance.api.getDeliveryOrders()
     suspend fun getServiceOrders() = RetrofitInstance.api.getServiceOrders()
-    suspend fun getDeliveryOrderById(order_id:Int) = RetrofitInstance.api.getDeliveryOrder(order_id)
-    suspend fun getServiceOrderById(order_id:Int) = RetrofitInstance.api.getServiceOrder(order_id)
-    suspend fun createServiceOrder( orderBody: OrderBodyParameters) = RetrofitInstance.api.createServiceOrder(orderBody)
+    suspend fun getDeliveryOrderById(order_id:Int) = RetrofitInstance.api.getDeliveryOrderById(order_id)
+    suspend fun getServiceOrderById(order_id:Int) = RetrofitInstance.api.getServiceOrderById(order_id)
+    suspend fun createServiceOrder( serviceBody: ServiceBodyParameters) = RetrofitInstance.api.createServiceOrder(serviceBody)
 
     /* suspend fun getSession() = RetrofitInstance.newRetrofit(context).getSession()
      suspend fun getAddresses(session_id: String) = RetrofitInstance.newRetrofit(context).getAddresses(session_id)
