@@ -5,24 +5,26 @@ import android.util.Log
 import java.io.IOException
 
 class AudioRecorder {
-    //private var mediaRecorder: MediaRecorder? = null
-    private fun initMediaRecorder(mediaRecorder:MediaRecorder?) {
-        //mediaRecorder = MediaRecorder()
+    private var mediaRecorder: MediaRecorder? = null
+    private fun initMediaRecorder() {
+        mediaRecorder = MediaRecorder()
         mediaRecorder!!.setAudioSource(
             MediaRecorder.AudioSource.MIC
         )
         mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+       // mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
         mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
         mediaRecorder!!.setAudioEncodingBitRate(384000)
         mediaRecorder!!.setAudioSamplingRate(44100)
     }
 
     @Throws(IOException::class)
-    fun start(filePath: String?, mediaRecorder: MediaRecorder?) {
-//        if (mediaRecorder == null) {
-//            initMediaRecorder()
-//        }
-        initMediaRecorder(mediaRecorder!!)
+    fun start(filePath: String?) {
+        /*if (mediaRecorder == null) {
+            initMediaRecorder()
+        }*/
+        initMediaRecorder()
+
         try {
             mediaRecorder!!.setOutputFile(filePath)
             mediaRecorder!!.prepare()
@@ -35,24 +37,25 @@ class AudioRecorder {
         }
     }
 
-    fun stop(mediaRecorder:MediaRecorder?) {
+    fun stop() {
         try {
-            mediaRecorder!!.stop()
-            destroyMediaRecorder(mediaRecorder)
+            mediaRecorder?.let {
+                mediaRecorder!!.stop()
+                destroyMediaRecorder()
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    private fun destroyMediaRecorder(mediaRecorder:MediaRecorder?) {
+    private fun destroyMediaRecorder() {
         try {
-
             mediaRecorder?.let { media ->
                 media.release()
                 media.reset()
+                mediaRecorder=null
             }
         }catch (e:java.lang.Exception){}
 
-        // mediaRecorder = null
     }
 }

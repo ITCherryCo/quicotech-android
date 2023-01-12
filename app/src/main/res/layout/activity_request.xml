@@ -184,7 +184,15 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/submitBtn"
         android:paddingHorizontal="15dp"
+        android:background="@color/white"
         android:paddingVertical="8dp">
+
+<!--        <com.devlomi.record_view.RecordLockView-->
+<!--            android:id="@+id/record_lock"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:layout_marginBottom="100dp" />-->
 
         <com.devlomi.record_view.RecordView
             android:id="@+id/recordView"

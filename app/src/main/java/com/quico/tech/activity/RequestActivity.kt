@@ -3,12 +3,10 @@ package com.quico.tech.activity
 import android.Manifest
 import android.content.Intent
 import android.media.MediaPlayer
-import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.provider.ContactsContract.Contacts.Photo
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -22,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.devlomi.record_view.OnRecordListener
@@ -34,11 +33,12 @@ import com.quico.tech.databinding.ActivityRequestBinding
 import com.quico.tech.utils.AudioRecorder
 import com.quico.tech.utils.Common
 import com.quico.tech.viewmodel.SharedViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
 
 class RequestActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRequestBinding
@@ -52,9 +52,11 @@ class RequestActivity : AppCompatActivity() {
     var pics_left = 0
     private var audioRecorder: AudioRecorder? = null
     private var recordFile: File? = null
+    private var finalAudioFile: File? = null
     var audioPath = ""
     private lateinit var mediaPlayer: MediaPlayer
-    private lateinit var mediaRecorder: MediaRecorder
+
+    // private lateinit var mediaRecorder: MediaRecorder
     private lateinit var current_photo: PhotoService
     private var current_photo_position: Int = -1
 
@@ -63,7 +65,8 @@ class RequestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mediaRecorder = MediaRecorder()
+        // mediaRecorder = MediaRecorder()
+        audioRecorder = AudioRecorder()
         binding = ActivityRequestBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpText()
@@ -172,7 +175,8 @@ class RequestActivity : AppCompatActivity() {
 
     private fun setUpVoiceRecorder() {
         binding.apply {
-
+            //recordView.setLockEnabled(true)
+            //recordView.setRecordLockImageView(recordLock)
             recordBtn.setRecordView(recordView)
             recordView.setCancelBounds(8f)
             recordView.setLessThanSecondAllowed(false)
@@ -184,30 +188,34 @@ class RequestActivity : AppCompatActivity() {
                 var date: String = ""
                 override fun onStart() {
                     // deleteAllFiles()
-                    audioRecorder = AudioRecorder()
-                    mediaRecorder = MediaRecorder()
+
                     recordFile = File(
                         Environment.getExternalStorageDirectory(),
                         APP_MEDIA_PATH
                     )
                     try {
-                        if (!recordFile!!.mkdirs()) recordFile!!.mkdirs()
+                        voicePlayerView.onPause()
+                        if (!recordFile!!.mkdirs())
+                            recordFile!!.mkdirs()
                         date = System.currentTimeMillis().toString()
                         audioPath = recordFile?.getAbsolutePath() + File.separator + date + ".3gp"
-                        audioRecorder!!.start(audioPath, mediaRecorder)
+
+                        lifecycleScope.launch {
+                            delay(200)
+                            audioRecorder!!.start(audioPath)
+                        }
                         Log.d("RecordView", audioPath)
                     } catch (e: IOException) {
                         // recordView.setBackgroundColor(resources.getColor(android.R.color.transparent))
                         e.printStackTrace()
                         Log.d("RecordView", "EXCEPTION ${e.message}")
                     }
-                    // Toast.makeText(this@RequestActivity,"start",Toast.LENGTH_LONG).show()
                     Log.d("RecordView", "onStart")
                 }
 
                 override fun onCancel() {
                     stopRecording(true)
-                    Toast.makeText(this@RequestActivity,"cancel",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@RequestActivity, "cancel", Toast.LENGTH_LONG).show()
 
                     Log.d("RecordView", "onCancel")
                 }
@@ -220,17 +228,17 @@ class RequestActivity : AppCompatActivity() {
                         val time: String = getHumanTimeText(recordTime)!!
                         Log.d("RecordView", "onFinish Limit Reached? $limitReached")
                         Log.d("RecordTime", time)
+                        finalAudioFile= File(audioPath)
+                        //val file: File = File(audioPath)
+                        Log.d("RecordView", "FILE SIZE  ${finalAudioFile!!.length()} ")
 
-                        val file: File = File(audioPath)
-                        val file_size = (file.length() / 1024).toString().toInt()
+                        val file_size = (finalAudioFile!!.length() / 1024).toString().toInt()
                         if (file_size > 0) {
                             setVoice(audioPath)
                             // Toast.makeText(this@RequestActivity,"set voice",Toast.LENGTH_LONG).show()
-                            //Toast.makeText(this@RequestActivity,"finish",Toast.LENGTH_LONG).show()
                         } else {
                             Log.d("RecordView", "failed")
-                            //Toast.makeText(this@RequestActivity,"failed",Toast.LENGTH_LONG).show()
-                            stopRecording(true)
+                            // stopRecording(true)
                         }
                     } catch (e: java.lang.Exception) {
 
@@ -245,7 +253,7 @@ class RequestActivity : AppCompatActivity() {
 
                     }
                     Log.d("RecordView", "onLessThanSecond")
-                    // Toast.makeText(this@RequestActivity,"less than 1",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@RequestActivity, "less than 1", Toast.LENGTH_LONG).show()
                 }
             })
 
@@ -280,20 +288,24 @@ class RequestActivity : AppCompatActivity() {
 
         binding.apply {
             audioPath?.toUri().let { uri ->
-                mediaPlayer = MediaPlayer.create(this@RequestActivity, audioPath?.toUri())
-                val seconds = (mediaPlayer.duration / 1000) as Int % 60
-                val minutes = (mediaPlayer.duration / (1000 * 60) % 60)
-                /* duration.visibility = View.VISIBLE
-                 duration.text = String.format(Locale.ENGLISH, "%2d:%02d", minutes, seconds)*/
+
+               // voicePlayerView.resetPivot()
+
+                //voicePlayerView.setAudio(audioPath)
+                voicePlayerView.refreshPlayer(audioPath)
 
                 voiceContainer.visibility = View.VISIBLE
-                voicePlayerView.setAudio(audioPath)
                 deleteImage.setOnClickListener {
                     hideCurrentVoice()
                     // recordView.setEnabled(true)
                 }
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.voicePlayerView.onPause()
     }
 
     private fun hideCurrentVoice() {
@@ -312,14 +324,13 @@ class RequestActivity : AppCompatActivity() {
     }
 
     private fun stopRecording(deleteFile: Boolean) {
+        binding.voicePlayerView.onStop()
+
         try {
-            audioRecorder?.stop(mediaRecorder)
+            audioRecorder?.stop()
             if (recordFile != null && deleteFile) {
-                deleteAllFiles()
-                Log.d(
-                    "RecordView",
-                    " DELETE "
-                )
+                //deleteAllFiles()
+                recordFile!!.delete()
             } else
                 Log.d(
                     "RecordView",
@@ -339,6 +350,7 @@ class RequestActivity : AppCompatActivity() {
                         File(recordFile, children[i]).delete()
                     }
                 }
+                audioPath = ""
             }
         } catch (e: java.lang.Exception) {
         }
@@ -357,11 +369,12 @@ class RequestActivity : AppCompatActivity() {
         binding.apply {
             viewModel.requested_serive_order?.let { service_order ->
 
-                viewModel.requested_serive_order = service_order.copy(description = descriptionField.text.toString())
+                viewModel.requested_serive_order =
+                    service_order.copy(description = descriptionField.text.toString())
                 var images = ArrayList<String>()
 
                 photos.forEach { photo_service ->
-                    var imageEncoded =""
+                    var imageEncoded = ""
                     photo_service.img?.let { image ->
                         val bytes = contentResolver.openInputStream(image)?.readBytes()
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -371,11 +384,11 @@ class RequestActivity : AppCompatActivity() {
                     }
                 }
                 // add images
-               // viewModel.requested_serive_order = service_order.copy(description = problemDescription.text.toString())
+                // viewModel.requested_serive_order = service_order.copy(description = problemDescription.text.toString())
 
                 // add audio file
 
-               // viewModel.requested_serive_order = service_order.copy(description = problemDescription.text.toString())
+                // viewModel.requested_serive_order = service_order.copy(description = problemDescription.text.toString())
 
                 startActivity(
                     Intent(this@RequestActivity, RequestDeliveryActivity::class.java)
