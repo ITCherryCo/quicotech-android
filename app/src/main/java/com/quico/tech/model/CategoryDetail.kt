@@ -13,7 +13,13 @@ data class CategoryDetailResponse(
 data class CategoryDetail(
     val subcategories: List<SubCategory>?,
     val products: List<Product>?,
-    val pagination: Pagination?
+    val pagination: PaginationCategoryDetail?
+)
+
+data class PaginationCategoryDetail(
+    val page: Int,
+    val size: Int,
+    val total: Int
 )
 
 data class PaginationBodyParameters(

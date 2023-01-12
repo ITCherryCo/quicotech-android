@@ -22,6 +22,7 @@ import com.quico.tech.data.Constant.EXCEPTION
 import com.quico.tech.data.Constant.HOME_TAG
 import com.quico.tech.data.Constant.ONGOING_ORDERS
 import com.quico.tech.data.Constant.PRODUCTS_BY_CATEGORY_TAG
+import com.quico.tech.data.Constant.PRODUCTS_BY_SUB_CATEGORY_TAG
 import com.quico.tech.data.Constant.PRODUCT_TAG
 import com.quico.tech.data.Constant.SERVICE_TAG
 import com.quico.tech.data.Constant.SUCCESS
@@ -109,6 +110,10 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     private val _productsByCategory: MutableStateFlow<Resource<CategoryDetailResponse>> =
         MutableStateFlow(Resource.Nothing())
     val productsByCategory: StateFlow<Resource<CategoryDetailResponse>> get() = _productsByCategory
+
+    private val _productsBySubCategory: MutableStateFlow<Resource<SubCategoryResponse>> =
+        MutableStateFlow(Resource.Nothing())
+    val productsBySubCategory: StateFlow<Resource<SubCategoryResponse>> get() = _productsBySubCategory
 
     private val _brands: MutableStateFlow<Resource<BrandResponse>> =
         MutableStateFlow(Resource.Nothing())
@@ -1470,6 +1475,38 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             } else {
                 Log.d(PRODUCTS_BY_CATEGORY_TAG, "$CONNECTION}")
                 _productsByCategory.emit(Resource.Connection())
+            }
+        }
+    }
+
+    fun getProductsBySubCategory(paginationProductBySubCategoryBodyParameters: PaginationProductBySubCategoryBodyParameters) {
+        viewModelScope.launch {
+
+            if (paginationProductBySubCategoryBodyParameters.params.page==1)
+                _productsBySubCategory.emit(Resource.Loading())
+            else
+                _productsBySubCategory.emit(Resource.LoadingWithProducts())
+
+            if (checkInternet(context)) {
+                try {
+                    val response = repository.getProductsBySubcategory(paginationProductBySubCategoryBodyParameters)
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultResponse ->
+                            Log.d(PRODUCTS_BY_SUB_CATEGORY_TAG, "SUCCESS ${resultResponse.result?.products?.size}}")
+                            _productsBySubCategory.emit(Resource.Success(resultResponse))
+                        }
+                    } else {
+                        Log.d(PRODUCTS_BY_SUB_CATEGORY_TAG, "ERROR ${response}}")
+                        _productsBySubCategory.emit(Resource.Error(response.message()))
+                    }
+                } catch (e: Exception) {
+                    Log.d(PRODUCTS_BY_SUB_CATEGORY_TAG, "EXCEPTION ${e.message}}}")
+                    _productsBySubCategory.emit(Resource.Error(ERROR))
+                }
+            } else {
+                Log.d(PRODUCTS_BY_CATEGORY_TAG, "$CONNECTION}")
+                _productsBySubCategory.emit(Resource.Connection())
             }
         }
     }

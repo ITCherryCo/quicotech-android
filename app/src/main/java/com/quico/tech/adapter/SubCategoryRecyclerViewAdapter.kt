@@ -1,5 +1,7 @@
 package com.quico.tech.adapter
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -11,27 +13,43 @@ import com.quico.tech.databinding.CategoryItemListBinding
 import com.quico.tech.databinding.SubCategoryItemSelectionBinding
 import com.quico.tech.model.Brand
 import com.quico.tech.model.Category
+import com.quico.tech.model.Product
 import com.quico.tech.model.SubCategory
 
-class SubCategoryRecyclerViewAdapter : RecyclerView.Adapter<SubCategoryRecyclerViewAdapter.ItemViewHolder>() {
+class SubCategoryRecyclerViewAdapter(onSubCategorySelect: OnSubCategorySelect?, onSubCategoryUnSelect: OnSubCategoryUnSelect?) : RecyclerView.Adapter<SubCategoryRecyclerViewAdapter.ItemViewHolder>() {
     private var lastSelectedPosition = -1
     private var defaultSelectedPosition = -1
+    private var onSubCategorySelect = onSubCategorySelect
+    private var onSubCategoryUnSelect = onSubCategoryUnSelect
+
+    interface OnSubCategorySelect {
+        fun onSubCategorySelect(subCategory: SubCategory?)
+    }
+
+    interface OnSubCategoryUnSelect {
+        fun onSubCategoryUnSelect()
+    }
 
     inner class ItemViewHolder(private var binding: SubCategoryItemSelectionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(subCategory: SubCategory) {
             binding.apply {
+
                 subCatName.text = subCategory.name
+
                 itemView.setOnClickListener {
                     lastSelectedPosition = absoluteAdapterPosition
                     notifyDataSetChanged()
                 }
 
+
                 if (lastSelectedPosition == absoluteAdapterPosition) {
                     setSelectedForm()
+                    onSubCategorySelect!!.onSubCategorySelect(subCategory)
                 }
                 if (lastSelectedPosition != absoluteAdapterPosition) {
                     setUnselectedForm()
+                    onSubCategoryUnSelect!!.onSubCategoryUnSelect()
                 }
             }
         }

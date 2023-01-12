@@ -61,7 +61,7 @@
 
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView"
+        android:id="@+id/searchViewCategoryDetail"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_below="@+id/toolbarCategoryDetail"

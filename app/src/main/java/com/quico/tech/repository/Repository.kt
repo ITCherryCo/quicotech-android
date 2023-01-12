@@ -43,6 +43,7 @@ class Repository() {
     suspend fun getHomeData() = RetrofitInstance.api.getHomeData()
     suspend fun getAllBestSellingProducts() = RetrofitInstance.api.getAllBestSellingProducts()
     suspend fun getProductsByCategory(category_id: Int, paginationBodyParameters: PaginationBodyParameters) = RetrofitInstance.api.getProductsByCategory(category_id, paginationBodyParameters)
+    suspend fun getProductsBySubcategory(paginationProductBySubCategoryBodyParameters: PaginationProductBySubCategoryBodyParameters) = RetrofitInstance.api.getProductsBySubcategory(paginationProductBySubCategoryBodyParameters)
 
     suspend fun addToWishlist( productBody: ProductBodyParameters) = RetrofitInstance.api.addToWishlist(productBody)
     suspend fun removeFromWishlist(productBody: ProductBodyParameters) = RetrofitInstance.api.removeFromWishlist(productBody)

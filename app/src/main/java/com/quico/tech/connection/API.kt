@@ -153,4 +153,9 @@ interface API {
     @Headers("Content-Type: text/html")
     suspend fun getProductsByCategory(@Path("category_id") category_id: Int, @Body paginationBodyParameters: PaginationBodyParameters): Response<CategoryDetailResponse>
 
+    @POST("getProductsBySubcategory")
+    @Headers("Content-Type: text/html")
+    suspend fun getProductsBySubcategory(@Body paginationProductBySubCategoryBodyParameters: PaginationProductBySubCategoryBodyParameters): Response<SubCategoryResponse>
+
+
 }

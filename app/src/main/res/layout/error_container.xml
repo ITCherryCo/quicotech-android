@@ -62,6 +62,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
             android:text="@string/try_again"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:textColor="@drawable/ripple_text_purple_gray"
             android:textSize="13sp"
             android:textStyle="bold" />
