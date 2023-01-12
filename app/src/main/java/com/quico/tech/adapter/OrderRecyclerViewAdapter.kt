@@ -34,13 +34,15 @@ class OrderRecyclerViewAdapter(val is_service: Boolean, val viewModel: SharedVie
             binding.apply {
 
                 //orderNumber.text = itemView.resources.getString(R.string.order_number,"12")
-                orderNumber.text =
-                    itemView.resources.getString(R.string.order_number, order.order_nb)
-                if (is_service)
+                if (is_service) {
                     total.visibility = View.GONE
+                    orderNumber.text = itemView.resources.getString(R.string.order_number, order.service_nb)
+                }
                 else {
                     total.visibility = View.VISIBLE
                     total.text = "$ ${order.total_price}"
+                    orderNumber.text = itemView.resources.getString(R.string.order_number, order.order_nb)
+
                 }
 
 

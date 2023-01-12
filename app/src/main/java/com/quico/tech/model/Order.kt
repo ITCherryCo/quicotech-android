@@ -12,7 +12,7 @@ data class OrderResponse(
     val error: String?
 )
 
-data class Order(val id: Int, val order_nb:String, val status:String, val total_price:Double?)
+data class Order(val id: Int, val order_nb:String,val service_nb:String? ,val status:String, val total_price:Double?)
 
 // to create order pass product id and qty
 data class OrderBodyParameters(

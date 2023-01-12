@@ -30,8 +30,7 @@
                 android:clickable="true"
                 android:layoutDirection="locale"
                 android:padding="8dp"
-                android:src="@drawable/back_arrow"
-                android:textDirection="locale" />
+                android:src="@drawable/back_arrow" />
 
             <TextView
                 android:id="@+id/title"
@@ -47,13 +46,17 @@
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.core.widget.NestedScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/submitBtn"
+        android:layout_above="@+id/recordContainer"
         android:layout_below="@+id/toolbar"
         android:background="@color/white"
         android:layoutDirection="locale">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,38 +69,38 @@
                 android:id="@+id/problemDescription"
                 style="@style/titleStyle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@string/problem_description"
                 android:textAllCaps="false" />
 
             <EditText
+                android:id="@+id/descriptionField"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="100dp"
                 android:layout_marginTop="7dp"
                 android:background="@drawable/container_white_gray_stroke_12"
-                android:fontFamily="@font/medium"
+                android:fontFamily="@font/regular"
                 android:gravity="top|start"
+                android:hint="@string/accept"
                 android:layoutDirection="locale"
-                android:maxHeight="200dp"
-                android:minHeight="150dp"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="5dp"
-                android:textDirection="locale" />
+                android:padding="12dp"
+                android:textDirection="locale"
+                android:textSize="14sp" />
 
 
-                <TextView
-                    android:id="@+id/uploadImagesText"
-                    style="@style/titleStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_toStartOf="@+id/addImage"
-                    android:gravity="start"
-                    android:text="@string/upload_images"
-                    android:textAllCaps="false" />
+            <TextView
+                android:id="@+id/uploadImagesText"
+                style="@style/titleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@+id/addImage"
+                android:gravity="start"
+                android:text="@string/upload_images"
+                android:textAllCaps="false" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -111,7 +114,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -122,9 +125,9 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/container_white_gray_stroke_12"
                 android:elevation="2dp"
+                android:visibility="gone"
                 android:layoutDirection="locale"
                 android:paddingHorizontal="20dp"
-                android:visibility="gone"
                 android:paddingVertical="10dp">
 
                 <me.jagar.chatvoiceplayerlibrary.VoicePlayerView
@@ -170,35 +173,53 @@
             </RelativeLayout>
 
 
-            <com.devlomi.record_view.RecordButton
-                android:id="@+id/recordBtn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/voice_background"
-                android:padding="25dp"
-                app:mic_icon="@drawable/voice" />
-
-            <com.devlomi.record_view.RecordView
-                android:id="@+id/recordView"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_centerVertical="true"
-                app:counter_time_color="#ff0000"
-                android:layout_marginTop="10dp"
-                app:slide_to_cancel_arrow="@drawable/recv_ic_arrow"
-                app:slide_to_cancel_arrow_color="#000000"
-                app:slide_to_cancel_bounds="8dp"
-                app:slide_to_cancel_margin_right="10dp"
-                android:layout_marginEnd="10dp"
-                app:slide_to_cancel_text="Slide To Cancel" />
-
         </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-    </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/recordContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/submitBtn"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="8dp">
+
+        <com.devlomi.record_view.RecordView
+            android:id="@+id/recordView"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/recordBtn"
+            app:counter_time_color="#ff0000"
+            app:slide_to_cancel_arrow="@drawable/recv_ic_arrow"
+            app:slide_to_cancel_arrow_color="#000000"
+            app:slide_to_cancel_bounds="8dp"
+            app:slide_to_cancel_margin_right="10dp"
+            app:slide_to_cancel_text="Slide To Cancel" />
+
+        <!--            <com.devlomi.record_view.RecordLockView-->
+        <!--                android:id="@+id/record_lock"-->
+        <!--                android:layout_width="50dp"-->
+        <!--                android:layout_height="50dp"-->
+        <!--                android:layout_alignParentRight="true"-->
+        <!--                android:layout_marginRight="4dp"-->
+        <!--                android:layout_marginBottom="100dp" />-->
+
+        <com.devlomi.record_view.RecordButton
+            android:id="@+id/recordBtn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:background="@drawable/voice_background"
+            android:padding="25dp"
+            app:mic_icon="@drawable/voice" />
+    </RelativeLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/submitBtn"

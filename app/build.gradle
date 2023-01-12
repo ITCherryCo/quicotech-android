@@ -99,7 +99,8 @@ dependencies {
     // voice player
     implementation 'com.github.JagarYousef:ChatVoicePlayer:1.1.0'
     // voice recorder
-    implementation 'com.github.3llomi:RecordView:3.1.0beta7' // this is for recording
+    implementation 'com.github.3llomi:RecordView:3.1.2' // this is for recording
+   // implementation 'com.github.adrielcafe:AndroidAudioRecorder:2.0.5'
 
     // view pager indicator
     implementation 'me.relex:circleindicator:2.1.6'

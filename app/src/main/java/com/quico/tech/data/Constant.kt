@@ -28,7 +28,7 @@ object Constant {
     val NO_ITEM= "no_item"
     val EN= "en"
     val AR= "ar"
-    val DOOR_TO_DOOR= "dtr"
+    val DOOR_TO_DOOR= "dtd"
     val DROP_CENTER= "drc"
     var ORDER_TYPE= "order_type"
     var SERVICE= "service"

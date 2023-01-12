@@ -209,8 +209,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     var requested_serive_order: ServiceOrderParams?
         get() = prefManager.requested_serive_order
-        set(serive_order) {
-            prefManager.requested_serive_order = serive_order
+        set(service_order) {
+            prefManager.requested_serive_order = service_order
         }
 
     fun updateOrderFilterType(order_filter: String) {
@@ -715,6 +715,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             if (loadWithSwipeRefresh)
                 _addresses.emit(Resource.Loading())
 
+            delay(1000)
             if (checkInternet(context)) {
                 try {
                     Log.d("SESSION_ID", "${user?.session_id}")
@@ -736,6 +737,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                 }
             } else {
                 Log.d(ADDRESS_TAG, "$CONNECTION}")
+                delay(1000)
                 _addresses.emit(Resource.Connection())
             }
         }
@@ -796,8 +798,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     fun getServices() {
         viewModelScope.launch {
-
             _services.emit(Resource.Loading())
+            delay(1000)
 
             if (checkInternet(context)) {
                 try {
@@ -819,6 +821,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                 }
             } else {
                 Log.d(SERVICE_TAG, "$CONNECTION}")
+
                 _services.emit(Resource.Connection())
             }
         }
@@ -829,7 +832,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
 
             _service_types.emit(Resource.Loading())
-
+            delay(1000)
             if (checkInternet(context)) {
                 try {
                     var response: Response<ServiceTypeResponse>? = null
@@ -862,7 +865,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     fun getProduct(product_id: Int) {
         viewModelScope.launch {
             _product.emit(Resource.Loading())
-
+            delay(1000)
             if (checkInternet(context)) {
                 try {
 
@@ -896,6 +899,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             else
                 _search_products.emit(Resource.LoadingWithProducts())
 
+            delay(1000)
             if (checkInternet(context)) {
                 try {
                     val response = repository.search(searchBodyParameters)
@@ -926,7 +930,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
 
             _search_compare_products.emit(Resource.Loading())
-
+            delay(1000)
             if (checkInternet(context)) {
                 try {
                     val response = repository.searchCompare(searchBodyParameters)
@@ -955,6 +959,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     fun getOrders(service: Boolean) {
         viewModelScope.launch {
             _delivery_orders.emit(Resource.Loading())
+            delay(1000)
             if (checkInternet(context)) {
                 try {
                     var response: Response<OrderResponse>? = null
@@ -981,6 +986,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     fun getDeliveryOrderById(order_id: Int) {
         viewModelScope.launch {
             _delivery_order.emit(Resource.Loading())
+            delay(1000)
             if (checkInternet(context)) {
                 try {
                     var response
@@ -1004,6 +1010,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     fun getServiceOrderById(order_id: Int) {
         viewModelScope.launch {
             _service_order.emit(Resource.Loading())
+            delay(1000)
             if (checkInternet(context)) {
                 try {
                     var response=  repository.getServiceOrderById(order_id)
@@ -1429,7 +1436,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
 
             _categories.emit(Resource.Loading())
-
+            delay(1000)
             if (checkInternet(context)) {
                 try {
                     val response = repository.getAllCategories()
@@ -1459,7 +1466,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
 
             _brands.emit(Resource.Loading())
-
+            delay(1000)
             if (checkInternet(context)) {
                 try {
                     val response = repository.getAllBrands()
@@ -1489,6 +1496,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
 
             _homeData.emit(Resource.Loading())
+            delay(1000)
 
             if (checkInternet(context)) {
                 try {
@@ -1588,6 +1596,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         responseStandard: ResponseStandard?
     ) {
         viewModelScope.launch {
+
+            Log.d(ORDERS_TAG, "PARAMS:  ${params.params.toString()}")
             if (checkInternet(context)) {
                 try {
                     var response = repository.createServiceOrder(params)

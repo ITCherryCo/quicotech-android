@@ -30,7 +30,6 @@ import com.quico.tech.R
 import com.quico.tech.adapter.RequestPhotoRecyclerViewAdapter
 import com.quico.tech.data.Constant
 import com.quico.tech.data.Constant.APP_MEDIA_PATH
-import com.quico.tech.data.Constant.SERVICE_ID
 import com.quico.tech.databinding.ActivityRequestBinding
 import com.quico.tech.utils.AudioRecorder
 import com.quico.tech.utils.Common
@@ -60,8 +59,6 @@ class RequestActivity : AppCompatActivity() {
     private var current_photo_position: Int = -1
 
     class PhotoService(val id: Int, var img: Uri?)
-
-    private var id_generator = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -210,7 +207,7 @@ class RequestActivity : AppCompatActivity() {
 
                 override fun onCancel() {
                     stopRecording(true)
-                    //Toast.makeText(this@RequestActivity,"cancel",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@RequestActivity,"cancel",Toast.LENGTH_LONG).show()
 
                     Log.d("RecordView", "onCancel")
                 }
@@ -360,7 +357,7 @@ class RequestActivity : AppCompatActivity() {
         binding.apply {
             viewModel.requested_serive_order?.let { service_order ->
 
-                viewModel.requested_serive_order = service_order.copy(description = problemDescription.text.toString())
+                viewModel.requested_serive_order = service_order.copy(description = descriptionField.text.toString())
                 var images = ArrayList<String>()
 
                 photos.forEach { photo_service ->

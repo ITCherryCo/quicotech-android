@@ -21,11 +21,9 @@ import kotlinx.coroutines.launch
 
 class ServiceOrderActivity : AppCompatActivity() {
     private lateinit var binding: ActivityServiceOrderBinding
-    private lateinit var orderSummaryRecyclerViewAdapter: OrderSummaryRecyclerViewAdapter
     private lateinit var servicePhotoRecyclerViewAdapter: ServicePhotoRecyclerViewAdapter
     private var trackOrder: Boolean? = false
     private val viewModel: SharedViewModel by viewModels()
-    private var order_type: String = Constant.DELIVERY_ORDERS
     private var order_id: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +57,8 @@ class ServiceOrderActivity : AppCompatActivity() {
                 true -> {
 
                     orderTracking.root.visibility = View.VISIBLE
+                    title.text = viewModel.getLangResources().getString(R.string.tracking)
+
 //                    stepView.state.steps(object : ArrayList<String?>() {
 //                        init {
 //                            add("")
@@ -72,6 +72,8 @@ class ServiceOrderActivity : AppCompatActivity() {
 
                 }
                 false -> {
+                    title.text = viewModel.getLangResources().getString(R.string.service_order)
+
                     orderTracking.root.visibility = View.GONE
                 }
             }
@@ -80,7 +82,6 @@ class ServiceOrderActivity : AppCompatActivity() {
 
     private fun setUpText() {
         binding.apply {
-            title.text = viewModel.getLangResources().getString(R.string.checkout)
 
             if (viewModel.getLanguage().equals(Constant.AR))
                 backArrow.scaleX = -1f

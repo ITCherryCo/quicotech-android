@@ -1,5 +1,6 @@
 package com.quico.tech.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -530,7 +531,13 @@ private fun setSuccessAlert() {
             R.string.continue_shopping
         ), object : Common.ResponseConfirm {
             override fun onConfirm() {
-
+                startActivity(
+                    Intent(
+                        this@RequestDeliveryActivity,
+                        HomeActivity::class.java
+                    )
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                )
             }
         }
     )

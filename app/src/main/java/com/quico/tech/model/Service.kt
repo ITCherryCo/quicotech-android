@@ -58,9 +58,15 @@ data class ServiceOrderParams(
         "",
         "",
         "",
-        0,
-        service_id
+        service_id,
+        0
     )
+
+    override fun toString(): String {
+        return "ServiceOrderParams(audio='$audio',\n audio_filename='$audio_filename',\n delivery_type='$delivery_type',\n description='$description',\n address_id=$address_id,\n image1='$image1',\n image2='$image2',\n image3='$image3',\n image4='$image4',\n service_id=$service_id,\n service_type_id=$service_type_id)"
+    }
+
+
 }
 
 data class ServiceOrderResponse(

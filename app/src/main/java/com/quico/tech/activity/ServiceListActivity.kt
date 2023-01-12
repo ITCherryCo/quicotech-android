@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -51,10 +52,10 @@ class ServiceListActivity : AppCompatActivity() {
         onRefresh()
 
         if (service_id!=0 && service_type_id==0){
-            viewModel.getServiceTypes(service_id!!,false)
             // for first maintenance hit
-            viewModel.requested_serive_order=null
-            viewModel.requested_serive_order= ServiceOrderParams(service_id!!)
+                viewModel.requested_serive_order = null
+                viewModel.requested_serive_order = ServiceOrderParams(service_id = service_id!!)
+                viewModel.getServiceTypes(service_id!!, false)
         }
 
         else if (service_id==0 && service_type_id!=0){
